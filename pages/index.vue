@@ -29,6 +29,13 @@ export default {
 
   components: {
     Card
-  }
+  },
+  fetch() {
+
+    console.log('NODE_ENV', process.env.NODE_ENV)
+    console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
+
+  },
+
 }
 </script>

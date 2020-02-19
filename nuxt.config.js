@@ -1,7 +1,22 @@
 const pkg = require('./package')
 
+require('dotenv').config()
+
 module.exports = {
   mode: 'universal',
+
+  env: {
+    FIREBASE_CONFIG: {
+      apiKey: process.env.FIREBASE_APIKEY,
+      authDomain: process.env.FIREBASE_AUTHDOMAIN,
+      databaseURL: process.env.FIREBASE_DATABASEURL,
+      projectId: process.env.FIREBASE_PROJECTID,
+      storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGESENDERID,
+      appId: process.env.FIREBASE_APPID,
+      measurementId: process.env.FIREBASE_MEASUREMENTID,
+    }
+  },
 
   /*
    ** Headers of the page
@@ -24,7 +39,9 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    // '~/assets/css/style.scss'
+  ],
 
   /*
    ** Plugins to load before mounting the App
