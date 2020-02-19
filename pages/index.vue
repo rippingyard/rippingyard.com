@@ -1,39 +1,31 @@
 <template>
-  <section class="section">
-    <div class="columns is-mobile">
-      <card title="Free" icon="github-circle">
-        Open source on <a href="https://github.com/buefy/buefy"> GitHub</a>
-      </card>
+  <section class="main-content columns">
+    <aside class="column is-2 section">
+      <p class="menu-label is-hidden-touch">General</p>
+    </aside>
 
-      <card title="Responsive" icon="cellphone-link">
-        <b class="has-text-grey">Every</b> component is responsive
-      </card>
-
-      <card title="Modern" icon="alert-decagram">
-        Built with <a href="https://vuejs.org/">Vue.js</a> and
-        <a href="http://bulma.io/">Bulma</a>
-      </card>
-
-      <card title="Lightweight" icon="arrange-bring-to-front">
-        No other internal dependency
-      </card>
+    <div class="container column is-8">
+      <section class="section">
+        <h1>TOP</h1>
+      </section>
     </div>
+
+    <aside class="column is-2 section">
+      <p class="menu-label is-hidden-touch">General</p>
+    </aside>
   </section>
+
 </template>
 
 <script>
-import Card from '~/components/Card'
 
 export default {
-  name: 'HomePage',
-
   components: {
-    Card
   },
   fetch() {
 
-    console.log('NODE_ENV', process.env.NODE_ENV)
-    console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
+    // console.log('NODE_ENV', process.env.NODE_ENV)
+    // console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
 
   },
 

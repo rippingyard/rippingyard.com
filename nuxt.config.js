@@ -40,6 +40,10 @@ module.exports = {
    ** Global CSS
    */
   css: [
+    // '@fortawesome/fontawesome-free',
+    // '@fortawesome/fontawesome-free/css/fontawesome.min.css',
+    // '@fortawesome/fontawesome-free/css/fa-regular.css',
+    // '@fortawesome/fontawesome-free/css/fa-solid.css',
     // '~/assets/css/style.scss'
   ],
 
