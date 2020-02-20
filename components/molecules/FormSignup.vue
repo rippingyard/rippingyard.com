@@ -20,7 +20,7 @@
       <b-input
         v-model="password"
         type="password"
-        placeholder="Password reveal input"
+        placeholder="パスワードを入力"
         required
         password-reveal
       >

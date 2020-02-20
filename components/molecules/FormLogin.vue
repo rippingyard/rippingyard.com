@@ -10,8 +10,9 @@
     </b-field>
     <b-field label="パスワード">
       <b-input
+        v-model="password"
         type="password"
-        placeholder="Password reveal input"
+        placeholder="パスワードを入力"
         required
         password-reveal
       >
@@ -29,13 +30,39 @@
 
 <script>
 
-export default {
+import { auth } from '~/plugins/firebase'
 
+export default {
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
   methods: {
 
     login() {
 
-      alert('Login')
+      auth
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          console.log(user)
+          // this.setMe(auth.currentUser)
+          // if( !this.me ) {
+          //   this.$buefy.notification.open({
+          //     duration: 5000,
+          //     message: 'ユーザーが登録されていません',
+          //     position: 'is-bottom-right',
+          //     type: 'is-danger',
+          //     hasIcon: false
+          //   })
+          // }
+        })
+        .catch(function(e) {
+
+          console.log(e)
+
+        })
 
     },
 
