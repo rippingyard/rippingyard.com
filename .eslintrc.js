@@ -22,6 +22,7 @@ module.exports = {
     "no-console": "off",
     'no-unused-vars': 'off',
     'nuxt/no-cjs-in-config': 'off',
-    'prettier/prettier': 'off'
+    'prettier/prettier': 'off',
+    'no-empty-pattern': 'off',
   }
 }

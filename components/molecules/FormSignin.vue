@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="login">
+  <form @submit.prevent="signin">
     <h1 class="title">Login</h1>
     <b-field label="メールアドレス">
       <b-input
@@ -41,12 +41,22 @@ export default {
   },
   methods: {
 
-    login() {
+    signin() {
 
       auth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          console.log(user)
+          this.$store.commit('auth/setMe', user)
+
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: 'ログインしました',
+            position: 'is-bottom-right',
+            type: 'is-success',
+            hasIcon: false
+          })
+
+          // console.log(user)
           // this.setMe(auth.currentUser)
           // if( !this.me ) {
           //   this.$buefy.notification.open({

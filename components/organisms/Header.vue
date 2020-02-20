@@ -1,19 +1,36 @@
 <template>
-  <nav
-    class="navbar header has-shadow is-primary"
-    role="navigation"
-    aria-label="main navigation"
+  <b-navbar
+    type="is-primary"
   >
-    <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <img src="~assets/buefy.png" alt="Buefy" height="28" />
-      </a>
+    <template slot="brand">
+      <b-navbar-item :to="{ path: '/' }" tag="router-link">
+        ripping yard
+      </b-navbar-item>
+    </template>
+    <!-- <template slot="start">
+      <b-navbar-item tag="router-link" :to="{ path: 'signin' }">
+          ログイン
+      </b-navbar-item>
+      <b-navbar-dropdown label="Info">
+        <b-navbar-item href="#">
+            About
+        </b-navbar-item>
+        <b-navbar-item href="#">
+            Contact
+        </b-navbar-item>
+      </b-navbar-dropdown>
+    </template> -->
 
-      <div class="navbar-burger">
-        <span />
-        <span />
-        <span />
-      </div>
-    </div>
-  </nav>
+    <template slot="end">
+      <b-navbar-item v-if="!$isAuthenticated($store)" :to="{ path: 'signin' }" tag="router-link">
+        ログイン
+      </b-navbar-item>
+      <b-navbar-item v-if="!$isAuthenticated($store)" :to="{ path: 'signup' }" tag="router-link">
+        新規登録
+      </b-navbar-item>
+      <b-navbar-item :to="{ path: 'authed' }" tag="router-link">
+        権限確認
+      </b-navbar-item>
+    </template>
+  </b-navbar>
 </template>

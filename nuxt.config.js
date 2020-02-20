@@ -50,7 +50,9 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/utils',
+  ],
 
   /*
    ** Nuxt.js modules
@@ -66,6 +68,10 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  router: {
+    middleware: 'auth'
   },
 
   /*

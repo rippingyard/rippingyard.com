@@ -16,8 +16,8 @@ export default {
   },
   fetch() {
 
-    console.log('NODE_ENV', process.env.NODE_ENV)
-    console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
+    // console.log('NODE_ENV', process.env.NODE_ENV)
+    // console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
 
   },
 
