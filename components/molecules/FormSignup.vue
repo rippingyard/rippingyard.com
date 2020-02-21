@@ -52,20 +52,35 @@ export default {
   },
   methods: {
 
-    signup() {
+    async signup() {
 
       const $buefy = this.$buefy
+      const $router = this.$router
+
+      const user = new User()
+
+      const existance = await user.where('userName', '==', this.userName).items
+
+      if( existance.length > 0 ) {
+        $buefy.notification.open({
+          duration: 5000,
+          message: '既に存在するユーザーです',
+          position: 'is-bottom-right',
+          type: 'is-warning'
+        })
+        return
+      }
 
       auth
       .createUserWithEmailAndPassword(this.email, this.password)
-      .then(result => {
+      .then(async (result) => {
         result.user.updateProfile({
           displayName: this.userName
         })
 
         const user = new User()
 
-        user.create({
+        await user.create({
           uid: result.user.uid,
           displayName: this.userName,
           userName: this.userName
@@ -78,6 +93,8 @@ export default {
           type: 'is-success'
         })
 
+        $router.push('home')
+
       })
       .catch(function(e) {
         console.log(e.code, e.message)
@@ -88,6 +105,7 @@ export default {
           type: 'is-danger'
         })
       })
+
     },
   }
 

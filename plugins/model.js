@@ -40,12 +40,14 @@ export default class Model {
 
   get items() {
     const items = []
-    this.q.get().then(snapshot => {
-      snapshot.forEach(doc => {
-        items.push(this.data(doc.data()))
+    return new Promise((resolve, reject) => {
+      this.q.get().then(snapshot => {
+        snapshot.forEach((doc, i) => {
+          items.push(doc.data())
+        })
+        resolve(items)
       })
     })
-    return items
   }
 
   get observedItems() {
@@ -70,7 +72,9 @@ export default class Model {
     params.createdAt = timestamp.now()
     params.updatedAt = timestamp.now()
     params = Object.assign(this.scheme, params)
-    return this.db.add(params)
+    return new Promise((resolve, reject) => {
+      resolve(this.db.add(params))
+    })
   }
 
   where(path, op, value) {
