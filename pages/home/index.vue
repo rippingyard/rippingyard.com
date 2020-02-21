@@ -2,7 +2,7 @@
   <section class="main-content columns">
     <div class="container column is-8 is-offset-2">
       <section class="section">
-        <FormSignin/>
+        <InfoMe/>
       </section>
     </div>
   </section>
@@ -11,16 +11,15 @@
 
 <script>
 
-import FormSignin from '~/components/molecules/FormSignin'
+import InfoMe from '~/components/molecules/InfoMe'
 
 export default {
   components: {
-    FormSignin,
+    InfoMe,
   },
   created() {
 
-    // console.log('NODE_ENV', process.env.NODE_ENV)
-    // console.log('FIREBASE_CONFIG', process.env.FIREBASE_CONFIG)
+    if( !this.$isAuthenticated(this.$store) ) this.$router.push('/')
 
   },
 

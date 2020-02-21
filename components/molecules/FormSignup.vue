@@ -39,6 +39,7 @@
 <script>
 
 import { auth } from '~/plugins/firebase'
+import User from '~/models/User'
 
 export default {
   data() {
@@ -58,19 +59,17 @@ export default {
       auth
       .createUserWithEmailAndPassword(this.email, this.password)
       .then(result => {
-    //     console.log(result.user)
-    //     result.user.updateProfile({
-    //       displayName: this.displayName
-    //     })
+        result.user.updateProfile({
+          displayName: this.userName
+        })
 
-    //     const user = new User()
+        const user = new User()
 
-    //     user.create({
-    //       uid: result.user.uid,
-    //       displayName: this.displayName,
-    //       userName: this.userName,
-    //       email: this.email
-    //     })
+        user.create({
+          uid: result.user.uid,
+          displayName: this.userName,
+          userName: this.userName
+        })
 
         $buefy.notification.open({
           duration: 5000,
