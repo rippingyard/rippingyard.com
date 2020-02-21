@@ -16,7 +16,7 @@ export default {
   },
   created() {
 
-    if( this.$isAuthenticated ) this.$router.push('/')
+    if( this.$isAuthenticated(this.$store) ) this.$router.push('/')
 
   },
 

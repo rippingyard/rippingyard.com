@@ -11,14 +11,6 @@
       <b-navbar-item tag="router-link" :to="{ path: 'signin' }">
           ログイン
       </b-navbar-item>
-      <b-navbar-dropdown label="Info">
-        <b-navbar-item href="#">
-            About
-        </b-navbar-item>
-        <b-navbar-item href="#">
-            Contact
-        </b-navbar-item>
-      </b-navbar-dropdown>
     </template> -->
 
     <template slot="end">
@@ -28,9 +20,10 @@
       <b-navbar-item v-if="!$isAuthenticated($store)" :to="{ path: 'signup' }" tag="router-link">
         新規登録
       </b-navbar-item>
-      <b-navbar-item :to="{ path: 'authed' }" tag="router-link">
-        権限確認
-      </b-navbar-item>
+      <b-navbar-dropdown v-if="$isAuthenticated($store)" label="ユーザー">
+        <b-navbar-item :to="{ path: 'home' }" tag="router-link">ホーム</b-navbar-item>
+        <b-navbar-item @click="$signOut($store)">ログアウト</b-navbar-item>
+      </b-navbar-dropdown>
     </template>
   </b-navbar>
 </template>

@@ -22,7 +22,6 @@ export const mutations = {
       id: u.uid,
       email: u.email
     }
-    console.log('authed!', state.me)
   },
   removeMe(state) {
     state.me = null

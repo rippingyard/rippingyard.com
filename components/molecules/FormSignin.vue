@@ -67,6 +67,9 @@ export default {
           //     hasIcon: false
           //   })
           // }
+
+          this.$router.push('/')
+
         })
         .catch(function(e) {
 
