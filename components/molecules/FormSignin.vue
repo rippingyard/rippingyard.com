@@ -43,12 +43,14 @@ export default {
 
     signin() {
 
+      const notification = this.$buefy.notification
+
       auth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
           this.$store.commit('auth/setMe', user)
 
-          this.$buefy.notification.open({
+          notification.open({
             duration: 5000,
             message: 'ログインしました',
             position: 'is-bottom-right',
@@ -74,6 +76,14 @@ export default {
         .catch(function(e) {
 
           console.log(e)
+
+          notification.open({
+            duration: 5000,
+            message: 'ログインに失敗しました',
+            position: 'is-bottom-right',
+            type: 'is-danger',
+            hasIcon: false
+          })
 
         })
 
