@@ -50,6 +50,17 @@ export default class Model {
     })
   }
 
+  get first() {
+    return new Promise((resolve, reject) => {
+      this.q.get().then(snapshot => {
+        if( snapshot.docs[0].exists ) {
+          resolve(snapshot.docs[0].data())
+        }
+        resolve(null)
+      })
+    })
+  }
+
   get observedItems() {
     const items = []
     this.observer = this.q.onSnapshot(snapshot => {

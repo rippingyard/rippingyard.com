@@ -6,7 +6,6 @@
       </section>
     </div>
   </section>
-
 </template>
 
 <script>
@@ -22,6 +21,5 @@ export default {
     if( !this.$isAuthenticated(this.$store) ) this.$router.push('/')
 
   },
-
 }
 </script>

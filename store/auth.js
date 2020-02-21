@@ -8,20 +8,14 @@ export const state = () => ({
 
 export const mutations = {
   setMe(state, u) {
-    // const handle = new User()
-    // const user = handle
-    //   .where('uid', '==', u.uid)
-    //   .get()
-    //   .then(( user ) => {
-    //     state.me = user
-    //   })
-    //   .catch(( e ) => {
-    //     console.log( u.uid, e )
-    //   })
+
     state.me = {
       id: u.uid,
-      email: u.email
+      userName: u.userName,
+      displayName: u.displayName,
+      role: u.role,
     }
+
   },
   removeMe(state) {
     state.me = null
