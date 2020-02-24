@@ -19,7 +19,7 @@ export default {
     }
   },
   created() {
-    console.log('Me', this.$store.state.auth.me)
+    // console.log('Me', this.$store.state.auth.me)
   },
   methods: {
   }

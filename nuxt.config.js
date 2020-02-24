@@ -44,7 +44,7 @@ module.exports = {
     // '@fortawesome/fontawesome-free/css/fontawesome.min.css',
     // '@fortawesome/fontawesome-free/css/fa-regular.css',
     // '@fortawesome/fontawesome-free/css/fa-solid.css',
-    // '~/assets/css/style.scss'
+    '~/assets/scss/app.scss'
   ],
 
   /*

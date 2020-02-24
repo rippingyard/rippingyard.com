@@ -1,0 +1,19 @@
+
+.ProseMirror,
+.wysiwyg {
+  color: #111;
+  outline: none;
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  ul,
+  ol,
+  blockquote {
+    margin-bottom: 20px;
+  }
+}

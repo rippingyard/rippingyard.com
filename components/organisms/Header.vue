@@ -16,9 +16,25 @@
         新規登録
       </b-navbar-item>
       <b-navbar-dropdown v-if="$isAuthenticated($store)" label="ユーザー">
-        <b-navbar-item :to="{ path: 'home' }" tag="router-link">ホーム</b-navbar-item>
+        <b-navbar-item :to="{ path: 'home' }" tag="router-link">HOME</b-navbar-item>
         <b-navbar-item @click="$signOut($store)">ログアウト</b-navbar-item>
       </b-navbar-dropdown>
     </template>
   </b-navbar>
 </template>
+
+<script>
+
+export default {
+
+  data() {
+    // return {
+    //   me: this.$store.state.auth.me
+    // }
+  },
+  asyncData: (context) => {
+    console.log('Header');
+    console.log('My Name', context.$store.state.auth.me.displayName)
+  },
+
+}
