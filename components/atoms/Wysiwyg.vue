@@ -1,63 +1,66 @@
 <template>
   <div>
     <editor-menu-bubble
-      class="menububble"
       :editor="editor"
       @hide="hideLinkMenu"
       :keep-in-bounds="keepInBounds"
       v-slot="{ commands, isActive, menu, getMarkAttrs }"
     >
       <div
-        class="menububble"
         :class="{ 'is-active': menu.isActive }"
         :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+        class="menububble"
       >
 
-        <form class="menububble__form" v-if="linkMenuIsActive" @submit.prevent="setLinkUrl(commands.link, linkUrl)">
+        <form
+          v-if="linkMenuIsActive"
+          @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+          class="menububble__form"
+        >
           <b-icon v-if="isActive.link()" icon="link-variant"></b-icon>
           <b-icon v-else icon="link-variant"></b-icon>
-          <input class="menububble__input" type="text" v-model="linkUrl" placeholder="https://" ref="linkInput" @keydown.esc="hideLinkMenu"/>
-          <button class="menububble__button" @click="setLinkUrl(commands.link, null)" type="button">
+          <input ref="linkInput" v-model="linkUrl" @keydown.esc="hideLinkMenu" type="text" placeholder="https://" class="menububble__input" />
+          <button @click="setLinkUrl(commands.link, null)" type="button" class="menububble__button">
             <b-icon icon="delete"></b-icon>
           </button>
         </form>
         <template v-else>
           <button
-            class="menububble__button"
             :class="{ 'is-active': isActive.bold() }"
             @click="commands.bold"
+            class="menububble__button"
           >
             <b-icon icon="format-bold"></b-icon>
           </button>
 
           <button
-            class="menububble__button"
             :class="{ 'is-active': isActive.italic() }"
             @click="commands.italic"
+            class="menububble__button"
           >
             <b-icon icon="format-italic"></b-icon>
           </button>
 
           <button
-            class="menubar__button"
             :class="{ 'is-active': isActive.heading({ level: 2 }) }"
             @click="commands.heading({ level: 2 })"
+            class="menubar__button"
           >
             大見出し
           </button>
 
           <button
-            class="menubar__button"
             :class="{ 'is-active': isActive.heading({ level: 3 }) }"
             @click="commands.heading({ level: 3 })"
+            class="menubar__button"
           >
             小見出し
           </button>
 
           <button
-            class="menububble__button"
             @click="showLinkMenu(getMarkAttrs('link'))"
             :class="{ 'is-active': isActive.link() }"
+            class="menububble__button"
           >
             <b-icon icon="link-variant"></b-icon>
           </button>
