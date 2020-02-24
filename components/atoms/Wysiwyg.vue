@@ -100,6 +100,8 @@ import {
   History,
 } from 'tiptap-extensions'
 
+import Post from '~/models/Post'
+
 export default {
   components: {
     EditorContent,
@@ -142,7 +144,21 @@ export default {
   },
   methods: {
     submit() {
-      alert(this.editor.getHTML())
+      const post = new Post()
+
+      post.create({
+        content: this.editor.getHTML(),
+        owner: this.$store.state.auth.me.id,
+      })
+
+      this.$buefy.notification.open({
+        duration: 5000,
+        message: '記事を投稿しました',
+        position: 'is-bottom-right',
+        type: 'is-success',
+        hasIcon: false
+      })
+
     },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href
