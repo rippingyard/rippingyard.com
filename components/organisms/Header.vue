@@ -7,7 +7,6 @@
         ripping yard
       </b-navbar-item>
     </template>
-
     <template slot="end">
       <b-navbar-item v-if="!$isAuthenticated($store)" :to="{ path: 'signin' }" tag="router-link">
         ログイン
