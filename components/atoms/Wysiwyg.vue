@@ -151,7 +151,7 @@ export default {
 
       post.create({
         content: this.editor.getHTML(),
-        owner: this.$store.state.auth.me.id,
+        owner: this.$store.state.auth.me,
       })
 
       this.$buefy.notification.open({

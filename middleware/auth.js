@@ -8,13 +8,15 @@ export default function({ store, route, redirect }) {
 
       if( u ) {
 
-        console.log('u', u);
-
         const db = new User()
 
         const user = await db.where('uid', '==', u.uid).first
 
-        if (user) store.commit('auth/setMe', user)
+        const userData = user.data()
+        userData.id = user.id
+        // userData.object = user
+
+        if (user) store.commit('auth/setMe', userData)
 
         resolve(user)
       }

@@ -75,7 +75,7 @@ export default {
         })
         .catch(function(e) {
 
-          console.log(e)
+          // console.log(e)
 
           notification.open({
             duration: 5000,

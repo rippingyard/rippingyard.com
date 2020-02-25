@@ -43,7 +43,8 @@ export default class Model {
     return new Promise((resolve, reject) => {
       this.q.get().then(snapshot => {
         snapshot.forEach((doc, i) => {
-          items.push(doc.data())
+          console.log(doc.data())
+          items.push(this.data(doc.data()))
         })
         resolve(items)
       })
@@ -54,7 +55,7 @@ export default class Model {
     return new Promise((resolve, reject) => {
       this.q.get().then(snapshot => {
         if( snapshot.docs[0].exists ) {
-          resolve(snapshot.docs[0].data())
+          resolve(snapshot.docs[0])
         }
         resolve(null)
       })

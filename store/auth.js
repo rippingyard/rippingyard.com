@@ -9,12 +9,7 @@ export const state = () => ({
 export const mutations = {
   setMe(state, u) {
 
-    state.me = {
-      id: u.uid,
-      userName: u.userName,
-      displayName: u.displayName,
-      role: u.role,
-    }
+    state.me = u
 
   },
   removeMe(state) {
