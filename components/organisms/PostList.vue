@@ -9,8 +9,8 @@
 
 <script>
 
-import PostCard from '~/components/molecules/PostCard'
 import Post from '~/models/Post'
+import PostCard from '~/components/molecules/PostCard'
 
 export default {
 
@@ -25,8 +25,9 @@ export default {
   },
 
   async created(context) {
-    const post = new Post()
-    this.posts = await post.limit(8).orderBy('createdAt', 'desc').items
+    const loading = this.$buefy.loading.open()
+    this.posts = await (new Post()).limit(8).orderBy('createdAt', 'desc').items
+    loading.close()
   },
 
 }

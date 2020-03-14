@@ -32,8 +32,9 @@ export default {
     // }
   },
   asyncData: (context) => {
-    console.log('Header');
-    console.log('My Name', context.$store.state.auth.me.displayName)
+    // console.log('Header');
+    // console.log('My Name', context.$store.state.auth.me.displayName)
   },
 
 }
+</script>
