@@ -8,42 +8,51 @@ export default class Model {
     this.collection = new Inflectors(
       this.constructor.name.toLowerCase()
     ).toPlural()
-    this.q = this.db = db.collection(this.collection)
-    this.params = {
-      limit: 10,
-      orderBy: 'createdAt',
-      order: 'desc'
-    }
+    this.db = db.collection(this.collection)
+    // this.params = {
+    //   limit: 10,
+    //   orderBy: 'createdAt',
+    //   order: 'desc'
+    // }
     return this
+  }
+
+  ref() {
+    return this.db
   }
 
   scheme(params) {
     this.scheme = params
   }
 
-  get() {
-    return new Promise((resolve, reject) => {
-      this.q.get().then(snapshot => {
-        if( !snapshot.empty ) {
-          snapshot.forEach(doc => {
-            // console.log(this.data(doc.data()))
-            resolve(this.data(doc.data()))
-          })
-        } else {
-          reject( new Error( 'No data found' ) )
-        }
-      }).catch((e) => {
-        console.log( new Error( e ) )
-      })
-    })
+  setting(params) {
+    params.createdAt = timestamp.now()
+    params.updatedAt = timestamp.now()
+    return Object.assign(this.scheme, params)
   }
+
+  // get() {
+  //   return new Promise((resolve, reject) => {
+  //     this.db.get().then(snapshot => {
+  //       if( !snapshot.empty ) {
+  //         snapshot.forEach(doc => {
+  //           // console.log(this.data(doc.data()))
+  //           resolve(this.data(doc.data()))
+  //         })
+  //       } else {
+  //         reject( new Error( 'No data found' ) )
+  //       }
+  //     }).catch((e) => {
+  //       console.log( new Error( e ) )
+  //     })
+  //   })
+  // }
 
   get items() {
     const items = []
     return new Promise((resolve, reject) => {
-      this.q.get().then(snapshot => {
+      this.db.get().then(snapshot => {
         snapshot.forEach((doc, i) => {
-          console.log(doc.data())
           items.push(this.data(doc.data()))
         })
         resolve(items)
@@ -53,7 +62,7 @@ export default class Model {
 
   get first() {
     return new Promise((resolve, reject) => {
-      this.q.get().then(snapshot => {
+      this.db.get().then(snapshot => {
         if( snapshot.docs[0].exists ) {
           resolve(snapshot.docs[0])
         }
@@ -64,7 +73,7 @@ export default class Model {
 
   get observedItems() {
     const items = []
-    this.observer = this.q.onSnapshot(snapshot => {
+    this.observer = this.db.onSnapshot(snapshot => {
       items.length = 0
       snapshot.forEach(doc => {
         items.push(this.data(doc.data()))
@@ -80,40 +89,20 @@ export default class Model {
     return item
   }
 
-  create(params) {
-    params.createdAt = timestamp.now()
-    params.updatedAt = timestamp.now()
-    params = Object.assign(this.scheme, params)
-    return new Promise((resolve, reject) => {
-      resolve(this.db.add(params))
-    })
-  }
+  // create(params) {
+  //   params.createdAt = timestamp.now()
+  //   params.updatedAt = timestamp.now()
+  //   params = Object.assign(this.scheme, params)
+  //   return new Promise((resolve, reject) => {
+  //     resolve(this.db.add(params))
+  //   })
+  // }
 
-  where(path, op, value) {
-    this.q = this.q.where(path, op, value)
-    return this
-  }
-
-  limit(qty) {
-    this.q = this.q.limit(qty)
-    return this
-  }
-
-  offset(qty) {
-    this.q = this.q.startAt(qty)
-    return this
-  }
-
-  paginate(params) {
-    this.params = Object.assign(this.params, params)
-    // console.log(this.params)
-    this.orderBy(this.params.orderBy, this.params.order)
-    if (this.params.limit > 0) this.limit(this.params.limit)
-    return this
-  }
-
-  orderBy(column, order = 'asc') {
-    this.q = this.q.orderBy(column, order)
-    return this
-  }
+  // paginate(params) {
+  //   this.params = Object.assign(this.params, params)
+  //   // console.log(this.params)
+  //   this.orderBy(this.params.orderBy, this.params.order)
+  //   if (this.params.limit > 0) this.limit(this.params.limit)
+  //   return this
+  // }
 }

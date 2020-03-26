@@ -2,12 +2,9 @@
   <section class="main-content columns">
 
     <div class="container column is-8 is-offset-2">
-      <PostList/>
+      <PostList :limit="20" />
     </div>
 
-    <!-- <aside class="column is-2 section">
-      <p class="menu-label is-hidden-touch">General</p>
-    </aside> -->
   </section>
 
 </template>

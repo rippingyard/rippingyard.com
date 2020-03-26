@@ -1,5 +1,9 @@
 <template>
-  <form @submit.prevent="signin">
+  <form @submit.prevent="signin({
+    email: email,
+    password: password,
+    notification: $buefy.notification,
+  })">
     <h1 class="title">Login</h1>
     <b-field label="メールアドレス">
       <b-input
@@ -30,7 +34,7 @@
 
 <script>
 
-import { auth } from '~/plugins/firebase'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -40,57 +44,10 @@ export default {
     }
   },
   methods: {
-
-    signin() {
-
-      const notification = this.$buefy.notification
-
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          this.$store.commit('auth/setMe', user)
-
-          notification.open({
-            duration: 5000,
-            message: 'ログインしました',
-            position: 'is-bottom-right',
-            type: 'is-success',
-            hasIcon: false
-          })
-
-          // console.log(user)
-          // this.setMe(auth.currentUser)
-          // if( !this.me ) {
-          //   this.$buefy.notification.open({
-          //     duration: 5000,
-          //     message: 'ユーザーが登録されていません',
-          //     position: 'is-bottom-right',
-          //     type: 'is-danger',
-          //     hasIcon: false
-          //   })
-          // }
-
-          this.$router.push('/')
-
-        })
-        .catch(function(e) {
-
-          // console.log(e)
-
-          notification.open({
-            duration: 5000,
-            message: 'ログインに失敗しました',
-            position: 'is-bottom-right',
-            type: 'is-danger',
-            hasIcon: false
-          })
-
-        })
-
-    },
-
+    ...mapActions({
+      signin: 'auth/signin'
+    })
   }
-
 }
 
 </script>

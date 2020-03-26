@@ -19,9 +19,12 @@ export default {
     InfoMe,
     Wysiwyg,
   },
-  created() {
+  mounted() {
 
-    if( !this.$isAuthenticated(this.$store) ) this.$router.push('/')
+    if( !this.$isAuthenticated(this.$store) ) {
+      console.log('Not Logined')
+      this.$router.push('/')
+    }
 
   },
 }

@@ -8,17 +8,27 @@
 
 <script>
 
+import { mapGetters } from 'vuex'
 import FormSignin from '~/components/molecules/FormSignin'
 
 export default {
   components: {
     FormSignin
   },
-  created() {
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated'
+    })
+  },
+  updated() {
 
-    if( this.$isAuthenticated(this.$store) ) this.$router.push('/')
+    // console.log('Authed?', this.isAuthenticated)
+
+    if( this.isAuthenticated ) {
+      console.log('Logined!')
+      this.$router.push('/')
+    }
 
   },
-
 }
 </script>

@@ -57,9 +57,9 @@ export default {
       const $buefy = this.$buefy
       const $router = this.$router
 
-      const user = new User()
-
-      const existance = await user.where('userName', '==', this.userName).items
+      const userRef = new User()
+      userRef.db = userRef.ref().where('userName', '==', this.userName)
+      const existance = await userRef.items
 
       if( existance.length > 0 ) {
         $buefy.notification.open({
@@ -74,17 +74,19 @@ export default {
       auth
       .createUserWithEmailAndPassword(this.email, this.password)
       .then(async (result) => {
+        console.log(result)
+
         result.user.updateProfile({
           displayName: this.userName
         })
 
-        const user = new User()
+        const userRef = new User()
 
-        await user.create({
+        await userRef.ref().doc(result.user.uid).set(userRef.setting({
           uid: result.user.uid,
           displayName: this.userName,
           userName: this.userName
-        })
+        }))
 
         $buefy.notification.open({
           duration: 5000,

@@ -116,6 +116,7 @@ export default {
       content: this.content,
       linkUrl: null,
       linkMenuIsActive: false,
+      keepInBounds: true,
     }
   },
   mounted() {
@@ -147,12 +148,12 @@ export default {
   },
   methods: {
     submit() {
-      const post = new Post()
 
-      post.create({
+      const postRef = new Post()
+      postRef.ref().doc().set(postRef.setting({
         content: this.editor.getHTML(),
         owner: this.$store.state.auth.me,
-      })
+      }))
 
       this.$buefy.notification.open({
         duration: 5000,

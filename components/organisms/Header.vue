@@ -27,9 +27,9 @@
 export default {
 
   data() {
-    // return {
-    //   me: this.$store.state.auth.me
-    // }
+    return {
+      // me: this.$store.state.auth.me
+    }
   },
   asyncData: (context) => {
     // console.log('Header');
