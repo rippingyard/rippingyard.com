@@ -104,6 +104,7 @@ import {
 } from 'tiptap-extensions'
 
 import Post from '~/models/Post'
+import User from '~/models/User'
 
 export default {
   components: {
@@ -147,12 +148,17 @@ export default {
     this.editor.destroy()
   },
   methods: {
-    submit() {
+    async submit() {
+
+      // TOO: auth処理
+
+      const userRef = new User()
+      const owner = await userRef.ref().doc(this.$store.state.auth.me.id)
 
       const postRef = new Post()
       postRef.ref().doc().set(postRef.setting({
         content: this.editor.getHTML(),
-        owner: this.$store.state.auth.me,
+        owner: owner,
       }))
 
       this.$buefy.notification.open({
