@@ -2,7 +2,7 @@
   <section class="main-content columns">
     <div class="container column is-8 is-offset-2">
       <section class="section">
-        <FormSignin/>
+        <SigninForm/>
       </section>
     </div>
   </section>
@@ -11,11 +11,11 @@
 
 <script>
 
-import FormSignin from '~/components/molecules/FormSignin'
+import SigninForm from '~/components/molecules/SigninForm'
 
 export default {
   components: {
-    FormSignin,
+    SigninForm,
   },
   created() {
 

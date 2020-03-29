@@ -2,7 +2,7 @@
   <section class="main-content columns">
 
     <div class="container column is-8 is-offset-2">
-      <PostList :limit="20" />
+      <PostList :limit="12" />
     </div>
 
   </section>

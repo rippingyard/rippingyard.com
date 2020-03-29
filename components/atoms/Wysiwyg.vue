@@ -69,7 +69,6 @@
       </div>
     </editor-menu-bubble>
     <editor-content :editor="editor" />
-    <b-button @click="submit">新規追加</b-button>
   </div>
 </template>
 
@@ -120,7 +119,7 @@ export default {
       keepInBounds: true,
     }
   },
-  mounted() {
+  mounted(context) {
     this.editor = new Editor({
       keepInBounds: true,
       content: this.content,
@@ -142,34 +141,15 @@ export default {
         // new Underline(),
         new History(),
       ],
+      onUpdate: (s) => {
+        this.$emit('update', s.getHTML())
+      },
     })
   },
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
-    async submit() {
-
-      // TOO: auth処理
-
-      const userRef = new User()
-      const owner = await userRef.ref().doc(this.$store.state.auth.me.id)
-
-      const postRef = new Post()
-      postRef.ref().doc().set(postRef.setting({
-        content: this.editor.getHTML(),
-        owner: owner,
-      }))
-
-      this.$buefy.notification.open({
-        duration: 5000,
-        message: '記事を投稿しました',
-        position: 'is-bottom-right',
-        type: 'is-success',
-        hasIcon: false
-      })
-
-    },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href
       this.linkMenuIsActive = true

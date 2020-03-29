@@ -1,18 +1,18 @@
 <template>
   <div class="container column is-8 is-offset-2">
     <section class="section">
-      <FormSignup/>
+      <SignupForm/>
     </section>
   </div>
 </template>
 
 <script>
 
-import FormSignup from '~/components/molecules/FormSignup'
+import SignupForm from '~/components/molecules/SignupForm'
 
 export default {
   components: {
-    FormSignup
+    SignupForm
   },
   fetch() {
 

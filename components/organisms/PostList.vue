@@ -9,7 +9,7 @@
 
 <script>
 
-import Post from '~/models/Post'
+import Timeline from '~/models/Timeline'
 import PostCard from '~/components/molecules/PostCard'
 
 export default {
@@ -34,9 +34,9 @@ export default {
   async created(context) {
     const loading = this.$buefy.loading.open()
 
-    const postRef = new Post()
-    postRef.db = postRef.ref().limit(this.limit).orderBy('createdAt', 'desc')
-    this.posts = await postRef.items
+    const ref = new Timeline()
+    ref.db = ref.ref().doc('public').collection('posts').limit(this.limit).orderBy('createdAt', 'desc')
+    this.posts = await ref.items
 
     loading.close()
   },

@@ -3,7 +3,7 @@
     <div class="container column is-8 is-offset-2">
       <section class="section">
         <InfoMe/>
-        <Wysiwyg/>
+        <PostForm/>
       </section>
     </div>
   </section>
@@ -12,12 +12,12 @@
 <script>
 
 import InfoMe from '~/components/molecules/InfoMe'
-import Wysiwyg from '~/components/atoms/Wysiwyg'
+import PostForm from '~/components/molecules/PostForm'
 
 export default {
   components: {
     InfoMe,
-    Wysiwyg,
+    PostForm,
   },
   mounted() {
 
