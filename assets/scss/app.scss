@@ -1,9 +1,12 @@
-@import '~/node_modules/bulma/sass/utilities/_all';
-
 @import './variables';
 
+@import '~/node_modules/bulma/sass/utilities/_all';
 @import '~/node_modules/bulma';
 @import '~/node_modules/buefy/src/scss/buefy';
+
+html {
+  font-size: 15px;
+}
 
 .help {
   position: relative;
