@@ -1,7 +1,23 @@
 <template>
   <section>
     <Wysiwyg @update="updateContent" />
-    <b-button @click="submit">新規追加</b-button>
+    <div class="console-bottom">
+      <div class="container">
+        <b-button
+          @click="submit"
+          type="is-primary"
+          inverted
+          outlined>
+          新規追加
+        </b-button>
+        <b-button
+          type="is-text"
+          inverted
+          outlined>
+          プレビュー
+        </b-button>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -49,3 +65,27 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.console-bottom {
+  position: fixed;
+  width: 100%;
+  padding: 15px;
+  left: 0;
+  bottom: 0;
+  background-color: rgba( 41, 85,113,1);
+}
+
+.is-text {
+  color: #FFF;
+  text-decoration: none;
+  opacity: .75;
+  &:hover {
+    background-color: transparent;
+    color: #FFF;
+    opacity: 1;
+  }
+}
+
+</style>
