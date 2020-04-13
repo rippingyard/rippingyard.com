@@ -74,7 +74,7 @@ export default {
       auth
       .createUserWithEmailAndPassword(this.email, this.password)
       .then(async (result) => {
-        console.log(result)
+        // console.log(result)
 
         result.user.updateProfile({
           displayName: this.userName

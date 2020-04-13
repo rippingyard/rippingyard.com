@@ -20,12 +20,18 @@ export default {
       isAuthenticated: 'auth/isAuthenticated'
     })
   },
-  updated() {
+  created() {
 
     // console.log('Authed?', this.isAuthenticated)
 
     if( this.isAuthenticated ) {
-      console.log('Logined!')
+      this.$buefy.notification.open({
+        duration: 5000,
+        message: 'ログイン済みです',
+        position: 'is-bottom-right',
+        type: 'is-warning',
+        hasIcon: false
+      })
       this.$router.push('/')
     }
 

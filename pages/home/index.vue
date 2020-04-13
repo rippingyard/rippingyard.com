@@ -22,8 +22,14 @@ export default {
   mounted() {
 
     if( !this.$isAuthenticated(this.$store) ) {
-      console.log('Not Logined')
-      this.$router.push('/')
+      this.$buefy.notification.open({
+        duration: 5000,
+        message: 'ログインしてください',
+        position: 'is-bottom-right',
+        type: 'is-danger',
+        hasIcon: false
+      })
+      this.$router.push('/signin')
     }
 
   },
