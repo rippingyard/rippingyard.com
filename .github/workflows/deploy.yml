@@ -28,6 +28,8 @@ jobs:
       run: |
            yarn install
            yarn run generate --if-present
+      env:
+        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
     - name: deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
       with:
