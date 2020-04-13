@@ -27,6 +27,7 @@ jobs:
     - name: yarn install, generate
       run: |
            yarn install
+           yarn run build
            yarn run generate --if-present
     - name: deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
