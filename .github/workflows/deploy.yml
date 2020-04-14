@@ -26,6 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: yarn install, generate
       run: |
+           printenv
            yarn install
            yarn run generate --if-present
       env:
