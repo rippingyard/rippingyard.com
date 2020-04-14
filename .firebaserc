@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "rippingyard"
+    "default": "rippingyard-dev",
+    "production": "rippingyard"
   }
 }

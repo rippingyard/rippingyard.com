@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <p class="menu-label is-hidden-touch">Posts</p>
+    <p class="menu-label is-hidden-touch">Latest Posts</p>
     <div v-for="post in posts" :key="post.id">
       <PostCard :post=post />
     </div>
