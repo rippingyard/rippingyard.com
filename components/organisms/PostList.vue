@@ -32,7 +32,9 @@ export default {
   },
 
   async created(context) {
-    const loading = this.$buefy.loading.open()
+    // const loading = this.$buefy.loading.open({
+    //   'is-full-page': false
+    // })
 
     await db
       .collection('timelines')
@@ -47,7 +49,7 @@ export default {
         })
       })
 
-    loading.close()
+    // loading.close()
   },
 
 }
