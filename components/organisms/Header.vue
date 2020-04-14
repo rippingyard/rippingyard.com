@@ -18,7 +18,7 @@
       </template>
       <template v-else>
         <b-navbar-dropdown label="ユーザー">
-          <b-navbar-item :to="{ path: 'home' }" tag="router-link">HOME</b-navbar-item>
+          <b-navbar-item :to="{ path: 'home' }" tag="router-link">ホーム</b-navbar-item>
           <b-navbar-item @click="$signOut($store)">ログアウト</b-navbar-item>
         </b-navbar-dropdown>
       </template>

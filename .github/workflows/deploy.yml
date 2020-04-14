@@ -24,10 +24,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn install, generate
-      run: |
-           yarn install
-           yarn run generate --if-present
+    - name: Install dependencies
+      run: yarn install
+    - name: Test
+      run: yarn test
+    - name: Generate htmls
+      run: yarn run generate --if-present
       env:
         FIREBASE_APIKEY: ${{ secrets.FIREBASE_APIKEY }}
         FIREBASE_AUTHDOMAIN: ${{ secrets.FIREBASE_AUTHDOMAIN }}
