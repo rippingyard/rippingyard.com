@@ -42,6 +42,6 @@ jobs:
     - name: Deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --project production
+        args: deploy --only hosting --project production
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
