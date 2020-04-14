@@ -102,8 +102,8 @@ import {
   History,
 } from 'tiptap-extensions'
 
-import Post from '~/models/Post'
-import User from '~/models/User'
+// import Post from '~/models/Post'
+// import User from '~/models/User'
 
 export default {
   components: {

@@ -38,8 +38,8 @@
 
 <script>
 
-import { auth } from '~/plugins/firebase'
-import User from '~/models/User'
+import { db, auth } from '~/plugins/firebase'
+// import User from '~/models/User'
 
 export default {
   data() {
@@ -57,11 +57,9 @@ export default {
       const $buefy = this.$buefy
       const $router = this.$router
 
-      const userRef = new User()
-      userRef.db = userRef.ref().where('userName', '==', this.userName)
-      const existance = await userRef.items
+      const existance = await db.collection('users').where('userName', '==', this.userName).get()
 
-      if( existance.length > 0 ) {
+      if( !existance.empty ) {
         $buefy.notification.open({
           duration: 5000,
           message: '既に存在するユーザーです',
@@ -80,13 +78,14 @@ export default {
           displayName: this.userName
         })
 
-        const userRef = new User()
-
-        await userRef.ref().doc(result.user.uid).set(userRef.setting({
-          uid: result.user.uid,
-          displayName: this.userName,
-          userName: this.userName
-        }))
+        await db.collection('users').doc(result.user.uid).set({
+          uid:          result.user.uid,
+          displayName:  this.userName,
+          userName:     this.userName,
+          role:         'stranger',
+          isBanned:     false,
+          isDeleted:    false,
+        })
 
         $buefy.notification.open({
           duration: 5000,

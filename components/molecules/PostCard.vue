@@ -9,7 +9,7 @@
       <div class="content">
         <div v-html="post.content" class="wysiwyg"></div>
         <!-- <p><a href="#">#css</a> <a href="#">#responsive</a></p> -->
-        <time datetime="2016-1-1">{{ post.createdate.format('YYYY-MM-DD HH:mm:ss') }}</time>
+        <!-- <time datetime="2016-1-1">{{ post.createdate.format('YYYY-MM-DD HH:mm:ss') }}</time> -->
       </div>
       <div class="media">
         <!-- <div class="media-left">

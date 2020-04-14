@@ -1,5 +1,5 @@
-import { auth } from '~/plugins/firebase'
-import User from '~/models/User'
+import { db, auth } from '~/plugins/firebase'
+// import User from '~/models/User'
 
 export const state = () => ({
   me: null
@@ -21,20 +21,19 @@ export const actions = {
       .signInWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
 
-        const userRef = new User()
-
-        userRef.db = userRef.ref().where('uid', '==', user.uid)
-        const userData = (await userRef.first).data()
+        const userRef = await db.collection('users').doc(user.uid)
+        // console.log(user.uid);
+        // console.log(userRef)
+        // const userData = userRef.data()
 
         // TODO: isDeletedの時はエラー
         // TODO: isBannedの時はエラー
 
-        commit('setMe', {
-          id: user.uid,
-          userName: userData.userName,
-          displayName: userData.displayName,
-          role: userData.role,
+        userRef.get().then(doc => {
+          console.log(doc);
+          commit('setMe', doc.data())
         })
+
 
         if( notification ) {
           notification.open({
