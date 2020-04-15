@@ -83,9 +83,13 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
+
+    terser: {
+      terserOptions: {
+        compress: { drop_console: process.env.NODE_ENV === 'production' }
+      },
+    },
+
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {

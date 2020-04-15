@@ -13,24 +13,20 @@ import { db } from '~/plugins/firebase'
 import PostCard from '~/components/molecules/PostCard'
 
 export default {
-
   components: {
     PostCard,
   },
-
   props: {
     limit: {
       type: Number,
       default: 12,
     }
   },
-
   data() {
     return {
       posts: []
     }
   },
-
   async created(context) {
     // const loading = this.$buefy.loading.open({
     //   'is-full-page': false

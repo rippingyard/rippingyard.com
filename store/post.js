@@ -15,6 +15,18 @@ export const actions = {
 
     // TODO: validation
     // TODO: auth処理
+    if( !rootState.auth.me ) {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: 'ログインしてください',
+          position: 'is-bottom-right',
+          type: 'is-danger',
+          hasIcon: false
+        })
+      }
+    }
+
     // TODO: create / update
 
     const owner = await db.collection('users').doc(rootState.auth.me.uid)
@@ -24,17 +36,27 @@ export const actions = {
       owner: owner,
       createdAt: timestamp.now(),
       updatedAt: timestamp.now(),
-    }))
-
-    if( notification ) {
-      notification.open({
-        duration: 5000,
-        message: '記事を投稿しました',
-        position: 'is-bottom-right',
-        type: 'is-success',
-        hasIcon: false
-      })
-    }
+    })).then(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事を投稿しました',
+          position: 'is-bottom-right',
+          type: 'is-success',
+          hasIcon: false
+        })
+      }
+    }).catch(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事の投稿に失敗しました',
+          position: 'is-bottom-right',
+          type: 'is-danger',
+          hasIcon: false
+        })
+      }
+    })
 
   },
 }
