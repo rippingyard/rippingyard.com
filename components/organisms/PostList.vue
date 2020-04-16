@@ -41,9 +41,18 @@ export default {
       .get()
       .then(qs => {
         qs.forEach(doc => {
-          this.posts.push(doc.data())
+          console.log(doc.id)
+          this.posts.push(Object.assign(
+            doc.data(),
+            {
+              id: doc.id,
+              permalink: '/post/' + doc.id,
+            }
+          ))
         })
       })
+
+    // console.log(this.posts)
 
     // loading.close()
   },

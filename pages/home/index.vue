@@ -19,6 +19,11 @@ export default {
     InfoMe,
     PostForm,
   },
+  head: () => {
+    return {
+      title: 'HOME'
+    }
+  },
   mounted() {
 
     if( !this.$isAuthenticated(this.$store) ) {

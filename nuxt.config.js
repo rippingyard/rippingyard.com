@@ -26,7 +26,7 @@ module.exports = {
     title: 'ripping yard',
     titleTemplate: (titleChunk) => {
       console.log(titleChunk)
-      return titleChunk ? `${titleChunk} - ripping yard` : 'ripping yard'
+      return titleChunk && titleChunk !== 'ripping yard' ? `${titleChunk} - ripping yard` : 'ripping yard - 速くて小さな寄る辺なきメディア'
     },
     htmlAttrs: {
       lang: 'ja'
