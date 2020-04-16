@@ -24,6 +24,13 @@ module.exports = {
    */
   head: {
     title: 'ripping yard',
+    titleTemplate: (titleChunk) => {
+      console.log(titleChunk)
+      return titleChunk ? `${titleChunk} - ripping yard` : 'ripping yard'
+    },
+    htmlAttrs: {
+      lang: 'ja'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover' },
