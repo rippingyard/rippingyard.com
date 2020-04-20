@@ -18,9 +18,9 @@
             <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
           </figure>
         </div> -->
-        <div v-if="post.owner" class="media-content">
-          <p class="title is-4">{{ post.owner.id }}</p>
-          <p class="subtitle is-6">@mcatm</p>
+        <div v-if="owner" class="media-content">
+          <p class="title is-4">{{ owner.displayName }}</p>
+          <p class="subtitle is-6">@{{ owner.userName }}</p>
         </div>
       </div>
     </div>
@@ -28,6 +28,9 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+import { db } from '~/plugins/firebase'
 
 export default {
 
@@ -38,9 +41,41 @@ export default {
     },
   },
 
-  created() {
+  data() {
+    return {
+      owner: null
+    }
+  },
 
-    console.log('postCard', this.post)
+  computed: {
+    ...mapGetters({
+      normalize: 'post/normalize',
+      getOwner: 'user/owner',
+    }),
+  },
+
+  async created() {
+
+    this.post = this.normalize( this.post )
+
+    if( this.post.owner ) {
+
+      console.log(this.post.owner)
+      this.owner = this.getOwner(this.post.owner.id)
+
+      if( !this.owner ) {
+        await db.collection('users').doc(this.post.owner.id).get().then(doc => {
+          this.owner = doc.data()
+          this.$store.commit('user/setUser', this.owner)
+        })
+      } else {
+        console.log('cached!!')
+      }
+
+    }
+
+    console.log('Owner', this.owner);
+    // console.log('postCard', this.post)
 
   }
 

@@ -30,7 +30,7 @@ export const actions = {
         // TODO: isBannedの時はエラー
 
         userRef.get().then(doc => {
-          console.log(doc);
+          // console.log(doc);
           commit('setMe', doc.data())
         })
 

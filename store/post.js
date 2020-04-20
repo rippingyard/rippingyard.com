@@ -1,6 +1,4 @@
 import { db, timestamp } from '~/plugins/firebase'
-// import Post from '~/models/Post'
-// import User from '~/models/User'
 
 const scheme = {
   owner:          null,
@@ -9,6 +7,10 @@ const scheme = {
   status:         'published',
   isDeleted:      false,
 }
+
+export const state = () => ({
+  posts: {}
+})
 
 export const actions = {
   async save({ commit, rootState }, { post, notification }) {
@@ -57,6 +59,11 @@ export const actions = {
         })
       }
     })
-
   },
+}
+
+export const getters = {
+  normalize: (state) => (post) => {
+    return post
+  }
 }
