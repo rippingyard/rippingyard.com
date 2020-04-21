@@ -2,8 +2,7 @@
   <section class="main-content columns">
     <div class="container column is-8 is-offset-2">
       <section class="section">
-        <InfoMe/>
-        <nuxt-link to="/home/post/create">新規投稿</nuxt-link>
+        <PostForm/>
       </section>
     </div>
   </section>
@@ -11,11 +10,11 @@
 
 <script>
 
-import InfoMe from '~/components/molecules/InfoMe'
+import PostForm from '~/components/molecules/PostForm'
 
 export default {
   components: {
-    InfoMe,
+    PostForm,
   },
   head: () => {
     return {

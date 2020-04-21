@@ -13,7 +13,7 @@
         <b-navbar-item :to="{ path: 'signup' }" tag="router-link">新規登録</b-navbar-item>
       </template>
       <template v-else>
-        <b-navbar-item :to="{ path: 'home' }" tag="router-link">ホーム</b-navbar-item>
+        <b-navbar-item :to="{ path: '/home' }" tag="router-link">ホーム</b-navbar-item>
         <b-navbar-item @click="$signOut($store)">ログアウト</b-navbar-item>
       </template>
     </template>

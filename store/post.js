@@ -1,6 +1,7 @@
 import { db, timestamp } from '~/plugins/firebase'
 
 const scheme = {
+  slug:           null,
   owner:          null,
   collaborators:  null,
   content:        null,
@@ -28,6 +29,8 @@ export const actions = {
         })
       }
     }
+
+    // TODO: slug
 
     // TODO: create / update
 
