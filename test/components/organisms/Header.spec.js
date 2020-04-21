@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 import Header from '~/components/organisms/Header'
 
-Vue.config.ignoredElements = ['b-navbar', 'b-navbar-item', 'b-navbar-dropdown']
+Vue.config.ignoredElements = ['SvgLogo']
 
 describe('Header', () => {
 

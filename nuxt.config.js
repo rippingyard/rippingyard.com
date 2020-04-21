@@ -70,11 +70,20 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
+    '@nuxtjs/style-resources',
+    'nuxt-svg-loader',
     ['nuxt-vuex-localstorage', {
       localStorage: ['auth'],
       // sessionStorage: ['sfoo', 'sbar']
     }]
   ],
+
+  styleResources: {
+    scss: [
+      './assets/scss/variables.scss',
+    ]
+  },
+
   /*
    ** Axios module configuration
    */
