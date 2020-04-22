@@ -18,6 +18,16 @@ export default {
   components: {
     PostCard,
   },
+  data() {
+    return {
+      title: '',
+    }
+  },
+  head: (context) => {
+    return {
+      title: context.post.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
+    }
+  },
   async asyncData(context) {
 
     const r = {}

@@ -14,6 +14,11 @@ export default {
   components: {
     SignupForm
   },
+  head: () => {
+    return {
+      title: 'Sign Up'
+    }
+  },
   fetch() {
 
 

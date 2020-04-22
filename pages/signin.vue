@@ -20,6 +20,11 @@ export default {
       isAuthenticated: 'auth/isAuthenticated'
     })
   },
+  head: () => {
+    return {
+      title: 'Sign In'
+    }
+  },
   created() {
 
     // console.log('Authed?', this.isAuthenticated)
