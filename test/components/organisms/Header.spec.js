@@ -1,8 +1,11 @@
 import Vue from 'vue'
-import { mount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Header from '~/components/organisms/Header'
 
-Vue.config.ignoredElements = ['SvgLogo']
+config.stubs['nuxt-link'] = '<a href=""><slot /></a>'
+config.stubs['SvgLogo'] = '<svg></svg>'
+
+// Vue.config.ignoredElements = ['SvgLogo', 'nuxt-link']
 
 describe('Header', () => {
 
@@ -22,9 +25,9 @@ describe('Header', () => {
       }
     })
     // console.log(wrapper.text())
-    expect(/ログイン/.test(wrapper.text())).toBeTruthy()
-    expect(/新規登録/.test(wrapper.text())).toBeTruthy()
-    expect(/ホーム/.test(wrapper.text())).toBeFalsy()
+    expect(/SIGN IN/.test(wrapper.text())).toBeTruthy()
+    expect(/SIGN UP/.test(wrapper.text())).toBeTruthy()
+    expect(/HOME/.test(wrapper.text())).toBeFalsy()
   })
 
   test('ログインしている時', () => {
@@ -33,9 +36,9 @@ describe('Header', () => {
         $isAuthenticated: () => { return true }
       }
     })
-    expect(/ログイン/.test(wrapper.text())).toBeFalsy()
-    expect(/新規登録/.test(wrapper.text())).toBeFalsy()
-    expect(/ホーム/.test(wrapper.text())).toBeTruthy()
+    expect(/SIGN IN/.test(wrapper.text())).toBeFalsy()
+    expect(/SIGN UP/.test(wrapper.text())).toBeFalsy()
+    expect(/HOME/.test(wrapper.text())).toBeTruthy()
   })
 
 })
