@@ -16,7 +16,7 @@
     "public": "dist",
     "rewrites": [{
       "source": "**",
-      "destination": "/index.html"
+      "function": "app"
     }],
     "ignore": [
       "firebase.json",
