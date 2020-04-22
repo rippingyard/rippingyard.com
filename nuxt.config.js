@@ -84,6 +84,12 @@ module.exports = {
     ]
   },
 
+  // jest: {
+  //   setupFiles: [
+  //     './jest.setup.js'
+  //   ],
+  // },
+
   /*
    ** Axios module configuration
    */

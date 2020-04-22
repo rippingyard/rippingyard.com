@@ -43,8 +43,8 @@ export default {
 .brand {
 
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 5px;
   z-index: 10000;
 
   svg {
@@ -60,6 +60,11 @@ export default {
   > a {
     display: block;
     padding: 20px;
+    border-radius: 50%;
+    line-height: 1;
+    &:hover {
+      background-color: $yellow;
+    }
   }
 
   .nav {
@@ -69,7 +74,19 @@ export default {
     width: 220px;
     position: absolute;
     top: 70px;
-    left: 20px;
+    left: 30px;
+
+    &:before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-left: 5px solid $black;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid $black;
+      position: absolute;
+      top: -10px;
+    }
 
     > ul {
       > li {
@@ -109,8 +126,8 @@ export default {
 .logo_svg__svg-logo-inner { fill: $white; }
 
 .brand a:hover {
-  .logo_svg__svg-logo-outer { fill: $yellow; }
-  .logo_svg__svg-logo-inner { fill: $black; }
+  // .logo_svg__svg-logo-outer { fill: $yellow; }
+  .logo_svg__svg-logo-inner { fill: $yellow; }
 }
 
 </style>
