@@ -39,6 +39,10 @@ jobs:
         FIREBASE_MESSAGESENDERID: ${{ secrets.FIREBASE_MESSAGESENDERID }}
         FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
         FIREBASE_MEASUREMENTID: ${{ secrets.FIREBASE_MEASUREMENTID }}
+    - name: Copy function files
+      run: cp -R functions dist/server && cp -R .nuxt dist/server/
+    - name: Copy static files
+      run: cp -R static dist/client && cp -R .nuxt/dist/client/* dist/client/
     - name: Deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
       with:
