@@ -6,7 +6,7 @@ const nuxt = new Nuxt({
     dev: false,
     buildDir: '.nuxt',
     build: {
-      publicPath: '/'
+      publicPath: 'dist'
     }
 });
 
