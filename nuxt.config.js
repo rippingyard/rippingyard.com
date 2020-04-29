@@ -3,8 +3,8 @@ const pkg = require('./package')
 require('dotenv').config()
 
 module.exports = {
-  // mode: 'universal',
-  mode: 'spa',
+  mode: 'universal',
+  // mode: 'spa',
 
   env: {
     FIREBASE_CONFIG: {
