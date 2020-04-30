@@ -6,7 +6,6 @@
     </div>
 
   </section>
-
 </template>
 
 <script>
@@ -44,6 +43,9 @@ export default {
             permalink: '/post/' + doc.id,
           }
         )
+        r.post.createdAt = null
+        r.post.updatedAt = null
+        r.post.owner = null
       })
       .catch((e) => {
         context.error({ statusCode: 404, message: 'ページが見つかりません' })
