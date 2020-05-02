@@ -71,6 +71,7 @@ module.exports = {
     // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
     '@nuxtjs/style-resources',
+    '@nuxtjs/sentry',
     'nuxt-svg-loader',
     ['nuxt-vuex-localstorage', {
       localStorage: ['auth'],
@@ -96,6 +97,8 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },
+
+  sentry: { dsn: 'https://a74981ebb9e74e409341f3f74345e83a@o386699.ingest.sentry.io/5221263' },
 
   router: {
     middleware: 'me'
