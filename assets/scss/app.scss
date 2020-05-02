@@ -15,5 +15,7 @@ html {
   // background-color: #333;
 }
 
+@import './modules/list';
+@import './modules/article';
 @import './modules/wysiwyg';
 @import './modules/editor';

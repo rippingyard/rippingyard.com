@@ -1,8 +1,19 @@
 <template>
-  <section class="main-content columns">
+  <section class="section">
 
     <div class="container column is-8 is-offset-2">
-      <PostCard :post=post />
+      <article class="article">
+        <div v-html="post.content" class="wysiwyg"></div>
+
+        <div class="card">
+          <div class="card-container">
+            <!-- <div v-if="owner" class="card-footer">
+              <p class="title">{{ owner.displayName }}</p>
+              <p class="subtitle">@{{ owner.userName }}</p>
+            </div> -->
+          </div>
+        </div>
+      </article>
     </div>
 
   </section>
@@ -11,12 +22,9 @@
 <script>
 
 import { db } from '~/plugins/firebase'
-import PostCard from '~/components/molecules/PostCard'
 
 export default {
-  components: {
-    PostCard,
-  },
+  components: {},
   data() {
     return {
       title: '',

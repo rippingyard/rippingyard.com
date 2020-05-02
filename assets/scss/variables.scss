@@ -14,10 +14,12 @@ $family-sans-serif: Arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pr
 $white-ter:    hsl(0, 0%, 88%);
 $white-bis:    hsl(0, 0%, 90%);
 $white:        hsl(0, 0%, 96%);
+$white-transparent: hsla(0, 0%, 96%, 0%);
 
 $black:        #111;
 $orange:       hsl(14,  100%, 53%);
 $yellow:       $rgba-secondary-2-0;
+$yellow-transparent: $rgba-secondary-2-0-t;
 $green:        $rgba-secondary-2-2;
 $turquoise:    $rgba-secondary-1-2;
 $cyan:         $rgba-secondary-1-1;

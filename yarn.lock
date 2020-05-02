@@ -7636,7 +7636,7 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nuxt-buefy@^0.3.2:
+nuxt-buefy@^0.3.28:
   version "0.3.28"
   resolved "https://registry.yarnpkg.com/nuxt-buefy/-/nuxt-buefy-0.3.28.tgz#103869c2448aa6e0cb86e24efd0d21c2a8dca939"
   integrity sha512-XnFnRHSX30p2Si/fa5cOZ25ZOC9IIH91zel8t+fpbe9dCgikc6RH7d//+pCOdwAn9H+GNNreRvUWzOeYMxtxlQ==
@@ -7658,7 +7658,7 @@ nuxt-vuex-localstorage@^1.2.6:
   dependencies:
     axios "^0.18.0"
 
-nuxt@^2.12.0:
+nuxt@^2.12.2:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.12.2.tgz#959baa919bfef4adcd9e88f84bc948a49a03edd8"
   integrity sha512-rARTgQBUZ0ALl9De7TRhHNzzYJT+RUGHTppDDaWno7a50YvZO85mXHCIVpOuXweNZzGq9njIAYHDHF/LO3esJQ==

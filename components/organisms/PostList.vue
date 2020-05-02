@@ -1,8 +1,10 @@
 <template>
   <section class="section">
     <p class="menu-label is-hidden-touch">Latest Posts</p>
-    <div v-for="post in posts" :key="post.id">
-      <PostCard :post=post />
+    <div class="list">
+      <div class="list-container">
+        <PostCard v-for="post in posts" :key="post.id" :post=post />
+      </div>
     </div>
   </section>
 </template>
@@ -28,9 +30,9 @@ export default {
     }
   },
   async created(context) {
-    // const loading = this.$buefy.loading.open({
-    //   'is-full-page': false
-    // })
+    const loading = this.$buefy.loading.open({
+      'is-full-page': false
+    })
 
     await db
       .collection('timelines')
@@ -54,7 +56,7 @@ export default {
 
     // console.log(this.posts)
 
-    // loading.close()
+    loading.close()
   },
 
 }
