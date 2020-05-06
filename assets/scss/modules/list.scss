@@ -1,7 +1,8 @@
 
 .list {
 
-  background: none;
+  // background: none;
+  background-color: $white;
   border: 4px solid #111;
   padding: 1px;
   box-shadow: none;
@@ -9,6 +10,7 @@
 
   .list-container {
     border: 1px solid #111;
+    min-height: 340px;
   }
 
   .card {
@@ -41,12 +43,12 @@
     }
 
     &:hover {
-      background-color: $yellow;
+      background-color: $cyan;
       // border-left: 3px solid $black;
 
       .card-summary {
         &:after {
-          background: linear-gradient($yellow-transparent 0, $yellow 80px);
+          background: linear-gradient($cyan-transparent 0, $cyan 80px);
         }
       }
 

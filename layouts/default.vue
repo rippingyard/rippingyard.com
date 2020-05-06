@@ -5,6 +5,15 @@
   </div>
 </template>
 
+<style lang="scss">
+
+// html,
+// body {
+//   background-color: $yellow;
+// }
+
+</style>
+
 <script>
 
 import Header from '~/components/organisms/Header'

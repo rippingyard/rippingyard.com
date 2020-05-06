@@ -1,38 +1,48 @@
 <template>
-  <section class="section">
 
-    <div class="container column is-8 is-offset-2">
-      <article class="article">
-        <div v-html="post.content" class="wysiwyg"></div>
+  <article>
 
-        <div class="card">
-          <div class="card-container">
-            <!-- <div v-if="owner" class="card-footer">
-              <p class="title">{{ owner.displayName }}</p>
-              <p class="subtitle">@{{ owner.userName }}</p>
-            </div> -->
-          </div>
-        </div>
-      </article>
-    </div>
+    <Header :post="post"/>
+    <section class="columns">
+      
+      <div class="container column is-8 is-offset-2">
+        
+        <article class="article">
+          <div v-html="mainContent" class="wysiwyg"></div>
+        </article>
+      </div>
 
-  </section>
+    </section>
+
+  </article>
 </template>
 
 <script>
 
 import { db } from '~/plugins/firebase'
+import { getTitle, removeTitle } from '~/plugins/typography'
+import Header from '~/components/molecules/PostHeader'
 
 export default {
-  components: {},
+  components: {
+    Header,
+  },
+  computed: {
+    getTitle() {
+      return getTitle( this.post.content )
+    },
+    mainContent() {
+      return removeTitle( this.post.content )
+    }
+  },
   data() {
     return {
-      title: '',
+      title: ''
     }
   },
   head: (context) => {
     return {
-      title: context.post.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
+      title: getTitle( context.post.content )
     }
   },
   async asyncData(context) {
