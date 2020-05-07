@@ -26,7 +26,6 @@ describe('Header', () => {
     })
     // console.log(wrapper.text())
     expect(/SIGN IN/.test(wrapper.text())).toBeTruthy()
-    expect(/SIGN UP/.test(wrapper.text())).toBeTruthy()
     expect(/HOME/.test(wrapper.text())).toBeFalsy()
   })
 
@@ -37,7 +36,6 @@ describe('Header', () => {
       },
     })
     expect(/SIGN IN/.test(wrapper.text())).toBeFalsy()
-    expect(/SIGN UP/.test(wrapper.text())).toBeFalsy()
     expect(/HOME/.test(wrapper.text())).toBeTruthy()
   })
 
