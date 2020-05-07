@@ -1,6 +1,8 @@
 import * as express from 'express';
 const { Nuxt } = require('nuxt');
 
+process.env.DEBUG = 'nuxt:*'
+
 const app = express();
 const nuxt = new Nuxt({
   dev: false,
@@ -18,9 +20,9 @@ app.use(async (req: any, res: any) => {
   await nuxt.renderRoute(req.url, { req }).then((result: any) => {
     res.send(result.html)
   }).catch((e: any) => {
+    console.log(e)
     res.send(e)
   })
 })
-// exports.ssr = functions.https.onRequest(app);
 
 export = app
