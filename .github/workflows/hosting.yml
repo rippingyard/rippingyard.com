@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Echo NODE_PATH
-      run: cd functions && echo $NODE_PATH
+      run: echo $NODE_PATH
     - name: Test
       run: yarn test
     - name: Init functions
