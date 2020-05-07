@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,11 +25,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
-      run: yarn install --ignore-optional
+      run: yarn install
     - name: Test
       run: yarn test
     - name: Init functions
-      run: cd functions && npm install --no-optional && npm run build
+      run: cd functions && npm install && npm run build
     - name: Generate html files
       run: yarn run build
       env:
