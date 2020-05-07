@@ -22,6 +22,7 @@
     "firebase-functions": "^3.3.0",
     "minimist": ">=1.2.3",
     "nuxt": "^2.12.2",
+    "nuxt-buefy": "^0.3.28",
     "vue-server-renderer": "^2.6.11"
   },
   "devDependencies": {
