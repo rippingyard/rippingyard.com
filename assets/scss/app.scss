@@ -4,6 +4,22 @@
 @import '~/node_modules/bulma';
 @import '~/node_modules/buefy/src/scss/buefy';
 
+// @include until($desktop) {
+//   border-bottom: 1px solid green;
+// }
+
+// @include from($tablet) {
+//   border-left: 1px solid yellow;
+// }
+
+// @include tablet {
+//   border-top: 2px solid orange;
+// }
+
+// @include widescreen-only {
+//   border-right: 2px solid blue;
+// }
+
 html {
   font-size: 15px;
 }

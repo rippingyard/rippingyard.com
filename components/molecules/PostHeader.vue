@@ -23,6 +23,18 @@
   padding: 80px 40px 40px;
   // background-color: $orange;
 
+  @include until($tablet) {
+    padding: 50px 40px 20px;
+  }
+
+  .column {
+    padding: 0 15px;
+
+    @include until($tablet) {
+      padding: 0;
+    }
+  }
+
   .data {
     margin-top: 40px;
     color: $black;

@@ -3,7 +3,7 @@
   <article>
 
     <Header :post="post"/>
-    <section class="columns">
+    <section class="">
       
       <div class="container column is-8 is-offset-2">
         

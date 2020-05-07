@@ -22,7 +22,11 @@
     // margin-bottom: 25px;
     // border-bottom: 1px dashed $black;
 
-    
+    @include until($tablet) {
+
+      padding: 15px 20px 20px;
+
+    }
 
     .card-summary {
       max-height: 240px;

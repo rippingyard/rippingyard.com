@@ -27,6 +27,7 @@
   background-color: $orange;
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 
 </style>

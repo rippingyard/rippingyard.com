@@ -3,4 +3,8 @@
 
   padding: 30px;
 
+  @include until($tablet) {
+    padding: 20px 10px 20px 30px;
+  }
+
 }

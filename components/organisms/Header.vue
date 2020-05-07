@@ -47,109 +47,132 @@ export default {
 <style lang="scss" scoped>
 
 .header {
+
   z-index: 10000;
   position: relative;
-}
 
-.brand {
+  .brand {
 
-  position: fixed;
-  top: 5px;
-  left: 5px;
-
-  svg {
-    width: 30px;
-    height: 30px;
-
-    // @include until($desktop) {
-    //   width: 20px;
-    //   height: 20px;
-    // }
-  }
-
-  > a {
-    display: block;
-    padding: 20px;
-    border-radius: 50%;
-    line-height: 1;
-    &:hover {
-      background-color: $yellow;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+  
+    svg {
+      width: 30px;
+      height: 30px;
     }
-  }
-
-  .nav {
-    display: none;
-    background-color: $black;
-    border-radius: 0 14px 14px 14px;
-    width: 220px;
-    position: absolute;
-    top: 70px;
-    left: 30px;
-
-    &:before {
-      content: '';
-      width: 0;
-      height: 0;
-      border-top: 5px solid transparent;
-      border-left: 5px solid $black;
-      border-right: 5px solid transparent;
-      border-bottom: 5px solid $black;
+  
+    > a {
+      display: block;
+      padding: 20px;
+      border-radius: 50%;
+      line-height: 1;
+      &:hover {
+        background-color: $yellow;
+      }
+    }
+  
+    .nav {
+      display: none;
+      background-color: $black;
+      border-radius: 0 14px 14px 14px;
+      width: 220px;
       position: absolute;
-      top: -10px;
-    }
-
-    > ul {
-      > li {
-        padding: 0 25px;
-        > a {
-          padding: 20px 0;
-          border-bottom: 1px solid $white;
-          font-size: 0.84rem;
-          font-weight: 800;
-          color: $white;
-          display: block;
-          &:hover {
-            color: $yellow;
-          }
-        }
-        &:last-child {
+      top: 70px;
+      left: 30px;
+  
+      &:before {
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 5px solid transparent;
+        border-left: 5px solid $black;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid $black;
+        position: absolute;
+        top: -10px;
+      }
+  
+      > ul {
+        > li {
+          padding: 0 25px;
           > a {
-            border: none;
+            padding: 20px 0;
+            border-bottom: 1px solid $white;
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: $white;
+            display: block;
+            &:hover {
+              color: $yellow;
+            }
+          }
+          &:last-child {
+            > a {
+              border: none;
+            }
           }
         }
       }
     }
-  }
+  
+    &:hover {
+      .nav {
+        display: block;
+      }
+    }
 
-  &:hover {
-    .nav {
-      display: block;
+    @include until($tablet) {
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      > a {
+        padding: 10px;
+      }
+
+      &:hover {
+        .nav {
+          display: none;
+        }
+      }
     }
   }
-}
-
-.tagline {
-  transform: rotate(90deg);
-  font-size: 13px;
-  font-family: 'Times New Roman', Times, serif;
-  position: fixed;
-  bottom: 160px;
-  left: -110px;
-  line-height: 1;
-  color: $black;
-
-  .tagline-title {
-    position: relative;
-    padding-left: 120px;
-    &:before {
-      content: '';
-      border-bottom: 1px solid $black;
-      width: 100px;
-      position: absolute;
-      left: 10px;
-      top: 8px;
+  
+  .tagline {
+    transform: rotate(90deg);
+    font-size: 13px;
+    font-family: 'Times New Roman', Times, serif;
+    position: fixed;
+    bottom: 160px;
+    left: -110px;
+    line-height: 1;
+    color: $black;
+  
+    > span {
+      display: inline-block;
+    }
+  
+    .tagline-title {
+      position: relative;
+      padding-left: 120px;
+      &:before {
+        content: '';
+        border-bottom: 1px solid $black;
+        width: 100px;
+        position: absolute;
+        left: 10px;
+        top: 8px;
+      }
+    }
+  
+    @include until($tablet) {
+      left: -130px;
     }
   }
+
 }
 
 </style>
