@@ -41,6 +41,7 @@ jobs:
         FIREBASE_MESSAGESENDERID: ${{ secrets.FIREBASE_MESSAGESENDERID }}
         FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
         FIREBASE_MEASUREMENTID: ${{ secrets.FIREBASE_MEASUREMENTID }}
+        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
     - name: Deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
       with:

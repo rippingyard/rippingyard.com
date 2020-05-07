@@ -73,6 +73,7 @@ module.exports = {
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
     'nuxt-svg-loader',
+    ['@nuxtjs/google-tag-manager', { id: 'GTM-5B3N3TX' }],
     ['@nuxtjs/google-adsense', {
       id: process.env.GA_ADSENSE_ID,
       pageLevelAds: true,
