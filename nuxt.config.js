@@ -73,6 +73,12 @@ module.exports = {
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
     'nuxt-svg-loader',
+    ['@nuxtjs/google-adsense', {
+      id: process.env.GA_ADSENSE_ID,
+      pageLevelAds: true,
+      // analyticsUacct: process.env.GA_TRACKING_ID,
+      // analyticsDomainName: domain
+    }],
     ['nuxt-vuex-localstorage', {
       localStorage: ['auth'],
       // sessionStorage: ['sfoo', 'sbar']

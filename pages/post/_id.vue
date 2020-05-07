@@ -10,6 +10,9 @@
         <article class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
         </article>
+
+        <AdBottom/>
+
       </div>
 
     </section>
@@ -22,10 +25,12 @@
 import { db } from '~/plugins/firebase'
 import { getTitle, removeTitle } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
+import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 
 export default {
   components: {
     Header,
+    AdBottom,
   },
   computed: {
     getTitle() {
