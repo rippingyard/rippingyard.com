@@ -1,19 +1,25 @@
 <template>
-  <div class="brand">
-    <nuxt-link to="/">
-      <SvgLogo/>
-    </nuxt-link>
-    <div class="nav">
-      <ul v-if="!$isAuthenticated($store)">
-        <li><nuxt-link to="/signin">SIGN IN</nuxt-link></li>
-        <li><nuxt-link to="/signup">SIGN UP</nuxt-link></li>
-      </ul>
-      <ul v-else>
-        <li><nuxt-link to="/home">HOME</nuxt-link></li>
-        <li><a @click="$signOut($store)">SIGN OUT</a></li>
-      </ul>
+  <header class="header">
+    <div class="brand">
+      <nuxt-link to="/">
+        <SvgLogo/>
+      </nuxt-link>
+      <div class="nav">
+        <ul v-if="!$isAuthenticated($store)">
+          <li><nuxt-link to="/signin">SIGN IN</nuxt-link></li>
+          <!-- <li><nuxt-link to="/signup">SIGN UP</nuxt-link></li> -->
+        </ul>
+        <ul v-else>
+          <li><nuxt-link to="/home">HOME</nuxt-link></li>
+          <li><a @click="$signOut($store)">SIGN OUT</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
+    <div class="tagline">
+      <span class="tagline-body">lifelog for living well</span>
+      <span class="tagline-title">ripping yard</span>
+    </div>
+  </header>
 </template>
 
 <script>
@@ -40,12 +46,16 @@ export default {
 
 <style lang="scss" scoped>
 
+.header {
+  z-index: 10000;
+  position: relative;
+}
+
 .brand {
 
   position: fixed;
   top: 5px;
   left: 5px;
-  z-index: 10000;
 
   svg {
     width: 30px;
@@ -114,6 +124,30 @@ export default {
   &:hover {
     .nav {
       display: block;
+    }
+  }
+}
+
+.tagline {
+  transform: rotate(90deg);
+  font-size: 13px;
+  font-family: 'Times New Roman', Times, serif;
+  position: fixed;
+  bottom: 160px;
+  left: -110px;
+  line-height: 1;
+  color: $black;
+
+  .tagline-title {
+    position: relative;
+    padding-left: 120px;
+    &:before {
+      content: '';
+      border-bottom: 1px solid $black;
+      width: 100px;
+      position: absolute;
+      left: 10px;
+      top: 8px;
     }
   }
 }

@@ -26,10 +26,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
       run: yarn install
+    - name: Echo NODE_PATH
+      run: cd functions && echo $NODE_PATH
     - name: Test
       run: yarn test
     - name: Init functions
       run: cd functions && npm install && npm run build
+    - name: Echo NODE_PATH on functions
+      run: cd functions && echo $NODE_PATH
     - name: Generate html files
       run: yarn run build
       env:

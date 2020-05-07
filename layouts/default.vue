@@ -2,25 +2,19 @@
   <div>
     <Header/>
     <nuxt />
+    <Footer/>
   </div>
 </template>
-
-<style lang="scss">
-
-// html,
-// body {
-//   background-color: $yellow;
-// }
-
-</style>
 
 <script>
 
 import Header from '~/components/organisms/Header'
+import Footer from '~/components/organisms/Footer'
 
 export default {
   components: {
     Header,
+    Footer,
   },
   data() {
     return {

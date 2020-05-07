@@ -10,8 +10,8 @@
   width: 105%;
   height: 600px;
   background-color: $cyan;
-  position: fixed;
-  top: -400px;
+  position: absolute;
+  top: -320px;
 
   // width: 400px;
 
@@ -23,7 +23,7 @@
   content: '';
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   background-color: $white;
   top: 0;
   left: 0;
