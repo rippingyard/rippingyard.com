@@ -8,6 +8,7 @@ const firestore = admin.firestore();
 
 interface Post {
   readonly title: String
+  readonly isPublic: Boolean
   readonly content: String
   readonly status: String
 }
