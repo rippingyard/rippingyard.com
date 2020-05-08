@@ -4,7 +4,6 @@ require('dotenv').config()
 
 module.exports = {
   mode: 'universal',
-  // mode: 'spa',
 
   env: {
     FIREBASE_CONFIG: {
@@ -60,6 +59,7 @@ module.exports = {
    */
   plugins: [
     '~/plugins/utils',
+    '~/plugins/gtm',
   ],
 
   /*
@@ -72,8 +72,8 @@ module.exports = {
     'nuxt-buefy',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
+    '@nuxtjs/gtm',
     'nuxt-svg-loader',
-    ['@nuxtjs/google-tag-manager', { id: 'GTM-5B3N3TX', pageTracking: true }],
     ['@nuxtjs/google-adsense', {
       id: process.env.GA_ADSENSE_ID,
       pageLevelAds: true,
@@ -85,6 +85,12 @@ module.exports = {
       // sessionStorage: ['sfoo', 'sbar']
     }]
   ],
+
+  // buildModules: [
+  //   '@nuxtjs/gtm'
+  // ],
+
+  // gtm: { id: 'GTM-5B3N3TX', pageTracking: true },
 
   styleResources: {
     scss: [
@@ -109,7 +115,7 @@ module.exports = {
   sentry: { dsn: 'https://a74981ebb9e74e409341f3f74345e83a@o386699.ingest.sentry.io/5221263' },
 
   router: {
-    middleware: 'me'
+    middleware: ['me', 'gtm']
   },
 
   /*
