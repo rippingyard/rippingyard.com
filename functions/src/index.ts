@@ -9,6 +9,7 @@ const firestore = admin.firestore();
 interface Post {
   readonly title: String
   readonly isPublic: Boolean
+  readonly isDeleted: Boolean
   readonly content: String
   readonly status: String
 }
@@ -28,7 +29,7 @@ export const onPostDelete = functions.firestore.document('/posts/{postId}').onDe
 });
 
 async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, context: functions.EventContext) {
-  
+
   const postId = snapshot.id
   const post = snapshot.data() as Post
 
