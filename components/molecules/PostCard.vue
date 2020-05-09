@@ -61,8 +61,6 @@ export default {
           this.owner = doc.data()
           this.$store.commit('user/setUser', this.owner)
         })
-      } else {
-        console.log('cached!!')
       }
 
     }

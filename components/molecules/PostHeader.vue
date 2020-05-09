@@ -6,9 +6,9 @@
       <Title :title="getTitle"/>
 
       <ul class="data">
-        <li class="datetime"><strong>DATE</strong> 2020-04-30 11:00</li>
-        <li class="by"><strong>POSTED BY</strong> mcatm</li>
-        <li class="length"><strong>LENGTH</strong> 1400</li>
+        <li class="datetime"><strong>DATE</strong> {{ post.publishedAt }}</li>
+        <li v-if="post.owner" class="by"><strong>POSTED BY</strong> {{ post.owner }}</li>
+        <li v-if="post.length" class="length"><strong>LENGTH</strong> {{ post.length }}</li>
       </ul>
     </div>
 

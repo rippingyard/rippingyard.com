@@ -21,3 +21,7 @@ export const getSummary = (str, length = 140) => {
   return str.substr(0, length) + tail
 }
 
+export const getLength = str => {
+  return !str ? 0 : removeHtmlTag(str).length
+}
+

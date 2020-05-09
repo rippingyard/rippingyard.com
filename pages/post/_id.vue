@@ -22,8 +22,10 @@
 
 <script>
 
+import { mapGetters } from 'vuex'
+import moment from 'moment'
 import { db } from '~/plugins/firebase'
-import { getTitle, removeTitle } from '~/plugins/typography'
+import { getTitle, removeTitle, getLength } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 
@@ -38,6 +40,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      normalize: 'post/normalize',
+      getOwner: 'user/owner',
+    }),
     getTitle() {
       return getTitle( this.post.content )
     },
@@ -66,9 +72,24 @@ export default {
             permalink: '/post/' + doc.id,
           }
         )
+        r.post.publishedAt = moment(r.post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
         r.post.createdAt = null
         r.post.updatedAt = null
+        r.post.length = getLength( r.post.content )
+
+        // const owner = this.getOwner(this.post.owner.id)
+
+        // if( !owner ) {
+        //   await db.collection('users').doc(this.post.owner.id).get().then(doc => {
+        //     owner = doc.data()
+        //     this.$store.commit('user/setUser', owner)
+        //   })
+        // }
+
+        // r.post.owner = owner
+
         r.post.owner = null
+
       })
       .catch((e) => {
         context.error({ statusCode: 404, message: 'ページが見つかりません' })
