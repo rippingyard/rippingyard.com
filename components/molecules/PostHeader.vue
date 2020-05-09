@@ -72,16 +72,18 @@ export default {
     Title,
     Belt,
   },
+  props: {
+    post: {
+      default: null,
+      type: Object
+    }
+  },
   computed: {
     getTitle() {
       return getTitle( this.post.content )
     }
   },
-  props: {
-    post: {
-      default: {}
-    }
-  }
+  
 
 }
 </script>

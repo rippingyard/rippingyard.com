@@ -32,17 +32,17 @@ export default {
     Header,
     AdBottom,
   },
+  data() {
+    return {
+      title: ''
+    }
+  },
   computed: {
     getTitle() {
       return getTitle( this.post.content )
     },
     mainContent() {
       return removeTitle( this.post.content )
-    }
-  },
-  data() {
-    return {
-      title: ''
     }
   },
   head: (context) => {

@@ -9,7 +9,7 @@
       <p v-if="statusCode === 404" class="description">
         <NuxtLink class="error-link" to="/">トップに戻る</NuxtLink>
       </p>
-      <p class="description" v-else>エラーが発生しました。詳しくは、管理者にお問い合わせください</p>
+      <p v-else class="description">エラーが発生しました。詳しくは、管理者にお問い合わせください</p>
     </div>
   </div>
 </template>
