@@ -1,12 +1,27 @@
 import { db, timestamp } from '~/plugins/firebase'
 
-const scheme = {
+export const scheme = {
   slug:           null,
   owner:          null,
   collaborators:  null,
   content:        null,
   status:         'published',
+  relatedEntities: null,
+  relatedPosts: {
+    byUser: null,
+    byTerm: null,
+    expiredAt: null,
+  },
+  counts: {
+    favorite: 0,
+    bookmark: 0,
+    pageview: 0,
+  },
+  isPublic:       false,
   isDeleted:      false,
+  publishedAt:    null,
+  createdAt:      timestamp.now(),
+  updatedAt:      timestamp.now(),
 }
 
 export const state = () => ({
@@ -38,7 +53,9 @@ export const actions = {
 
     await db.collection('posts').doc().set(Object.assign(scheme, {
       content: post.content,
+      isPublic: post.isPublic,
       owner: owner,
+      publishedAt: timestamp.now(),
       createdAt: timestamp.now(),
       updatedAt: timestamp.now(),
     })).then(() => {

@@ -54,6 +54,7 @@ export default {
 
       const post = {
         content: this.content,
+        isPublic: true,
       }
 
       this.savePost({

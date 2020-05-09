@@ -28,17 +28,16 @@ export const onPostDelete = functions.firestore.document('/posts/{postId}').onDe
 });
 
 async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, context: functions.EventContext) {
-  const postId = snapshot.id;
-  // const userId = context.params.userId;
-  const post = snapshot.data() as Post;
-  // post.authorRef = firestore.collection('users').doc(userId);
+  
+  const postId = snapshot.id
+  const post = snapshot.data() as Post
 
   // 共通タイムライン
   // 一旦該当の記事を消す
   await firestore.collection('timelines').doc('public').collection('posts').doc(postId).delete()
 
   // status !== 'published'の場合は無視
-  if( post.status !== 'published' ) return
+  if( post.status !== 'published' || post.isDeleted ) return
 
   // isPublicのもの
   if( post.isPublic ) {

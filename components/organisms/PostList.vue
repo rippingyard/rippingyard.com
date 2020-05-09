@@ -58,8 +58,6 @@ export default {
         })
       })
 
-    // console.log(this.posts)
-
     this.isLoading = false
 
   },
@@ -72,7 +70,11 @@ export default {
 
 .loading-overlay {
   position: relative;
-  // height: 400px;
+  height: 400px;
+
+  .loading-background {
+    background-color: $white;
+  }
 }
 
 </style>
