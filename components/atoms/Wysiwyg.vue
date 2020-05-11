@@ -11,7 +11,6 @@
         :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
         class="menububble"
       >
-
         <form
           v-if="linkMenuIsActive"
           @submit.prevent="setLinkUrl(commands.link, linkUrl)"
@@ -74,6 +73,26 @@
 
 <style lang="scss">
 
+.is-empty {
+  &:first-child,
+  &:nth-child(2) {
+    &:before {
+      content: attr(data-empty-text);
+      float: left;
+      color: $cyan;
+      pointer-events: none;
+      height: 0;
+      // font-style: italic;
+    }
+    &:hover {
+      &:before {
+        opacity: 0.6;
+      }
+    }
+  }
+
+}
+
 </style>
 
 <script>
@@ -100,10 +119,11 @@ import {
   // Strike,
   // Underline,
   History,
+  Placeholder,
 } from 'tiptap-extensions'
 
-// import Post from '~/models/Post'
-// import User from '~/models/User'
+import Wysiwyg from '~/plugins/editor/Wysiwyg'
+import Title from '~/plugins/editor/Title'
 
 export default {
   components: {
@@ -140,6 +160,18 @@ export default {
         // new Strike(),
         // new Underline(),
         new History(),
+        new Title(),
+        new Wysiwyg(),
+        new Placeholder({
+          showOnlyCurrent: false,
+          emptyNodeText: node => {
+            console.log('placeholder', node.type.name)
+            if (node.type.name === 'title') {
+              return '記事タイトル'
+            }
+            return 'ここに本文を書いていきましょう'
+          },
+        }),
       ],
       onUpdate: (s) => {
         this.$emit('update', s.getHTML())
