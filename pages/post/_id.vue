@@ -75,6 +75,7 @@ export default {
         r.post.publishedAt = moment(r.post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
         r.post.createdAt = null
         r.post.updatedAt = null
+        r.post.parent = null
         r.post.length = getLength( r.post.content )
 
         // const owner = this.getOwner(this.post.owner.id)
