@@ -3,12 +3,26 @@
   <article>
 
     <Header :post="post"/>
+
     <section class="">
       
       <div class="container column is-8 is-offset-2">
         
-        <article class="article">
+        <article v-if="getTitle" class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
+        </article>
+
+        <article v-else class="article no-title">
+          <div class="article-container">
+            <div v-html="mainContent" class="wysiwyg"></div>
+            <div class="article-footer">
+              <ul class="data">
+                <li class="datetime"><strong>DATE</strong> {{ post.publishedAt }}</li>
+                <li v-if="post.owner" class="by"><strong>POSTED BY</strong> {{ post.owner.displayName }}</li>
+                <li v-if="post.length" class="length"><strong>LENGTH</strong> {{ post.length }}</li>
+              </ul>
+            </div>
+          </div>
         </article>
 
         <AdBottom/>

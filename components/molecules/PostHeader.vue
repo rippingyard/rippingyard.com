@@ -2,7 +2,7 @@
   <section class="postheader">
     <Belt/>
 
-    <div class="container column is-8 is-offset-2">
+    <div v-if="getTitle" class="container column is-8 is-offset-2">
       <Title :title="getTitle"/>
 
       <ul class="data">

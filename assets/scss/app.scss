@@ -20,8 +20,10 @@
 //   border-right: 2px solid blue;
 // }
 
-html {
+html,
+body {
   font-size: 15px;
+  color: $black;
 }
 
 .help {

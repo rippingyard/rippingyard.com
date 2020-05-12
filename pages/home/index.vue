@@ -1,7 +1,7 @@
 <template>
   <section class="main-content columns">
     <div class="container column is-6 is-offset-1">
-      <PostList :limit="12" />
+      <PostList :limit="100" />
     </div>
     <div class="container column is-5">
       <section class="section">

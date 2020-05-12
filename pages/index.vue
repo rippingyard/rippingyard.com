@@ -3,7 +3,7 @@
 
     <Belt/>
     <div class="container column is-8 is-offset-2">
-      <PostList :limit="12" />
+      <PostList :limit="200" />
     </div>
 
   </section>
