@@ -47,7 +47,7 @@ export default {
       .get()
       .then(qs => {
         qs.forEach(doc => {
-          console.log(doc.id)
+          // console.log(doc.id)
           this.posts.push(Object.assign(
             doc.data(),
             {
