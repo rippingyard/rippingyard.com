@@ -4,7 +4,7 @@
     <div class="list">
       <div class="list-container">
         <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
-        <PostCard v-for="post in posts" :key="post.id" :post=post />
+        <PostRow v-for="post in posts" :key="post.id" :post=post />
       </div>
     </div>
   </section>
@@ -13,11 +13,11 @@
 <script>
 
 import { db } from '~/plugins/firebase'
-import PostCard from '~/components/molecules/PostCard'
+import PostRow from '~/components/molecules/PostRow'
 
 export default {
   components: {
-    PostCard,
+    PostRow,
   },
   props: {
     limit: {
