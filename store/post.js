@@ -6,6 +6,7 @@ export const scheme = {
   collaborators:  null,
   content:        null,
   status:         'published',
+  parent:         null,
   relatedEntities: null,
   relatedPosts: {
     byUser: null,

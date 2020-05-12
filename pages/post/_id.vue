@@ -25,7 +25,7 @@
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import { db } from '~/plugins/firebase'
-import { getTitle, removeTitle, getLength } from '~/plugins/typography'
+import { getTitle, getSummary, removeTitle, getLength } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 
@@ -47,13 +47,23 @@ export default {
     getTitle() {
       return getTitle( this.post.content )
     },
+    getSummary() {
+      return getSummary( this.post.content )
+    },
     mainContent() {
       return removeTitle( this.post.content )
     }
   },
   head: (context) => {
     return {
-      title: getTitle( context.post.content )
+      title: getTitle( context.post.content ),
+      meta: [
+        { hid: 'og:title', property: 'og:title', content: getTitle( context.post.content ) },
+        { hid: 'twitter:title', name: 'twitter:title', content: getTitle( context.post.content ) },
+        { hid: 'description', name: 'description', content: getSummary( context.post.content ) },
+        { hid: 'og:description', property: 'og:description', content: getSummary( context.post.content ) },
+        { hid: 'twitter:description', name: 'twitter:description', content: getSummary( context.post.content ) },
+      ]
     }
   },
   async asyncData(context) {
@@ -75,6 +85,7 @@ export default {
         r.post.publishedAt = moment(r.post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
         r.post.createdAt = null
         r.post.updatedAt = null
+        r.post.parent = null
         r.post.length = getLength( r.post.content )
 
         // const owner = this.getOwner(this.post.owner.id)
