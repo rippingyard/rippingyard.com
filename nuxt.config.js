@@ -51,7 +51,7 @@ module.exports = {
       {
         hid: 'og:url',
         property: 'og:url',
-        content: pkg.homepage
+        content: 'https://www.rippingyard.com'
       },
       {
         hid: 'og:site_name',
@@ -61,7 +61,7 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `${pkg.homepage}/ogimage.png`
+        content: 'https://www.rippingyard.com/img/ogimage.png'
       },
       {
         hid: 'twitter:title',
@@ -78,12 +78,12 @@ module.exports = {
       {
         hid: 'twitter:url',
         name: 'twitter:url',
-        content: pkg.homepage
+        content: 'https://www.rippingyard.com'
       },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: `${pkg.homepage}/ogimage.png`
+        content: 'https://www.rippingyard.com/img/ogimage.png'
       },
       {
         hid: 'twitter:card',

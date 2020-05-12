@@ -16,6 +16,7 @@ export const getTitle = str => {
 }
 
 export const getSummary = (str, length = 140) => {
+  str = removeTitle(str)
   str = removeHtmlTag(str)
   const tail = str.length > length ? '...' : ''
   return str.substr(0, length) + tail
