@@ -3,7 +3,7 @@
     <div class="row-container">
       <nuxt-link :to="post.permalink">
         <div v-if="getTitle" class="row-title">{{ getTitle }}</div>
-        <div class="row-summary" v-html="getSummary"></div>
+        <div v-html="getSummary" class="row-summary"></div>
       </nuxt-link>
       <div class="row-footer">
         <p v-if="owner" class="row-owner">POSTED BY <strong>{{ owner.displayName }}</strong></p>
