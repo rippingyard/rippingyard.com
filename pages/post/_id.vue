@@ -37,9 +37,9 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import moment from 'moment'
 import { db } from '~/plugins/firebase'
-import { getTitle, getSummary, removeTitle, getLength } from '~/plugins/typography'
+import { normalize } from '~/store/post'
+import { getTitle, getSummary, removeTitle } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 
@@ -89,34 +89,9 @@ export default {
       .doc(context.params.id)
       .get()
       .then(doc => {
-        r.post = Object.assign(
-          doc.data(),
-          {
-            id: doc.id,
-            permalink: '/post/' + doc.id,
-          }
-        )
-        r.post.publishedAt = moment(r.post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
-        r.post.createdAt = null
-        r.post.updatedAt = null
+        r.post = normalize(doc.id, doc.data())
+
         r.post.parent = null
-        r.post.length = getLength( r.post.content )
-
-        // const owner = 
-
-        // if( !owner ) {
-        //   await db.collection('users').doc(this.post.owner.id).get().then(doc => {
-        //     owner = doc.data()
-        //     this.$store.commit('user/setUser', owner)
-        //   })
-        // }
-
-        // r.post.owner = owner
-        
-        // this.ownerId = r.post.owner.id
-        // console.log('owner', r.post.owner)
-        // r.post.owner = await this.getOwner(ownerId)
-        // context.owner = this.getOwner(ownerId)
 
         r.post.owner = {
           id: r.post.owner.id,

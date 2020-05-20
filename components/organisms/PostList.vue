@@ -13,6 +13,7 @@
 <script>
 
 import { db } from '~/plugins/firebase'
+import { normalize } from '~/store/post'
 import PostRow from '~/components/molecules/PostRow'
 
 export default {
@@ -48,13 +49,8 @@ export default {
       .then(qs => {
         qs.forEach(doc => {
           // console.log(doc.id)
-          this.posts.push(Object.assign(
-            doc.data(),
-            {
-              id: doc.id,
-              permalink: '/post/' + doc.id,
-            }
-          ))
+          // console.log(doc.data())
+          this.posts.push(normalize(doc.id, doc.data()))
         })
       })
 

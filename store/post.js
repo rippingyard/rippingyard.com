@@ -1,4 +1,6 @@
+import moment from 'moment'
 import { db, timestamp } from '~/plugins/firebase'
+import { getLength } from '~/plugins/typography'
 
 export const scheme = {
   slug:           null,
@@ -83,8 +85,21 @@ export const actions = {
   },
 }
 
-export const getters = {
-  normalize: (state) => (post) => {
-    return post
-  }
+export function normalize(id, post) {
+  // console.log(post)
+  return Object.assign(
+    post,
+    {
+      id: id,
+      permalink: permalink(id),
+      publishedAt: moment(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
+      createdAt: moment(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
+      updatedAt: moment(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
+      length: getLength( post.content )
+    }
+  )
+}
+
+export function permalink(id) {
+  return '/post/' + id
 }

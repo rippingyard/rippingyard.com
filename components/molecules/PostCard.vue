@@ -42,14 +42,11 @@ export default {
 
   computed: {
     ...mapGetters({
-      normalize: 'post/normalize',
       getOwner: 'user/owner',
     }),
   },
 
   async created() {
-
-    this.post = this.normalize( this.post )
 
     if( this.post.owner ) {
 
