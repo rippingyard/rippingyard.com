@@ -115,7 +115,6 @@ module.exports = {
    */
   plugins: [
     '~/plugins/utils',
-    '~/plugins/gtm',
   ],
 
   /*
@@ -171,7 +170,7 @@ module.exports = {
   sentry: { dsn: 'https://a74981ebb9e74e409341f3f74345e83a@o386699.ingest.sentry.io/5221263' },
 
   router: {
-    middleware: ['me', 'gtm']
+    middleware: ['me']
   },
 
   /*

@@ -7,7 +7,7 @@
 
       <ul class="data">
         <li class="datetime"><strong>DATE</strong> {{ post.publishedAt }}</li>
-        <li v-if="post.owner" class="by"><strong>POSTED BY</strong> {{ post.owner }}</li>
+        <li v-if="post.owner" class="by"><strong>POSTED BY</strong> {{ post.owner.displayName }}</li>
         <li v-if="post.length" class="length"><strong>LENGTH</strong> {{ post.length }}</li>
       </ul>
     </div>

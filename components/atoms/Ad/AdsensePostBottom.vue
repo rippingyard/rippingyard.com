@@ -9,12 +9,6 @@ export default {
     return {
       isProd: process.env.NODE_ENV === 'production' && window.location.hostname === 'www.rippingyard.com'
     }
-  },
-  mounted() {
-
-    console.log(process.env.NODE_ENV)
-    console.log(window.location)
-
   }
 }
 </script>

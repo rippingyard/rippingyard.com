@@ -54,20 +54,9 @@ export default {
 
     if( this.post.owner ) {
 
-      // console.log(this.post.owner)
-      this.owner = this.getOwner(this.post.owner.id)
-
-      if( !this.owner ) {
-        await db.collection('users').doc(this.post.owner.id).get().then(doc => {
-          this.owner = doc.data()
-          this.$store.commit('user/setUser', this.owner)
-        })
-      }
+      this.owner = await this.getOwner(this.post.owner.id)
 
     }
-
-    console.log('Owner', this.owner);
-    // console.log('postCard', this.post)
 
   }
 

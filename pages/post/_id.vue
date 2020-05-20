@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      title: ''
+      title: '',
     }
   },
   computed: {
@@ -102,7 +102,7 @@ export default {
         r.post.parent = null
         r.post.length = getLength( r.post.content )
 
-        // const owner = this.getOwner(this.post.owner.id)
+        // const owner = 
 
         // if( !owner ) {
         //   await db.collection('users').doc(this.post.owner.id).get().then(doc => {
@@ -112,8 +112,15 @@ export default {
         // }
 
         // r.post.owner = owner
+        
+        // this.ownerId = r.post.owner.id
+        // console.log('owner', r.post.owner)
+        // r.post.owner = await this.getOwner(ownerId)
+        // context.owner = this.getOwner(ownerId)
 
-        r.post.owner = null
+        r.post.owner = {
+          id: r.post.owner.id,
+        }
 
       })
       .catch((e) => {
@@ -122,7 +129,14 @@ export default {
 
     return r
 
-  }
+  },
+  async mounted() {
+
+    if( this.post.owner.id ) {
+      this.post.owner = await this.getOwner(this.post.owner.id)
+    }
+
+  },
 
 }
 </script>
