@@ -87,19 +87,22 @@ export default {
       title: context.post.title
     }
   },
-  asyncData(context) {
+  asyncData({ params, redirect, error }) {
 
     const r = {}
 
-    const slug = context.params.slug
+    const slug = params.slug
 
-    if( !slug ) context.redirect('/')
+    if( !slug ) redirect('/')
 
     console.log(slug)
 
     const seed = _.filter(Seeds, o => { return o.slug === slug })
 
-    if( !seed ) context.error({ statusCode: 404, message: 'ページが見つかりません' })
+    if( seed.length < 1 ) {
+      error({ statusCode: 404, message: 'ページが見つかりません' })
+      return r
+    }
 
     console.log(seed)
 
