@@ -5,9 +5,9 @@ name: Deploy Hosting CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -33,14 +33,8 @@ jobs:
     - name: Generate html files
       run: yarn run build
       env:
-        FIREBASE_APIKEY: ${{ secrets.FIREBASE_APIKEY }}
-        FIREBASE_AUTHDOMAIN: ${{ secrets.FIREBASE_AUTHDOMAIN }}
-        FIREBASE_DATABASEURL: ${{ secrets.FIREBASE_DATABASEURL }}
-        FIREBASE_PROJECTID: ${{ secrets.FIREBASE_PROJECTID }}
-        FIREBASE_STORAGEBUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
-        FIREBASE_MESSAGESENDERID: ${{ secrets.FIREBASE_MESSAGESENDERID }}
-        FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
-        FIREBASE_MEASUREMENTID: ${{ secrets.FIREBASE_MEASUREMENTID }}
+        FIREBASE_CONFIG_PRD: ${{ secrets.FIREBASE_CONFIG_PRD }}
+        FIREBASE_CONFIG_DEV: ${{ secrets.FIREBASE_CONFIG_DEV }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
     - name: Deploy to Firebase Hosting
       uses: w9jds/firebase-action@master
