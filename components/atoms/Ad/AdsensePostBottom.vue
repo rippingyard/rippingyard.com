@@ -7,7 +7,8 @@
 export default {
   data() {
     return {
-      isProd: process.env.NODE_ENV === 'production' && window.location.hostname === 'www.rippingyard.com'
+      isProd: false
+      // isProd: process.env.NODE_ENV === 'production' && window.location.hostname === 'www.rippingyard.com'
     }
   }
 }
