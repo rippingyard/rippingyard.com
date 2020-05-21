@@ -31,6 +31,14 @@ export const state = () => ({
   posts: {}
 })
 
+export const mutations = {
+
+  setPost(state, { id, post }) {
+    state.posts[id] = post
+  }
+
+}
+
 export const actions = {
   async save({ commit, rootState }, { post, notification }) {
 
@@ -86,12 +94,13 @@ export const actions = {
 }
 
 export function normalize(id, post) {
-  // console.log(post)
   return Object.assign(
     post,
     {
       id: id,
       permalink: permalink(id),
+      parent: null,
+
       publishedAt: moment(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
       createdAt: moment(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
       updatedAt: moment(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),

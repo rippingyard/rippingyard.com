@@ -55,9 +55,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      normalize: 'post/normalize',
       getOwner: 'user/owner',
     }),
+    // setPost(id, post) {
+    //   return this.$store.commit('post/setPost', {
+    //     id: id,
+    //     post: post
+    //   })
+    // },
     getTitle() {
       return getTitle( this.post.content )
     },
@@ -80,37 +85,62 @@ export default {
       ]
     }
   },
-  async asyncData(context) {
+  async asyncData({ params, error, store }) {
 
     const r = {}
+    const postId = params.id// TODO: 無毒化 
 
-    await db
-      .collection('posts')
-      .doc(context.params.id)
-      .get()
-      .then(doc => {
-        r.post = normalize(doc.id, doc.data())
+    r.post = store.state.post.posts[postId]
 
-        r.post.parent = null
+    console.log('Post: Stored', store.state.post.posts)
 
-        r.post.owner = {
-          id: r.post.owner.id,
-        }
+    if( r.post ) {
 
-      })
-      .catch((e) => {
-        context.error({ statusCode: 404, message: 'ページが見つかりません' })
-      })
+      console.log('Post: Hit Cache', postId)
+
+    } else {
+
+      console.log('Post: No Cache', postId)
+
+      await db
+        .collection('posts')
+        .doc(postId)
+        .get()
+        .then(doc => {
+
+          r.post = normalize(doc.id, doc.data())
+
+          r.post.owner = {
+            id: r.post.owner.id,
+          }
+
+        })
+        .catch((e) => {
+          error({ statusCode: 404, message: 'ページが見つかりません' })
+        })
+    }
 
     return r
 
   },
   async mounted() {
 
-    if( this.post.owner.id ) {
-      this.post.owner = await this.getOwner(this.post.owner.id)
+    this.setPost(this.post.id, this.post)
+
+    if( this.post ) {
+      if( this.post.owner.id ) {
+        this.post.owner = await this.getOwner(this.post.owner.id)
+      }
     }
 
+  },
+  methods: {
+    setPost(id, post) {
+      return this.$store.commit('post/setPost', {
+        id: id,
+        post: post
+      })
+    },
   },
 
 }
