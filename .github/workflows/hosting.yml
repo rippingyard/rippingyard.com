@@ -33,6 +33,8 @@ jobs:
         FIREBASE_CONFIG_PRD: ${{ secrets.FIREBASE_CONFIG_PRD }}
         FIREBASE_CONFIG_DEV: ${{ secrets.FIREBASE_CONFIG_DEV }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+    - name: echo branch
+      run: echo ${{ github.ref }}
     - name: Deploy to Production
       uses: w9jds/firebase-action@master
       with:
@@ -43,7 +45,7 @@ jobs:
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting,functions
+        args: deploy --only hosting,functions --project default
       if: ${{ github.ref != 'master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
