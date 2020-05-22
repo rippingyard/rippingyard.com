@@ -8,8 +8,8 @@ process.env.DEBUG = 'nuxt:*'
 const app = express()
 
 const baConfig = {
-  user: process.env.BAUTH_USER || 'test',
-  password: process.env.BAUTH_PASSWORD || 'test'
+  user: functions.config().auth.user || 'user',
+  password: functions.config().auth.password || 'pwd'
 }
 
 if( functions.config().runtime.env !== 'production' ) {

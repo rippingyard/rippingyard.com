@@ -67,7 +67,7 @@ jobs:
     - name: Set env to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="develop" --project default
+        args: functions:config:set runtime.env="develop" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project default
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
