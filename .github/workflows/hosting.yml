@@ -25,8 +25,14 @@ jobs:
       run: yarn install
     - name: Test
       run: yarn test
-    - name: Init functions
+    - name: Init functions for production
       run: cd functions && npm install && npm run build
+      if: ${{ github.ref == 'refs/heads/master' }}
+    - name: Init functions for develop
+      run: cd functions && npm install && npm run build
+      env:
+        NODE_ENV: development
+      if: ${{ github.ref != 'refs/heads/master' }}
     - name: Generate html files for production
       run: yarn run build
       env:
