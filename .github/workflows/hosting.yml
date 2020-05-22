@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Deploy Hosting CI
+name: Deploy
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
     branches: [ master, develop ]
 
 jobs:
-  hosting:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,6 +25,8 @@ jobs:
       run: yarn install
     - name: Test
       run: yarn test
+    - name: Init functions
+      run: cd functions && npm install && npm run build
     - name: Generate html files for production
       run: yarn run build
       env:
@@ -42,49 +44,14 @@ jobs:
     - name: Deploy to Production
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting --project production
+        args: deploy --only hosting,functions --project production
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting --project default
+        args: deploy --only hosting,functions --project default
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-  functions:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: change workdir
-      run: cd functions
-    - name: Install dependencies
-      run: npm install
-    - name: Build
-      run:  npm run build
-    - name: echo branch
-      run: echo ${{ github.ref }}
-    - name: Deploy to Production
-      uses: w9jds/firebase-action@master
-      with:
-        args: deploy --only functions --project production
-      if: ${{ github.ref == 'refs/heads/master' }}
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-    - name: Deploy to Develop
-      uses: w9jds/firebase-action@master
-      with:
-        args: deploy --only functions --project default
-      if: ${{ github.ref != 'refs/heads/master' }}
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      
-
