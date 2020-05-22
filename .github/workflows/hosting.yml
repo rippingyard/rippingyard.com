@@ -27,11 +27,16 @@ jobs:
       run: yarn test
     - name: Init functions for production
       run: cd functions && npm install && npm run build
+      env:
+        BAUTH_USER: ${{ secrets.BAUTH_USER }}
+        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
       if: ${{ github.ref == 'refs/heads/master' }}
     - name: Init functions for develop
       run: cd functions && npm install && npm run build
       env:
         NODE_ENV: development
+        BAUTH_USER: ${{ secrets.BAUTH_USER }}
+        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
       if: ${{ github.ref != 'refs/heads/master' }}
     - name: Generate html files for production
       run: yarn run build
