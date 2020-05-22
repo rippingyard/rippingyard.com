@@ -53,7 +53,7 @@ jobs:
     - name: Set env to Production
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="production" --project production
+        args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
