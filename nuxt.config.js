@@ -2,8 +2,7 @@ const pkg = require('./package')
 
 require('dotenv').config()
 
-let fbconfig_env = process.env.NODE_ENV === 'production' ? process.env.FIREBASE_CONFIG_PRD : process.env.FIREBASE_CONFIG_DEV
-
+let fbconfig_env = process.env.FIREBASE_CONFIG
 if( fbconfig_env ) fbconfig_env = JSON.parse(fbconfig_env)
 
 const firebase_config = fbconfig_env || require('./env.json')
