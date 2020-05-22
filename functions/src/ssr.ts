@@ -11,7 +11,7 @@ const baConfig = {
   password: process.env.BAUTH_PASSWORD || 'test'
 }
 
-if( process.env.NODE_ENV != 'production' ) {
+if( process.env.NODE_ENV == 'production' ) {
 
   app.use(basicAuth( { authorizer: ryAuthorizer } ))
  
