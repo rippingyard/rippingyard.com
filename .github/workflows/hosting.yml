@@ -42,13 +42,12 @@ jobs:
     - name: Deploy to Production
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting,functions
-        hosting: production
-        if: ${{ github.ref == 'master' }}
+        args: deploy --only hosting,functions --project production
+      if: ${{ github.ref == 'master' }}
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting,functions
-        if: ${{ github.ref != 'master' }}
+      if: ${{ github.ref != 'master' }}
       
 
