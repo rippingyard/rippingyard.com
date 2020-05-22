@@ -12,7 +12,7 @@ const baConfig = {
   password: process.env.BAUTH_PASSWORD || 'test'
 }
 
-if( functions.config().env !== 'production' ) {
+if( functions.config().runtime.env !== 'production' ) {
 
   app.use(basicAuth( baConfig.user, baConfig.password ))
 
