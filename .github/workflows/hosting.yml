@@ -41,10 +41,11 @@ jobs:
       uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting,functions
+        hosting:
+          - production
+            if: ${{ github.ref }} == master
+          - staging
+            if: ${{ github.ref }} == develop
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        PROJECT_ID: production
-          if: ${{ github.ref }} == master
-        PROJECT_ID: staging
-          if: ${{ github.ref }} == develop
 
