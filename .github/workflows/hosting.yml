@@ -42,8 +42,6 @@ jobs:
       if: ${{ github.ref != 'refs/heads/master' }}
     - name: echo branch
       run: echo ${{ github.ref }}
-    - name: echo NODE_ENV
-      run: echo ${{ NODE_ENV }}
     - name: Deploy to Production
       uses: w9jds/firebase-action@master
       with:
