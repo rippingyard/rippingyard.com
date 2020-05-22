@@ -36,11 +36,14 @@ jobs:
     - name: Generate html files for develop
       run: yarn run build
       env:
+        NODE_ENV: development
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref != 'refs/heads/master' }}
     - name: echo branch
       run: echo ${{ github.ref }}
+    - name: echo NODE_ENV
+      run: echo ${{ process.env.NODE_ENV }}
     - name: Deploy to Production
       uses: w9jds/firebase-action@master
       with:

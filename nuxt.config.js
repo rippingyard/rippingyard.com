@@ -7,12 +7,11 @@ if( fbconfig_env ) fbconfig_env = JSON.parse(fbconfig_env)
 
 const firebase_config = fbconfig_env || require('./env.json')
 
-console.log(firebase_config)
-
 module.exports = {
   mode: 'universal',
 
   env: {
+    NODE_ENV: process.env.NODE_ENV,
     FIREBASE_CONFIG: firebase_config,
   },
 
