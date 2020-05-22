@@ -53,7 +53,7 @@ jobs:
     - name: Set env to Production
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set env="production"
+        args: functions:config:set env="production" --project default
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -67,7 +67,7 @@ jobs:
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting,functions --project default --set-env-vars NODE_ENV=development
+        args: deploy --only hosting,functions --project default
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
