@@ -34,7 +34,6 @@ jobs:
     - name: Init functions for develop
       run: cd functions && npm install && npm run build
       env:
-        NODE_ENV: development
         BAUTH_USER: ${{ secrets.BAUTH_USER }}
         BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
       if: ${{ github.ref != 'refs/heads/master' }}
@@ -67,3 +66,4 @@ jobs:
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        NODE_ENV: development
