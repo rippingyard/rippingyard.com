@@ -59,6 +59,13 @@ jobs:
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Set env to Develop
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set runtime.env="development"
+      if: ${{ github.ref != 'refs/heads/master' }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
