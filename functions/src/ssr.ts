@@ -1,28 +1,21 @@
 import * as express from 'express'
-// import * as basicAuth from 'express-basic-auth'
+const basicAuth = require('basic-auth-connect')
 const { Nuxt } = require('nuxt')
 
 process.env.DEBUG = 'nuxt:*'
 
 const app = express()
 
-// const baConfig = {
-//   user: process.env.BAUTH_USER || 'test',
-//   password: process.env.BAUTH_PASSWORD || 'test'
-// }
+const baConfig = {
+  user: process.env.BAUTH_USER || 'test',
+  password: process.env.BAUTH_PASSWORD || 'test'
+}
 
-// if( process.env.NODE_ENV == 'production' ) {
+if( process.env.NODE_ENV !== 'production' ) {
 
-//   app.use(basicAuth( { authorizer: ryAuthorizer } ))
- 
-//   function ryAuthorizer(username:string, password:string) {
-//     const userMatch = basicAuth.safeCompare(username, baConfig.user)
-//     const passwordMatch = basicAuth.safeCompare(password, baConfig.password)
- 
-//     return userMatch && passwordMatch
-//   }
+  app.use(basicAuth( baConfig.user, baConfig.password ))
 
-// }
+}
 
 const nuxt = new Nuxt({
   dev: false,

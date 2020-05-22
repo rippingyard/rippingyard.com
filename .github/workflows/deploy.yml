@@ -62,8 +62,7 @@ jobs:
     - name: Deploy to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting,functions --project default
+        args: deploy --only hosting,functions --project default --set-env-vars NODE_ENV=development
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        NODE_ENV: development
