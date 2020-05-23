@@ -1,4 +1,9 @@
 module.exports = {
+  globals: {
+    "FIREBASE_CONFIG": {
+      "apiKey": "sssssss"
+    }
+  },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',

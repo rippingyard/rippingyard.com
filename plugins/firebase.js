@@ -2,6 +2,8 @@ import firebase from 'firebase/app'
 
 const config = process.env.FIREBASE_CONFIG
 
+console.log(config)
+
 require('firebase/firestore')
 require('firebase/auth')
 require('firebase/storage')

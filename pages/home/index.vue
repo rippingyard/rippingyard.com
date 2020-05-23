@@ -1,7 +1,7 @@
 <template>
   <section class="main-content columns">
     <div class="container column is-6 is-offset-1">
-      <PostList :limit="100" />
+      <PostList :limit="100" :owner="me" />
     </div>
     <div class="container column is-5">
       <section class="section">
@@ -24,10 +24,18 @@ export default {
     InfoMe,
     PostList,
   },
+  data() {
+    return {
+      me: null
+    }
+  },
   head: () => {
     return {
       title: 'HOME'
     }
+  },
+  fetch() {
+    this.me = this.$store.state.auth.me.uid
   },
   mounted() {
 
@@ -41,6 +49,11 @@ export default {
       })
       this.$router.push('/signin')
     }
+
+    // console.log(this.$store.state.auth.me.uid)
+    // this.me = this.$store.state.auth.me.uid
+
+    // console.log('me', this.me)
 
   },
 }

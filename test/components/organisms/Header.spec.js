@@ -3,7 +3,7 @@ import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import Header from '~/components/organisms/Header'
 
 config.stubs['nuxt-link'] = RouterLinkStub
-config.stubs['SvgLogo'] = '<svg></svg>'
+config.stubs['SvgLogo'] = true
 
 // Vue.config.ignoredElements = ['SvgLogo', 'nuxt-link']
 

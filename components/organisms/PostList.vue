@@ -24,6 +24,10 @@ export default {
     limit: {
       type: Number,
       default: 12,
+    },
+    owner: {
+      type: String,
+      default: null,
     }
   },
   data() {
@@ -39,13 +43,18 @@ export default {
 
     this.isLoading = true
 
-    await db
+    let tlHandler = db
       .collection('timelines')
       .doc('public')
       .collection('posts')
+    
+    if( this.owner ) tlHandler = tlHandler.where('owner', '==', db.collection('users').doc(this.owner))
+
+    tlHandler = tlHandler
       .limit(this.limit)
       .orderBy('createdAt', 'desc')
-      .get()
+
+    await tlHandler.get()
       .then(qs => {
         qs.forEach(doc => {
           // console.log(doc.id)

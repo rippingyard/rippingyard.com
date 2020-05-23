@@ -1,6 +1,5 @@
 import vuex from 'vuex'
 import { auth } from '~/plugins/firebase'
-// import User from '~/models/User'
 
 export default function({ store, route, redirect }) {
   return new Promise(( resolve, reject ) => {
