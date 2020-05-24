@@ -99,6 +99,7 @@ export function normalize(id, post) {
     {
       id: id,
       permalink: permalink(id),
+      sociallink: sociallink(id),
       parent: null,
 
       publishedAt: moment(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
@@ -111,4 +112,9 @@ export function normalize(id, post) {
 
 export function permalink(id) {
   return '/post/' + id
+}
+
+export function sociallink(id) {
+  const domain = process.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app' : 'https://www.rippingyard.com'
+  return domain + permalink(id)
 }

@@ -10,6 +10,9 @@
         
         <article v-if="getTitle" class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
+
+          <AdBottom/>
+          <ShareButtons :href="post.sociallink" :title="getSocialTitle" />
         </article>
 
         <article v-else class="article no-title">
@@ -25,7 +28,7 @@
           </div>
         </article>
 
-        <AdBottom/>
+        
 
       </div>
 
@@ -42,11 +45,13 @@ import { normalize } from '~/store/post'
 import { getTitle, getSummary, removeTitle } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
+import ShareButtons from '~/components/molecules/Share/ShareButtons'
 
 export default {
   components: {
     Header,
     AdBottom,
+    ShareButtons,
   },
   data() {
     return {
@@ -65,6 +70,9 @@ export default {
     // },
     getTitle() {
       return getTitle( this.post.content )
+    },
+    getSocialTitle() {
+      return getTitle( this.post.content ) + ' - rippingyard'
     },
     getSummary() {
       return getSummary( this.post.content )
