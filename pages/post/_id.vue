@@ -90,6 +90,8 @@ export default {
         { hid: 'description', name: 'description', content: getSummary( context.post.content ) },
         { hid: 'og:description', property: 'og:description', content: getSummary( context.post.content ) },
         { hid: 'twitter:description', name: 'twitter:description', content: getSummary( context.post.content ) },
+        { hid: 'og:url', property: 'og:url', content: context.post.sociallink },
+        { hid: 'twitter:url', name: 'twitter:url', content: context.post.sociallink },
       ]
     }
   },
