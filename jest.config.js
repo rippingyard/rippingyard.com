@@ -1,9 +1,4 @@
 module.exports = {
-  globals: {
-    "FIREBASE_CONFIG": {
-      "apiKey": "sssssss"
-    }
-  },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
@@ -19,5 +14,8 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue'
+  ],
+  setupFiles: [
+    './test/jest.setup.js'
   ]
 }

@@ -1,11 +1,6 @@
 import Vue from 'vue'
-import { config, mount, RouterLinkStub } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Header from '~/components/organisms/Header'
-
-config.stubs['nuxt-link'] = RouterLinkStub
-config.stubs['SvgLogo'] = true
-
-// Vue.config.ignoredElements = ['SvgLogo', 'nuxt-link']
 
 describe('Header', () => {
 
@@ -24,7 +19,6 @@ describe('Header', () => {
         $isAuthenticated: () => { return false }
       },
     })
-    // console.log(wrapper.text())
     expect(/SIGN IN/.test(wrapper.text())).toBeTruthy()
     expect(/HOME/.test(wrapper.text())).toBeFalsy()
   })

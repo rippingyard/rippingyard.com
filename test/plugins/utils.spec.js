@@ -1,17 +1,11 @@
-// process.env.FIREBASE_CONFIG = {
-//   apiKey: 'tttttt'
-// }
-
-// import Vue from 'vue'
-// import { config, mount, RouterLinkStub } from '@vue/test-utils'
-// import { isAuthenticated } from '~/plugins/utils'
-
-console.log('TEST')
+import Vue from 'vue'
+// import { mount } from '@vue/test-utils'
+import { isAuthenticated } from '~/plugins/utils'
 
 describe('Utils', () => {
 
   test('isAuth', () => {
-    expect(false).toBeFalsy()
+    expect(isAuthenticated).toBeFalsy()
   })
 
 })

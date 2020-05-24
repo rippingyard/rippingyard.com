@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
-import PostList from '~/components/organisms/PostList'
+import Wysiwyg from '~/components/atoms/Wysiwyg'
 
-describe('PostList', () => {
+describe('Wysiwyg', () => {
 
   test('Vueのインスタンスである', () => {
-    const wrapper = mount(PostList)
+    const wrapper = mount(Wysiwyg)
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
 
