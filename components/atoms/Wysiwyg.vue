@@ -115,7 +115,7 @@ import {
   Bold,
   // Code,
   Italic,
-  Link,
+  // Link,
   // Strike,
   // Underline,
   History,
@@ -124,6 +124,7 @@ import {
 
 import Wysiwyg from '~/plugins/editor/Wysiwyg'
 import Title from '~/plugins/editor/Title'
+import Link from '~/plugins/editor/Link'
 
 export default {
   components: {
@@ -141,8 +142,9 @@ export default {
   },
   mounted(context) {
     this.editor = new Editor({
-      keepInBounds: true,
+      // keepInBounds: true,
       content: this.content,
+      // disablePasteRules: true,
       extensions: [
         new Blockquote(),
         // new BulletList(),
@@ -153,7 +155,9 @@ export default {
         // new OrderedList(),
         // new TodoItem(),
         // new TodoList(),
-        new Link({ openOnClick: false }),
+        new Link({
+          openOnClick: false,
+        }),
         new Bold(),
         // new Code(),
         new Italic(),

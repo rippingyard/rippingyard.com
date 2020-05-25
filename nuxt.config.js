@@ -61,6 +61,11 @@ module.exports = {
         content: 'https://www.rippingyard.com/img/ogimage.png'
       },
       {
+        hid: 'fb:app_id',
+        property: 'fb:app_id',
+        content: '374907709233344'
+      },
+      {
         hid: 'twitter:title',
         name: 'twitter:title',
         content:
@@ -88,7 +93,11 @@ module.exports = {
         content: 'summary_large_image'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: "stylesheet", href:"https://use.fontawesome.com/releases/v5.6.1/css/all.css"}
+    ]
+    
   },
 
   /*
@@ -100,10 +109,7 @@ module.exports = {
    ** Global CSS
    */
   css: [
-    // '@fortawesome/fontawesome-free',
-    // '@fortawesome/fontawesome-free/css/fontawesome.min.css',
-    // '@fortawesome/fontawesome-free/css/fa-regular.css',
-    // '@fortawesome/fontawesome-free/css/fa-solid.css',
+    // '@fortawesome/fontawesome-free/css/all.min.css',
     '~/assets/scss/app.scss'
   ],
 
@@ -111,6 +117,7 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/gtm',
     '~/plugins/utils',
   ],
 
@@ -118,9 +125,7 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
@@ -150,12 +155,6 @@ module.exports = {
       './assets/scss/mixins.scss',
     ]
   },
-
-  // jest: {
-  //   setupFiles: [
-  //     './jest.setup.js'
-  //   ],
-  // },
 
   /*
    ** Axios module configuration
