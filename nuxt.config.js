@@ -61,6 +61,11 @@ module.exports = {
         content: 'https://www.rippingyard.com/img/ogimage.png'
       },
       {
+        hid: 'fb:app_id',
+        property: 'fb:app_id',
+        content: '374907709233344'
+      },
+      {
         hid: 'twitter:title',
         name: 'twitter:title',
         content:
