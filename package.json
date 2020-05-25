@@ -35,9 +35,12 @@
     "nuxt-buefy": "^0.3.28",
     "nuxt-svg-loader": "^1.2.0",
     "nuxt-vuex-localstorage": "^1.2.6",
+    "query-string": "^6.12.1",
+    "sanitize-html": "^1.24.0",
     "sass-loader": "^8.0.2",
     "tiptap": "^1.26.6",
     "tiptap-extensions": "^1.28.6",
+    "url-parse": "^1.4.7",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@
 .belt {
   width: 105%;
   height: 600px;
-  background-color: $cyan;
+  background-color: $yellow;
   position: absolute;
   top: -320px;
 
