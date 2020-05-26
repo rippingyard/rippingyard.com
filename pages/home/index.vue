@@ -8,6 +8,7 @@
         <InfoMe/>
         <div class="buttons">
           <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+          <b-button tag="nuxt-link" to="/home/profile/edit">プロフィール編集</b-button>
         </div>
       </section>
     </div>
