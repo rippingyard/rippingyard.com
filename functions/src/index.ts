@@ -1,10 +1,12 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 
-export const ssr = functions.https.onRequest(require('./ssr'));
+export const ssr = functions.https.onRequest(require('./ssr'))
 
-admin.initializeApp(functions.config().firebase);
-const firestore = admin.firestore();
+// import thumbnailImage from './resizeImage'
+
+admin.initializeApp(functions.config().firebase)
+const firestore = admin.firestore()
 
 interface Post {
   readonly title: String

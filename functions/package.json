@@ -28,6 +28,7 @@
     "nuxt-buefy": "^0.3.28",
     "query-string": "^6.12.1",
     "sanitize-html": "^1.24.0",
+    "sharp": "^0.25.3",
     "url-parse": "^1.4.7",
     "vue-server-renderer": "^2.6.11",
     "vuex": "^3.3.0"
