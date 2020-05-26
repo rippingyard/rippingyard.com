@@ -1,21 +1,22 @@
 import * as express from 'express'
-// const basicAuth = require('basic-auth-connect')
+import * as functions from 'firebase-functions'
+const basicAuth = require('basic-auth-connect')
 const { Nuxt } = require('nuxt')
 
 process.env.DEBUG = 'nuxt:*'
 
 const app = express()
 
-// const baConfig = {
-//   user: functions.config().auth.user || 'user',
-//   password: functions.config().auth.password || 'pwd'
-// }
+const baConfig = {
+  user: functions.config().auth.user || 'user',
+  password: functions.config().auth.password || 'pwd'
+}
 
-// if( functions.config().runtime.env !== 'production' ) {
+if( functions.config().runtime.env !== 'production' ) {
 
-//   app.use(basicAuth( baConfig.user, baConfig.password ))
+  app.use(basicAuth( baConfig.user, baConfig.password ))
 
-// }
+}
 
 const nuxt = new Nuxt({
   dev: false,
