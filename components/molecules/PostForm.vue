@@ -1,6 +1,9 @@
 <template>
   <section>
     <Wysiwyg @update="updateContent" />
+    <div class="submenu">
+      <Uploader />
+    </div>
     <div class="console-bottom">
       <div class="container">
         <b-button
@@ -25,10 +28,12 @@
 
 import { mapActions } from 'vuex'
 import Wysiwyg from '~/components/atoms/Wysiwyg'
+import Uploader from '~/components/atoms/Uploader'
 
 export default {
   components: {
     Wysiwyg,
+    Uploader
   },
   data() {
     return {
