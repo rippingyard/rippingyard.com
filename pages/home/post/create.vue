@@ -18,7 +18,7 @@ export default {
   },
   head: () => {
     return {
-      title: 'HOME'
+      title: '新規投稿 - HOME'
     }
   },
   mounted() {
