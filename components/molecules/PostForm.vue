@@ -43,7 +43,7 @@ export default {
     },
     submitText: {
       type: String,
-      default: '新規追加',
+      default: '新規投稿',
     }
   },
   data() {
@@ -74,6 +74,8 @@ export default {
         content: this.content,
         isPublic: true,
       })
+
+      console.log(post)
 
       this.savePost({
         post,
