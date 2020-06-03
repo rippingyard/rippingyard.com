@@ -178,7 +178,6 @@ export default {
         new Placeholder({
           showOnlyCurrent: false,
           emptyNodeText: node => {
-            console.log('placeholder', node.type.name)
             if (node.type.name === 'title') {
               return '記事タイトル'
             }
