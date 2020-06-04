@@ -62,7 +62,7 @@ export const actions = {
 
     // TODO: slug
 
-    console.log('postdata', post)
+    // console.log('postdata', post)
 
     post.updatedAt = timestamp.now()
 
