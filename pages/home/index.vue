@@ -1,14 +1,19 @@
 <template>
   <section class="main-content columns">
-    <div class="container column is-6 is-offset-1">
-      <!-- TODO: Firebase Ruleがおかしいので、直したらisTimeline=falseに -->
-      <PostTable :limit="100" :owner="me" :isTimeline="true" />
-    </div>
-    <div class="container column is-5">
+    <div class="container column is-11 is-offset-1">
       <section class="section">
-        <InfoMe/>
-        <div class="buttons">
-          <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+        <div class="list">
+          <div class="list-container">
+          
+            <!-- TODO: Firebase Ruleがおかしいので、直したらisTimeline=falseに -->
+            <PostTable :limit="100" :owner="me" :isTimeline="true" />
+          
+            <InfoMe/>
+            <div class="buttons">
+              <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+            </div>
+          
+          </div>
         </div>
       </section>
     </div>

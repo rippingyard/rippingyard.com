@@ -1,44 +1,42 @@
 <template>
-  <section class="section">
-    <div class="list">
-      <div class="list-container">
-        <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
-        <b-table
-          ref="table"
-          :data="posts"
-          :default-sort="['createdAt', 'desc']"
-          per-page="999"
-          :striped="true"
-        >
+  <section>
+    
+    <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
+    <b-table
+      ref="table"
+      :data="posts"
+      :default-sort="['createdAt', 'desc']"
+      per-page="999"
+      :striped="true"
+    >
 
-          <template slot-scope="props">
+      <template slot-scope="props">
 
-            <b-table-column field="content" label="タイトル">
-              <strong><nuxt-link :to="props.row.permalink" target="_blank">{{ getTitle(props.row.content) }}</nuxt-link></strong>
-            </b-table-column>
+        <b-table-column field="content" label="タイトル">
+          <strong><nuxt-link :to="props.row.permalink" target="_blank">{{ getTitle(props.row.content) }}</nuxt-link></strong>
+        </b-table-column>
 
-            <b-table-column field="content" label="公開日">
-              <small>{{ props.row.publishedAt }}</small>
-            </b-table-column>
+        <b-table-column field="content" label="公開日">
+          <small>{{ props.row.publishedAt }}</small>
+        </b-table-column>
 
-            <b-table-column field="content" label="-">
-              <b-button size="is-small"
-                tag="nuxt-link"
-                :to="getEditLink(props.row.id)">
-                編集
-              </b-button>
-              <b-button size="is-small"
-                tag="a"
-                target="_blank"
-                :href="props.row.permalink">
-                表示
-              </b-button>
-            </b-table-column>
-          </template>
+        <b-table-column field="content" label="-">
+          <b-button size="is-small"
+            tag="nuxt-link"
+            :to="getEditLink(props.row.id)">
+            編集
+          </b-button>
+          <b-button size="is-small"
+            tag="a"
+            target="_blank"
+            :href="props.row.permalink">
+            表示
+          </b-button>
+        </b-table-column>
+      </template>
 
-        </b-table>
-      </div>
-    </div>
+    </b-table>
+        
   </section>
 </template>
 
