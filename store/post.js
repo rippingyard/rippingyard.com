@@ -26,7 +26,7 @@ export const scheme = {
   },
   isPublic:       false,
   isDeleted:      false,
-  publishedAt:    null,
+  publishedAt:    timestamp.now(),
   createdAt:      timestamp.now(),
   updatedAt:      timestamp.now(),
 }
@@ -44,7 +44,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async save({ commit, rootState }, { post, notification }) {
+  async save({ rootState }, { post, notification }) {
 
     // TODO: validation
     // TODO: auth処理
@@ -62,22 +62,30 @@ export const actions = {
 
     // TODO: slug
 
-    // TODO: create / update
+    // console.log('postdata', post)
 
-    const owner = await db.collection('users').doc(rootState.auth.me.uid)
+    post.updatedAt = timestamp.now()
 
-    await db.collection('posts').doc().set(Object.assign(scheme, {
-      content: post.content,
-      isPublic: post.isPublic,
-      owner: owner,
-      publishedAt: timestamp.now(),
-      createdAt: timestamp.now(),
-      updatedAt: timestamp.now(),
-    })).then(() => {
+    post.createdAt = post.createdAt ? timestamp.fromDate(post.createdAt) : timestamp.now()
+    post.publishedAt = post.publishedAt ? timestamp.fromDate(post.publishedAt) : timestamp.now()
+
+    if( !post.owner ) {
+      post.owner = await db.collection('users').doc(rootState.auth.me.uid)
+    } else if( post.owner.id ) {
+      post.owner = await db.collection('users').doc(post.owner.id)
+    }
+
+    
+
+    let dbHandler = db.collection('posts')
+
+    dbHandler = post.id ? dbHandler.doc(post.id) : dbHandler.doc()
+
+    await dbHandler.set(Object.assign(scheme, post)).then(() => {
       if( notification ) {
         notification.open({
           duration: 5000,
-          message: '記事を投稿しました',
+          message: post.id ? '記事を更新しました' : '記事を投稿しました',
           position: 'is-bottom-right',
           type: 'is-success',
           hasIcon: false
@@ -87,7 +95,7 @@ export const actions = {
       if( notification ) {
         notification.open({
           duration: 5000,
-          message: '記事の投稿に失敗しました',
+          message: post.id ? '記事の更新に失敗しました' : '記事の投稿に失敗しました',
           position: 'is-bottom-right',
           type: 'is-danger',
           hasIcon: false
@@ -105,11 +113,12 @@ export function normalize(id, post) {
       permalink: permalink(id),
       sociallink: sociallink(id),
       content: filterContent(post.content),
+      contentOriginal: post.content,
       parent: null,
 
-      publishedAt: moment(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
-      createdAt: moment(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
-      updatedAt: moment(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss'),
+      publishedAt: post.publishedAt ? moment(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss') : '',
+      createdAt: post.createdAt ? moment(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss') : '',
+      updatedAt: post.updatedAt ? moment(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss') : '',
       length: getLength( post.content )
     }
   )

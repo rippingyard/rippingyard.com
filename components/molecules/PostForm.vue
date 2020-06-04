@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Wysiwyg @update="updateContent" />
+    <Wysiwyg @update="updateContent" :post="post" />
     <div class="console-bottom">
       <div class="container">
         <b-button
@@ -8,7 +8,7 @@
           type="is-primary"
           inverted
           outlined>
-          新規追加
+          {{  submitText }}
         </b-button>
         <b-button
           type="is-text"
@@ -30,6 +30,22 @@ export default {
   components: {
     Wysiwyg,
   },
+  props: {
+    postId: {
+      type: String,
+      default: null,
+    },
+    post: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    submitText: {
+      type: String,
+      default: '新規投稿',
+    }
+  },
   data() {
     return {
       content: '',
@@ -48,19 +64,25 @@ export default {
       savePost: 'post/save'
     }),
     updateContent(content) {
+      console.log('Updated!', content)
       this.content = content
     },
     submit() {
 
-      const post = {
+      const post = Object.assign(this.post, {
+        id: this.postId,
         content: this.content,
         isPublic: true,
-      }
+      })
+
+      console.log(post)
 
       this.savePost({
         post,
         notification: this.$buefy.notification
       })
+
+      this.$router.push('/home')
 
     },
   }

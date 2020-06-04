@@ -131,16 +131,25 @@ export default {
     EditorContent,
     EditorMenuBubble,
   },
+  props: {
+    post: {
+      type: Object,
+      default: null,
+    }
+  },
   data() {
     return {
       editor: null,
-      content: this.content,
+      content: this.post ? this.post.content : '',
       linkUrl: null,
       linkMenuIsActive: false,
       keepInBounds: true,
     }
   },
   mounted(context) {
+
+    // console.log(context.content)
+
     this.editor = new Editor({
       // keepInBounds: true,
       content: this.content,
@@ -169,7 +178,6 @@ export default {
         new Placeholder({
           showOnlyCurrent: false,
           emptyNodeText: node => {
-            console.log('placeholder', node.type.name)
             if (node.type.name === 'title') {
               return '記事タイトル'
             }
