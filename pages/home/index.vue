@@ -1,7 +1,8 @@
 <template>
   <section class="main-content columns">
     <div class="container column is-6 is-offset-1">
-      <PostList :limit="100" :owner="me" />
+      <!-- TODO: Firebase Ruleがおかしいので、直したらisTimeline=falseに -->
+      <PostTable :limit="100" :owner="me" :isTimeline="true" />
     </div>
     <div class="container column is-5">
       <section class="section">
@@ -16,13 +17,13 @@
 
 <script>
 
-import PostList from '~/components/organisms/PostList'
+import PostTable from '~/components/organisms/PostTable'
 import InfoMe from '~/components/molecules/InfoMe'
 
 export default {
   components: {
     InfoMe,
-    PostList,
+    PostTable,
   },
   data() {
     return {

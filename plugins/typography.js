@@ -8,6 +8,7 @@ export const removeTitle = str => {
 }
 
 export const getTitle = str => {
+  if( !str ) return ''
   const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)
   if( htag ) {
     return removeHtmlTag(htag[0])
