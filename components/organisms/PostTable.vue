@@ -14,11 +14,11 @@
           <template slot-scope="props">
 
             <b-table-column field="content" label="タイトル">
-              <strong>{{ getTitle(props.row.content) }}</strong>
+              <strong><nuxt-link :to="props.row.permalink" target="_blank">{{ getTitle(props.row.content) }}</nuxt-link></strong>
             </b-table-column>
 
             <b-table-column field="content" label="公開日">
-              {{ props.row.publishedAt }}
+              <small>{{ props.row.publishedAt }}</small>
             </b-table-column>
 
             <b-table-column field="content" label="-">
