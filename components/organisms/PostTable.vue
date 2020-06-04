@@ -1,6 +1,5 @@
 <template>
   <section class="section">
-    <p class="menu-label is-hidden-touch">Latest Posts</p>
     <div class="list">
       <div class="list-container">
         <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
@@ -8,17 +7,32 @@
           ref="table"
           :data="posts"
           :default-sort="['createdAt', 'desc']"
-          sticky-header
-          paginated
           per-page="999"
-          pagination-position="both"
+          :striped="true"
         >
 
           <template slot-scope="props">
 
             <b-table-column field="content" label="タイトル">
               <strong>{{ getTitle(props.row.content) }}</strong>
-              <nuxt-link :to="getEditLink(props.row.id)">編集</nuxt-link>
+            </b-table-column>
+
+            <b-table-column field="content" label="公開日">
+              {{ props.row.publishedAt }}
+            </b-table-column>
+
+            <b-table-column field="content" label="-">
+              <b-button size="is-small"
+                tag="nuxt-link"
+                :to="getEditLink(props.row.id)">
+                編集
+              </b-button>
+              <b-button size="is-small"
+                tag="a"
+                target="_blank"
+                :href="props.row.permalink">
+                表示
+              </b-button>
             </b-table-column>
           </template>
 
