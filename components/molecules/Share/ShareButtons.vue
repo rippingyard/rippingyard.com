@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
 
 .share {
-  padding: 40px 0 150px;
+  padding: 40px 0 40px;
 }
 
 </style>

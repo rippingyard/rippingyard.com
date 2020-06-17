@@ -1,6 +1,7 @@
 <template>
   <section class="main-content columns">
-    <div class="container column is-11 is-offset-1">
+    <Belt/>
+    <div class="container column is-12">
       <section class="section">
         <div class="list">
           <div class="list-container">
@@ -24,11 +25,13 @@
 
 import PostTable from '~/components/organisms/PostTable'
 import InfoMe from '~/components/molecules/InfoMe'
+import Belt from '~/components/atoms/Belt/Global'
 
 export default {
   components: {
     InfoMe,
     PostTable,
+    Belt,
   },
   data() {
     return {

@@ -10,9 +10,9 @@
         
         <article v-if="getTitle" class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
-
-          <AdBottom/>
           <ShareButtons :href="post.sociallink" :title="getSocialTitle" />
+          <AdBottom/>
+          <!-- <PostList :limit="15" /> -->
         </article>
 
         <article v-else class="article no-title">
@@ -46,12 +46,14 @@ import { getTitle, getSummary, removeTitle } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 import ShareButtons from '~/components/molecules/Share/ShareButtons'
+// import PostList from '~/components/organisms/PostList'
 
 export default {
   components: {
     Header,
     AdBottom,
     ShareButtons,
+    // PostList,
   },
   data() {
     return {

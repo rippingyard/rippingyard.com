@@ -6,8 +6,8 @@
       ref="table"
       :data="posts"
       :default-sort="['createdAt', 'desc']"
-      per-page="999"
       :striped="true"
+      per-page="999"
     >
 
       <template slot-scope="props">
@@ -21,15 +21,17 @@
         </b-table-column>
 
         <b-table-column field="content" label="-">
-          <b-button size="is-small"
-            tag="nuxt-link"
-            :to="getEditLink(props.row.id)">
+          <b-button
+            :to="getEditLink(props.row.id)"
+            size="is-small"
+            tag="nuxt-link">
             編集
           </b-button>
-          <b-button size="is-small"
+          <b-button
+            :href="props.row.permalink"
+            size="is-small"
             tag="a"
-            target="_blank"
-            :href="props.row.permalink">
+            target="_blank">
             表示
           </b-button>
         </b-table-column>
