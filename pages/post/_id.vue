@@ -10,8 +10,8 @@
         
         <article v-if="getTitle" class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
-          <ShareButtons :href="post.sociallink" :title="getSocialTitle" />
           <AdBottom/>
+          <ShareButtons :href="post.sociallink" :title="getSocialTitle" />
           <!-- <PostList :limit="15" /> -->
         </article>
 
