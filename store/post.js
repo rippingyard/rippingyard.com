@@ -158,18 +158,36 @@ export function renderWidgets(content) {
     urlInfo = urlParse(url)
     queries = queryString.parse(urlInfo.query)
 
-    // console.log(urlInfo)
+    console.log(urlInfo)
 
-    if( urlInfo.hostname.match(/youtube\.com/) ) {
+    switch(urlInfo.hostname) {
 
-      if( queries.v ) {
-        console.log('youtubeId', queries.v)
+      case 'youtube.com':
+      case 'www.youtube.com':
+        if( queries.v ) {
+          console.log('youtubeId', queries.v)
+  
+          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
+  
+        }
+      break
 
-        html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
-
-      }
+      default:
+        html = `<a href="${ url }" target="_blank">${ url }</a>`
+      break
 
     }
+
+    // if( urlInfo.hostname.match(/youtube\.com/) ) {
+
+    //   if( queries.v ) {
+    //     console.log('youtubeId', queries.v)
+
+    //     html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
+
+    //   }
+
+    // }
 
     content = content.replace( url, html )
     
@@ -189,9 +207,7 @@ export function extractUrls( content ) {
 
   let urls = content.match( /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g )
 
-  if( urls ) {
-    urls = _.uniq(urls).sort()
-  }
+  if( urls ) urls = _.uniq(urls).sort()
 
   return urls
 
