@@ -42,7 +42,7 @@
 import { mapGetters } from 'vuex'
 import { db } from '~/plugins/firebase'
 import { normalize } from '~/store/post'
-import { getTitle, getSummary, removeTitle } from '~/plugins/typography'
+import { getTitle, getSocialTitle, getSummary, removeTitle, decodeEntities } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 import ShareButtons from '~/components/molecules/Share/ShareButtons'
@@ -64,17 +64,11 @@ export default {
     ...mapGetters({
       getOwner: 'user/owner',
     }),
-    // setPost(id, post) {
-    //   return this.$store.commit('post/setPost', {
-    //     id: id,
-    //     post: post
-    //   })
-    // },
     getTitle() {
       return getTitle( this.post.content )
     },
     getSocialTitle() {
-      return getTitle( this.post.content ) + ' - rippingyard'
+      return getSocialTitle( this.post.content ) + ' - rippingyard'
     },
     getSummary() {
       return getSummary( this.post.content )
@@ -85,7 +79,7 @@ export default {
   },
   head: (context) => {
     return {
-      title: getTitle( context.post.content ),
+      title: decodeEntities( getTitle( context.post.content )),
       meta: [
         { hid: 'og:title', property: 'og:title', content: getTitle( context.post.content ) },
         { hid: 'twitter:title', name: 'twitter:title', content: getTitle( context.post.content ) },

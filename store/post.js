@@ -2,9 +2,8 @@ import _ from 'lodash'
 import moment from 'moment'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
-import sanitizeHtml from 'sanitize-html'
 import { db, timestamp } from '~/plugins/firebase'
-import { getLength } from '~/plugins/typography'
+import { sanitize, stripTags, getLength } from '~/plugins/typography'
 
 export const scheme = {
   slug:           null,
@@ -178,17 +177,6 @@ export function renderWidgets(content) {
 
     }
 
-    // if( urlInfo.hostname.match(/youtube\.com/) ) {
-
-    //   if( queries.v ) {
-    //     console.log('youtubeId', queries.v)
-
-    //     html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
-
-    //   }
-
-    // }
-
     content = content.replace( url, html )
     
   })
@@ -210,32 +198,6 @@ export function extractUrls( content ) {
   if( urls ) urls = _.uniq(urls).sort()
 
   return urls
-
-}
-
-export function sanitize(content) {
-
-  return !content ? '' : sanitizeHtml(content, {
-    allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'b', 'i', 'em', 'a', 'blockquote', 'hr', 'ul', 'ol', 'li', 'br'],
-    allowedAttributes: {
-      a: [ 'href', 'name', 'target' ],
-    }
-  })
-
-}
-
-export function stripTags(content, linebreak = true) {
-
-  if( linebreak ) {
-    content = content.replace( /<\/p>/g, "</p>\n\n" )
-    content = content.replace( /<br \/>/g, "\n\n" )
-    content = content.replace( /<br\/>/g, "\n\n" )
-    content = content.replace( /<br>/g, "\n\n" )
-  }
-
-  return !content ? '' : sanitizeHtml(content, {
-    allowedTags: []
-  })
 
 }
 
