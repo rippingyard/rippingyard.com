@@ -2,7 +2,7 @@
   <div class="row">
     <div class="row-container">
       <nuxt-link :to="post.permalink">
-        <div v-if="getTitle" class="row-title">{{ getTitle }}</div>
+        <div v-if="getTitle" v-html="getTitle" class="row-title"></div>
         <div v-html="getSummary" class="row-summary"></div>
       </nuxt-link>
       <div class="row-footer">
@@ -17,7 +17,7 @@
 import { mapGetters } from 'vuex'
 import { db } from '~/plugins/firebase'
 
-import { getTitle, getSummary, getLength } from '~/plugins/typography'
+import { stripTags, getTitle, getSummary, getLength } from '~/plugins/typography'
 
 export default {
 
@@ -40,7 +40,7 @@ export default {
       getOwner: 'user/owner',
     }),
     getTitle() {
-      return getTitle( this.post.content )
+      return stripTags( getTitle( this.post.content ) )
     },
     getSummary() {
       return getSummary( this.post.content )
