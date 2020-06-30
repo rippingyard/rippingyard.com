@@ -74,8 +74,6 @@ export const actions = {
       post.owner = await db.collection('users').doc(post.owner.id)
     }
 
-    
-
     let dbHandler = db.collection('posts')
 
     dbHandler = post.id ? dbHandler.doc(post.id) : dbHandler.doc()
@@ -102,6 +100,35 @@ export const actions = {
       }
     })
   },
+  async delete({ rootState }, { id, notification }) {
+
+    console.log('delete:', id)
+
+    await db.collection('posts').doc(id).set({
+      isDeleted: true
+    }, { merge: true }).then(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事を削除しました',
+          position: 'is-bottom-right',
+          type: 'is-success',
+          hasIcon: false
+        })
+      }
+    }).catch(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事の削除に失敗しました',
+          position: 'is-bottom-right',
+          type: 'is-danger',
+          hasIcon: false
+        })
+      }
+    })
+
+  }
 }
 
 export function normalize(id, post) {

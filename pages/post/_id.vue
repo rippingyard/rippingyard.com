@@ -113,8 +113,15 @@ export default {
         .doc(postId)
         .get()
         .then(doc => {
+          
+          console.log(doc)
 
           r.post = normalize(doc.id, doc.data())
+
+          if( r.post.isDeleted === true ) {
+            r.post = {}
+            throw new Error()
+          }
 
           r.post.owner = {
             id: r.post.owner.id,
