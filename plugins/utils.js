@@ -4,6 +4,10 @@ const isAuthenticated = (store) => {
   return !store ? false : store.getters['auth/isAuthenticated']
 }
 
+const can = store => {
+  return !store ? false : store.getters['auth/can']
+}
+
 const signOut = (store) => {
   auth.signOut()
     .then(() => {

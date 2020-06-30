@@ -10,6 +10,7 @@
 
 <script>
 
+import { mapActions } from 'vuex'
 import PostForm from '~/components/molecules/PostForm'
 
 export default {
@@ -21,12 +22,12 @@ export default {
       title: '新規投稿 - HOME'
     }
   },
-  mounted() {
+  async mounted() {
 
-    if( !this.$isAuthenticated(this.$store) ) {
+    if( await !this.can('post.self') || !this.$isAuthenticated ) {
       this.$buefy.notification.open({
         duration: 5000,
-        message: 'ログインしてください',
+        message: '投稿権限がありません',
         position: 'is-bottom-right',
         type: 'is-danger',
         hasIcon: false
@@ -34,6 +35,11 @@ export default {
       this.$router.push('/signin')
     }
 
+  },
+  methods: {
+    ...mapActions({
+      can: 'auth/can'
+    })
   },
 }
 </script>

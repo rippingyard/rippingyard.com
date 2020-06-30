@@ -11,7 +11,7 @@
           
             <InfoMe/>
             <div class="buttons">
-              <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+              <b-button v-if="permissions.createPost" tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
             </div>
           
           </div>
@@ -23,6 +23,7 @@
 
 <script>
 
+import { mapActions } from 'vuex'
 import PostTable from '~/components/organisms/PostTable'
 import InfoMe from '~/components/molecules/InfoMe'
 import Belt from '~/components/atoms/Belt/Global'
@@ -35,7 +36,11 @@ export default {
   },
   data() {
     return {
-      me: null
+      me: null,
+      permissions: {
+        createPost: false,
+        login: false,
+      }
     }
   },
   head: () => {
@@ -46,24 +51,29 @@ export default {
   fetch() {
     this.me = this.$store.state.auth.me.uid
   },
-  mounted() {
+  async mounted() {
 
-    if( !this.$isAuthenticated(this.$store) ) {
+    this.permissions.login = await this.can('login')
+    this.permissions.createPost = await this.can('post.self')
+
+    if( !this.permissions.login || !this.$isAuthenticated ) {
+
       this.$buefy.notification.open({
         duration: 5000,
-        message: 'ログインしてください',
+        message: !this.$isAuthenticated ? 'ログインしてください' : '権限がありません',
         position: 'is-bottom-right',
         type: 'is-danger',
         hasIcon: false
       })
-      this.$router.push('/signin')
+
+      this.$router.push(!this.$isAuthenticated ? '/signin' : '/')
     }
 
-    // console.log(this.$store.state.auth.me.uid)
-    // this.me = this.$store.state.auth.me.uid
-
-    // console.log('me', this.me)
-
+  },
+  methods: {
+    ...mapActions({
+      can: 'auth/can'
+    })
   },
 }
 </script>
