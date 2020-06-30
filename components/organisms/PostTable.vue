@@ -22,17 +22,26 @@
 
         <b-table-column field="content" label="-">
           <b-button
+            v-if="isActive( props.row.id )"
             :to="getEditLink(props.row.id)"
             size="is-small"
             tag="nuxt-link">
             編集
           </b-button>
           <b-button
+            v-if="isActive( props.row.id )"
             :href="props.row.permalink"
             size="is-small"
             tag="a"
             target="_blank">
             表示
+          </b-button>
+          <b-button
+            v-if="isActive( props.row.id )"
+            @click="deleteP(props.row.id)"
+            size="is-small"
+            tag="button">
+            削除
           </b-button>
         </b-table-column>
       </template>
@@ -44,7 +53,8 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
+import _ from 'lodash'
+import { mapGetters, mapActions } from 'vuex'
 import { db } from '~/plugins/firebase'
 import { normalize } from '~/store/post'
 
@@ -66,11 +76,12 @@ export default {
     owner: {
       type: String,
       default: null,
-    }
+    },
   },
   data() {
     return {
       posts: [],
+      deletedItems: [],
       isLoading: false,
     }
   },
@@ -112,11 +123,32 @@ export default {
 
   },
   methods: {
+    ...mapActions({
+      deletePost: 'post/delete'
+    }),
     getTitle( content ) {
       return getTitle( content )
     },
-    getEditLink(id) {
+    getEditLink( id ) {
       return '/home/post/edit?id=' + id
+    },
+    isActive( id ) {
+      return !_.find(this.deletedItems, o => { return o.id === id })
+      // return this.deletedItems[id] !== 'deleted'
+    },
+    deleteP( id ) {
+      console.log('postId:', id)
+
+      this.deletedItems.push({
+        id: id,
+        status: 'deleted'
+      })
+
+      return this.deletePost({
+        id,
+        notification: this.$buefy.notification
+      })
+
     }
   },
 
