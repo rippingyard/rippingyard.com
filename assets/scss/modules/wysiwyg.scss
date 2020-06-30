@@ -16,7 +16,7 @@
   ul,
   ol,
   blockquote {
-    padding-bottom: 20px;
+    padding-bottom: 25px;
     font-size: 1rem;
   }
 
@@ -46,6 +46,19 @@
 
   h6 {
     font-size: 1.2rem;
+  }
+
+  blockquote {
+    border: 4px solid $black;
+    margin-bottom: 25px;
+    padding: 25px;
+
+    > p {
+      padding-bottom: 20px;
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
   }
 
   .widget-youtube {
