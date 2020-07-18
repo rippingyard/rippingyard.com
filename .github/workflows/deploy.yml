@@ -38,13 +38,13 @@ jobs:
         BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
       if: ${{ github.ref != 'refs/heads/master' }}
     - name: Generate html files for production
-      run: yarn run build
+      run: yarn run build && yarn run generate
       env:
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref == 'refs/heads/master' }}
     - name: Generate html files for develop
-      run: yarn run build
+      run: yarn run build && yarn run generate
       env:
         NODE_ENV: development
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
