@@ -1,5 +1,67 @@
 <template>
-  <div>
+  <div class="editor">
+
+    <editor-floating-menu
+      :editor="editor"
+      v-slot="{ commands, isActive, menu }"
+    >
+      <div
+        :class="{ 'is-active': menu.isActive }"
+        :style="`top: ${menu.top}px`"
+        class="editor__floating-menu"
+      >
+
+        <button
+          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+          @click="commands.heading({ level: 2 })"
+          class="menubar__button"
+        >
+          H2
+        </button>
+
+        <button
+          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+          @click="commands.heading({ level: 3 })"
+          class="menubar__button"
+        >
+          H3
+        </button>
+
+        <button
+          :class="{ 'is-active': isActive.bullet_list() }"
+          @click="commands.bullet_list"
+          class="menubar__button"
+        >
+          UL
+        </button>
+
+        <button
+          :class="{ 'is-active': isActive.ordered_list() }"
+          @click="commands.ordered_list"
+          class="menubar__button"
+        >
+          OL
+        </button>
+
+        <button
+          :class="{ 'is-active': isActive.blockquote() }"
+          @click="commands.blockquote"
+          class="menubar__button"
+        >
+          QUOTE
+        </button>
+
+        <button
+          :class="{ 'is-active': isActive.code_block() }"
+          @click="commands.code_block"
+          class="menubar__button"
+        >
+          CODE
+        </button>
+
+      </div>
+    </editor-floating-menu>
+
     <editor-menu-bubble
       :editor="editor"
       @hide="hideLinkMenu"
@@ -41,22 +103,6 @@
           </button>
 
           <button
-            :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-            @click="commands.heading({ level: 2 })"
-            class="menubar__button"
-          >
-            大見出し
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-            @click="commands.heading({ level: 3 })"
-            class="menubar__button"
-          >
-            小見出し
-          </button>
-
-          <button
             @click="showLinkMenu(getMarkAttrs('link'))"
             :class="{ 'is-active': isActive.link() }"
             class="menububble__button"
@@ -72,6 +118,21 @@
 </template>
 
 <style lang="scss">
+
+.editor {
+  &__floating-menu {
+    position: absolute;
+    z-index: 1;
+    margin-top: -0.25rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+    &.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
 
 .is-empty {
   &:first-child,
@@ -100,16 +161,17 @@ import {
   Editor,
   EditorContent,
   EditorMenuBubble,
+  EditorFloatingMenu,
 } from 'tiptap'
 
 import {
   Blockquote,
-  // BulletList,
-  // CodeBlock,
+  BulletList,
+  CodeBlock,
   HardBreak,
   Heading,
-  // ListItem,
-  // OrderedList,
+  ListItem,
+  OrderedList,
   // TodoItem,
   // TodoList,
   Bold,
@@ -130,6 +192,7 @@ export default {
   components: {
     EditorContent,
     EditorMenuBubble,
+    EditorFloatingMenu,
   },
   props: {
     post: {
@@ -156,12 +219,12 @@ export default {
       // disablePasteRules: true,
       extensions: [
         new Blockquote(),
-        // new BulletList(),
-        // new CodeBlock(),
+        new BulletList(),
+        new CodeBlock(),
         new HardBreak(),
         new Heading({ levels: [1, 2, 3] }),
-        // new ListItem(),
-        // new OrderedList(),
+        new ListItem(),
+        new OrderedList(),
         // new TodoItem(),
         // new TodoList(),
         new Link({

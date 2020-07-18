@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ title }}</h1>
+  <h1 v-html="sanitize(title)"></h1>
 </template>
 
 <style scoped lang="scss">
@@ -13,11 +13,18 @@ h1 {
 </style>
 
 <script>
+import { stripTags } from '~/plugins/typography'
+
 export default {
   props: {
     title: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    sanitize: str => {
+      return stripTags( str )
     }
   }
 }

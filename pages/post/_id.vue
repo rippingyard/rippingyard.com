@@ -10,9 +10,9 @@
         
         <article v-if="getTitle" class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
-
           <AdBottom/>
           <ShareButtons :href="post.sociallink" :title="getSocialTitle" />
+          <!-- <PostList :limit="15" /> -->
         </article>
 
         <article v-else class="article no-title">
@@ -42,16 +42,18 @@
 import { mapGetters } from 'vuex'
 import { db } from '~/plugins/firebase'
 import { normalize } from '~/store/post'
-import { getTitle, getSummary, removeTitle } from '~/plugins/typography'
+import { getTitle, getSocialTitle, getSummary, removeTitle, decodeEntities } from '~/plugins/typography'
 import Header from '~/components/molecules/PostHeader'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 import ShareButtons from '~/components/molecules/Share/ShareButtons'
+// import PostList from '~/components/organisms/PostList'
 
 export default {
   components: {
     Header,
     AdBottom,
     ShareButtons,
+    // PostList,
   },
   data() {
     return {
@@ -62,17 +64,11 @@ export default {
     ...mapGetters({
       getOwner: 'user/owner',
     }),
-    // setPost(id, post) {
-    //   return this.$store.commit('post/setPost', {
-    //     id: id,
-    //     post: post
-    //   })
-    // },
     getTitle() {
       return getTitle( this.post.content )
     },
     getSocialTitle() {
-      return getTitle( this.post.content ) + ' - rippingyard'
+      return getSocialTitle( this.post.content ) + ' - rippingyard'
     },
     getSummary() {
       return getSummary( this.post.content )
@@ -83,7 +79,7 @@ export default {
   },
   head: (context) => {
     return {
-      title: getTitle( context.post.content ),
+      title: decodeEntities( getTitle( context.post.content )),
       meta: [
         { hid: 'og:title', property: 'og:title', content: getTitle( context.post.content ) },
         { hid: 'twitter:title', name: 'twitter:title', content: getTitle( context.post.content ) },
@@ -117,8 +113,15 @@ export default {
         .doc(postId)
         .get()
         .then(doc => {
+          
+          console.log(doc)
 
           r.post = normalize(doc.id, doc.data())
+
+          if( r.post.isDeleted === true ) {
+            r.post = {}
+            throw new Error()
+          }
 
           r.post.owner = {
             id: r.post.owner.id,

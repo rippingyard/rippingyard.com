@@ -1,14 +1,20 @@
 <template>
   <section class="main-content columns">
-    <div class="container column is-6 is-offset-1">
-      <!-- TODO: Firebase Ruleがおかしいので、直したらisTimeline=falseに -->
-      <PostTable :limit="100" :owner="me" :isTimeline="true" />
-    </div>
-    <div class="container column is-5">
+    <Belt/>
+    <div class="container column is-12">
       <section class="section">
-        <InfoMe/>
-        <div class="buttons">
-          <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+        <div class="list">
+          <div class="list-container">
+          
+            <!-- TODO: Firebase Ruleがおかしいので、直したらisTimeline=falseに -->
+            <PostTable :limit="100" :owner="me" :isTimeline="true" />
+          
+            <InfoMe/>
+            <div class="buttons">
+              <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+            </div>
+          
+          </div>
         </div>
       </section>
     </div>
@@ -19,11 +25,13 @@
 
 import PostTable from '~/components/organisms/PostTable'
 import InfoMe from '~/components/molecules/InfoMe'
+import Belt from '~/components/atoms/Belt/Global'
 
 export default {
   components: {
     InfoMe,
     PostTable,
+    Belt,
   },
   data() {
     return {

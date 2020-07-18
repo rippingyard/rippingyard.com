@@ -1,36 +1,60 @@
 <template>
-  <section class="section">
-    <p class="menu-label is-hidden-touch">Latest Posts</p>
-    <div class="list">
-      <div class="list-container">
-        <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
-        <b-table
-          ref="table"
-          :data="posts"
-          :default-sort="['createdAt', 'desc']"
-          sticky-header
-          paginated
-          per-page="999"
-          pagination-position="both"
-        >
+  <section>
+    
+    <b-loading :active.sync="isLoading" :is-full-page="false"></b-loading>
+    <b-table
+      ref="table"
+      :data="posts"
+      :default-sort="['createdAt', 'desc']"
+      :striped="true"
+      per-page="999"
+    >
 
-          <template slot-scope="props">
+      <template slot-scope="props">
 
-            <b-table-column field="content" label="タイトル">
-              <strong>{{ getTitle(props.row.content) }}</strong>
-              <nuxt-link :to="getEditLink(props.row.id)">編集</nuxt-link>
-            </b-table-column>
-          </template>
+        <b-table-column field="content" label="タイトル">
+          <strong><nuxt-link :to="props.row.permalink" target="_blank">{{ getTitle(props.row.content) }}</nuxt-link></strong>
+        </b-table-column>
 
-        </b-table>
-      </div>
-    </div>
+        <b-table-column field="content" label="公開日">
+          <small>{{ props.row.publishedAt }}</small>
+        </b-table-column>
+
+        <b-table-column field="content" label="-">
+          <b-button
+            v-if="isActive( props.row.id )"
+            :to="getEditLink(props.row.id)"
+            size="is-small"
+            tag="nuxt-link">
+            編集
+          </b-button>
+          <b-button
+            v-if="isActive( props.row.id )"
+            :href="props.row.permalink"
+            size="is-small"
+            tag="a"
+            target="_blank">
+            表示
+          </b-button>
+          <b-button
+            v-if="isActive( props.row.id )"
+            @click="deleteP(props.row.id)"
+            size="is-small"
+            tag="button">
+            削除
+          </b-button>
+        </b-table-column>
+      </template>
+
+    </b-table>
+        
   </section>
 </template>
 
 <script>
 
-import { mapGetters } from 'vuex'
+import _ from 'lodash'
+import { mapGetters, mapActions } from 'vuex'
 import { db } from '~/plugins/firebase'
 import { normalize } from '~/store/post'
 
@@ -52,11 +76,12 @@ export default {
     owner: {
       type: String,
       default: null,
-    }
+    },
   },
   data() {
     return {
       posts: [],
+      deletedItems: [],
       isLoading: false,
     }
   },
@@ -98,11 +123,32 @@ export default {
 
   },
   methods: {
+    ...mapActions({
+      deletePost: 'post/delete'
+    }),
     getTitle( content ) {
       return getTitle( content )
     },
-    getEditLink(id) {
+    getEditLink( id ) {
       return '/home/post/edit?id=' + id
+    },
+    isActive( id ) {
+      return !_.find(this.deletedItems, o => { return o.id === id })
+      // return this.deletedItems[id] !== 'deleted'
+    },
+    deleteP( id ) {
+      console.log('postId:', id)
+
+      this.deletedItems.push({
+        id: id,
+        status: 'deleted'
+      })
+
+      return this.deletePost({
+        id,
+        notification: this.$buefy.notification
+      })
+
     }
   },
 

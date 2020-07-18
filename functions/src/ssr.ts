@@ -18,6 +18,8 @@ if( functions.config().runtime.env !== 'production' ) {
 
 }
 
+
+
 const nuxt = new Nuxt({
   dev: false,
   build: {
@@ -27,6 +29,7 @@ const nuxt = new Nuxt({
 
 app.use(async (req: any, res: any) => {
   await nuxt.renderRoute(req.url, { req }).then((result: any) => {
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
     res.send(result.html)
   }).catch((e: any) => {
     console.log(e)

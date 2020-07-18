@@ -21,9 +21,8 @@
         
         <article class="article">
           <div v-html="mainContent" class="wysiwyg"></div>
+          <AdBottom/>
         </article>
-
-        <AdBottom/>
 
       </div>
 

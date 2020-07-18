@@ -2,9 +2,8 @@ import _ from 'lodash'
 import moment from 'moment'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
-import sanitizeHtml from 'sanitize-html'
 import { db, timestamp } from '~/plugins/firebase'
-import { getLength } from '~/plugins/typography'
+import { sanitize, stripTags, getLength } from '~/plugins/typography'
 
 export const scheme = {
   slug:           null,
@@ -75,8 +74,6 @@ export const actions = {
       post.owner = await db.collection('users').doc(post.owner.id)
     }
 
-    
-
     let dbHandler = db.collection('posts')
 
     dbHandler = post.id ? dbHandler.doc(post.id) : dbHandler.doc()
@@ -103,6 +100,35 @@ export const actions = {
       }
     })
   },
+  async delete({ rootState }, { id, notification }) {
+
+    console.log('delete:', id)
+
+    await db.collection('posts').doc(id).set({
+      isDeleted: true
+    }, { merge: true }).then(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事を削除しました',
+          position: 'is-bottom-right',
+          type: 'is-success',
+          hasIcon: false
+        })
+      }
+    }).catch(() => {
+      if( notification ) {
+        notification.open({
+          duration: 5000,
+          message: '記事の削除に失敗しました',
+          position: 'is-bottom-right',
+          type: 'is-danger',
+          hasIcon: false
+        })
+      }
+    })
+
+  }
 }
 
 export function normalize(id, post) {
@@ -158,16 +184,23 @@ export function renderWidgets(content) {
     urlInfo = urlParse(url)
     queries = queryString.parse(urlInfo.query)
 
-    // console.log(urlInfo)
+    console.log(urlInfo)
 
-    if( urlInfo.hostname.match(/youtube\.com/) ) {
+    switch(urlInfo.hostname) {
 
-      if( queries.v ) {
-        console.log('youtubeId', queries.v)
+      case 'youtube.com':
+      case 'www.youtube.com':
+        if( queries.v ) {
+          console.log('youtubeId', queries.v)
+  
+          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
+  
+        }
+      break
 
-        html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${ queries.v }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
-
-      }
+      default:
+        html = `<a href="${ url }" target="_blank">${ url }</a>`
+      break
 
     }
 
@@ -189,37 +222,9 @@ export function extractUrls( content ) {
 
   let urls = content.match( /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g )
 
-  if( urls ) {
-    urls = _.uniq(urls).sort()
-  }
+  if( urls ) urls = _.uniq(urls).sort()
 
   return urls
-
-}
-
-export function sanitize(content) {
-
-  return !content ? '' : sanitizeHtml(content, {
-    allowedTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'b', 'i', 'em', 'a', 'blockquote', 'hr', 'ul', 'ol', 'li', 'br'],
-    allowedAttributes: {
-      a: [ 'href', 'name', 'target' ],
-    }
-  })
-
-}
-
-export function stripTags(content, linebreak = true) {
-
-  if( linebreak ) {
-    content = content.replace( /<\/p>/g, "</p>\n\n" )
-    content = content.replace( /<br \/>/g, "\n\n" )
-    content = content.replace( /<br\/>/g, "\n\n" )
-    content = content.replace( /<br>/g, "\n\n" )
-  }
-
-  return !content ? '' : sanitizeHtml(content, {
-    allowedTags: []
-  })
 
 }
 
