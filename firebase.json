@@ -15,10 +15,12 @@
   },
   "hosting": {
     "public": "dist/client",
-    "rewrites": [{
-      "source": "**",
-      "function": "ssr"
-    }],
+    "rewrites": [
+      {
+        "source": "/post/**",
+        "function": "ssr"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",

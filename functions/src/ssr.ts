@@ -18,6 +18,8 @@ if( functions.config().runtime.env !== 'production' ) {
 
 }
 
+
+
 const nuxt = new Nuxt({
   dev: false,
   build: {

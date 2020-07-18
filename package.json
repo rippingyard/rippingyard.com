@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
-    "fb": "yarn build:functions && yarn build && cross-env NODE_ENV=development firebase serve",
+    "fb": "yarn build:functions && yarn build && yarn generate && cross-env NODE_ENV=development firebase serve",
     "build:nuxt": "nuxt build",
     "build:functions": "cd ./functions && npm run build",
     "build": "nuxt build && rm -rf dist && mkdir -p dist && cp -R functions dist/server && cp -R .nuxt dist/server/ && cp -R static dist/client && mkdir -p dist/client/_nuxt && cp -R .nuxt/dist/client/* dist/client/_nuxt",

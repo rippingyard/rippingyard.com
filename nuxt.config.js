@@ -14,9 +14,10 @@ const firebase_config = fbconfig_env || require('./env.json')
 
 const firebase_api = `https://firestore.googleapis.com/v1/projects/${firebase_config.projectId}/databases/(default)/documents/`
 
-console.log(firebase_api)
+// console.log(firebase_api)
 
 module.exports = {
+  // mode: 'spa',
   mode: 'universal',
 
   env: {
@@ -240,6 +241,10 @@ module.exports = {
         }
       }
     ]
+  },
+
+  generate: {
+    dir: 'dist/client'
   },
 
   /*
