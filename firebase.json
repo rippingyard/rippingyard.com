@@ -19,6 +19,10 @@
       {
         "source": "/post/**",
         "function": "ssr"
+      },
+      {
+        "source": "/seeds/**",
+        "function": "ssr"
       }
     ],
     "ignore": [
