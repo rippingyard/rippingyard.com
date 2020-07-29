@@ -144,7 +144,8 @@ module.exports = {
     'nuxt-svg-loader',
     ['@nuxtjs/google-adsense', {
       id: process.env.GA_ADSENSE_ID,
-      pageLevelAds: true,
+      test: process.env.NODE_ENV !== 'production',
+      // pageLevelAds: true,
       // analyticsUacct: process.env.GA_TRACKING_ID,
       // analyticsDomainName: domain
     }],

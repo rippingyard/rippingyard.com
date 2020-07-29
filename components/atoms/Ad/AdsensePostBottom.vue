@@ -1,11 +1,6 @@
 <template>
   <div class="ad">
-    <div v-if="isProd">
-      <adsbygoogle ad-slot="2832620517" />
-    </div>
-    <div v-else>
-      ADS
-    </div>
+    <adsbygoogle ad-slot="2832620517" />
   </div>
 </template>
 <script>
