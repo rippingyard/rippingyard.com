@@ -29,14 +29,14 @@
     "nuxt-buefy": "^0.3.28",
     "query-string": "^6.12.1",
     "sanitize-html": "^1.24.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.2.2",
     "url-parse": "^1.4.7",
     "vue-server-renderer": "^2.6.11",
     "vuex": "^3.3.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.1.6",
-    "tslint": "^5.20.1",
-    "typescript": "^3.2.2"
+    "firebase-functions-test": "^0.1.6"
   },
   "private": true
 }
