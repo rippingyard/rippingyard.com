@@ -31,6 +31,8 @@ export default {
 
     const postId = query.id// TODO: 無毒化
 
+    if( !postId ) return r
+
     r.postId = postId
 
     await db
