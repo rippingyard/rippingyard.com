@@ -4,6 +4,7 @@
 // const normalize = require('./store/post')
 
 const axios = require('axios')
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 
 require('dotenv').config()
 
@@ -252,6 +253,15 @@ module.exports = {
    ** Build configuration
    */
   build: {
+
+    analyze: true,
+
+    vender: ['moment'],
+    plugins: [
+      new MomentLocalesPlugin({
+        localesToKeep: ['es-us', 'ja']
+      })
+    ],
 
     terser: {
       terserOptions: {

@@ -33,6 +33,7 @@
     "firebase": "^7.8.2",
     "minimist": ">=0.2.1",
     "moment": "^2.25.3",
+    "moment-locales-webpack-plugin": "^1.2.0",
     "node-sass": "^4.13.1",
     "nuxt": "^2.12.2",
     "nuxt-buefy": "^0.3.28",
