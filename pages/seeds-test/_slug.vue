@@ -34,10 +34,12 @@
 <script>
 
 import _ from 'lodash'
-import { db } from '~/plugins/firebase'
+// import { db } from '~/plugins/firebase'
+import axios from 'axios'
 import { getTitle, removeTitle } from '~/plugins/typography'
+import { filterContent } from '~/store/post'
 import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
-import Seeds from '~/assets/json/old/seeds.json'
+// import Seeds from '~/assets/json/old/seeds.json'
 import Title from '~/components/atoms/PostTitle'
 import Belt from '~/components/atoms/Belt/Readable'
 
@@ -86,7 +88,7 @@ export default {
       title: context.post.title
     }
   },
-  asyncData({ params, redirect, error }) {
+  async asyncData({ params, redirect, error }) {
 
     const r = {}
 
@@ -94,23 +96,33 @@ export default {
 
     if( !slug ) redirect('/')
 
-    console.log(slug)
+    await axios.get('https://storage.googleapis.com/ry-prd/old/seeds.json').then(res => {
 
-    const seed = _.filter(Seeds, o => { return o.slug === slug })
+      const seed = _.filter(res.data, o => {
+        // console.log('Item:', o[0]);
+        return o.slug === slug
+      })
 
-    if( seed.length < 1 ) {
+      if( seed.length < 1 ) {
+        // console.log(slug)
+        error({ statusCode: 404, message: 'ページが見つかりません' })
+        return r
+      }
+
+      console.log('Seed:', seed[0].title)
+
+      r.post = {
+        title: seed[0].title,
+        content: filterContent(seed[0].body),
+        user: seed[0].user_id,
+        publishedAt: seed[0].published_at,
+      }
+
+    }).catch(e => {
+      console.log(e)
       error({ statusCode: 404, message: 'ページが見つかりません' })
       return r
-    }
-
-    console.log(seed)
-
-    r.post = {
-      title: seed[0].title,
-      content: seed[0].body,
-      user: seed[0].user_id,
-      publishedAt: seed[0].published_at,
-    }
+    })
 
     return r
 
