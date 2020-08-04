@@ -189,6 +189,7 @@ export function renderWidgets(content) {
     switch(urlInfo.hostname) {
 
       case 'youtube.com':
+      case 'jp.youtube.com':
       case 'www.youtube.com':
         if( queries.v ) {
           console.log('youtubeId', queries.v)
