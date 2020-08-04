@@ -24,7 +24,7 @@
   width: 100%;
   height: 100%;
   position: fixed;
-  background-color: $orange;
+  background-color: $cyan;
   top: 0;
   left: 0;
   overflow: hidden;
