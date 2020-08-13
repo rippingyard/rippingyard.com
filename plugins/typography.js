@@ -63,7 +63,7 @@ export const decodeEntities = str => {
 
   if( !str ) return str
 
-  console.log('Before:', str)
+  // console.log('Before:', str)
 
   const entities = [
     ['amp',  '&'],
@@ -76,7 +76,7 @@ export const decodeEntities = str => {
     str = str.replace( '&quot;', '"' ).replace(new RegExp( '&' + entity[0] + ';', 'g' ), entity[1] )
   })
 
-  console.log('After:', str)
+  // console.log('After:', str)
   
   return str
 

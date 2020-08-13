@@ -3,6 +3,7 @@ import moment from 'moment'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
 import { db, timestamp } from '~/plugins/firebase'
+import { entityStore } from '~/store/entity'
 import { sanitize, stripTags, getLength } from '~/plugins/typography'
 
 export const scheme = {
@@ -12,10 +13,13 @@ export const scheme = {
   content:        null,
   status:         'published',
   parent:         null,
-  relatedEntities: null,
+  entities: {
+    byContent: [],
+    byUser: [],
+  },
   relatedPosts: {
-    byUser: null,
-    byTerm: null,
+    byUser: [],
+    byTerm: [],
     expiredAt: null,
   },
   counts: {
@@ -43,7 +47,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async save({ rootState }, { post, notification }) {
+  async save({ rootState, dispatch }, { post, notification }) {
 
     // TODO: validation
     // TODO: auth処理
@@ -58,6 +62,10 @@ export const actions = {
         })
       }
     }
+
+    const entities = post.entities || scheme.entities
+    entities.byContent = await dispatch('entity/getEntitiesFromContent', post.content, {root: true})
+    post.entities = entities
 
     // TODO: slug
 

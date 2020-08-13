@@ -64,7 +64,6 @@ export default {
       savePost: 'post/save'
     }),
     updateContent(content) {
-      console.log('Updated!', content)
       this.content = content
     },
     submit() {
@@ -82,7 +81,7 @@ export default {
         notification: this.$buefy.notification
       })
 
-      this.$router.push('/home')
+      // this.$router.push('/home') // テスト用にコメントアウト中
 
     },
   }

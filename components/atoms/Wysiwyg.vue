@@ -177,6 +177,7 @@ import { db } from '~/plugins/firebase'
 import Wysiwyg from '~/plugins/editor/Wysiwyg'
 import Title from '~/plugins/editor/Title'
 import Link from '~/plugins/editor/Link'
+import { normalize } from '~/store/post'
 
 export default {
   components: {
@@ -268,6 +269,7 @@ export default {
           onEnter: ({
             items, query, range, command, virtualNode,
           }) => {
+            console.log('start!')
             this.query = query
             this.filteredUsers = items
             this.suggestionRange = range
@@ -281,6 +283,7 @@ export default {
           onChange: ({
             items, query, range, virtualNode,
           }) => {
+            console.log('change!!:', query)
             this.query = query
             this.filteredUsers = items
             this.suggestionRange = range
@@ -289,6 +292,7 @@ export default {
           },
           // is called when a suggestion is cancelled
           onExit: () => {
+            console.log('canceled')
             // reset all saved values
             this.query = null
             this.filteredUsers = []
@@ -337,18 +341,23 @@ export default {
                 qs.forEach(doc => {
                   // console.log(doc.id)
                   // console.log(doc.data())
-                  posts.push(doc.data())
+                  posts.push(normalize(doc.id, doc.data()))
                 })
               })
 
-            console.log(posts)
+            // console.log(posts)
 
             const fuse = new Fuse(posts, {
               threshold: 0.2,
               keys: ['content'],
             })
 
-            return fuse.search(query).map(post => post.id)
+            // console.log('fused', fuse.search(query).map(post => {
+            //   console.log('fusing:', post)
+            //   return post.item
+            // }))
+
+            return fuse.search(query).map(post => post.item)
           },
         }),
 
@@ -418,7 +427,7 @@ export default {
         range: this.suggestionRange,
         attrs: {
           id: user.id,
-          label: user.name,
+          label: user.id,
         },
       })
       this.editor.focus()
@@ -449,7 +458,8 @@ export default {
     },
 
     destroyPopup() {
-      if (this.popup) {
+      if (this.popup.length > 0) {
+        console.log('popup', this.popup)
         this.popup[0].destroy()
         this.popup = null
       }
