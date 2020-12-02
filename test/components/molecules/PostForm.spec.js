@@ -34,9 +34,6 @@ describe('PostForm', () => {
   })
 
   test('ログインしている時に、新規投稿ボタンが表示される', () => {
-
-    let redirect = null
-
     const wrapper = mount(PostForm, {
       mocks: {
         $isAuthenticated: () => { return true }

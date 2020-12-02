@@ -22,7 +22,7 @@ export const scheme = {
 }
 
 export const actions = {
-  getEntitiesFromContent({ dispatch }, content) {
+  async getEntitiesFromContent({ dispatch }, content) {
 
     const string = stripTags(content)
   
@@ -31,9 +31,7 @@ export const actions = {
   
     if( !entities ) return []
   
-    console.log('fromContent', entities)
-  
-    entities.forEach( async rawEntity => {
+    await Promise.all(entities.map( async rawEntity => {
   
       const entity = rawEntity.replace('#', '')
   
@@ -48,7 +46,7 @@ export const actions = {
   
       newEntities.push(entity)
       
-    } )
+    } ))
   
     return newEntities
   
@@ -60,8 +58,6 @@ export const actions = {
     if( !rootState.auth.me ) return false
 
     // TODO: slug
-
-    console.log('entitydata', entity)
 
     entity.updatedAt = timestamp.now()
 
@@ -78,10 +74,12 @@ export const actions = {
 
     dbHandler = entity.id ? dbHandler.doc(entity.id) : dbHandler.doc()
 
-    await dbHandler.set(Object.assign(scheme, entity)).then(() => {
-      
+    // console.log('Here')
+
+    dbHandler.set(Object.assign(scheme, entity)).then(() => {
+      console.log('Success to save')
     }).catch(() => {
-      
+      console.log('Fail to save')
     })
   },
   // async delete({ rootState }, { id, notification }) {

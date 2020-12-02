@@ -8,7 +8,7 @@
           type="is-primary"
           inverted
           outlined>
-          {{  submitText }}
+          {{ submitText }}
         </b-button>
         <b-button
           type="is-text"
@@ -54,7 +54,7 @@ export default {
   mounted() {
 
     if( !this.$isAuthenticated(this.$store) ) {
-      console.log('Not Logined')
+      // console.log('Not Logined')
       this.$router.push('/')
     }
 

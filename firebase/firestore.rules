@@ -27,5 +27,9 @@ service cloud.firestore {
     	allow read;
       allow write: if isAuthenticated();
     }
+    match /entities/{userId} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
   }
 }
