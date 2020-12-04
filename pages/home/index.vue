@@ -12,6 +12,7 @@
             <InfoMe/>
             <div class="buttons">
               <b-button tag="nuxt-link" to="/home/post/create">新規投稿</b-button>
+              <b-button tag="nuxt-link" to="/home/entity/create">エンティティ投稿</b-button>
             </div>
           
           </div>

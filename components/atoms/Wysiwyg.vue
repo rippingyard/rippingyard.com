@@ -458,7 +458,7 @@ export default {
     },
 
     destroyPopup() {
-      if (this.popup.length > 0) {
+      if (this.popup) {
         console.log('popup', this.popup)
         this.popup[0].destroy()
         this.popup = null
