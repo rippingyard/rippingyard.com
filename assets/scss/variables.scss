@@ -1,0 +1,39 @@
+// Variables
+
+@import './paletton';
+
+
+// $section-padding: 84px 1.5rem 3rem;
+// $navbar-height: 84px;
+// $navbar-padding-vertical: 0;
+
+// Fonts
+
+$family-sans-serif: arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", osaka, メイリオ, meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+
+// Colors
+$white-ter:    hsl(0, 0%, 88%);
+$white-bis:    hsl(0, 0%, 90%);
+$white:        hsl(0, 0%, 96%);
+$white-transparent: hsla(0, 0%, 96%, 0%);
+
+$black:        #111;
+$orange:       hsl(14,  100%, 53%);
+$yellow:       $rgba-secondary-2-0;
+$yellow-transparent: $rgba-secondary-2-0-t;
+$green:        $rgba-secondary-2-2;
+$turquoise:    $rgba-secondary-1-2;
+$cyan:         #0FC8FF;
+// $cyan:         $rgba-secondary-1-1;
+$cyan-transparent:         $rgba-secondary-1-1-t;
+$blue:         $rgba-secondary-1-0;
+$purple:       $rgba-primary-0;
+$red:          $rgba-primary-0;
+
+$gap: 32px;
+$tablet: 769px;
+$desktop: 960px + (2 * $gap);
+$widescreen: 1152px + (2 * $gap);
+$widescreen-enabled: true;
+$fullhd: 1344px + (2 * $gap);
+$fullhd-enabled: true;

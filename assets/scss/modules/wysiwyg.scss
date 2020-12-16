@@ -1,0 +1,91 @@
+
+.ProseMirror,
+.wysiwyg {
+  // color: #111;
+  outline: none;
+  // font-size: 14px;
+  line-height: 1.8;
+  
+  a {
+    text-decoration: underline;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  ul,
+  ol,
+  blockquote {
+    padding-bottom: 25px;
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    padding-top: 3rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    padding-top: 2.2rem;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    padding-top: 1.8rem;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding-top: 1.4rem;
+  }
+
+  h5 {
+    font-size: 1.3rem;
+    padding-top: 1rem;
+  }
+
+  h6 {
+    font-size: 1.2rem;
+    padding-top: 0.8rem;
+  }
+
+  blockquote {
+    border: 4px solid $black;
+    margin-bottom: 25px;
+    padding: 25px;
+    font-family: serif;
+
+    > p {
+      padding-bottom: 20px;
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .widget-youtube {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding-top: 56.25%;
+
+    > iframe {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+  }
+
+}

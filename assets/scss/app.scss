@@ -1,0 +1,18 @@
+@import './variables';
+@import './mixins';
+
+body {
+  font-size: 16px;
+  background-color: rgb(255, 255, 255);
+}
+
+.container {
+  max-width: 780px;
+  margin: auto;
+}
+
+// @import './modules/list';
+// @import './modules/article';
+// @import './modules/box';
+@import './modules/wysiwyg';
+// @import './modules/editor';
