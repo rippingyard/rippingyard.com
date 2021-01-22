@@ -71,16 +71,16 @@ export default Vue.extend({
   },
   computed: {
     getTitle(): string {
-      return getTitle(this.post.content)
+      return getTitle((this as any).post.content)
     },
     getSocialTitle(): string {
-      return getSocialTitle(this.post.content) + ' - rippingyard'
+      return getSocialTitle((this as any).post.content) + ' - rippingyard'
     },
     getSummary(): string {
-      return getSummary(this.post.content)
+      return getSummary((this as any).post.content)
     },
     mainContent(): string {
-      return removeTitle(this.post.content)
+      return removeTitle((this as any).post.content)
     },
   },
   // async mounted({
@@ -100,47 +100,51 @@ export default Vue.extend({
   //   }
   // },
   methods: {
-    setPost(id, post): void {
+    setPost(id: string, post: Partial<Post>): void {
       return this.$store.commit('post/setPost', {
         id,
         post,
       })
     },
   },
-  head: ({ post }: { post: Post }) => {
+  head() {
     return {
-      title: decodeEntities(getTitle(post.content)),
+      title: decodeEntities(getTitle((this as any).post.content)),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle(post.content),
+          content: getTitle((this as any).post.content),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle(post.content),
+          content: getTitle((this as any).post.content),
         },
         {
           hid: 'description',
           name: 'description',
-          content: getSummary(post.content),
+          content: getSummary((this as any).post.content),
         },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: getSummary(post.content),
+          content: getSummary((this as any).post.content),
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: getSummary(post.content),
+          content: getSummary((this as any).post.content),
         },
-        { hid: 'og:url', property: 'og:url', content: post.sociallink },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: (this as any).post.sociallink,
+        },
         {
           hid: 'twitter:url',
           name: 'twitter:url',
-          content: post.sociallink,
+          content: (this as any).post.sociallink,
         },
       ],
     }
@@ -153,6 +157,17 @@ export default Vue.extend({
   font-size: 0.9rem;
   color: $gray-black;
   font-weight: 800;
+  position: relative;
+  &::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background-color: $gray-black;
+    top: 70px;
+    left: 0;
+    display: block;
+    position: absolute;
+  }
   > p {
     display: inline-block;
     .icon {

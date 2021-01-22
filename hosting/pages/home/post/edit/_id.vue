@@ -49,7 +49,10 @@ export default {
         console.log('before filter', r.post)
       })
       .catch(e => {
-        error({ statusCode: 404, message: 'ページが見つかりません' })
+        error({
+          statusCode: 404,
+          message: e.message || 'ページが見つかりません',
+        })
       })
 
     console.log('return value', r)

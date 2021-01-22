@@ -15,7 +15,7 @@
             class="menubar__button"
             @click="commands.heading({ level: 2 })"
           >
-            H2
+            <fa-icon icon="heading" class="icon" />
           </button>
 
           <button
@@ -31,7 +31,7 @@
             class="menubar__button"
             @click="commands.bullet_list"
           >
-            UL
+            <fa-icon icon="list" class="icon" />
           </button>
 
           <button
@@ -39,7 +39,7 @@
             class="menubar__button"
             @click="commands.ordered_list"
           >
-            OL
+            <fa-icon icon="list-ol" class="icon" />
           </button>
 
           <button
@@ -47,7 +47,7 @@
             class="menubar__button"
             @click="commands.blockquote"
           >
-            QUOTE
+            <fa-icon icon="quote-right" class="icon" />
           </button>
 
           <button
@@ -55,7 +55,7 @@
             class="menubar__button"
             @click="commands.code_block"
           >
-            CODE
+            <fa-icon icon="code" class="icon" />
           </button>
         </div>
       </editor-floating-menu>
@@ -175,7 +175,7 @@ import {
 import Wysiwyg from '~/plugins/editor/Wysiwyg'
 import Title from '~/plugins/editor/Title'
 import Link from '~/plugins/editor/Link'
-import { normalize } from '~/plugins/typography'
+import { normalize } from '~/services/post'
 
 export default {
   components: {
@@ -456,16 +456,30 @@ export default {
 <style lang="scss">
 .editor {
   min-height: 320px;
+  position: relative;
   &__floating-menu {
     position: absolute;
     z-index: 1;
-    margin-top: -0.25rem;
+    margin-top: -3rem;
     visibility: hidden;
     opacity: 0;
+    padding: 4px;
+    border: 1px solid $gray-black;
+    border-radius: 5px;
     transition: opacity 0.2s, visibility 0.2s;
+    background-color: $white;
     &.is-active {
       opacity: 1;
       visibility: visible;
+    }
+    .menubar__button {
+      padding: 5px;
+      border-radius: 3px;
+      line-height: 1;
+      &:hover {
+        cursor: pointer;
+        background-color: $yellow;
+      }
     }
   }
 }

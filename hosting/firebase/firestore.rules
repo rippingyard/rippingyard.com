@@ -1,0 +1,35 @@
+rules_version = '2';
+
+function isAuthenticated() {
+  return request.auth != null;
+}
+
+function isMine(userID) {
+  return request.auth.uid == userId;
+}
+
+function isPublished() {
+	return resource.data.status == 'published'
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	match /timelines/{document=**} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
+    match /posts/{postId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated()
+    }
+    match /users/{userId} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
+    match /entities/{userId} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
+  }
+}

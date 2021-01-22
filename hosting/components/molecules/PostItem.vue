@@ -41,6 +41,17 @@ export default Vue.extend({
   font-size: 0.8rem;
   font-weight: 800;
   color: $gray-black;
+  position: relative;
+  &::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background-color: $gray-black;
+    top: -10px;
+    left: 0;
+    display: block;
+    position: absolute;
+  }
   .icon {
     margin-right: 5px;
   }
@@ -53,6 +64,9 @@ a {
     color: $white;
     .footer {
       color: $white;
+      &::before {
+        background-color: $white;
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="block container">
     <Wysiwyg :post="post" @update="updateContent" />
     <div class="console">
       <div class="buttons">
@@ -56,11 +56,11 @@ export default {
     async submit() {
       try {
         const params = {
-          id: this.post ? this.post.id : null,
           content: this.content,
           isPublic: true,
         }
-        console.log(schemaPost.validate(params))
+        if (this.post.id) params.id = this.post.id
+        console.log('val', schemaPost.validate(params))
 
         const { error } = schemaPost.validate(params)
         if (!isEmpty(error)) {

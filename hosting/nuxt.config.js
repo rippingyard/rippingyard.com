@@ -151,8 +151,13 @@ export default {
     icons: {
       solid: [
         'faBold',
+        'faCode',
+        'faHeading',
         'faItalic',
         'faLink',
+        'faList',
+        'faListOl',
+        'faQuoteRight',
         'faTrashAlt',
         'faAngleRight',
         'faClock',

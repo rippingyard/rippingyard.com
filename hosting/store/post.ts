@@ -3,13 +3,20 @@
 // import urlParse from 'url-parse'
 // import queryString from 'query-string'
 import dayjs from 'dayjs'
-import { Store } from 'vuex'
-// import { db, timestamp } from '~/plugins/firebase'
+import { ActionContext } from 'vuex'
 // import { entityStore } from '~/store/entity'
 // import { sanitize, stripTags, getLength } from '~/plugins/typography'
 
 import { Post } from '~/types/post'
 import { State } from '~/types/state'
+
+interface ActionInterface {
+  save: (
+    { rootState }: ActionContext<any, any>,
+    { post }: { post: Post }
+  ) => void
+  $fire?: any
+}
 
 export const scheme = {
   slug: null,
@@ -49,8 +56,8 @@ export const mutations = {
   },
 }
 
-export const actions = {
-  async save({ rootState, dispatch }: Store<any>, { post }: { post: Post }) {
+export const actions: ActionInterface = {
+  async save({ rootState }, { post }) {
     try {
       // TODO: validation
       // TODO: auth処理
