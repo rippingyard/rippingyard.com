@@ -90,7 +90,7 @@ export const decodeEntities = (str: string) => {
     ['gt', '>'],
   ]
 
-  entities.forEach(entity => {
+  entities.map(entity => {
     str = str
       .replace('&quot;', '"')
       .replace(new RegExp('&' + entity[0] + ';', 'g'), entity[1])

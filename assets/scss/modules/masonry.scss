@@ -1,0 +1,10 @@
+.masonry {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & > li,
+  & > dd,
+  & > div {
+    width: 32%;
+  }
+}

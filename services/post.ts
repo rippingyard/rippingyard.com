@@ -3,40 +3,37 @@ import _ from 'lodash'
 import dayjs from 'dayjs'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
-import { sanitize, stripTags, getLength } from '~/plugins/typography'
+import { sanitize, stripTags } from '~/plugins/typography'
+import { Post } from '~/types/post'
 
-export type TPost = {
-  id: string
-  content: string
-  contentOriginal: string
-}
-
-export function normalize(id: string, post: TPost) {
+export function normalize(
+  id: string,
+  post: DocumentData | undefined
+): Partial<Post> {
+  if (!post) return {}
   return {
     ...post,
     ...{
       id,
-      //   permalink: permalink(id),
+      permalink: permalink(id),
       //   sociallink: sociallink(id),
       content: filterContent(post.content),
       contentOriginal: post.content,
       //   parent: null,
 
-      owner: '',
+      owner: undefined,
 
-      publishedAt: '',
-      createdAt: '',
-      updatedAt: '',
+      isDeleted: false,
 
-      //   publishedAt: post.publishedAt
-      //     ? dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm:ss')
-      //     : '',
-      //   createdAt: post.createdAt
-      //     ? dayjs(post.createdAt).format('YYYY-MM-DD HH:mm:ss')
-      //     : '',
-      //   updatedAt: post.updatedAt
-      //     ? dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm:ss')
-      //     : '',
+      publishedAt: post.publishedAt
+        ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+        : '',
+      createdAt: post.createdAt
+        ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+        : '',
+      updatedAt: post.updatedAt
+        ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+        : '',
       //   length: getLength(post.content),
     },
   }
@@ -70,10 +67,9 @@ export function renderWidgets(content: string) {
   urls.forEach(url => {
     html = url
     urlInfo = urlParse(url)
-    console.log(urlInfo.query)
-    queries = queryString.parse(urlInfo.query)
+    queries = queryString.parse(urlInfo.query.toString())
 
-    console.log(urlInfo)
+    console.log('URL Info', urlInfo)
 
     switch (urlInfo.hostname) {
       case 'youtube.com':

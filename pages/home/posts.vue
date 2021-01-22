@@ -1,0 +1,129 @@
+<template>
+  <section class="columns is-bordered">
+    <div class="column c20">
+      <ManageNav />
+    </div>
+    <div class="column c80">
+      <Table :data="posts">
+        <template slot-scope="props">
+          <TableColumn field="content" label="タイトル">
+            <strong
+              ><nuxt-link :to="props.row.permalink" target="_blank">{{
+                getTitle(props.row.content)
+              }}</nuxt-link></strong
+            >
+          </TableColumn>
+          <TableColumn field="content" label="公開日">
+            <small>{{ props.row.publishedAt }}</small>
+          </TableColumn>
+        </template>
+      </Table>
+    </div>
+  </section>
+</template>
+
+<script>
+import _ from 'lodash'
+import { mapActions } from 'vuex'
+// import { DocumentData } from '@firebase/firestore-types'
+import { normalize } from '~/services/post'
+
+import { getTitle } from '~/plugins/typography'
+
+export default {
+  // props: {
+  //   isTimeline: {
+  //     type: Boolean,
+  //     default: true,
+  //   },
+  //   limit: {
+  //     type: Number,
+  //     default: 12,
+  //   },
+  //   owner: {
+  //     type: String,
+  //     default: null,
+  //   },
+  // },
+  layout: 'manage',
+  // computed: {
+  //   ...mapGetters({
+  //     getOwner: 'user/owner',
+  //   }),
+  // },
+  async asyncData({ $fire }) {
+    const posts = []
+
+    const db = $fire.firestore.collection('posts')
+
+    // if (isTimeline) {
+    //   db = $fire.firestore
+    //     .collection('timelines')
+    //     .doc('public')
+    //     .collection('posts')
+    // } else {
+    //   db = $fire.firestore.collection('posts')
+    // }
+
+    // if (owner)
+    //   db = db.where(
+    //     'owner',
+    //     '==',
+    //     $fire.collection('users').doc(owner)
+    //   )
+
+    await db
+      .limit(1000)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then(qs => {
+        qs.forEach(doc => {
+          const post = doc.data()
+          if (post.isDeleted === true) return
+          console.log('owner', post.owner)
+          return posts.push(normalize(doc.id, post))
+        })
+      })
+
+    return {
+      posts,
+    }
+  },
+  data() {
+    return {
+      posts: [],
+      // deletedItems: [],
+      // isLoading: false,
+    }
+  },
+  methods: {
+    ...mapActions({
+      deletePost: 'post/delete',
+    }),
+    getTitle(content) {
+      return getTitle(content)
+    },
+    getEditLink(id) {
+      return `/home/post/edit/${id}`
+    },
+    isActive(id) {
+      return !_.find(this.deletedItems, o => {
+        return o.id === id
+      })
+    },
+    deleteP(id) {
+      console.log('postId:', id)
+
+      this.deletedItems.push({
+        id,
+        status: 'deleted',
+      })
+
+      return this.deletePost({
+        id,
+        notification: this.$buefy.notification,
+      })
+    },
+  },
+}
+</script>

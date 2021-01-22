@@ -2,14 +2,9 @@
 
 @import './paletton';
 
-
-// $section-padding: 84px 1.5rem 3rem;
-// $navbar-height: 84px;
-// $navbar-padding-vertical: 0;
-
 // Fonts
-
-$family-sans-serif: arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", osaka, メイリオ, meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+$font-normal: 'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+// $font-normal: arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", osaka, メイリオ, meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 
 // Colors
 $white-ter:    hsl(0, 0%, 88%);
@@ -17,7 +12,9 @@ $white-bis:    hsl(0, 0%, 90%);
 $white:        hsl(0, 0%, 96%);
 $white-transparent: hsla(0, 0%, 96%, 0%);
 
-$black:        #111;
+$black: #111;
+$gray: #EEE;
+$gray-black: #AAA;
 $orange:       hsl(14,  100%, 53%);
 $yellow:       $rgba-secondary-2-0;
 $yellow-transparent: $rgba-secondary-2-0-t;

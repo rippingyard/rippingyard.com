@@ -91,3 +91,4 @@ sw.*
 
 # Local
 env.json
+.vscode

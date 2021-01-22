@@ -1,0 +1,12 @@
+.block {
+
+  &.container {
+    max-width: 780px;
+    margin: auto;
+    &.is-wide {
+      max-width: 100%;
+      padding: 0 50px;
+    }
+  }
+
+}

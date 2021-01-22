@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :class="{ 'is-wide': isWide }">
+  <div class="header">
     <div class="brand">
       <nuxt-link to="/">
         <SvgLogo />
@@ -15,12 +15,6 @@ export default Vue.extend({
   components: {
     SvgLogo,
   },
-  props: {
-    isWide: {
-      type: Boolean,
-      default: false,
-    },
-  },
 })
 </script>
 
@@ -28,21 +22,27 @@ export default Vue.extend({
 .header {
   z-index: 10000;
   position: relative;
-  max-width: 780px;
-  margin: 40px auto 120px;
-
-  &.is-wide {
-    max-width: 100%;
-  }
+  width: 100%;
+  background-color: $gray;
+  // border-bottom: 1px solid $gray;
+  // margin: 40px auto 120px;
 
   .brand {
     // position: fixed;
     // top: 5px;
     // left: 5px;
+    width: 64px;
+
+    a {
+      display: block;
+      line-height: 1;
+      padding: 20px;
+      // border-right: 1px solid $gray;
+    }
 
     svg {
-      width: 30px;
-      height: 30px;
+      width: 22px;
+      height: 22px;
     }
   }
 }

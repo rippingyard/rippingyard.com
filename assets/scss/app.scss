@@ -1,18 +1,21 @@
 @import './variables';
 @import './mixins';
 
+html,
 body {
-  font-size: 16px;
-  background-color: rgb(255, 255, 255);
-}
-
-.container {
-  max-width: 780px;
-  margin: auto;
+  font-size: 14px;
+  line-height: 1.8;
+  font-family: $font-normal;
+  background-color: $white;
 }
 
 // @import './modules/list';
 // @import './modules/article';
 // @import './modules/box';
+@import './modules/block';
+@import './modules/badge';
+@import './modules/button';
+@import './modules/column';
+@import './modules/masonry';
 @import './modules/wysiwyg';
-// @import './modules/editor';
+@import './modules/editor';

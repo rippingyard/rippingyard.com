@@ -1,0 +1,27 @@
+.button {
+  padding: 10px 18px;
+  border: 2px solid $black;
+  font-weight: 800;
+  display: inline-block;
+
+  &:hover {
+    background-color: $yellow;
+    // color: $yellow;
+  }
+
+  &.no-border {
+    border: none;
+    &:hover {
+      background-color: transparent;
+      color: $gray-black;
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
