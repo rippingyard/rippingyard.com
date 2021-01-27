@@ -3,11 +3,17 @@ if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 
 // const fbAPI = `https://firestore.googleapis.com/v1/projects/${fbConfig.projectId}/databases/(default)/documents/`
 
+// console.log('FIRE_ENV', process.env.FIRE_ENV)
+
 export default {
   dev: process.env.NODE_ENV !== 'production',
 
+  ssr: true,
+  target: 'server',
+
   env: {
     NODE_ENV: process.env.NODE_ENV,
+    FIRE_ENV: process.env.FIRE_ENV,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -131,10 +137,29 @@ export default {
       {
         config: fbconfigEnv || require('./env.json').FIREBASE_CONFIG,
         services: {
-          auth: true,
-          firestore: true,
+          auth:
+            process.env.FIRE_ENV === 'local'
+              ? {
+                  emulatorPort: 9099,
+                  emulatorHost: 'http://localhost',
+                  disableEmulatorWarnings: true,
+                }
+              : true,
+          firestore:
+            process.env.FIRE_ENV === 'local'
+              ? {
+                  // enablePersistence: true,
+                  emulatorPort: 8080,
+                  emulatorHost: 'localhost',
+                  // settings: {
+                  //   host: 'localhost',
+                  //   ssl: false,
+                  // },
+                }
+              : true,
           storage: true,
         },
+        // onFirebaseHosting: true,
       },
     ],
     [
@@ -180,7 +205,7 @@ export default {
   },
 
   router: {
-    // middleware: ['auth'],
+    middleware: ['me'],
     linkExactActiveClass: 'is-current',
   },
 

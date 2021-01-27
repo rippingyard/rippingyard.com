@@ -5,6 +5,7 @@
     <div class="footer">
       <p class="date">
         <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+        {{ post.owner.displayName }}
       </p>
     </div>
   </article>
@@ -43,9 +44,9 @@ export default Vue.extend({
         .collection('posts')
         .doc(postId)
         .get()
-        .then(doc => {
+        .then(async doc => {
           console.log(doc)
-          r.post = normalize(doc.id, doc.data())
+          r.post = await normalize(doc.id, doc.data())
           if (r.post.isDeleted === true) {
             r.post = {}
             throw new Error('ページが見つかりません')

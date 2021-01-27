@@ -6,36 +6,51 @@ import queryString from 'query-string'
 import { sanitize, stripTags } from '~/plugins/typography'
 import { Post } from '~/types/post'
 
-export function normalize(
+export async function normalize(
   id: string,
   post: DocumentData | undefined
-): Partial<Post> {
+): Promise<Partial<Post>> {
   if (!post) return {}
-  return {
-    ...post,
-    ...{
-      id,
-      permalink: permalink(id),
-      //   sociallink: sociallink(id),
-      content: filterContent(post.content),
-      contentOriginal: post.content,
-      //   parent: null,
 
-      owner: undefined,
+  try {
+    let owner: null | DocumentData = null
+    // TODO: これはstore.userから持ってくること（キャッシュする）
+    // TODO: owner.createdAt、owner.updatedAtを正しく処理する
+    if (post.owner) {
+      await post.owner.get().then((doc: any) => {
+        owner = doc.data()
+        console.log('Normalize Owner', owner)
+      })
+    }
 
-      isDeleted: false,
+    return {
+      ...post,
+      ...{
+        id,
+        permalink: permalink(id),
+        //   sociallink: sociallink(id),
+        content: filterContent(post.content),
+        contentOriginal: post.content,
+        //   parent: null,
 
-      publishedAt: post.publishedAt
-        ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
-        : '',
-      createdAt: post.createdAt
-        ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
-        : '',
-      updatedAt: post.updatedAt
-        ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
-        : '',
-      //   length: getLength(post.content),
-    },
+        owner,
+
+        isDeleted: false,
+
+        publishedAt: post.publishedAt
+          ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          : '',
+        createdAt: post.createdAt
+          ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          : '',
+        updatedAt: post.updatedAt
+          ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          : '',
+        //   length: getLength(post.content),
+      },
+    }
+  } catch (e) {
+    return Promise.reject(e)
   }
 }
 

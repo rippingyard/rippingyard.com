@@ -86,11 +86,15 @@ export const actions: ActionInterface = {
         ? dayjs(post.publishedAt).toDate()
         : dayjs().toDate()
 
-      // if (!post.owner) {
-      //   post.owner = await db.collection('users').doc(rootState.auth.me.uid)
-      // } else if (post.owner.id) {
-      //   post.owner = await db.collection('users').doc(post.owner.id)
-      // }
+      if (!post.owner) {
+        post.owner = await this.$fire.firestore
+          .collection('users')
+          .doc(rootState.auth.me.uid)
+      } else if (post.owner.id) {
+        post.owner = await this.$fire.firestore
+          .collection('users')
+          .doc(post.owner.id)
+      }
 
       let db = this.$fire.firestore.collection('posts')
 

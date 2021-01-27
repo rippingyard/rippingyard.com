@@ -4,9 +4,7 @@
       <ManageNav />
     </div>
     <main class="column c80">
-      <div class="heading">
-        <h2>記事編集</h2>
-      </div>
+      <ManageHeading label="記事編集" />
       <div class="form">
         <PostForm :post="post" submit-label="記事更新" />
       </div>
@@ -17,6 +15,7 @@
 <script>
 export default {
   layout: 'manage',
+  middleware: ['auth'],
   async asyncData({ $fire, params, error }) {
     const r = {}
 
@@ -79,18 +78,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.heading {
-  h2 {
-    font-size: 0.8rem;
-    font-weight: 800;
-    line-height: 1;
-    color: $gray-black;
-    background-color: $gray;
-    // border-bottom: 4px solid $gray-black;
-    padding: 30px;
-    display: inline-block;
-  }
-}
 .form {
   padding: 10px 60px 60px;
 }

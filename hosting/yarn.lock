@@ -2014,14 +2014,14 @@
     consola "^2.11.3"
     eslint-loader "^4.0.2"
 
-"@nuxtjs/firebase@^7.1.2":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/firebase/-/firebase-7.1.2.tgz#95ac5b99f8b38aaa871c00b5f995a8b2a92b6eb8"
-  integrity sha512-1Zw7q1K3L5GGWZbflBtULlqeIMM2V8MZU5YA8Vqbivpuh6jhHPnhOXzicLtuSd5n7BVizDrBN0S890S8FYm9Jg==
+"@nuxtjs/firebase@^7.4.1":
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/firebase/-/firebase-7.4.1.tgz#b654ab7a022d43da9e9f492eb142728cfa3fe61f"
+  integrity sha512-u8H+0uRYQYDIG9XX6CTvz7lynB58kBjmBfrwgVpGZPqjMI+u/XvKTq9RZWGp5c3P1142UpIluWiVBUrESNmT6g==
   dependencies:
     consola "^2.15.0"
   optionalDependencies:
-    firebase-admin "^9.4.1"
+    firebase-admin "^9.4.2"
 
 "@nuxtjs/fontawesome@^1.1.2":
   version "1.1.2"
@@ -6327,7 +6327,7 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-firebase-admin@^9.4.1:
+firebase-admin@^9.4.2:
   version "9.4.2"
   resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-9.4.2.tgz#190d5d7ca5e3f251d99503feb6e05e7ab1623851"
   integrity sha512-mRnBJbW6BAz6DJkZ0GOUTkmnmCrwVzMreMc6O+RXWukFydOzi5Xr6TKSiPKxoOQw41r9IluP2AZ3Qzvlx2SR+g==

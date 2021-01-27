@@ -7,14 +7,19 @@ export type RootState = {
 
 export type State = {
   auth: AuthState
-  posts: {
-    [id: string]: Post
-  }
-  users: {
-    [id: string]: User
-  }
+  posts: PostState
+  users: UserState
 }
 
 export type AuthState = {
   me: null | User
+  redirectPath: string
+}
+
+export type UserState = {
+  [id: string]: User
+}
+
+export type PostState = {
+  [id: string]: Post
 }

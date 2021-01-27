@@ -4,9 +4,7 @@
       <ManageNav />
     </div>
     <main class="column c80">
-      <div class="heading">
-        <h2>新規投稿</h2>
-      </div>
+      <ManageHeading label="新規投稿" />
       <div class="form">
         <PostForm />
       </div>
@@ -17,6 +15,7 @@
 <script>
 export default {
   layout: 'manage',
+  middleware: ['auth'],
   mounted() {
     if (!this.$isAuthenticated(this.$store)) {
       // this.$buefy.notification.open({
@@ -37,18 +36,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.heading {
-  h2 {
-    font-size: 0.8rem;
-    font-weight: 800;
-    line-height: 1;
-    color: $gray-black;
-    background-color: $gray;
-    // border-bottom: 4px solid $gray-black;
-    padding: 30px;
-    display: inline-block;
-  }
-}
 .form {
   padding: 10px 60px 60px;
 }

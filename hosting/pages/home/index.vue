@@ -2,6 +2,7 @@
   <section class="columns">
     <div class="column c20">
       <ManageNav />
+      <p>{{ me }}</p>
     </div>
     <div class="column c80">
       <div class="block container">
@@ -43,28 +44,6 @@
   </section>
 </template>
 
-<style lang="scss" scoped>
-.heading {
-  padding: 30px;
-  h1 {
-    font-size: 2rem;
-    color: $gray-black;
-  }
-}
-.box {
-  padding: 0 30px;
-  border-left: 4px solid $black;
-  margin-bottom: 60px;
-  h2 {
-    line-height: 1;
-    padding-top: 0;
-  }
-  .button {
-    text-decoration: none;
-  }
-}
-</style>
-
 <script>
 // import PostTable from '~/components/organisms/PostTable'
 // import InfoMe from '~/components/molecules/InfoMe'
@@ -73,13 +52,14 @@
 export default {
   layout: 'manage',
   fetch() {
-    this.me = this.$store.state.auth.me.uid
+    this.me = this.$store.state.auth.me
   },
   data() {
     return {
       me: null,
     }
   },
+  middleware: ['auth'],
   mounted() {
     if (!this.$isAuthenticated(this.$store)) {
       // this.$buefy.notification.open({
@@ -104,3 +84,25 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.heading {
+  padding: 30px;
+  h1 {
+    font-size: 2rem;
+    color: $gray-black;
+  }
+}
+.box {
+  padding: 0 30px;
+  border-left: 4px solid $black;
+  margin-bottom: 60px;
+  h2 {
+    line-height: 1;
+    padding-top: 0;
+  }
+  .button {
+    text-decoration: none;
+  }
+}
+</style>

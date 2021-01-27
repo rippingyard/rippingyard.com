@@ -18,17 +18,11 @@ export default Vue.extend({
   },
   created() {
     if (this.isAuthenticated) {
-      // this.$buefy.notification.open({
-      //   duration: 5000,
-      //   message: 'ログイン済みです',
-      //   position: 'is-bottom-right',
-      //   type: 'is-warning',
-      //   hasIcon: false
-      // })
-      this.$router.push('/')
+      console.log('login', this.$store.state.auth.redirectPath)
+      this.$router.push(this.$store.state.auth.redirectPath)
     }
   },
-  head: () => {
+  head() {
     return {
       title: 'Login',
     }

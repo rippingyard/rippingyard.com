@@ -4,7 +4,7 @@
       <ManageNav />
     </div>
     <div class="column c80">
-      <PostTable :data="posts">
+      <EntityTable :data="posts">
         <template slot-scope="props">
           <TableColumn field="content" label="タイトル">
             <strong
@@ -17,7 +17,7 @@
             <small>{{ props.row.publishedAt }}</small>
           </TableColumn>
         </template>
-      </PostTable>
+      </EntityTable>
     </div>
   </section>
 </template>
@@ -52,16 +52,10 @@ export default {
   //     getOwner: 'user/owner',
   //   }),
   // },
-  async asyncData({ $fire, store }) {
+  async asyncData({ $fire }) {
     const posts = []
 
-    const db = $fire.firestore
-      .collection('posts')
-      .where(
-        'owner',
-        '==',
-        $fire.firestore.collection('users').doc(store.state.auth.me.uid)
-      )
+    const db = $fire.firestore.collection('posts')
 
     // if (isTimeline) {
     //   db = $fire.firestore
@@ -72,23 +66,25 @@ export default {
     //   db = $fire.firestore.collection('posts')
     // }
 
-    let promises = []
+    // if (owner)
+    //   db = db.where(
+    //     'owner',
+    //     '==',
+    //     $fire.collection('users').doc(owner)
+    //   )
+
     await db
       .limit(1000)
       .orderBy('createdAt', 'desc')
       .get()
       .then(qs => {
-        promises = qs.docs.map(async doc => {
+        qs.forEach(doc => {
           const post = doc.data()
           if (post.isDeleted === true) return
-          const normalizedPost = await normalize(doc.id, post)
-          return posts.push(normalizedPost)
+          console.log('owner', post.owner)
+          return posts.push(normalize(doc.id, post))
         })
       })
-
-    await Promise.all(promises)
-
-    console.log('Posts:', posts)
 
     return {
       posts,

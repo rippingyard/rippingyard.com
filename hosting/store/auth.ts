@@ -13,6 +13,7 @@ interface ActionInterface {
 
 export const state = () => ({
   me: null,
+  redirectPath: '',
 })
 
 export type RootState = ReturnType<typeof state>
@@ -24,10 +25,14 @@ export const mutations = {
   removeMe(state: AuthState): void {
     state.me = null
   },
+  storePath(state: AuthState, path: string) {
+    state.redirectPath = path
+  },
 }
 
 export const actions: ActionInterface = {
-  logout({ commit }: Store<any>) {
+  logout({ commit, state }: Store<any>) {
+    console.log('LOGOUT!', state)
     commit('removeMe')
   },
   async login({ commit }: Store<any>, { email, password }: LoginParams) {
@@ -54,7 +59,7 @@ export const actions: ActionInterface = {
 
 export const getters = {
   isAuthenticated(state: AuthState) {
-    console.log('state', state.me)
+    console.log('Me', state.me)
     return !!state.me
   },
 }

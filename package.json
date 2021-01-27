@@ -1,0 +1,11 @@
+{
+  "name": "rippingyard.com",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:rippingyard/rippingyard.com.git",
+  "author": "mcatm <tkcs@pelepop.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:emulator": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit"
+  }
+}

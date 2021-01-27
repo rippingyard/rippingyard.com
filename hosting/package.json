@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
+    "dev": "FIRE_ENV=local nuxt-ts",
+    "dev:staging": "nuxt-ts",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
@@ -26,7 +27,7 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.2",
-    "@nuxtjs/firebase": "^7.1.2",
+    "@nuxtjs/firebase": "^7.4.1",
     "@types/lodash": "^4.14.165",
     "@types/sanitize-html": "^1.27.0",
     "@types/url-parse": "^1.4.3",

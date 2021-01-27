@@ -7,7 +7,7 @@ export type Post = {
   createdAt: string | Date
   publishedAt: string | Date
   updatedAt: string | Date
-  owner?: User
+  owner?: User | null
   isDeleted: boolean
   sociallink?: string
 }
