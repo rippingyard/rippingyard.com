@@ -2,10 +2,12 @@
   <article class="block container">
     <Header :post="post" />
     <Content v-html="post.content" />
+    <div v-if="post.owner" class="owner">
+      <UserCard :user="post.owner" />
+    </div>
     <div class="footer">
       <p class="date">
         <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
-        {{ post.owner.displayName }}
       </p>
     </div>
   </article>
@@ -13,6 +15,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Context } from '~/types/context'
 // import { mapGetters } from 'vuex'
 import { Post } from '~/types/post'
 import { normalize } from '~/services/post'
@@ -29,7 +32,7 @@ import {
 // // import PostList from '~/components/organisms/PostList'
 
 export default Vue.extend({
-  async asyncData({ $fire, params, error, store }) {
+  async asyncData({ $fire, params, error, store }: Context) {
     const r: {
       post?: Partial<Post>
     } = {}
@@ -44,18 +47,16 @@ export default Vue.extend({
         .collection('posts')
         .doc(postId)
         .get()
-        .then(async doc => {
-          console.log(doc)
-          r.post = await normalize(doc.id, doc.data())
-          if (r.post.isDeleted === true) {
+        .then(async (doc: any) => {
+          // console.log(doc)
+          r.post = await normalize(doc.id, doc.data(), store)
+          // console.log(doc.data())
+          if (!doc.exists || r.post.isDeleted === true) {
             r.post = {}
             throw new Error('ページが見つかりません')
           }
-          // r.post.owner = {
-          //   id: r.post.owner.id,
-          // }
         })
-        .catch(e => {
+        .catch((e: any) => {
           error({ statusCode: 404, message: e.message })
         })
     }

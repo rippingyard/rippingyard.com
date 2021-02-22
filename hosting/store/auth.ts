@@ -1,6 +1,9 @@
 import { Store } from 'vuex'
+// import { omit } from 'lodash'
 import { AuthState } from '~/types/state'
 import { User, LoginParams } from '~/types/user'
+
+const { decycle } = require('json-cyclic')
 
 interface ActionInterface {
   login: (
@@ -13,6 +16,8 @@ interface ActionInterface {
 
 export const state = () => ({
   me: null,
+  follows: [],
+  followers: [],
   redirectPath: '',
 })
 
@@ -20,7 +25,7 @@ export type RootState = ReturnType<typeof state>
 
 export const mutations = {
   setMe(state: AuthState, u: User): void {
-    state.me = u
+    state.me = decycle(u)
   },
   removeMe(state: AuthState): void {
     state.me = null
@@ -47,7 +52,7 @@ export const actions: ActionInterface = {
         // TODO: isBannedの時はエラー
 
         userRef.get().then((doc: { data: () => any }) => {
-          console.log('User:', doc)
+          // console.log('User:', doc)
           commit('setMe', doc.data())
         })
       })

@@ -1,9 +1,12 @@
 export type User = {
   id: string
   uid?: string
-  createdAt: string
-  publishedAt: string
-  updatedAt: string
+  displayName: string
+  userName: string
+  code?: string
+  profile?: string
+  createdAt: string | Date
+  updatedAt: string | Date
 }
 
 export type UserState = {

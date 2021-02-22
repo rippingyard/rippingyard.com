@@ -71,6 +71,13 @@ export default Vue.extend({
     opacity: 0;
     background-color: $black;
   }
+
+  @include mobile {
+    right: calc(-100% + 55px);
+    .body {
+      padding: $gap / 2;
+    }
+  }
 }
 
 .links {
@@ -89,6 +96,11 @@ export default Vue.extend({
       &.is-current {
         color: $yellow;
       }
+    }
+  }
+  @include mobile {
+    li {
+      font-size: 2.2rem;
     }
   }
 }

@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import urlParse from 'url-parse'
+import queryString from 'query-string'
 import sanitizeHtml from 'sanitize-html'
 
 export const removeHtmlTag = (str: string) => {
@@ -5,16 +8,44 @@ export const removeHtmlTag = (str: string) => {
 }
 
 export const removeTitle = (str: string) => {
+  if (!str) return ''
   return str.replace(/<h.(?: .+?)?>.*?<\/h.>/, '')
 }
 
 export const getTitle = (str: string) => {
   if (!str) return ''
-  const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)
-  if (htag) {
-    return removeHtmlTag(htag[0])
-  }
-  return getSummary(str)
+  const htag = str.match(/<h.(?: .+?)?>.*<\/h.>/)?.map(s => removeHtmlTag(s))
+  if (htag && htag[0] !== '') return htag[0]
+  return getSummary(str, 32)
+}
+
+export const getThumbnail = (str: string) => {
+  if (!str) return null
+
+  let image: null | string = null
+  const urls = extractUrls(str)
+
+  // console.log('urls:', urls)
+
+  if (!urls) return null
+
+  urls.map((url: string) => {
+    const urlInfo = urlParse(url)
+    const queries = queryString.parse(urlInfo.query.toString())
+
+    switch (urlInfo.hostname) {
+      case 'youtube.com':
+      case 'jp.youtube.com':
+      case 'www.youtube.com':
+        if (queries.v) {
+          console.log('youtubeId', queries.v)
+          image = `https://i.ytimg.com/vi/${queries.v}/hqdefault.jpg`
+        }
+        break
+    }
+  })
+
+  return image
 }
 
 export const getSocialTitle = (str: string) => {
@@ -27,6 +58,11 @@ export const getSummary = (str: string, length = 140) => {
   str = removeHtmlTag(str)
   const tail = str.length > length ? '...' : ''
   return str.substr(0, length) + tail
+}
+
+export const getTokens = (str: string) => {
+  str = removeHtmlTag(str)
+  return str ? str.match(/.{3}/g) : []
 }
 
 export const getLength = (str: string) => {
@@ -46,6 +82,20 @@ export const stripTags = (content: string, linebreak = true) => {
     : sanitizeHtml(content, {
         allowedTags: [],
       })
+}
+
+export function extractUrls(content: string) {
+  if (!content) return ''
+
+  content = stripTags(content)
+
+  let urls = content.match(
+    /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g
+  )
+
+  if (urls) urls = _.uniq(urls).sort()
+
+  return urls
 }
 
 export function sanitize(content: string) {

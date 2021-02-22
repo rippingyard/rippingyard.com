@@ -1,20 +1,26 @@
-// import _ from 'lodash'
-// import moment from 'moment'
-// import urlParse from 'url-parse'
-// import queryString from 'query-string'
 import dayjs from 'dayjs'
+import { pick } from 'lodash'
 import { ActionContext } from 'vuex'
-// import { entityStore } from '~/store/entity'
-// import { sanitize, stripTags, getLength } from '~/plugins/typography'
+import {
+  getTitle,
+  removeTitle,
+  stripTags,
+  getTokens,
+  getThumbnail,
+} from '~/plugins/typography'
+import { save as saveIndex, destroy as destroyIndex } from '~/services/search'
 
 import { Post } from '~/types/post'
 import { State } from '~/types/state'
+
+const indexName = 'posts'
 
 interface ActionInterface {
   save: (
     { rootState }: ActionContext<any, any>,
     { post }: { post: Post }
   ) => void
+  delete: ({ rootState }: ActionContext<any, any>, id: string) => void
   $fire?: any
 }
 
@@ -24,6 +30,7 @@ export const scheme = {
   collaborators: null,
   content: null,
   status: 'published',
+  type: 'log',
   parent: null,
   entities: {
     byContent: [],
@@ -75,8 +82,6 @@ export const actions: ActionInterface = {
 
       // TODO: slug
 
-      // console.log('postdata', post)
-
       post.updatedAt = dayjs().toDate()
 
       post.createdAt = post.createdAt
@@ -89,7 +94,7 @@ export const actions: ActionInterface = {
       if (!post.owner) {
         post.owner = await this.$fire.firestore
           .collection('users')
-          .doc(rootState.auth.me.uid)
+          .doc(rootState.auth.me.id)
       } else if (post.owner.id) {
         post.owner = await this.$fire.firestore
           .collection('users')
@@ -99,46 +104,46 @@ export const actions: ActionInterface = {
       let db = this.$fire.firestore.collection('posts')
 
       db = post.id ? db.doc(post.id) : db.doc()
+      post.id = db.id
 
-      await db
-        .set(Object.assign(scheme, post))
-        .then(() => {})
-        .catch(() => {})
+      const newPost = Object.assign(scheme, post)
+
+      await db.set(newPost)
+
+      saveIndex(indexName, {
+        objectID: post.id,
+        title: getTitle(post.content),
+        body: stripTags(removeTitle(post.content)),
+        image: getThumbnail(post.content),
+        createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
+        publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
+        updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
+        owner: post.owner?.id,
+        collaborators: [],
+        tokens: getTokens(post.content),
+        entities: getTokens(post.content),
+        ...pick(newPost, [
+          'content',
+          'isDeleted',
+          'isPublic',
+          'type',
+          'status',
+        ]),
+      })
+
+      // console.log('saved post', newPost)
     } catch (e) {}
   },
-  //   async delete({ rootState }, { id, notification }) {
-  //     console.log('delete:', id)
+  async delete({ rootState }, id) {
+    console.log('delete:', id)
 
-  //     await db
-  //       .collection('posts')
-  //       .doc(id)
-  //       .set(
-  //         {
-  //           isDeleted: true,
-  //         },
-  //         { merge: true }
-  //       )
-  //       .then(() => {
-  //         if (notification) {
-  //           notification.open({
-  //             duration: 5000,
-  //             message: '記事を削除しました',
-  //             position: 'is-bottom-right',
-  //             type: 'is-success',
-  //             hasIcon: false,
-  //           })
-  //         }
-  //       })
-  //       .catch(() => {
-  //         if (notification) {
-  //           notification.open({
-  //             duration: 5000,
-  //             message: '記事の削除に失敗しました',
-  //             position: 'is-bottom-right',
-  //             type: 'is-danger',
-  //             hasIcon: false,
-  //           })
-  //         }
-  //       })
-  //   },
+    destroyIndex(indexName, id)
+
+    await this.$fire.firestore.collection('posts').doc(id).set(
+      {
+        isDeleted: true,
+      },
+      { merge: true }
+    )
+  },
 }

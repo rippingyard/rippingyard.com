@@ -3,6 +3,8 @@
     <Nav />
     <Nuxt />
     <Footer />
+    <ActivityModal />
+    <Loading />
   </div>
 </template>
 <script lang="ts">

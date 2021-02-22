@@ -1,19 +1,28 @@
 <template>
   <table class="table">
     <tr>
+      <th></th>
       <th>タイトル</th>
       <th>公開状態</th>
       <th>作成者</th>
       <th>公開日</th>
-      <th></th>
     </tr>
     <tr v-for="datum in data" :key="datum.id">
+      <td>
+        <input
+          type="checkbox"
+          name="id"
+          :value="datum.id"
+          class="checkbox"
+          @change="check(datum.id)"
+        />
+      </td>
       <td class="title">
         <nuxt-link :to="editLink(datum)">
           <strong>{{ title(datum.content) }}</strong>
         </nuxt-link>
-        <nuxt-link :to="permalink(datum.id)">
-          <strong>Link</strong>
+        <nuxt-link target="_blank" :to="permalink(datum.id)">
+          <fa-icon icon="external-link-alt" class="icon" />
         </nuxt-link>
       </td>
       <td>
@@ -21,14 +30,12 @@
       </td>
       <td>{{ datum.owner.displayName || '' }}</td>
       <td>{{ datum.publishedAt }}</td>
-      <td></td>
     </tr>
   </table>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import { permalink } from '~/services/post'
+import { permalink, editlink, getStatusLabel } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 import { Post } from '~/types/post'
 
@@ -38,26 +45,16 @@ export default Vue.extend({
       default: () => {},
       type: Array,
     },
-  },
-  computed: {
-    ...mapGetters({
-      getUser: 'user/one',
-    }),
+    check: {
+      default: (id: any) => id,
+      type: Function,
+    },
   },
   methods: {
     title: (content: string) => getTitle(content),
-    editLink: (post: Post) => `/home/post/edit/${post.id}`,
+    editLink: (post: Post) => editlink(post.id),
     permalink: (id: string) => permalink(id),
-    status: (status: string) => {
-      switch (status) {
-        case 'published':
-          return '公開中'
-        case 'draft':
-          return '下書き'
-        default:
-          return status
-      }
-    },
+    status: (status: string) => getStatusLabel(status),
   },
 })
 </script>
@@ -78,6 +75,9 @@ td {
   border-bottom: 1px solid $gray;
   &.title {
     font-size: 1.2rem;
+    .icon {
+      font-size: 1rem;
+    }
   }
   a {
     &:hover {
@@ -95,6 +95,31 @@ tr {
     td {
       border: none;
     }
+  }
+}
+.checkbox {
+  visibility: hidden;
+  &::before {
+    content: '';
+    visibility: visible;
+    border-radius: 0;
+    border: 2px solid $black;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: block;
+    box-shadow: 0 0 0 1px $white inset;
+    // transition: all 100ms 0s ease-out;
+  }
+  &:hover::before {
+    cursor: pointer;
+    // background-color: $yellow;
+  }
+  &:checked::before {
+    background-color: $black;
+  }
+  &:hover:checked::before {
+    cursor: pointer;
+    // background-color: $gray-black;
   }
 }
 </style>

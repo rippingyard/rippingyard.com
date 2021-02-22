@@ -57,6 +57,7 @@ export default {
       try {
         const params = {
           content: this.content,
+          type: 'article',
           isPublic: true,
         }
         if (this.post.id) params.id = this.post.id

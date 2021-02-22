@@ -52,7 +52,7 @@ export default {
   //     getOwner: 'user/owner',
   //   }),
   // },
-  async asyncData({ $fire }) {
+  async asyncData({ $fire, store }) {
     const posts = []
 
     const db = $fire.firestore.collection('posts')
@@ -82,7 +82,7 @@ export default {
           const post = doc.data()
           if (post.isDeleted === true) return
           console.log('owner', post.owner)
-          return posts.push(normalize(doc.id, post))
+          return posts.push(normalize(doc.id, post, store))
         })
       })
 

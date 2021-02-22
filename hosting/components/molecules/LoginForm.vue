@@ -55,20 +55,4 @@ export default Vue.extend({
 .form {
   width: 100%;
 }
-
-.field {
-  margin-bottom: 20px;
-  > label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 800;
-    opacity: 0.8;
-  }
-  .input {
-    width: 100%;
-    border-bottom: 1px solid $black;
-    font-size: 1.1rem;
-    padding: 5px 0;
-  }
-}
 </style>

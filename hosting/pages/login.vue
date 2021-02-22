@@ -30,10 +30,6 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
-.container {
-  width: 800px;
-}
-
 .title {
   font-size: 3rem;
   font-weight: 800;

@@ -2,7 +2,6 @@
   <section class="columns">
     <div class="column c20">
       <ManageNav />
-      <p>{{ me }}</p>
     </div>
     <div class="column c80">
       <div class="block container">

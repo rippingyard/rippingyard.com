@@ -13,6 +13,8 @@ export type State = {
 
 export type AuthState = {
   me: null | User
+  follows: []
+  followers: []
   redirectPath: string
 }
 

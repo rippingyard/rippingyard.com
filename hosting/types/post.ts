@@ -1,3 +1,4 @@
+import { DocumentData } from '@firebase/firestore-types'
 import { User } from '~/types/user'
 
 export type Post = {
@@ -7,7 +8,8 @@ export type Post = {
   createdAt: string | Date
   publishedAt: string | Date
   updatedAt: string | Date
-  owner?: User | null
+  type: string
+  owner?: User | DocumentData | null
   isDeleted: boolean
   sociallink?: string
 }

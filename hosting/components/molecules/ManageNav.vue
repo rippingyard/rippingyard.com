@@ -32,6 +32,11 @@
     <h3>MISC</h3>
     <ul class="main">
       <li>
+        <nuxt-link to="/home/setting/">
+          <fa-icon icon="angle-right" class="icon" />ユーザー設定
+        </nuxt-link>
+      </li>
+      <li>
         <nuxt-link to="/home/invite/">
           <fa-icon icon="angle-right" class="icon" />招待
         </nuxt-link>

@@ -1,29 +1,20 @@
 module.exports = {
   root: true,
   env: {
-    es6: true,
+    browser: true,
     node: true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "google",
+    '@nuxtjs/eslint-config-typescript',
+    'prettier',
+    'prettier/vue',
+    'plugin:prettier/recommended',
+    'plugin:nuxt/recommended',
   ],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
-    sourceType: "module",
-  },
-  ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-  ],
-  plugins: [
-    "@typescript-eslint",
-    "import",
-  ],
+  plugins: ['prettier'],
+  // add your custom rules here
   rules: {
-    quotes: ["error", "double"],
+    'no-console': 'off',
+    'vue/no-v-html': 'off',
   },
-};
+}

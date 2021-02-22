@@ -8,10 +8,8 @@
       <div class="block container">
         <div class="box wysiwyg">
           <h2>友だちを招待する</h2>
-          <p>
-            ripping yardの核は「記事」です。<br />
-            テーマや題材を決めて、いつもより少し長めの文章を書いてみましょう。
-          </p>
+          <p>招待URLを使って、ripping yardに登録しましょう</p>
+          <InviteUrl />
           <InviteForm />
         </div>
       </div>
@@ -19,10 +17,6 @@
   </section>
 </template>
 <script>
-// import PostTable from '~/components/organisms/PostTable'
-// import InfoMe from '~/components/molecules/InfoMe'
-// import Belt from '~/components/atoms/Belt/Global'
-
 export default {
   layout: 'manage',
   fetch() {

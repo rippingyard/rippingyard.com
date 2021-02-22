@@ -6,6 +6,7 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "start:emulator": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit"
+    "start:emulator": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
+    "watch:functions": "./functions/node_modules/.bin/tsc --watch"
   }
 }

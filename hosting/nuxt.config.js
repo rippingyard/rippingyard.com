@@ -1,9 +1,18 @@
 let fbconfigEnv = process.env.FIREBASE_CONFIG
 if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 
+let algoliaEnv = { appId: '', apiKey: '' }
+algoliaEnv = process.env.ALGOLIA_CONFIG
+if (algoliaEnv) {
+  algoliaEnv = JSON.parse(algoliaEnv)
+} else {
+  const env = require('./env')
+  algoliaEnv = env.ALGOLIA_CONFIG
+}
+
 // const fbAPI = `https://firestore.googleapis.com/v1/projects/${fbConfig.projectId}/databases/(default)/documents/`
 
-// console.log('FIRE_ENV', process.env.FIRE_ENV)
+console.log('ALGOLIA_CONFIG', process.env.ALGOLIA_CONFIG)
 
 export default {
   dev: process.env.NODE_ENV !== 'production',
@@ -14,6 +23,7 @@ export default {
   env: {
     NODE_ENV: process.env.NODE_ENV,
     FIRE_ENV: process.env.FIRE_ENV,
+    ALGOLIA_CONFIG: algoliaEnv,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -177,7 +187,9 @@ export default {
       solid: [
         'faBold',
         'faCode',
+        'faExternalLinkAlt',
         'faHeading',
+        'faImage',
         'faItalic',
         'faLink',
         'faList',

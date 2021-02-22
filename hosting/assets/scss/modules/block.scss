@@ -1,11 +1,18 @@
 .block {
 
   &.container {
-    max-width: 780px;
+    max-width: $tablet - ($gap * 2);
     margin: auto;
     &.is-wide {
       max-width: 100%;
       padding: 0 50px;
+    }
+
+    @include mobile {
+      padding: 0 ($gap / 2);
+      &.is-wide {
+        padding: 0 ($gap / 2);
+      }
     }
   }
 

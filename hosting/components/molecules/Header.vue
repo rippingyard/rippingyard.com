@@ -36,14 +36,14 @@ export default Vue.extend({
   }
 
   .brand {
-    // position: fixed;
-    // top: 5px;
-    // left: 5px;
-
     svg {
       width: 30px;
       height: 30px;
     }
+  }
+
+  @include mobile {
+    margin: ($gap / 2) auto 40px;
   }
 }
 </style>

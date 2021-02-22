@@ -1,29 +1,40 @@
 import { DocumentData } from '@firebase/firestore-types'
-import _ from 'lodash'
+import { Store } from 'vuex'
+import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
-import { sanitize, stripTags } from '~/plugins/typography'
+import { sanitize, extractUrls } from '~/plugins/typography'
 import { Post } from '~/types/post'
+import { getDomain } from '~/plugins/util'
+
+const { decycle } = require('json-cyclic')
 
 export async function normalize(
   id: string,
-  post: DocumentData | undefined
+  post: DocumentData | undefined,
+  store: Store<any>
 ): Promise<Partial<Post>> {
   if (!post) return {}
 
   try {
     let owner: null | DocumentData = null
-    // TODO: これはstore.userから持ってくること（キャッシュする）
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
     if (post.owner) {
-      await post.owner.get().then((doc: any) => {
-        owner = doc.data()
-        console.log('Normalize Owner', owner)
-      })
+      const cachedUser = await store.getters['user/one'](post.owner.id)
+      if (!cachedUser) {
+        await post.owner.get().then((doc: any) => {
+          owner = omit(doc.data(), ['follows', 'followers'])
+          console.log('Owner from firestore')
+          store.commit('user/setUser', owner)
+        })
+      } else {
+        console.log('Cached!')
+        owner = cachedUser
+      }
     }
 
-    return {
+    return decycle({
       ...post,
       ...{
         id,
@@ -38,17 +49,17 @@ export async function normalize(
         isDeleted: false,
 
         publishedAt: post.publishedAt
-          ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
         createdAt: post.createdAt
-          ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
         updatedAt: post.updatedAt
-          ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm:ss')
+          ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
         //   length: getLength(post.content),
       },
-    }
+    })
   } catch (e) {
     return Promise.reject(e)
   }
@@ -91,7 +102,7 @@ export function renderWidgets(content: string) {
       case 'jp.youtube.com':
       case 'www.youtube.com':
         if (queries.v) {
-          console.log('youtubeId', queries.v)
+          // console.log('youtubeId', queries.v)
           html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${queries.v}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
         }
         break
@@ -109,28 +120,25 @@ export function renderWidgets(content: string) {
   return content
 }
 
-export function extractUrls(content: string) {
-  if (!content) return ''
-
-  content = stripTags(content)
-
-  let urls = content.match(
-    /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g
-  )
-
-  if (urls) urls = _.uniq(urls).sort()
-
-  return urls
+export function permalink(id: string): string {
+  return `/post/${id}`
 }
 
-export function permalink(id: string) {
-  return '/post/' + id
+export function editlink(id: string): string {
+  return `/home/post/edit/${id}`
 }
 
-export function sociallink(id: string) {
-  const domain =
-    process.env.NODE_ENV !== 'production'
-      ? 'https://rippingyard-dev.web.app'
-      : 'https://www.rippingyard.com'
-  return domain + permalink(id)
+export function sociallink(id: string): string {
+  return getDomain() + permalink(id)
+}
+
+export function getStatusLabel(status: string): string {
+  switch (status) {
+    case 'published':
+      return '公開中'
+    case 'draft':
+      return '下書き'
+    default:
+      return status
+  }
 }

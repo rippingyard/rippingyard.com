@@ -4,6 +4,9 @@
       <h1>
         {{ title }}
       </h1>
+      <div v-if="thumbnail" class="image">
+        <img :src="thumbnail" />
+      </div>
       <div class="summary" v-html="summary"></div>
     </div>
     <p class="footer">
@@ -13,7 +16,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { getTitle, getSummary } from '~/plugins/typography'
+import { getTitle, getSummary, getThumbnail } from '~/plugins/typography'
 
 export default Vue.extend({
   props: {
@@ -29,11 +32,20 @@ export default Vue.extend({
     summary() {
       return getSummary(this.post.content, 80)
     },
+    thumbnail() {
+      return getThumbnail(this.post.contentOriginal)
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
+.image {
+  margin-bottom: 25px;
+  img {
+    max-width: 100%;
+  }
+}
 .summary {
   margin-bottom: 60px;
 }
@@ -59,9 +71,13 @@ export default Vue.extend({
 a {
   text-decoration: none;
   display: block;
+  // transition: all 100ms 0s ease-out;
   &:hover {
     background-color: $orange;
     color: $white;
+    img {
+      mix-blend-mode: screen;
+    }
     .footer {
       color: $white;
       &::before {

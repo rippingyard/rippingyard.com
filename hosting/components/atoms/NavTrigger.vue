@@ -48,5 +48,9 @@ export default Vue.extend({
       width: calc(80% - 30px);
     }
   }
+  @include mobile {
+    top: auto;
+    bottom: 0;
+  }
 }
 </style>

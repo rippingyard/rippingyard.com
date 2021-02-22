@@ -1,11 +1,40 @@
 .masonry {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  & > li,
-  & > dd,
-  & > div {
-    width: 32%;
-    overflow: hidden;
+  justify-content: flex-start;
+  align-content: space-between;
+  @include widescreen {
+    & > li,
+    & > dd,
+    & > div {
+      width: 31.5%;
+      overflow: hidden;
+      margin-right: $gap;
+      // margin-right: 23px;
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+  }
+  @include until-widescreen {
+    & > li,
+    & > dd,
+    & > div {
+      width: 48.6%;
+      overflow: hidden;
+      margin-right: $gap;
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+  }
+  @include mobile {
+    & > li,
+    & > dd,
+    & > div {
+      width: 100%;
+      overflow: hidden;
+      margin-right: 0;
+    }
   }
 }

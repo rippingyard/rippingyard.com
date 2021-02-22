@@ -1,4 +1,4 @@
-# rippingyard.com
+# Ripping Yard
 
 > lifelog for living well
 
@@ -21,6 +21,8 @@ http://localhost:4000/
 ```sh
 $ cd hosting
 $ yarn install
+$ cd ../functions
+$ yarn install
 ```
 
 ### Development
@@ -29,11 +31,11 @@ $ yarn install
 $ yarn start:emulator
 $ cd hosting
 $ yarn dev
+$ cd ../functions
+$ yarn watch
 ```
 
-### Deploy
-
-**Check**
+### Check
 
 ```sh
 $ cd hosting
@@ -41,24 +43,8 @@ $ yarn generate
 $ open http://localhost:5000
 ```
 
+### Deploy
 
----
-
-## Build Setup
-
-``` bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn run dev
-
-# build for production and launch server
-$ yarn run build
-$ yarn start
-
-# generate static project
-$ yarn run generate
+```sh
+$ yarn deploy
 ```
-
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

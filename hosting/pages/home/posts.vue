@@ -4,20 +4,16 @@
       <ManageNav />
     </div>
     <div class="column c80">
-      <PostTable :data="posts">
-        <template slot-scope="props">
-          <TableColumn field="content" label="タイトル">
-            <strong
-              ><nuxt-link :to="props.row.permalink" target="_blank">{{
-                getTitle(props.row.content)
-              }}</nuxt-link></strong
-            >
-          </TableColumn>
-          <TableColumn field="content" label="公開日">
-            <small>{{ props.row.publishedAt }}</small>
-          </TableColumn>
-        </template>
-      </PostTable>
+      <PostTable :data="posts" :check="toggleCheck" />
+      <div class="console">
+        <button
+          class="button"
+          :class="{ 'is-disabled': !isChecked }"
+          @click="deletePosts()"
+        >
+          削除
+        </button>
+      </div>
     </div>
   </section>
 </template>
@@ -31,36 +27,18 @@ import { normalize } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 
 export default {
-  // props: {
-  //   isTimeline: {
-  //     type: Boolean,
-  //     default: true,
-  //   },
-  //   limit: {
-  //     type: Number,
-  //     default: 12,
-  //   },
-  //   owner: {
-  //     type: String,
-  //     default: null,
-  //   },
-  // },
   layout: 'manage',
   middleware: ['auth'],
-  // computed: {
-  //   ...mapGetters({
-  //     getOwner: 'user/owner',
-  //   }),
-  // },
   async asyncData({ $fire, store }) {
     const posts = []
 
     const db = $fire.firestore
       .collection('posts')
+      .where('type', '==', 'article')
       .where(
         'owner',
         '==',
-        $fire.firestore.collection('users').doc(store.state.auth.me.uid)
+        $fire.firestore.collection('users').doc(store.state.auth.me.id)
       )
 
     // if (isTimeline) {
@@ -81,7 +59,7 @@ export default {
         promises = qs.docs.map(async doc => {
           const post = doc.data()
           if (post.isDeleted === true) return
-          const normalizedPost = await normalize(doc.id, post)
+          const normalizedPost = await normalize(doc.id, post, store)
           return posts.push(normalizedPost)
         })
       })
@@ -91,15 +69,21 @@ export default {
     console.log('Posts:', posts)
 
     return {
-      posts,
+      posts: _.orderBy(posts, ['createdAt'], ['desc']),
     }
   },
   data() {
     return {
       posts: [],
+      checkedPosts: [],
       // deletedItems: [],
       // isLoading: false,
     }
+  },
+  computed: {
+    isChecked() {
+      return this.checkedPosts.length > 0
+    },
   },
   methods: {
     ...mapActions({
@@ -116,19 +100,42 @@ export default {
         return o.id === id
       })
     },
-    deleteP(id) {
-      console.log('postId:', id)
+    toggleCheck(id) {
+      if (!this.checkedPosts.includes(id)) {
+        this.checkedPosts.push(id)
+      } else {
+        this.checkedPosts = this.checkedPosts.filter(p => p !== id)
+      }
+    },
+    async deletePosts() {
+      // console.log('postIds:', this.checkedPosts)
+      // console.log(this)
 
-      this.deletedItems.push({
-        id,
-        status: 'deleted',
-      })
+      if (this.checkedPosts.length === 0) return
 
-      return this.deletePost({
-        id,
-        notification: this.$buefy.notification,
-      })
+      const promises = []
+
+      this.checkedPosts.map(id => promises.push(this.deletePost(id)))
+
+      await Promise.all(promises)
+
+      // this.deletedItems.push({
+      //   id,
+      //   status: 'deleted',
+      // })
+
+      // return this.deletePost({
+      //   id,
+      //   notification: this.$buefy.notification,
+      // })
+
+      if (location) location.reload()
     },
   },
 }
 </script>
+<style lang="scss" scoped>
+.console {
+  padding: 20px;
+}
+</style>
