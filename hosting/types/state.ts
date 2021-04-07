@@ -25,3 +25,9 @@ export type UserState = {
 export type PostState = {
   [id: string]: Post
 }
+
+export type SnackState = {
+  isOpen: boolean
+  message: string
+  type: 'info' | 'warn' | 'danger' | 'fatal'
+}

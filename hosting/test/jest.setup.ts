@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { config, RouterLinkStub } from '@vue/test-utils'
-import firebasemock from 'firebase-mock'
+
+const firebasemock = require('firebase-mock')
 
 // ------- Jest: Mock -------
 
@@ -26,10 +27,10 @@ mocksdk.db = mocksdk.firestore()
 mocksdk.timestamp = {
   now: () => {
     return new Date()
-  }
+  },
 }
 
-jest.mock('~/plugins/firebase', () => {
+jest.mock('@nuxtjs/firebase', () => {
   return mocksdk
 })
 

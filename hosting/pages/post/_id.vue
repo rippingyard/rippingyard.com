@@ -73,16 +73,16 @@ export default Vue.extend({
   },
   computed: {
     getTitle(): string {
-      return getTitle((this as any).post.content)
+      return getTitle(this.$data.post.content)
     },
     getSocialTitle(): string {
-      return getSocialTitle((this as any).post.content) + ' - rippingyard'
+      return getSocialTitle(this.$data.post.content) + ' - rippingyard'
     },
     getSummary(): string {
-      return getSummary((this as any).post.content)
+      return getSummary(this.$data.post.content)
     },
     mainContent(): string {
-      return removeTitle((this as any).post.content)
+      return removeTitle(this.$data.post.content)
     },
   },
   // async mounted({
@@ -111,42 +111,42 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: decodeEntities(getTitle((this as any).post.content)),
+      title: decodeEntities(getTitle(this.$data.post.content)),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle((this as any).post.content),
+          content: getTitle(this.$data.post.content),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle((this as any).post.content),
+          content: getTitle(this.$data.post.content),
         },
         {
           hid: 'description',
           name: 'description',
-          content: getSummary((this as any).post.content),
+          content: getSummary(this.$data.post.content),
         },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: getSummary((this as any).post.content),
+          content: getSummary(this.$data.post.content),
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: getSummary((this as any).post.content),
+          content: getSummary(this.$data.post.content),
         },
         {
           hid: 'og:url',
           property: 'og:url',
-          content: (this as any).post.sociallink,
+          content: this.$data.post.sociallink,
         },
         {
           hid: 'twitter:url',
           name: 'twitter:url',
-          content: (this as any).post.sociallink,
+          content: this.$data.post.sociallink,
         },
       ],
     }

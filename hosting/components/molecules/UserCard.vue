@@ -1,7 +1,12 @@
 ﻿<template>
   <div class="card">
     <div class="card-inner">
-      <div v-if="user.avator" class="avator"><img :src="user.avator" /></div>
+      <nuxt-link
+        v-if="user.avator"
+        :to="permalink"
+        class="avator"
+        :style="avator"
+      />
       <h2 class="name">
         <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
       </h2>
@@ -29,10 +34,12 @@ export default Vue.extend({
   },
   computed: {
     permalink() {
-      console.log(this.user)
       return `/people/${(this.user as Partial<User>).userName}`
-    }
-  }
+    },
+    avator() {
+      return `background-image:url(${(this.user as Partial<User>).avator})`
+    },
+  },
 })
 </script>
 <style lang="scss" scoped>
@@ -49,13 +56,15 @@ export default Vue.extend({
 
   .avator {
     width: 80px;
+    height: 80px;
+    border-radius: 999999px;
     position: absolute;
     top: 10px;
     right: 10px;
     border: 2px solid $yellow;
-    > img {
-      max-width: 100%;
-    }
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .name {

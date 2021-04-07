@@ -5,6 +5,7 @@ export type User = {
   userName: string
   code?: string
   profile?: string
+  avator?: string
   createdAt: string | Date
   updatedAt: string | Date
 }

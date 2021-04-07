@@ -37,19 +37,20 @@
     </div>
   </section>
 </template>
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mapActions } from 'vuex'
 import { isEmpty } from 'lodash'
 import { getExt } from '~/plugins/file'
 import { schemaUser } from '~/plugins/validators/user'
 
-export default {
+export default Vue.extend({
   layout: 'manage',
   fetch() {
     this.me = this.$store.state.auth.me
-    this.displayName = this.me.displayName || this.me.id
-    this.profile = this.me.profile || this.me.profile
-    this.avator = this.me.avator || ''
+    this.displayName = this.$data.me.displayName || this.$data.me.id
+    this.profile = this.$data.me.profile || this.$data.me.profile
+    this.avator = this.$data.me.avator || ''
   },
   data() {
     return {
@@ -62,26 +63,15 @@ export default {
     }
   },
   middleware: ['auth'],
-  mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      // this.$buefy.notification.open({
-      //   duration: 5000,
-      //   message: 'ログインしてください',
-      //   position: 'is-bottom-right',
-      //   type: 'is-danger',
-      //   hasIcon: false,
-      // })
-      this.$router.push('/login')
-    }
-  },
+  mounted() {},
   methods: {
     ...mapActions({
       saveUser: 'user/save',
     }),
-    updateContent(content) {
+    updateContent(content: string): void {
       this.profile = content
     },
-    updateImage(file) {
+    updateImage(file: any): void {
       this.image = file
     },
     async submit() {
@@ -90,8 +80,8 @@ export default {
           const ext = getExt(this.image)
           if (!ext) return
 
-          const filename = `avators/${this.me.id}.${ext}`
-          const result = await this.$fire.storage
+          const filename = `avators/${this.$data.me.id}.${ext}`
+          const result = await (this as any).$fire.storage
             .ref()
             .child(filename)
             .put(this.image)
@@ -100,19 +90,18 @@ export default {
         }
 
         const params = {
-          id: this.me.id,
+          id: this.$data.me.id,
           displayName: this.displayName,
           profile: this.profile,
           avator: this.avator,
         }
         console.log('val', schemaUser.validate(params))
-        const { error } = schemaUser.validate(params)
+        const { value, error } = schemaUser.validate(params)
         if (!isEmpty(error)) {
-          return alert(error.details)
+          return alert(error?.details)
         }
-        const user = Object.assign(this.me, params)
         await this.saveUser({
-          user,
+          user: value,
         })
 
         this.$router.push('/home')
@@ -126,9 +115,8 @@ export default {
       title: '設定変更',
     }
   },
-}
+})
 </script>
-
 <style lang="scss" scoped>
 .box {
   padding: 0 30px;

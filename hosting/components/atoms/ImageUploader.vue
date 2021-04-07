@@ -25,7 +25,7 @@ import { resizeImage } from '~/plugins/image'
 
 const Dropzone = require('nuxt-dropzone')
 
-export default (Vue as any).extend({
+export default Vue.extend({
   components: {
     Dropzone,
   },
@@ -34,7 +34,7 @@ export default (Vue as any).extend({
       type: Function,
       default: () => {},
     },
-    image: {
+    defaultImage: {
       type: String,
       default: '',
     },
@@ -42,6 +42,7 @@ export default (Vue as any).extend({
   data() {
     return {
       dz: null,
+      image: '',
       options: {
         url: '.',
         autoQueue: false,
@@ -74,30 +75,37 @@ export default (Vue as any).extend({
       },
     }
   },
-  mounted() {
-    if (this.$refs.dz.dropzone) {
-      this.$refs.dz.dropzone.on('addedfile', async (originalFile: any) => {
-        if (
-          !originalFile ||
-          // !originalFile.accepted ||
-          originalFile.status === 'error'
-        ) {
-          return null
+  mounted(): void {
+    const dz: any = this.$refs.dz
+    this.image = this.defaultImage
+    if (dz.dropzone) {
+      dz.dropzone.on(
+        'addedfile',
+        async (originalFile: any): Promise<any> => {
+          if (
+            !originalFile ||
+            // !originalFile.accepted ||
+            originalFile.status === 'error'
+          ) {
+            return null
+          }
+          console.log('Original File Accepted!')
+
+          const image = await resizeImage(originalFile, {
+            width: 1200,
+            height: 1200,
+          })
+
+          return typeof this.onChange === 'function'
+            ? this.onChange(image)
+            : null
         }
-        console.log('Original File Accepted!')
-
-        const image = await resizeImage(originalFile, {
-          width: 1200,
-          height: 1200,
-        })
-
-        return this.onChange(image)
-      })
+      )
     }
   },
   methods: {
     removeImage() {
-      (this as any).image = ''
+      this.image = ''
     },
   },
 })

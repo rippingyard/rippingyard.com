@@ -137,6 +137,10 @@ export const actions: ActionInterface = {
   async delete({ rootState }, id) {
     console.log('delete:', id)
 
+    if (!rootState.auth.me) {
+      throw new Error('権限がありません')
+    }
+
     destroyIndex(indexName, id)
 
     await this.$fire.firestore.collection('posts').doc(id).set(

@@ -3,5 +3,6 @@
     <ManageHeader />
     <Nav />
     <Nuxt />
+    <Snack />
   </div>
 </template>

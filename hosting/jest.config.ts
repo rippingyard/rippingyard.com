@@ -1,12 +1,13 @@
 module.exports = {
+  roots: ['<rootDir>/test'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
     '^vue$': 'vue/dist/vue.common.js',
   },
-  moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'vue', 'json'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
   },
@@ -15,4 +16,7 @@ module.exports = {
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',
   ],
+  testEnvironment: 'jsdom',
+  // testEnvironment: 'jest-environment-jsdom-global',
+  setupFiles: ['./test/jest.setup.ts'],
 }

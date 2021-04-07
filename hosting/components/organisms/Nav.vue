@@ -30,13 +30,18 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions({
-      logout: 'auth/logout',
+      signout: 'auth/logout',
     }),
     toggleNav() {
       this.isOpen = !this.isOpen
     },
     closeNav() {
       this.isOpen = false
+    },
+    logout() {
+      this.signout()
+      this.snack('ログアウトしました')
+      this.$router.push('/')
     },
   },
 })

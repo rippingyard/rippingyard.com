@@ -17,16 +17,7 @@ export default {
   layout: 'manage',
   middleware: ['auth'],
   mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      // this.$buefy.notification.open({
-      //   duration: 5000,
-      //   message: 'ログインしてください',
-      //   position: 'is-bottom-right',
-      //   type: 'is-danger',
-      //   hasIcon: false,
-      // })
-      this.$router.push('/login')
-    }
+    console.log('TEST!')
   },
   head: () => {
     return {

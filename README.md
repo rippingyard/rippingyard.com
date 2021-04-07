@@ -4,6 +4,12 @@
 
 ## Firebase
 
+### Setup
+
+```sh
+$ npm install -g firebase-tools
+```
+
 ### Start
 
 ```sh

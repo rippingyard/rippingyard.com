@@ -15,11 +15,22 @@ export default Vue.extend({
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
+    redirectPath(): string {
+      return this.$store.state.auth.redirectPath || '/home/'
+    },
+  },
+  watch: {
+    isAuthenticated() {
+      console.log('auth changed!', this.isAuthenticated)
+      if (this.isAuthenticated) {
+        this.snack('ログインしました')
+        this.$router.push(this.redirectPath)
+      }
+    },
   },
   created() {
     if (this.isAuthenticated) {
-      console.log('login', this.$store.state.auth.redirectPath)
-      this.$router.push(this.$store.state.auth.redirectPath)
+      this.$router.push(this.redirectPath)
     }
   },
   head() {

@@ -1,11 +1,12 @@
 <template>
   <footer class="block container">
-    <p class="copyright">&copy; rippingyard</p>
+    <p class="copyright"><nuxt-link to="/">&copy; rippingyard</nuxt-link></p>
   </footer>
 </template>
 <style lang="scss" scoped>
 footer {
-  padding: 50px 0 120px;
+  padding: 120px 0;
+  text-align: center;
 }
 .block.container {
   @include mobile {

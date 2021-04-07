@@ -10,3 +10,9 @@ declare module 'vue/types/vue' {
 Vue.prototype.$isAuthenticated = (store: Store<any>) => {
   return !store ? false : store.getters['auth/isAuthenticated']
 }
+
+Vue.mixin({
+  mounted() {
+    // console.log('isAuth', this)
+  },
+})

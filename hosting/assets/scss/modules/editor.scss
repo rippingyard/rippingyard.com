@@ -14,8 +14,8 @@
   transform:translateX(-50%);
   visibility:hidden;
   opacity:0;
-  -webkit-transition:opacity .2s,visibility .2s;
-  transition:opacity .2s,visibility .2s;
+  -webkit-transition:opacity .2s, visibility .2s;
+  transition:opacity .2s, visibility .2s;
 
   &.is-active{
     opacity:1;

@@ -7,10 +7,9 @@
     & > li,
     & > dd,
     & > div {
-      width: 31.5%;
+      width: calc(32% - (#{$gap} / 3));
       overflow: hidden;
       margin-right: $gap;
-      // margin-right: 23px;
       &:nth-child(3n) {
         margin-right: 0;
       }
@@ -20,7 +19,8 @@
     & > li,
     & > dd,
     & > div {
-      width: 48.6%;
+      width: calc(50% - (#{$gap} / 2));
+      box-sizing: border-box;
       overflow: hidden;
       margin-right: $gap;
       &:nth-child(2n) {

@@ -51,7 +51,7 @@ export default Vue.extend({
 })
 </script>
 
-<style>
+<style lang="scss">
 .__nuxt-error-page {
   padding: 1rem;
   background: #F7F8FB;

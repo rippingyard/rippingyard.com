@@ -6,6 +6,7 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
+    "start": "yarn start:emulator && yarn watch:functions",
     "start:emulator": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
     "watch:functions": "./functions/node_modules/.bin/tsc --watch"
   }

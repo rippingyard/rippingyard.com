@@ -1,7 +1,7 @@
-import { mount } from '@vue/test-utils'
-const page = require('~/pages/index')
+﻿import { mount } from '@vue/test-utils'
+const page = require('~/pages/login')
 
-describe('/', (): void => {
+describe('/login', (): void => {
   test('Vueのインスタンスである', (): void => {
     const wrapper = mount(page)
     expect(wrapper.vm).toBeTruthy()

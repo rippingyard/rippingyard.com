@@ -3,7 +3,7 @@ import urlParse from 'url-parse'
 import queryString from 'query-string'
 import sanitizeHtml from 'sanitize-html'
 
-export const removeHtmlTag = (str: string) => {
+export const removeHtmlTags = (str: string) => {
   return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
 }
 
@@ -14,7 +14,7 @@ export const removeTitle = (str: string) => {
 
 export const getTitle = (str: string) => {
   if (!str) return ''
-  const htag = str.match(/<h.(?: .+?)?>.*<\/h.>/)?.map(s => removeHtmlTag(s))
+  const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
   if (htag && htag[0] !== '') return htag[0]
   return getSummary(str, 32)
 }
@@ -38,7 +38,7 @@ export const getThumbnail = (str: string) => {
       case 'jp.youtube.com':
       case 'www.youtube.com':
         if (queries.v) {
-          console.log('youtubeId', queries.v)
+          // console.log('youtubeId', queries.v)
           image = `https://i.ytimg.com/vi/${queries.v}/hqdefault.jpg`
         }
         break
@@ -55,18 +55,18 @@ export const getSocialTitle = (str: string) => {
 
 export const getSummary = (str: string, length = 140) => {
   str = removeTitle(str)
-  str = removeHtmlTag(str)
+  str = removeHtmlTags(str)
   const tail = str.length > length ? '...' : ''
   return str.substr(0, length) + tail
 }
 
 export const getTokens = (str: string) => {
-  str = removeHtmlTag(str)
+  str = removeHtmlTags(str)
   return str ? str.match(/.{3}/g) : []
 }
 
 export const getLength = (str: string) => {
-  return !str ? 0 : removeHtmlTag(str).length
+  return !str ? 0 : removeHtmlTags(str).length
 }
 
 export const stripTags = (content: string, linebreak = true) => {

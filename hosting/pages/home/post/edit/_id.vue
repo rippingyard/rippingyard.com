@@ -58,18 +58,7 @@ export default {
 
     return r
   },
-  mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      // this.$buefy.notification.open({
-      //   duration: 5000,
-      //   message: 'ログインしてください',
-      //   position: 'is-bottom-right',
-      //   type: 'is-danger',
-      //   hasIcon: false,
-      // })
-      this.$router.push('/login')
-    }
-  },
+  mounted() {},
   head: () => {
     return {
       title: '記事編集 - HOME',

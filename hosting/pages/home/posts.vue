@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import _ from 'lodash'
 import { mapActions } from 'vuex'
 // import { DocumentData } from '@firebase/firestore-types'
@@ -26,7 +27,7 @@ import { normalize } from '~/services/post'
 
 import { getTitle } from '~/plugins/typography'
 
-export default {
+export default Vue.extend({
   layout: 'manage',
   middleware: ['auth'],
   async asyncData({ $fire, store }) {
@@ -129,10 +130,12 @@ export default {
       //   notification: this.$buefy.notification,
       // })
 
+      this.snack('記事を削除しました')
+
       if (location) location.reload()
     },
   },
-}
+})
 </script>
 <style lang="scss" scoped>
 .console {

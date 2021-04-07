@@ -50,6 +50,12 @@
 
 export default {
   layout: 'manage',
+  props: {
+    test: {
+      default: 'TEST',
+      type: String,
+    },
+  },
   fetch() {
     this.me = this.$store.state.auth.me
   },
@@ -59,23 +65,7 @@ export default {
     }
   },
   middleware: ['auth'],
-  mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      // this.$buefy.notification.open({
-      //   duration: 5000,
-      //   message: 'ログインしてください',
-      //   position: 'is-bottom-right',
-      //   type: 'is-danger',
-      //   hasIcon: false,
-      // })
-      this.$router.push('/login')
-    }
-
-    // console.log(this.$store.state.auth.me.uid)
-    // this.me = this.$store.state.auth.me.uid
-
-    // console.log('me', this.me)
-  },
+  mounted() {},
   head: () => {
     return {
       title: 'HOME',

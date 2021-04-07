@@ -36,7 +36,7 @@ export default Vue.extend({
         })
       })
     await Promise.all(promises)
-    console.log('promises:', promises)
+    // console.log('promises:', promises)
     // console.log('me', store.state.auth.follows)
     return {
       posts: _.orderBy(posts, ['createdAt'], ['desc']),
@@ -52,7 +52,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .masonry {
   & > li {
-    margin-bottom: 40px;
+    margin-bottom: $gap;
     > a {
       display: block;
       position: relative;
@@ -62,6 +62,7 @@ export default Vue.extend({
       border: 8px solid $black;
       &:hover {
         border: 8px solid $black;
+        cursor: pointer;
       }
       /deep/ h1 {
         padding-top: 0;
@@ -72,7 +73,9 @@ export default Vue.extend({
         bottom: 30px;
       }
       @include mobile {
-        padding: $gap / 2;
+        // padding: $gap / 2 $gap;
+        border: 6px solid $black;
+        margin-bottom: $gap / 2;
       }
     }
   }

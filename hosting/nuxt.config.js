@@ -1,3 +1,5 @@
+import env from './env'
+
 let fbconfigEnv = process.env.FIREBASE_CONFIG
 if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 
@@ -5,8 +7,7 @@ let algoliaEnv = { appId: '', apiKey: '' }
 algoliaEnv = process.env.ALGOLIA_CONFIG
 if (algoliaEnv) {
   algoliaEnv = JSON.parse(algoliaEnv)
-} else {
-  const env = require('./env')
+} else if (env) {
   algoliaEnv = env.ALGOLIA_CONFIG
 }
 
@@ -123,7 +124,7 @@ export default {
   css: ['destyle.css', '~/assets/scss/app.scss'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/auth'],
+  plugins: ['~/middleware/gtm', '~/plugins/auth', '~/middleware/snack'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -140,8 +141,19 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     '@nuxtjs/style-resources',
+    '@nuxtjs/gtm',
     // '@nuxtjs/axios',
     'nuxt-svg-loader',
+    [
+      '@nuxtjs/google-adsense',
+      {
+        id: env.GA_ADSENSE_ID || process.env.GA_ADSENSE_ID,
+        test: process.env.NODE_ENV !== 'production',
+        // pageLevelAds: true,
+        // analyticsUacct: process.env.GA_TRACKING_ID,
+        // analyticsDomainName: domain
+      },
+    ],
     [
       '@nuxtjs/firebase',
       {
@@ -180,6 +192,11 @@ export default {
       },
     ],
   ],
+
+  gtm: {
+    id: process.env.GTM_ID || 'GTM-5B3N3TX',
+    enabled: true,
+  },
 
   fontawesome: {
     // https://fontawesome.com/icons?d=gallery&m=free
@@ -222,5 +239,32 @@ export default {
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    analyze: true,
+
+    // vender: ['moment'],
+    // plugins: [
+    //   new MomentLocalesPlugin({
+    //     localesToKeep: ['es-us', 'ja']
+    //   }),
+    // ],
+
+    terser: {
+      terserOptions: {
+        compress: { drop_console: process.env.NODE_ENV === 'production' },
+      },
+    },
+
+    // extend(config, ctx) {
+    //   // Run ESLint on save
+    //   if (ctx.isDev && ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/,
+    //     })
+    //   }
+    // },
+  },
 }

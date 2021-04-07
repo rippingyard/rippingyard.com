@@ -10,24 +10,35 @@ import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
 
+interface Params {
+  withoutOwner?: boolean
+}
+
 export async function normalize(
   id: string,
   post: DocumentData | undefined,
-  store: Store<any>
+  store: Store<any>,
+  params: Params = {
+    withoutOwner: false,
+  }
 ): Promise<Partial<Post>> {
   if (!post) return {}
 
   try {
-    let owner: null | DocumentData = null
+    let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
-    if (post.owner) {
+    if (!params.withoutOwner && post.owner) {
       const cachedUser = await store.getters['user/one'](post.owner.id)
       if (!cachedUser) {
-        await post.owner.get().then((doc: any) => {
-          owner = omit(doc.data(), ['follows', 'followers'])
-          console.log('Owner from firestore')
-          store.commit('user/setUser', owner)
-        })
+        try {
+          await post.owner?.get().then((doc: any) => {
+            owner = omit(doc.data(), ['follows', 'followers'])
+            // console.log('Owner from firestore')
+            store.commit('user/setUser', owner)
+          })
+        } catch (e) {
+          console.warn('Error', e)
+        }
       } else {
         console.log('Cached!')
         owner = cachedUser
@@ -95,7 +106,7 @@ export function renderWidgets(content: string) {
     urlInfo = urlParse(url)
     queries = queryString.parse(urlInfo.query.toString())
 
-    console.log('URL Info', urlInfo)
+    // console.log('URL Info', urlInfo)
 
     switch (urlInfo.hostname) {
       case 'youtube.com':

@@ -21,9 +21,9 @@
         </nuxt-link>
       </li>
     </ul>
-    <h3>ENTITIES</h3>
+    <!-- <h3>ENTITIES</h3> -->
     <ul class="main">
-      <li>
+      <li v-if="true === false">
         <nuxt-link to="/home/entities/">
           <fa-icon icon="angle-right" class="icon" />エンティティ管理
         </nuxt-link>
@@ -36,7 +36,7 @@
           <fa-icon icon="angle-right" class="icon" />ユーザー設定
         </nuxt-link>
       </li>
-      <li>
+      <li v-if="true === false">
         <nuxt-link to="/home/invite/">
           <fa-icon icon="angle-right" class="icon" />招待
         </nuxt-link>

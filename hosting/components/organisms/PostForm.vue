@@ -65,7 +65,8 @@ export default {
 
         const { error } = schemaPost.validate(params)
         if (!isEmpty(error)) {
-          return alert(error.details)
+          // console.log('Error', error.details)
+          return this.snackAlert('投稿に失敗しました')
         }
 
         const post = Object.assign(this.post, params)
@@ -76,7 +77,7 @@ export default {
 
         this.$router.push('/home/posts')
       } catch (e) {
-        alert(e)
+        // alert(e)
       }
     },
   },

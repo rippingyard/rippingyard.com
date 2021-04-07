@@ -2,4 +2,5 @@
 
 export type Context = NuxtContext & {
   $fire: any
+  $toast: any
 }

@@ -88,13 +88,12 @@ export const actions: ActionInterface = {
     try {
       // TODO: validation
       // TODO: auth処理
+
       if (!rootState.auth.me) {
         throw new Error('権限がありません')
       }
 
       // user.updatedAt = dayjs().toDate()
-
-      console.log('user', Object.assign(scheme, user))
 
       // user.createdAt = user.createdAt
       //   ? dayjs(user.createdAt).toDate()
@@ -104,10 +103,19 @@ export const actions: ActionInterface = {
 
       db = user.id ? db.doc(user.id) : db.doc()
 
-      return await db.set(user, { merge: true })
-      // .then(() => {})
-      // .catch(() => {})
-    } catch (e) {}
+      const newUser: Partial<UserState> = Object.assign(scheme, user)
+
+      await db.set(newUser, { merge: true })
+
+      // .then((result: any) => {
+      //   console.log('result', result)
+      // })
+      // .catch((error: any) => {
+      //   console.log('error', error)
+      // })
+    } catch (e) {
+      console.log('ERROR', e)
+    }
   },
 }
 

@@ -21,7 +21,7 @@ service cloud.firestore {
     match /posts/{postId} {
       allow read;
       allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated()
+      allow update, delete: if isAuthenticated();
     }
     match /users/{userId} {
     	allow read;
