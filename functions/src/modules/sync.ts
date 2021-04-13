@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions'
+import { Post } from '../types/post'
 // import * as admin from 'firebase-admin'
 
 // const firestore = admin.firestore();
@@ -6,7 +7,7 @@ import * as functions from 'firebase-functions'
 export async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, context: functions.EventContext, firestore: any) {
 
   const postId = snapshot.id
-  const post = snapshot.data() as any
+  const post = snapshot.data() as Partial<Post>
 
   console.log('Start!', postId, post)
 
@@ -17,10 +18,10 @@ export async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, co
   console.log('End')
 
   // status !== 'published'の場合は無視
-  if( post.status !== 'published' || post.isDeleted ) return
+  if (post.status !== 'published' || post.isDeleted) return
 
   // isPublicのもの
-  if( post.isPublic ) {
+  if (post.isPublic) {
     await firestore.collection('timelines').doc('public').collection('posts').doc(postId).set(post, { merge: true })
   }
 

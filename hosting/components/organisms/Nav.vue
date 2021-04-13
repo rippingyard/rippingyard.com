@@ -4,11 +4,11 @@
     <div class="body" @click="closeNav">
       <ul class="links">
         <li><nuxt-link to="/">TOP</nuxt-link></li>
-        <li v-if="isAutenticated"><nuxt-link to="/home/">HOME</nuxt-link></li>
-        <li v-if="isAutenticated"><span @click="logout">LOGOUT</span></li>
-        <li v-if="!isAutenticated">
+        <client-only><li v-if="isAutenticated"><nuxt-link to="/home/">HOME</nuxt-link></li></client-only>
+        <client-only><li v-if="isAutenticated"><span @click="logout">LOGOUT</span></li></client-only>
+        <client-only><li v-if="!isAutenticated">
           <nuxt-link to="/login/">LOGIN</nuxt-link>
-        </li>
+        </li></client-only>
       </ul>
     </div>
     <div class="overlay" @click="closeNav"></div>

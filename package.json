@@ -6,8 +6,10 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "start": "yarn start:emulator && yarn watch:functions",
-    "start:emulator": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
-    "watch:functions": "./functions/node_modules/.bin/tsc --watch"
+    "dev": "yarn emulator:start",
+    "build": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
+    "build:old": "rm -rf hosting/dist && cd hosting && yarn generate && cd ../ && cp -R functions hosting/dist/server && cp -R hosting/.nuxt hosting/dist/server/ && cp -R hosting/static hosting/dist/client && mkdir -p hosting/dist/client/_nuxt && cp -R hosting/.nuxt/dist/client/* hosting/dist/client/_nuxt",
+    "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
+    "functions:watch": "./functions/node_modules/.bin/tsc --watch"
   }
 }

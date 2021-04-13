@@ -13,11 +13,7 @@
     "public": "hosting/dist",
     "rewrites": [
       {
-        "source": "/post/**",
-        "function": "ssr"
-      },
-      {
-        "source": "/seeds/**",
+        "source": "**",
         "function": "ssr"
       }
     ],

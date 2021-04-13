@@ -1,5 +1,5 @@
-import { DocumentData } from '@firebase/firestore-types'
-import { User } from '~/types/user'
+﻿import { DocumentData } from '@firebase/firestore-types'
+import { User } from './user'
 
 export type Post = {
   id: string

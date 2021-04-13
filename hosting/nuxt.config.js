@@ -238,6 +238,11 @@ export default {
     linkExactActiveClass: 'is-current',
   },
 
+  generate: {
+    crawler: false,
+    // dir: 'dist/client',
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     analyze: true,
