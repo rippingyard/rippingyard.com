@@ -2,6 +2,7 @@
   <article class="block container">
     <Header />
     <Content v-html="mainContent" />
+    <AdsensePostBottom />
     <div class="footer">
       <p class="date">
         <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
