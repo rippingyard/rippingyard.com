@@ -133,7 +133,7 @@ export default {
   modules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/gtm',
-    // '@nuxtjs/axios',
+    '@nuxtjs/sentry',
     'nuxt-svg-loader',
     [
       '@nuxtjs/google-adsense',
