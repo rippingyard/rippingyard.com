@@ -21,31 +21,31 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Hosting: Install dependencies
+    - name: Hosting - Install dependencies
       run: cd hosting && yarn install
-    - name: Test
+    - name: Hosting - Test
       run: cd hosting && yarn test
-    - name: Generate html files for production
+    - name: Hosting - Generate html files for production
       run: cd hosting && yarn run build
       env:
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref == 'refs/heads/master' }}
-    - name: Generate html files for develop
+    - name: Hosting - Generate html files for develop
       run: cd hosting && yarn run build
       env:
         NODE_ENV: development
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref != 'refs/heads/master' }}
-    - name: Set env to Production
+    - name: Functions - Set env to Production
       uses: w9jds/firebase-action@master
       with:
         args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-    - name: Init functions for production
+    - name: Functions - Init for production
       run: cd functions && npm install && npm run build
       env:
         BAUTH_USER: ${{ secrets.BAUTH_USER }}
