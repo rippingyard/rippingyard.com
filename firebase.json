@@ -4,10 +4,6 @@
     "indexes": "firebase/firestore.indexes.json"
   },
   "functions": {
-    "predeploy": [
-      "yarn lint",
-      "yarn build"
-    ]
   },
   "hosting": {
     "public": "hosting/dist",
