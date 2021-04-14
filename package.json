@@ -9,7 +9,6 @@
     "dev": "yarn emulator:start",
     "build": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
     "lint": "cd hosting && yarn lint",
-    "build:old": " && cp -R hosting/static hosting/dist/client && mkdir -p hosting/dist/client/_nuxt && cp -R hosting/.nuxt/dist/client/* hosting/dist/client/_nuxt",
     "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
     "functions:watch": "./functions/node_modules/.bin/tsc --watch",
     "deploy": "firebase deploy --only hosting,functions --project default"

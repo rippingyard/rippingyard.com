@@ -101,7 +101,7 @@ export const actions: ActionInterface = {
 
       let db = this.$fire.firestore.collection('users')
 
-      db = user.id ? db.doc(user.id) : db.doc()
+      db = user.uid ? db.doc(user.uid) : db.doc()
 
       const newUser: Partial<UserState> = Object.assign(scheme, user)
 
