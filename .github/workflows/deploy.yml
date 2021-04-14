@@ -1,0 +1,80 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Deploy
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Hosting: Install dependencies
+      run: cd hosting && yarn install
+    - name: Test
+      run: cd hosting && yarn test
+    - name: Generate html files for production
+      run: cd hosting && yarn run build
+      env:
+        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
+        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+      if: ${{ github.ref == 'refs/heads/master' }}
+    - name: Generate html files for develop
+      run: cd hosting && yarn run build
+      env:
+        NODE_ENV: development
+        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
+        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+      if: ${{ github.ref != 'refs/heads/master' }}
+    - name: Set env to Production
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
+      if: ${{ github.ref == 'refs/heads/master' }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Init functions for production
+      run: cd functions && npm install && npm run build
+      env:
+        BAUTH_USER: ${{ secrets.BAUTH_USER }}
+        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
+      if: ${{ github.ref == 'refs/heads/master' }}
+    - name: Deploy to Production
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting,functions --project production
+      if: ${{ github.ref == 'refs/heads/master' }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Set env to Develop
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set runtime.env="develop" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project default
+      if: ${{ github.ref != 'refs/heads/master' }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Init functions for develop
+      run: cd functions && npm install && npm run build
+      env:
+        BAUTH_USER: ${{ secrets.BAUTH_USER }}
+        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
+      if: ${{ github.ref != 'refs/heads/master' }}
+    - name: Deploy to Develop
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting,functions --project default
+      if: ${{ github.ref != 'refs/heads/master' }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
