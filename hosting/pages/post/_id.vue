@@ -2,6 +2,7 @@
   <article class="block container">
     <Header :post="post" />
     <Content v-html="post.content" />
+    <AdsensePostBottom />
     <div v-if="post.owner" class="owner">
       <UserCard :user="post.owner" />
     </div>

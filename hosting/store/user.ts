@@ -64,7 +64,7 @@ export const actions: ActionInterface = {
 
     const myDoc = this.$fire.firestore
       .collection('users')
-      .doc(rootState.auth.me.id)
+      .doc(rootState.auth.me.uid)
 
     try {
       const me = (await myDoc.get()).data()
