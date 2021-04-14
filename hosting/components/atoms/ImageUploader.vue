@@ -75,6 +75,11 @@ export default Vue.extend({
       },
     }
   },
+  watch: {
+    defaultImage(val: string) {
+      this.image = val
+    },
+  },
   mounted(): void {
     const dz: any = this.$refs.dz
     this.image = this.defaultImage
