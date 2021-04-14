@@ -1,19 +1,10 @@
-import env from './env'
-
 let fbconfigEnv = process.env.FIREBASE_CONFIG
 if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 
-let algoliaEnv = { appId: '', apiKey: '' }
-algoliaEnv = process.env.ALGOLIA_CONFIG
-if (algoliaEnv) {
-  algoliaEnv = JSON.parse(algoliaEnv)
-} else if (env) {
-  algoliaEnv = env.ALGOLIA_CONFIG
-}
+let algoliaEnv = process.env.ALGOLIA_CONFIG
+if (algoliaEnv) algoliaEnv = JSON.parse(algoliaEnv)
 
 // const fbAPI = `https://firestore.googleapis.com/v1/projects/${fbConfig.projectId}/databases/(default)/documents/`
-
-console.log('ALGOLIA_CONFIG', process.env.ALGOLIA_CONFIG)
 
 export default {
   dev: process.env.NODE_ENV !== 'production',
@@ -24,7 +15,7 @@ export default {
   env: {
     NODE_ENV: process.env.NODE_ENV,
     FIRE_ENV: process.env.FIRE_ENV,
-    ALGOLIA_CONFIG: algoliaEnv,
+    ALGOLIA_CONFIG: algoliaEnv || require('./env.json').ALGOLIA_CONFIG,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -147,7 +138,7 @@ export default {
     [
       '@nuxtjs/google-adsense',
       {
-        id: env.GA_ADSENSE_ID || process.env.GA_ADSENSE_ID,
+        id: process.env.GA_ADSENSE_ID || require('./env.json').GA_ADSENSE_ID,
         test: process.env.NODE_ENV !== 'production',
         // pageLevelAds: true,
         // analyticsUacct: process.env.GA_TRACKING_ID,
