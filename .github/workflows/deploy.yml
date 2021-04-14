@@ -26,14 +26,14 @@ jobs:
     - name: Hosting - Test
       run: cd hosting && yarn test
     - name: Hosting - Generate html files for production
-      run: cd hosting && yarn run build
+      run: yarn run build
       env:
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
         ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref == 'refs/heads/master' }}
     - name: Hosting - Generate html files for develop
-      run: cd hosting && yarn run build
+      run: yarn run build
       env:
         NODE_ENV: development
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
