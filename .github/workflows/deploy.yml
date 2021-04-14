@@ -21,8 +21,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm rebuild node-sass
-      run: npm rebuild node-sass
     - name: Hosting - Install dependencies
       run: cd hosting && yarn install
     - name: Hosting - Test
@@ -34,14 +32,14 @@ jobs:
         ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       if: ${{ github.ref == 'refs/heads/master' }}
-    # - name: Hosting - Generate html files for develop
-    #   run: cd hosting && yarn run build
-    #   env:
-    #     NODE_ENV: development
-    #     FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
-    #     ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_DEV }}
-    #     GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
-    #   if: ${{ github.ref != 'refs/heads/master' }}
+    - name: Hosting - Generate html files for develop
+      run: cd hosting && yarn run build
+      env:
+        NODE_ENV: development
+        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
+        ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_DEV }}
+        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+      if: ${{ github.ref != 'refs/heads/master' }}
     - name: Functions - Set env to Production
       uses: w9jds/firebase-action@master
       with:
@@ -82,7 +80,3 @@ jobs:
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        NODE_ENV: development
-        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
-        ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_DEV }}
-        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
