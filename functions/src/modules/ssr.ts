@@ -19,14 +19,17 @@ const app = express()
 const nuxt = new Nuxt({
   dev: false,
   build: {
-    publicPath: '/'
-  }
+    publicPath: '/_nuxt/',
+    analyze: true,
+  },
+  terser: {
+    terserOptions: {
+      compress: { drop_console: true },
+    },
+  },
 })
 
-// console.log(nuxt)
-
 app.use(async (req: any, res: any) => {
-  console.log(req)
   await nuxt.renderRoute(req.url, { req }).then((result: any) => {
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
     res.send(result.html)

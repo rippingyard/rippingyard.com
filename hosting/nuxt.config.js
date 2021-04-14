@@ -235,6 +235,7 @@ export default {
 
   router: {
     middleware: ['me'],
+    base: '/',
     linkExactActiveClass: 'is-current',
   },
 

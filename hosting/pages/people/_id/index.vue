@@ -97,7 +97,7 @@ export default Vue.extend({
       .collection('timelines')
       .doc('public')
       .collection('posts')
-      .where('owner', '==', $fire.firestore.doc(`users/${r.user.id}`))
+      .where('owner', '==', $fire.firestore.doc(`users/${r.user.uid}`))
       .limit(100)
       .orderBy('publishedAt', 'desc')
       .get()
@@ -112,8 +112,6 @@ export default Vue.extend({
     await Promise.all(promises)
 
     r.posts = orderBy(posts, ['createdAt'], ['desc'])
-
-    // console.log('oneUser', r.user)
 
     return r
   },
@@ -273,6 +271,9 @@ export default Vue.extend({
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+  @include mobile {
+    padding-right: 0;
   }
 }
 </style>

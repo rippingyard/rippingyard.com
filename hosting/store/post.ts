@@ -94,11 +94,11 @@ export const actions: ActionInterface = {
       if (!post.owner) {
         post.owner = await this.$fire.firestore
           .collection('users')
-          .doc(rootState.auth.me.id)
-      } else if (post.owner.id) {
+          .doc(rootState.auth.me.uid)
+      } else if (post.owner.uid) {
         post.owner = await this.$fire.firestore
           .collection('users')
-          .doc(post.owner.id)
+          .doc(post.owner.uid)
       }
 
       let db = this.$fire.firestore.collection('posts')
@@ -118,7 +118,7 @@ export const actions: ActionInterface = {
         createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
         publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
         updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
-        owner: post.owner?.id,
+        owner: post.owner?.uid,
         collaborators: [],
         tokens: getTokens(post.content),
         entities: getTokens(post.content),

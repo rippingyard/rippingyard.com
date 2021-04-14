@@ -48,12 +48,20 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .item {
   padding: $gap;
+
+  @include mobile {
+    // padding: $gap / 2;
+  }
 }
 
 .title {
   font-size: 1.9rem;
   margin-bottom: 8px;
   font-weight: 800;
+
+  @include mobile {
+    line-height: 1.3;
+  }
 }
 
 .image {
@@ -62,12 +70,21 @@ export default Vue.extend({
   img {
     max-width: 100%;
   }
+
+  @include mobile {
+    padding-top: 0;
+  }
 }
 
 .summary {
   font-size: 0.9rem;
   margin-bottom: 42px;
   padding-right: $gap;
+
+  @include mobile {
+    padding-right: 0;
+    margin-bottom: $gap;
+  }
 }
 
 .footer {

@@ -89,6 +89,8 @@ export default Vue.extend({
           console.log('File', result, this.avator)
         }
 
+        console.log('ME', this.$data.me)
+
         const params = {
           id: this.$data.me.id,
           displayName: this.displayName,
@@ -98,6 +100,7 @@ export default Vue.extend({
         console.log('val', schemaUser.validate(params))
         const { value, error } = schemaUser.validate(params)
         if (!isEmpty(error)) {
+          console.log('Error', error?.details)
           return alert(error?.details)
         }
         await this.saveUser({

@@ -128,7 +128,7 @@
       <template v-if="hasResults">
         <div
           v-for="(user, index) in filteredUsers"
-          :key="user.id"
+          :key="user.uid"
           :class="{ 'is-selected': navigatedUserIndex === index }"
           class="suggestion-list__item"
           @click="selectUser(user)"
@@ -412,8 +412,8 @@ export default {
       this.insertMention({
         range: this.suggestionRange,
         attrs: {
-          id: user.id,
-          label: user.id,
+          id: user.uid,
+          label: user.uid,
         },
       })
       this.editor.focus()

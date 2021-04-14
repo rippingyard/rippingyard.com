@@ -18,20 +18,23 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import _ from 'lodash'
 import { mapActions } from 'vuex'
-// import { DocumentData } from '@firebase/firestore-types'
 import { normalize } from '~/services/post'
+import { Context } from '~/types/context'
+import { Post } from '~/types/post'
 
 import { getTitle } from '~/plugins/typography'
 
 export default Vue.extend({
   layout: 'manage',
   middleware: ['auth'],
-  async asyncData({ $fire, store }) {
-    const posts = []
+  async asyncData({ $fire, store }: Context) {
+    const posts: Partial<Post>[] = []
+
+    console.log('TEST', store.state.auth.me)
 
     const db = $fire.firestore
       .collection('posts')
@@ -39,7 +42,7 @@ export default Vue.extend({
       .where(
         'owner',
         '==',
-        $fire.firestore.collection('users').doc(store.state.auth.me.id)
+        $fire.firestore.collection('users').doc(store.state.auth.me.uid)
       )
 
     // if (isTimeline) {
@@ -51,13 +54,13 @@ export default Vue.extend({
     //   db = $fire.firestore.collection('posts')
     // }
 
-    let promises = []
+    let promises: any[] = []
     await db
       .limit(1000)
       .orderBy('createdAt', 'desc')
       .get()
-      .then(qs => {
-        promises = qs.docs.map(async doc => {
+      .then((qs: any) => {
+        promises = qs.docs.map(async (doc: any) => {
           const post = doc.data()
           if (post.isDeleted === true) return
           const normalizedPost = await normalize(doc.id, post, store)
@@ -67,7 +70,7 @@ export default Vue.extend({
 
     await Promise.all(promises)
 
-    console.log('Posts:', posts)
+    // console.log('Posts:', posts)
 
     return {
       posts: _.orderBy(posts, ['createdAt'], ['desc']),
@@ -83,52 +86,40 @@ export default Vue.extend({
   },
   computed: {
     isChecked() {
-      return this.checkedPosts.length > 0
+      return this.$data.checkedPosts.length > 0
     },
   },
   methods: {
     ...mapActions({
       deletePost: 'post/delete',
     }),
-    getTitle(content) {
+    getTitle(content: string): string {
       return getTitle(content)
     },
-    getEditLink(id) {
+    getEditLink(id: string): string {
       return `/home/post/edit/${id}`
     },
-    isActive(id) {
-      return !_.find(this.deletedItems, o => {
+    isActive(id: string): boolean {
+      return !_.find(this.$data.deletedItems, o => {
         return o.id === id
       })
     },
-    toggleCheck(id) {
-      if (!this.checkedPosts.includes(id)) {
-        this.checkedPosts.push(id)
+    toggleCheck(id: string) {
+      if (!this.$data.checkedPosts.includes(id)) {
+        this.$data.checkedPosts.push(id)
       } else {
         this.checkedPosts = this.checkedPosts.filter(p => p !== id)
       }
     },
     async deletePosts() {
-      // console.log('postIds:', this.checkedPosts)
-      // console.log(this)
 
       if (this.checkedPosts.length === 0) return
 
-      const promises = []
+      const promises: any[] = []
 
       this.checkedPosts.map(id => promises.push(this.deletePost(id)))
 
       await Promise.all(promises)
-
-      // this.deletedItems.push({
-      //   id,
-      //   status: 'deleted',
-      // })
-
-      // return this.deletePost({
-      //   id,
-      //   notification: this.$buefy.notification,
-      // })
 
       this.snack('記事を削除しました')
 
