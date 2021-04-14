@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: npm rebuild node-sass
+      run: npm rebuild node-sass
     - name: Hosting - Install dependencies
       run: cd hosting && yarn install
     - name: Hosting - Test
