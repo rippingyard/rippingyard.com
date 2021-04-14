@@ -129,6 +129,12 @@ export default {
       return this.query || this.hasResults
     },
   },
+  watch: {
+    default(val) {
+      console.log('Update TextArea', val)
+      this.content = val
+    }
+  },
   mounted() {
     console.log('content', this.content)
     this.editor = new Editor({

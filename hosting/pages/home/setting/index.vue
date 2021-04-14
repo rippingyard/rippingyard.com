@@ -19,7 +19,7 @@
             <div class="box wysiwyg">
               <h2>プロフィール画像</h2>
               <div>
-                <ImageUploader :image="avator" :on-change="updateImage" />
+                <ImageUploader :default-image="avator" :on-change="updateImage" />
               </div>
             </div>
           </div>
@@ -46,14 +46,16 @@ import { schemaUser } from '~/plugins/validators/user'
 
 export default Vue.extend({
   layout: 'manage',
-  fetch() {
-    this.me = this.$store.state.auth.me
-    this.displayName = this.$data.me.displayName || this.$data.me.id
-    this.profile = this.$data.me.profile || this.$data.me.profile
+  async fetch() {
+    this.uid = this.$store.state.auth.me.uid
+    this.me = await this.getUser(this.uid)
+    this.displayName = this.$data.me.displayName || this.$data.me.uid
+    this.profile = this.$data.me.profile || ''
     this.avator = this.$data.me.avator || ''
   },
   data() {
     return {
+      uid: null,
       me: null,
       displayName: '',
       profile: '',
@@ -66,6 +68,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     ...mapActions({
+      getUser: 'user/getOne',
       saveUser: 'user/save',
     }),
     updateContent(content: string): void {
@@ -89,10 +92,8 @@ export default Vue.extend({
           console.log('File', result, this.avator)
         }
 
-        console.log('ME', this.$data.me)
-
         const params = {
-          id: this.$data.me.id,
+          uid: this.$data.me.uid,
           displayName: this.displayName,
           profile: this.profile,
           avator: this.avator,
