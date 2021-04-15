@@ -207,7 +207,9 @@ export default {
         'faAngleRight',
         'faClock',
       ],
-      regular: [],
+      regular: [
+        'faTimesCircle',
+      ],
       brands: [],
     },
   },
