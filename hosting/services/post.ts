@@ -53,7 +53,7 @@ export async function normalize(
         sociallink: sociallink(id),
         content: filterContent(post.content),
         contentOriginal: post.content,
-        //   parent: null,
+        // parent: null,
 
         owner,
 
