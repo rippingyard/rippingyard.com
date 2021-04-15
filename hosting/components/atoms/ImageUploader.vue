@@ -94,7 +94,7 @@ export default Vue.extend({
           ) {
             return null
           }
-          console.log('Original File Accepted!')
+          // console.log('Original File Accepted!')
 
           const image = await resizeImage(originalFile, {
             width: 1200,

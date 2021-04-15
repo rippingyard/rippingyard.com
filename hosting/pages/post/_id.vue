@@ -2,6 +2,7 @@
   <article class="block container">
     <Header :post="post" />
     <Content v-html="post.content" />
+    <AdsensePostBottom />
     <div v-if="post.owner" class="owner">
       <UserCard :user="post.owner" />
     </div>
@@ -15,8 +16,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
-// import { mapGetters } from 'vuex'
 import { Post } from '~/types/post'
 import { normalize } from '~/services/post'
 import {
@@ -50,7 +51,6 @@ export default Vue.extend({
         .then(async (doc: any) => {
           // console.log(doc)
           r.post = await normalize(doc.id, doc.data(), store)
-          // console.log(doc.data())
           if (!doc.exists || r.post.isDeleted === true) {
             r.post = {}
             throw new Error('ページが見つかりません')
@@ -72,6 +72,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
     getTitle(): string {
       return getTitle(this.$data.post.content)
     },
@@ -84,6 +87,14 @@ export default Vue.extend({
     mainContent(): string {
       return removeTitle(this.$data.post.content)
     },
+  },
+  mounted() {
+    if (!this.isAuthenticated && !this.$data.post.isPublic) {
+      this.$data.post = {}
+      this.snack('ログインしてください')
+      this.$router.push('/login');
+      // throw new Error('会員限定記事です')
+    }
   },
   // async mounted({
   //   post,

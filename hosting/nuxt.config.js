@@ -133,7 +133,7 @@ export default {
   modules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/gtm',
-    // '@nuxtjs/axios',
+    '@nuxtjs/sentry',
     'nuxt-svg-loader',
     [
       '@nuxtjs/google-adsense',
@@ -207,7 +207,9 @@ export default {
         'faAngleRight',
         'faClock',
       ],
-      regular: [],
+      regular: [
+        'faTimesCircle',
+      ],
       brands: [],
     },
   },

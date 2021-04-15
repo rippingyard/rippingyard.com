@@ -34,25 +34,14 @@ export default Vue.extend({
   async asyncData({ $fire, store }: Context) {
     const posts: Partial<Post>[] = []
 
-    console.log('TEST', store.state.auth.me)
-
     const db = $fire.firestore
       .collection('posts')
       .where('type', '==', 'article')
       .where(
         'owner',
         '==',
-        $fire.firestore.collection('users').doc(store.state.auth.me.uid)
+        $fire.firestore.doc(`users/${store.state.auth.me.uid}`)
       )
-
-    // if (isTimeline) {
-    //   db = $fire.firestore
-    //     .collection('timelines')
-    //     .doc('public')
-    //     .collection('posts')
-    // } else {
-    //   db = $fire.firestore.collection('posts')
-    // }
 
     let promises: any[] = []
     await db
@@ -69,8 +58,6 @@ export default Vue.extend({
       })
 
     await Promise.all(promises)
-
-    // console.log('Posts:', posts)
 
     return {
       posts: _.orderBy(posts, ['createdAt'], ['desc']),

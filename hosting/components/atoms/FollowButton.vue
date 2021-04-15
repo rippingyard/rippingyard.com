@@ -1,5 +1,5 @@
 ﻿<template>
-  <button v-if="true === false" class="button" @click="follow(user.id)">
+  <button v-if="true === false" class="button" @click="follow(user.uid)">
     フォローする
   </button>
 </template>

@@ -19,7 +19,9 @@
             <div class="box wysiwyg">
               <h2>プロフィール画像</h2>
               <div>
-                <ImageUploader :default-image="avator" :on-change="updateImage" />
+                <ImageUploader
+                  :default-image="avator" :on-change="updateImage"
+                />
               </div>
             </div>
           </div>
@@ -83,7 +85,7 @@ export default Vue.extend({
           const ext = getExt(this.image)
           if (!ext) return
 
-          const filename = `avators/${this.$data.me.id}.${ext}`
+          const filename = `avators/${this.$data.me.uid}.${ext}`
           const result = await (this as any).$fire.storage
             .ref()
             .child(filename)
