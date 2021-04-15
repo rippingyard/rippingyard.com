@@ -28,7 +28,7 @@ export async function normalize(
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
     if (!params.withoutOwner && post.owner) {
-      const cachedUser = await store.getters['user/one'](post.owner.id)
+      const cachedUser = await store.getters['user/one'](post.owner.uid)
       if (!cachedUser) {
         try {
           await post.owner?.get().then((doc: any) => {
@@ -152,4 +152,8 @@ export function getStatusLabel(status: string): string {
     default:
       return status
   }
+}
+
+export function getPublicLabel(isPublic: boolean): string {
+  return isPublic ? '全世界' : '会員限定'
 }

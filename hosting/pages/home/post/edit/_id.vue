@@ -41,11 +41,11 @@ export default {
 
         if (r.post.owner) {
           r.post.owner = {
-            id: r.post.owner.id,
+            uid: r.post.owner.id,
           }
         }
 
-        console.log('before filter', r.post)
+        // console.log('before filter', r.post)
       })
       .catch(e => {
         error({
@@ -54,7 +54,7 @@ export default {
         })
       })
 
-    console.log('return value', r)
+    // console.log('return value', r)
 
     return r
   },

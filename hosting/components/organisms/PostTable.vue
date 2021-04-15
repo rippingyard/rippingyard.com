@@ -3,8 +3,8 @@
     <tr>
       <th></th>
       <th>タイトル</th>
+      <th>ステータス</th>
       <th>公開状態</th>
-      <th>作成者</th>
       <th>公開日</th>
     </tr>
     <tr v-for="datum in data" :key="datum.id">
@@ -28,14 +28,16 @@
       <td>
         <span class="badge">{{ status(datum.status) }}</span>
       </td>
-      <td>{{ datum.owner.displayName || '' }}</td>
+      <td>
+        <span class="badge">{{ isPublic(datum.isPublic) }}</span>
+      </td>
       <td>{{ datum.publishedAt }}</td>
     </tr>
   </table>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { permalink, editlink, getStatusLabel } from '~/services/post'
+import { permalink, editlink, getStatusLabel, getPublicLabel } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 import { Post } from '~/types/post'
 
@@ -55,6 +57,7 @@ export default Vue.extend({
     editLink: (post: Post) => editlink(post.id),
     permalink: (id: string) => permalink(id),
     status: (status: string) => getStatusLabel(status),
+    isPublic: (isPublic: boolean) => getPublicLabel(isPublic),
   },
 })
 </script>

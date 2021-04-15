@@ -34,8 +34,6 @@ export default Vue.extend({
   async asyncData({ $fire, store }: Context) {
     const posts: Partial<Post>[] = []
 
-    console.log('TEST', store.state.auth.me)
-
     const db = $fire.firestore
       .collection('posts')
       .where('type', '==', 'article')
@@ -44,17 +42,6 @@ export default Vue.extend({
         '==',
         $fire.firestore.doc(`users/${store.state.auth.me.uid}`)
       )
-    
-    console.log('u', `users/${store.state.auth.me.uid}`)
-
-    // if (isTimeline) {
-    //   db = $fire.firestore
-    //     .collection('timelines')
-    //     .doc('public')
-    //     .collection('posts')
-    // } else {
-    //   db = $fire.firestore.collection('posts')
-    // }
 
     let promises: any[] = []
     await db

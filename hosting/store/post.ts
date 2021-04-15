@@ -1,19 +1,19 @@
 import dayjs from 'dayjs'
-import { pick } from 'lodash'
+// import { pick } from 'lodash'
 import { ActionContext } from 'vuex'
-import {
-  getTitle,
-  removeTitle,
-  stripTags,
-  getTokens,
-  getThumbnail,
-} from '~/plugins/typography'
-import { save as saveIndex, destroy as destroyIndex } from '~/services/search'
+// import {
+//   getTitle,
+//   removeTitle,
+//   stripTags,
+//   getTokens,
+//   getThumbnail,
+// } from '~/plugins/typography'
+// import { save as saveIndex, destroy as destroyIndex } from '~/services/search'
 
 import { Post } from '~/types/post'
 import { State } from '~/types/state'
 
-const indexName = 'posts'
+// const indexName = 'posts'
 
 interface ActionInterface {
   save: (
@@ -108,30 +108,31 @@ export const actions: ActionInterface = {
 
       const newPost = Object.assign(scheme, post)
 
+      console.log('saved post', post)
+
       await db.set(newPost)
 
-      saveIndex(indexName, {
-        objectID: post.id,
-        title: getTitle(post.content),
-        body: stripTags(removeTitle(post.content)),
-        image: getThumbnail(post.content),
-        createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
-        publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
-        updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
-        owner: post.owner?.uid,
-        collaborators: [],
-        tokens: getTokens(post.content),
-        entities: getTokens(post.content),
-        ...pick(newPost, [
-          'content',
-          'isDeleted',
-          'isPublic',
-          'type',
-          'status',
-        ]),
-      })
+      // saveIndex(indexName, {
+      //   objectID: post.id,
+      //   title: getTitle(post.content),
+      //   body: stripTags(removeTitle(post.content)),
+      //   image: getThumbnail(post.content),
+      //   createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
+      //   publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
+      //   updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
+      //   owner: post.owner?.uid,
+      //   collaborators: [],
+      //   tokens: getTokens(post.content),
+      //   entities: getTokens(post.content),
+      //   ...pick(newPost, [
+      //     'content',
+      //     'isDeleted',
+      //     'isPublic',
+      //     'type',
+      //     'status',
+      //   ]),
+      // })
 
-      // console.log('saved post', newPost)
     } catch (e) {}
   },
   async delete({ rootState }, id) {
@@ -141,7 +142,7 @@ export const actions: ActionInterface = {
       throw new Error('権限がありません')
     }
 
-    destroyIndex(indexName, id)
+    // destroyIndex(indexName, id)
 
     await this.$fire.firestore.collection('posts').doc(id).set(
       {
