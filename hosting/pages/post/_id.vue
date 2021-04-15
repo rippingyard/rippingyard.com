@@ -51,7 +51,7 @@ export default Vue.extend({
         .then(async (doc: any) => {
           // console.log(doc)
           r.post = await normalize(doc.id, doc.data(), store)
-          // console.log(doc.data())
+          console.log(doc.data())
           if (!doc.exists || r.post.isDeleted === true) {
             r.post = {}
             throw new Error('ページが見つかりません')

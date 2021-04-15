@@ -50,14 +50,14 @@ export async function normalize(
       ...{
         id,
         permalink: permalink(id),
-        //   sociallink: sociallink(id),
+        sociallink: sociallink(id),
         content: filterContent(post.content),
         contentOriginal: post.content,
         //   parent: null,
 
         owner,
 
-        isDeleted: false,
+        isDeleted: post.isDeleted,
 
         publishedAt: post.publishedAt
           ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm')

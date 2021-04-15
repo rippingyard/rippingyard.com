@@ -42,8 +42,10 @@ export default Vue.extend({
       .where(
         'owner',
         '==',
-        $fire.firestore.collection('users').doc(store.state.auth.me.uid)
+        $fire.firestore.doc(`users/${store.state.auth.me.uid}`)
       )
+    
+    console.log('u', `users/${store.state.auth.me.uid}`)
 
     // if (isTimeline) {
     //   db = $fire.firestore
@@ -69,8 +71,6 @@ export default Vue.extend({
       })
 
     await Promise.all(promises)
-
-    // console.log('Posts:', posts)
 
     return {
       posts: _.orderBy(posts, ['createdAt'], ['desc']),
