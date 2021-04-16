@@ -3,11 +3,19 @@
     <NavTrigger :click="toggleNav" />
     <div class="body" @click="closeNav">
       <ul class="links">
-        <li><nuxt-link to="/">TOP</nuxt-link></li>
-        <client-only><li v-if="isAutenticated"><nuxt-link to="/home/">HOME</nuxt-link></li></client-only>
-        <client-only><li v-if="isAutenticated"><span @click="logout">LOGOUT</span></li></client-only>
+        <li><nuxt-link to="/">TOP<small>トップ</small></nuxt-link></li>
+        <client-only>
+          <li v-if="isAutenticated">
+            <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
+            <ul>
+              <li><nuxt-link to="/home/posts">YOUR POSTS<small>投稿一覧</small></nuxt-link></li>
+              <li><nuxt-link to="/home/setting">SETTING<small>設定変更</small></nuxt-link></li>
+              <li><span @click="logout">LOGOUT<small>ログアウト</small></span></li>
+            </ul>
+          </li>
+        </client-only>
         <client-only><li v-if="!isAutenticated">
-          <nuxt-link to="/login/">LOGIN</nuxt-link>
+          <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
         </li></client-only>
       </ul>
     </div>
@@ -80,7 +88,7 @@ export default Vue.extend({
   @include mobile {
     right: calc(-100% + 55px);
     .body {
-      padding: $gap / 2;
+      padding: $gap;
     }
   }
 }
@@ -101,11 +109,36 @@ export default Vue.extend({
       &.is-current {
         color: $yellow;
       }
+      > small {
+        font-size: 1rem;
+        display: block;
+        padding-left: 5px;
+        margin-top: 5px;
+        font-weight: 400;
+      }
+    }
+    > ul {
+      margin-top: $gap / 2;
+      margin-left: 2px;
+      padding-left: 15px;
+      border-left: 2px solid $white;
+      li {
+        font-size: 3.4rem;
+        small {
+          padding-left: 0;
+          font-size: 0.8rem;
+        }
+      }
     }
   }
   @include mobile {
     li {
-      font-size: 2.2rem;
+      font-size: 3rem;
+      > ul {
+        li {
+          font-size: 2.2rem;
+        }
+      }
     }
   }
 }

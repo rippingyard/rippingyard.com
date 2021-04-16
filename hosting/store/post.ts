@@ -135,7 +135,7 @@ export const actions: ActionInterface = {
 
     } catch (e) {}
   },
-  async delete({ rootState }, id) {
+  async delete({ rootState }, id): Promise<void> {
     console.log('delete:', id)
 
     if (!rootState.auth.me) {

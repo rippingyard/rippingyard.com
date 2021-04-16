@@ -7,7 +7,7 @@
           <p v-if="user.avator" class="avator" :style="avator"></p>
           <h1 class="name">{{ user.displayName }}</h1>
           <p class="account">@{{ user.userName }}</p>
-          <div class="wysiwyg" v-html="user.profile"></div>
+          <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
           <FollowButton :user="user" />
         </div>
       </div>
@@ -37,7 +37,7 @@
           <div v-if="isActiveTab('profile')" class="content">
             <div class="block">
               <h1>プロフィール</h1>
-              <div class="wysiwyg" v-html="user.profile"></div>
+              <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
             </div>
             <div v-if="createdate" class="block">
               <h1>登録日</h1>
@@ -58,7 +58,7 @@ import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { User } from '~/types/user'
 import { Post } from '~/types/post'
-import { normalize } from '~/services/post'
+import { normalize, filterContent } from '~/services/post'
 import { getSummary } from '~/plugins/typography'
 
 export default Vue.extend({
@@ -159,6 +159,9 @@ export default Vue.extend({
     },
     isActiveTab(tab: string) {
       return this.activeTab === tab
+    },
+    filterContent(content: string) {
+      return filterContent(content)
     },
   },
   head() {

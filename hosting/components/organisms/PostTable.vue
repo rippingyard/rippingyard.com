@@ -3,7 +3,6 @@
     <tr>
       <th></th>
       <th>タイトル</th>
-      <th>ステータス</th>
       <th>公開状態</th>
       <th>公開日</th>
     </tr>
@@ -26,10 +25,7 @@
         </nuxt-link>
       </td>
       <td>
-        <span class="badge">{{ status(datum.status) }}</span>
-      </td>
-      <td>
-        <span class="badge">{{ isPublic(datum.isPublic) }}</span>
+        <span class="badge" :class="statusClass(datum.status, datum.isPublic)">{{ status(datum.status, datum.isPublic) }}</span>
       </td>
       <td>{{ datum.publishedAt }}</td>
     </tr>
@@ -37,7 +33,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { permalink, editlink, getStatusLabel, getPublicLabel } from '~/services/post'
+import { permalink, editlink, getStatusLabel } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 import { Post } from '~/types/post'
 
@@ -56,8 +52,12 @@ export default Vue.extend({
     title: (content: string) => getTitle(content),
     editLink: (post: Post) => editlink(post.id),
     permalink: (id: string) => permalink(id),
-    status: (status: string) => getStatusLabel(status),
-    isPublic: (isPublic: boolean) => getPublicLabel(isPublic),
+    status: (status: string, isPublic: boolean) => getStatusLabel(status, isPublic),
+    statusClass(status: string, isPublic: boolean): string {
+      if (isPublic) return 'is-warning'
+      if (status === 'draft') return 'is-draft'
+      return ''
+    },
   },
 })
 </script>
