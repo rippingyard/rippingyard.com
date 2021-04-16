@@ -25,6 +25,7 @@ import {
   getSocialTitle,
   getSummary,
   removeTitle,
+  getThumbnail,
   decodeEntities,
 } from '~/plugins/typography'
 // import Header from '~/components/molecules/PostHeader'
@@ -86,6 +87,9 @@ export default Vue.extend({
     },
     mainContent(): string {
       return removeTitle(this.$data.post.content)
+    },
+    thumbnail() {
+      return getThumbnail(this.$data.post.contentOriginal)
     },
   },
   mounted() {
@@ -159,6 +163,17 @@ export default Vue.extend({
           name: 'twitter:url',
           content: this.$data.post.sociallink,
         },
+        // TODO: 他サーバーにあるものをOGImageとして使うのはいかがなものか
+        // {
+        //   hid: 'og:image',
+        //   property: 'og:image',
+        //   content: this.thumbnail || 'https://www.rippingyard.com/img/ogimage.png',
+        // },
+        // {
+        //   hid: 'twitter:image',
+        //   name: 'twitter:image',
+        //   content: this.thumbnail || 'https://www.rippingyard.com/img/ogimage.png',
+        // },
       ],
     }
   },

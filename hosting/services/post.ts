@@ -143,17 +143,13 @@ export function sociallink(id: string): string {
   return getDomain() + permalink(id)
 }
 
-export function getStatusLabel(status: string): string {
+export function getStatusLabel(status: string, isPublic: boolean = true): string {
   switch (status) {
-    case 'published':
-      return '公開中'
     case 'draft':
       return '下書き'
+    case 'published':
+      return isPublic ? '全世界公開' : '会員限定公開'
     default:
       return status
   }
-}
-
-export function getPublicLabel(isPublic: boolean): string {
-  return isPublic ? '全世界' : '会員限定'
 }

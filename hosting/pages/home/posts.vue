@@ -95,16 +95,16 @@ export default Vue.extend({
       if (!this.$data.checkedPosts.includes(id)) {
         this.$data.checkedPosts.push(id)
       } else {
-        this.checkedPosts = this.checkedPosts.filter(p => p !== id)
+        this.$data.checkedPosts = this.$data.checkedPosts.filter((p: string) => p !== id)
       }
     },
     async deletePosts() {
 
-      if (this.checkedPosts.length === 0) return
+      if (this.$data.checkedPosts.length === 0) return
 
       const promises: any[] = []
 
-      this.checkedPosts.map(id => promises.push(this.deletePost(id)))
+      this.$data.checkedPosts.map((id: string) => promises.push((this as any).deletePost(id)))
 
       await Promise.all(promises)
 
@@ -112,6 +112,11 @@ export default Vue.extend({
 
       if (location) location.reload()
     },
+  },
+  head: () => {
+    return {
+      title: '記事一覧 - HOME',
+    }
   },
 })
 </script>
