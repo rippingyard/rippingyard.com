@@ -3,9 +3,7 @@
     <Wysiwyg :post="post" @update="updateContent" />
     <div class="console">
       <div class="buttons">
-        <button type="is-primary" class="button" @click="confirm">
-          {{ submitLabel }}
-        </button>
+        <button type="is-primary" class="button" @click="confirm">最終確認</button>
         <button type="is-text" class="button no-border" @click="showPreview()">プレビュー</button>
       </div>
     </div>
@@ -21,12 +19,17 @@
       <div class="inner block container">
         <button class="close" @click="closeSetting"><fa-icon :icon="['far', 'times-circle']" class="icon" /></button>
         <div class="block container">
-          <button type="is-primary" class="button" @click="togglePublic">
-            {{ isPublic ? '会員限定にする' : '全世界に公開する' }}
-          </button>
-          <button type="is-primary" class="button" @click="submit">
+          <div>
+            <div>
+              {{ isPublic ? '全世界に公開' : '会員限定公開' }}
+            </div>
+            <button type="is-primary" class="button" @click="togglePublic">
+              {{ isPublic ? '会員限定にする' : '全世界に公開する' }}
+            </button>
+          </div>
+          <p><button type="is-primary" class="button" @click="submit">
             {{ submitLabel }}
-          </button>
+          </button></p>
         </div>
       </div>
     </section>

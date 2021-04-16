@@ -56,11 +56,14 @@ export default Vue.extend({
 
 .title {
   font-size: 1.9rem;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-weight: 800;
+  line-height: 1.4;
+  padding-right: $gap;
 
   @include mobile {
     line-height: 1.3;
+    padding-right: 0;
   }
 }
 
