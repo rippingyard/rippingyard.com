@@ -5,5 +5,6 @@ export const schemaPost = joi.object({
   content: joi.string().required(),
   type: joi.string().required(),
   owner: joi.any(),
+  status: joi.string(),
   isPublic: joi.boolean(),
 })
