@@ -186,7 +186,7 @@ export default {
 
   gtm: {
     id: process.env.GTM_ID || 'GTM-5B3N3TX',
-    enabled: true,
+    enabled: process.env.NODE_ENV === 'production',
   },
 
   fontawesome: {
