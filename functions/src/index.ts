@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
-import * as server from './modules/ssr'
+import * as serverSsr from './modules/ssr'
 import { syncPosts } from './modules/sync'
 
 admin.initializeApp(functions.config().firebase)
@@ -8,8 +8,7 @@ const firestore = admin.firestore()
 
 // SSR
 export const ssr = functions.https.onRequest((request, response) => {
-  server(request, response)
-  // response.send("Hello from Firebase!!!!?")
+  serverSsr(request, response)
 })
 
 // onPostCreate
