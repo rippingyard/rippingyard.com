@@ -1,10 +1,12 @@
+import axios from 'axios'
+
 let fbconfigEnv = process.env.FIREBASE_CONFIG
 if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 
 let algoliaEnv = process.env.ALGOLIA_CONFIG
 if (algoliaEnv) algoliaEnv = JSON.parse(algoliaEnv)
 
-// const fbAPI = `https://firestore.googleapis.com/v1/projects/${fbConfig.projectId}/databases/(default)/documents/`
+const fbAPI = `https://firestore.googleapis.com/v1/projects/${(fbconfigEnv || require('./env.json').FIREBASE_CONFIG).projectId}/databases/(default)/documents/`
 
 export default {
   dev: process.env.NODE_ENV !== 'production',
@@ -132,6 +134,7 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     '@nuxtjs/style-resources',
+    '@nuxtjs/sitemap',
     '@nuxtjs/gtm',
     '@nuxtjs/sentry',
     'nuxt-svg-loader',
@@ -186,7 +189,7 @@ export default {
 
   gtm: {
     id: process.env.GTM_ID || 'GTM-5B3N3TX',
-    enabled: true,
+    enabled: process.env.NODE_ENV === 'production',
   },
 
   fontawesome: {
@@ -220,6 +223,67 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
+
+  sitemap: {
+    hostname: process.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app/' : 'https://www.rippingyard.com/',
+    lastmod: new Date(),
+    path: '/sitemap.xml',
+    sitemaps: [
+      {
+        path: '/sitemaps/static.xml',
+        gzip: true,
+        cacheTime: 1000 * 60 * 60 * 12,
+        lastmod: new Date(1594277680502),// new Date().getTime()
+        exclude: [
+          '/home',
+          '/home/**',
+          '/signup',
+          '/signup/**',
+        ],
+      },
+      {
+        path: '/sitemaps/posts.xml',
+        gzip: false,
+        cacheTime: 1000 * 60 * 20,
+        filter ({ routes, _options }) {
+          return routes.filter((route) => route.url.match(/^\/post\//))
+        },
+        routes: async () => {
+          
+          const permalinks = []
+
+          const posts = await axios.get(`${fbAPI}timelines/public/posts`)
+
+          posts.data.documents.forEach((doc) => {
+            permalinks.push('/post/' + doc.name.split('/').slice(-1)[0])
+          })
+
+          return permalinks
+        }
+      },
+      {
+        path: '/sitemaps/seeds.xml',
+        gzip: true,
+        lastmod: new Date(1593090856034),
+        cacheTime: 1000 * 60 * 60 * 24 * 30,
+        filter ({ routes, _options }) {
+          return routes.filter((route) => route.url.match(/^\/seeds\//))
+        },
+        routes: () => {
+          
+          const permalinks = []
+
+          const seeds = require('./assets/json/old/seeds.json')
+
+          seeds.forEach((seed) => {
+            permalinks.push('/seeds/' + seed.slug)
+          })
+
+          return permalinks
+        }
+      }
+    ]
+  },
 
   sentry: {
     dsn:
