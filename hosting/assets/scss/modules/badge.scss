@@ -7,13 +7,23 @@
   font-weight: 800;
   word-break: keep-all;
 
-  &.is-warning {
+  &.is-danger {
     border-color: $red;
     color: $red;
+  }
+
+  &.is-warning {
+    border-color: $orange;
+    color: $orange;
   }
 
   &.is-info {
     border-color: $blue;
     color: $blue;
+  }
+
+  &.is-log {
+    border-color: $gray-black;
+    color: $gray-black;
   }
 }
