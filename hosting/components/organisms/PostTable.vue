@@ -54,8 +54,8 @@ export default Vue.extend({
     permalink: (id: string) => permalink(id),
     status: (status: string, isPublic: boolean) => getStatusLabel(status, isPublic),
     statusClass(status: string, isPublic: boolean): string {
-      if (isPublic) return 'is-warning'
-      if (status === 'draft') return 'is-draft'
+      if (status === 'draft') return 'is-log'
+      if (isPublic) return 'is-info'
       return ''
     },
   },

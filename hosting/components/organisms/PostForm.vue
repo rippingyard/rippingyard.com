@@ -3,36 +3,42 @@
     <Wysiwyg :post="post" @update="updateContent" />
     <div class="console">
       <div class="buttons">
-        <button type="is-primary" class="button" @click="confirm">最終確認</button>
-        <button type="is-text" class="button no-border" @click="showPreview()">プレビュー</button>
+        <button type="is-primary" class="button" @click="confirm">設定を確認して公開する</button>
+        <button type="is-text" class="button no-border" @click="showPreview">プレビュー</button>
       </div>
     </div>
-    <section v-if="isPreviewing" class="preview overlay">
+    <!-- <section v-if="isPreviewing" class="modal preview">
+      <div class="overlay" @click="closePreview"></div>
       <div class="inner block container">
         <button class="close" @click="closePreview"><fa-icon :icon="['far', 'times-circle']" class="icon" /></button>
         <div class="block container">
           <Content v-html="filteredContent" />
         </div>
       </div>
-    </section>
-    <section v-if="isSetting" class="setting overlay">
-      <div class="inner block container">
-        <button class="close" @click="closeSetting"><fa-icon :icon="['far', 'times-circle']" class="icon" /></button>
-        <div class="block container">
-          <div>
-            <div>
-              {{ isPublic ? '全世界に公開' : '会員限定公開' }}
-            </div>
-            <button type="is-primary" class="button" @click="togglePublic">
-              {{ isPublic ? '会員限定にする' : '全世界に公開する' }}
-            </button>
-          </div>
-          <p><button type="is-primary" class="button" @click="submit">
-            {{ submitLabel }}
-          </button></p>
-        </div>
+    </section> -->
+    <Modal v-if="isPreviewing" :on-close="closePreview">
+      <div class="preview">
+        <Content v-html="filteredContent" />
       </div>
-    </section>
+    </Modal>
+    <Modal v-if="isSetting" :on-close="closeSetting">
+      <div class="row">
+        <div>
+          この記事は、<strong>{{ isPublic ? '全世界に公開中' : '本人限定ノート' }}</strong>です
+        </div>
+        <button type="is-primary" class="button no-border" @click="togglePublic">
+          {{ isPublic ? '非公開にする' : '全世界に公開する' }}
+        </button>
+      </div>
+      <div class="row">
+        <button class="button" @click="submit">
+          {{ status !== 'draft' ? submitLabel : isPublic ? '公開する' : '自分のノートとして保存する' }}
+        </button>
+        <button class="button no-border" @click="draft">
+          {{ draftLabel }}
+        </button>
+      </div>
+    </Modal>
   </section>
 </template>
 
@@ -65,12 +71,16 @@ export default {
       isPublic: true,
       isPreviewing: false,
       isSetting: false,
+      status: 'published',
     }
   },
   computed: {
     filteredContent() {
       return filterContent(this.content)
-    }
+    },
+    draftLabel() {
+      return this.status === 'draft' ? '下書き保存' : '下書きに戻す'
+    },
   },
   mounted() {
     if (!this.$isAuthenticated(this.$store)) {
@@ -79,6 +89,7 @@ export default {
     }
     this.content = this.post.content || ''
     this.isPublic = !!this.post.isPublic
+    this.status = this.post.status
     console.log('isPublic', this.isPublic)
   },
   methods: {
@@ -106,11 +117,12 @@ export default {
     confirm() {
       this.showSetting()
     },
-    async submit() {
+    async save() {
       try {
         const params = {
           content: this.content,
           type: 'article',
+          status: this.status,
           isPublic: this.isPublic,
         }
         if (this.post.id) params.id = this.post.id
@@ -135,73 +147,28 @@ export default {
         // alert(e)
       }
     },
+    async submit() {
+      this.status = 'published'
+      await this.save()
+    },
+    async draft() {
+      this.status = 'draft'
+      await this.save()
+    },
   },
 }
 </script>
 <style lang="scss" scoped>
-
 .preview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  padding: 50px 0;
-  z-index: 20000;
-  
-  .inner {
-    position: relative;
-    background-color: $white;
-    padding: $gap * 2;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-    z-index: 20001;
-  }
+  padding: 0 $gap * 2 $gap;
 }
 
-.setting {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  padding: 50px 0;
-  z-index: 20000;
-  
-  .inner {
-    position: relative;
-    background-color: $white;
-    padding: $gap * 2;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-    z-index: 20001;
+.row {
+  padding: $gap;
+  border-bottom: 1px solid $gray-black;
+  &:last-child {
+    // padding-bottom: $gap * 2;
+    border-bottom: 0;
   }
 }
-
-.overlay {
-  &::before {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba($color: $black, $alpha: 0.8);
-    z-index: 20000;
-  }
-}
-
-.close {
-  position: absolute;
-  top: 0;
-  left: -40px;
-  color: $white;
-  > .icon {
-    font-size: 2rem;
-  }
-}
-
 </style>

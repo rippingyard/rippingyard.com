@@ -148,7 +148,7 @@ export function getStatusLabel(status: string, isPublic: boolean = true): string
     case 'draft':
       return '下書き'
     case 'published':
-      return isPublic ? '全世界公開' : '会員限定公開'
+      return isPublic ? '全世界公開' : '本人限定'
     default:
       return status
   }
