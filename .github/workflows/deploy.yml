@@ -6,8 +6,8 @@ name: Deploy
 on:
   push:
     branches: [ master, develop ]
-  # pull_request:
-  #   branches: [ master, develop ]
+  schedule:
+    - cron:  '0 5,17 * * *'
 
 jobs:
   build:
