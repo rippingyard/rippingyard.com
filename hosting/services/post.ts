@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
-import { sanitize, extractUrls } from '~/plugins/typography'
+import { sanitize, extractUrls, getSummary } from '~/plugins/typography'
 import { Post } from '~/types/post'
 import { getDomain } from '~/plugins/util'
 
@@ -119,7 +119,7 @@ export function renderWidgets(content: string) {
         break
 
       default:
-        html = `<a href="${url}" target="_blank">${url}</a>`
+        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
         break
     }
 
