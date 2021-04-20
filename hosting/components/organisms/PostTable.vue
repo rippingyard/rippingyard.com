@@ -20,7 +20,7 @@
         <nuxt-link :to="editLink(datum)">
           <strong>{{ title(datum.content) }}</strong>
         </nuxt-link>
-        <nuxt-link target="_blank" :to="permalink(datum.id)">
+        <nuxt-link v-if="canAccess(datum.status)" target="_blank" :to="permalink(datum.id)">
           <fa-icon icon="external-link-alt" class="icon" />
         </nuxt-link>
       </td>
@@ -52,6 +52,9 @@ export default Vue.extend({
     title: (content: string) => getTitle(content),
     editLink: (post: Post) => editlink(post.id),
     permalink: (id: string) => permalink(id),
+    canAccess: (status: string): boolean => {
+      return status !== 'draft'
+    },
     status: (status: string, isPublic: boolean) => getStatusLabel(status, isPublic),
     statusClass(status: string, isPublic: boolean): string {
       if (status === 'draft') return 'is-log'
@@ -79,7 +82,7 @@ td {
   &.title {
     font-size: 1.2rem;
     .icon {
-      font-size: 1rem;
+      font-size: 0.85rem;
     }
   }
   a {

@@ -9,7 +9,7 @@ interface ActionInterface {
   login: (
     { commit }: Store<any>,
     { email, password }: LoginParams
-  ) => Promise<void>
+  ) => Promise<any>
   logout: ({ commit }: Store<any>) => void
   $fire?: any
 }
@@ -41,24 +41,27 @@ export const actions: ActionInterface = {
     commit('removeMe')
   },
   async login({ commit }: Store<any>, { email, password }: LoginParams) {
-    await this.$fire.auth
-      .signInWithEmailAndPassword(email, password)
-      .then(async ({ user }: { user: User }) => {
-        const userRef = await this.$fire.firestore
-          .collection('users')
-          .doc(user.uid)
+    try {
+      const res = await this.$fire.auth
+        .signInWithEmailAndPassword(email, password)
+      const { user } = res
+      const userRef = await this.$fire.firestore
+        .collection('users')
+        .doc(user.uid)
 
-        // TODO: isDeletedの時はエラー
-        // TODO: isBannedの時はエラー
+      // TODO: isDeletedの時はエラー
+      // TODO: isBannedの時はエラー
 
-        userRef.get().then((doc: { data: () => any }) => {
-          // console.log('User:', doc)
-          commit('setMe', doc.data())
-        })
+      userRef.get().then((doc: { data: () => void }) => {
+        commit('setMe', doc.data())
       })
-      .catch(() => {
-        commit('removeMe')
-      })
+      
+      return res
+    } catch(e) {
+      // console.warn('error', e)
+      commit('removeMe')
+      return e
+    }
   },
 }
 

@@ -19,7 +19,8 @@
   h6,
   ul,
   ol,
-  blockquote {
+  blockquote,
+  pre {
     padding-bottom: 25px;
     font-size: 1rem;
   }
@@ -62,6 +63,20 @@
     font-size: 1.2rem;
     line-height: 1.4;
     padding-top: 0.8rem;
+  }
+
+  strong {
+    font-weight: 800;
+    // background-color: rgba($color: $orange, $alpha: 0.4);
+  }
+
+  pre {
+    border: 3px solid $yellow;
+    padding: 25px;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+    background-color: $black;
+    color: $yellow;
   }
 
   blockquote {

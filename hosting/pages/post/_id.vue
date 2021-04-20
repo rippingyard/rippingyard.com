@@ -28,10 +28,6 @@ import {
   getThumbnail,
   decodeEntities,
 } from '~/plugins/typography'
-// import Header from '~/components/molecules/PostHeader'
-// import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
-// import ShareButtons from '~/components/molecules/Share/ShareButtons'
-// // import PostList from '~/components/organisms/PostList'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -52,7 +48,11 @@ export default Vue.extend({
         .then(async (doc: any) => {
           // console.log(doc)
           r.post = await normalize(doc.id, doc.data(), store)
-          if (!doc.exists || r.post.isDeleted === true || r.post.status !== 'published') {
+          if (
+            !doc.exists ||
+            r.post.isDeleted === true ||
+            r.post.status !== 'published'
+          ) {
             r.post = {}
             throw new Error('ページが見つかりません')
           }
@@ -93,11 +93,21 @@ export default Vue.extend({
     },
   },
   mounted() {
-    if (!this.isAuthenticated && !this.$data.post.isPublic) {
+    if (
+      !this.$data.post.isPublic &&
+      !this.isAuthenticated
+    ) {
       this.$data.post = {}
       this.snack('ログインしてください')
-      this.$router.push('/login');
-      // throw new Error('会員限定記事です')
+      this.$router.push('/login')
+    }
+    if (
+      !this.$data.post.isPublic &&
+      this.isAuthenticated &&
+      this.$store.state.auth.me.uid !== this.$data.post.owner.uid
+    ) {
+      this.$data.post = {}
+      throw new Error('会員限定記事です')
     }
   },
   // async mounted({

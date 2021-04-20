@@ -116,6 +116,8 @@ export function sanitize(content: string) {
           'em',
           'a',
           'blockquote',
+          'pre',
+          'code',
           'hr',
           'ul',
           'ol',
