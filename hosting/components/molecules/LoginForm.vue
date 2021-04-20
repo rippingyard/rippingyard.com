@@ -44,7 +44,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    async login({email, password}: LoginParams): void {
+    async login({email, password}: LoginParams): Promise<void> {
       console.log('login', email, password)
       const res = await this.$store.dispatch('auth/login', {email, password})
       console.log('res', res)
@@ -52,15 +52,15 @@ export default Vue.extend({
       if (res.code) {
         switch (res.code) {
           case 'auth/user-not-found':
-            this.snackAlert(`ユーザーが登録されていません`)
+            (this as any).snackAlert(`ユーザーが登録されていません`)
             break
 
           case 'auth/wrong-password':
-            this.snackAlert(`パスワードが正しくありません`)
+            (this as any).snackAlert(`パスワードが正しくありません`)
             break
           
           default:
-            this.snackAlert(`ログインに失敗しました`)
+            (this as any).snackAlert(`ログインに失敗しました`)
             break
         }
         
