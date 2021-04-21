@@ -32,10 +32,7 @@ export const scheme = {
   status: 'published',
   type: 'log',
   parent: null,
-  entities: {
-    byContent: [],
-    byUser: [],
-  },
+  entities: [],
   relatedPosts: {
     byUser: [],
     byTerm: [],

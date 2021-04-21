@@ -31,6 +31,9 @@
         </button>
       </div>
       <div class="row">
+        <EntityForm :post="post" />
+      </div>
+      <div class="row">
         <button class="button" @click="submit">
           {{ status !== 'draft' ? submitLabel : isPublic ? '公開する' : '自分のノートとして保存する' }}
         </button>
@@ -122,6 +125,7 @@ export default {
         const params = {
           content: this.content,
           type: 'article',
+          entities: this.post.entities,
           status: this.status,
           isPublic: this.isPublic,
         }
