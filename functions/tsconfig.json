@@ -11,5 +11,8 @@
   "compileOnSave": true,
   "include": [
     "src"
-  ]
+  ],
+  "files": [
+    "./node_modules/@types/webpack/index.d.ts"
+  ],
 }
