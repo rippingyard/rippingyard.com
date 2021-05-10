@@ -1,17 +1,17 @@
-<template>
+﻿<template>
   <article class="block container">
-    <Header :post="post" />
-    <Content v-html="post.content" />
-    <AdsensePostBottom />
-    <div v-if="post.entities" class="entities">
-      <EntitySimpleList :entities="post.entities" />
+    <Header :post="entity" />
+    <div class="heading">
+      <h1>{{ decodeEntity(entity.id) }}</h1>
     </div>
-    <div v-if="post.owner" class="owner">
-      <UserCard :user="post.owner" />
+    <Content v-html="entity.content" />
+    <AdsensePostBottom />
+    <div class="posts">
+      <PostSimpleList :posts="posts" />
     </div>
     <div class="footer">
       <p class="date">
-        <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+        <fa-icon icon="clock" class="icon" />{{ entity.createdAt }}
       </p>
     </div>
   </article>
@@ -19,44 +19,47 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
-import { normalize } from '~/services/post'
+import { Entity } from '~/types/entity'
+import { normalize, encodeEntity, decodeEntity } from '~/services/entity'
+import { normalize as normalizePost } from '~/services/post'
 import {
   getTitle,
   getSocialTitle,
   getSummary,
   removeTitle,
   getThumbnail,
-  decodeEntities,
+  // decodeEntities,
 } from '~/plugins/typography'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
     const r: {
-      post?: Partial<Post>
+      entity?: Partial<Entity>
+      posts?: Partial<Post>[]
     } = {}
-    const postId = params.id // TODO: 無毒化
-    r.post = store.state.post.posts[postId]
+    const entityId = encodeEntity(params.id) // TODO: 無毒化
+    r.entity = store.state.post.posts[entityId]
     console.log('Post: Stored', store.state.post.posts)
-    if (r.post) {
-      console.log('Post: Hit Cache', postId)
+    if (r.entity) {
+      console.log('Post: Hit Cache', entityId)
     } else {
-      console.log('Post: No Cache', postId)
+      console.log('Post: No Cache', entityId)
       await $fire.firestore
-        .collection('posts')
-        .doc(postId)
+        .collection('entities')
+        .doc(entityId)
         .get()
         .then(async (doc: any) => {
-          // console.log(doc)
-          r.post = await normalize(doc.id, doc.data(), store)
+          console.log(doc)
+          r.entity = await normalize(doc.id, doc.data(), store)
           if (
             !doc.exists ||
-            r.post.isDeleted === true ||
-            r.post.status !== 'published'
+            r.entity.isDeleted === true
           ) {
-            r.post = {}
+            r.entity = {}
             throw new Error('ページが見つかりません')
           }
         })
@@ -64,15 +67,42 @@ export default Vue.extend({
           error({ statusCode: 404, message: e.message })
         })
     }
+
+    let promises: any[] = []
+    const posts: Partial<Post>[] = []
+    await $fire.firestore
+      .collection('posts')
+      .where('entities', 'array-contains', entityId)
+      .limit(10)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((qs: any) => {
+        promises = qs.docs.map(async (doc: any) => {
+          const post = doc.data()
+          if (post.isDeleted === true) return
+          const normalizedPost = await normalizePost(doc.id, post, store)
+          return posts.push(normalizedPost)
+        })
+      })
+      .catch((e: any) => {
+        error({ statusCode: 404, message: e.message })
+      })
+    
+    await Promise.all(promises)
+
+    r.posts = _.orderBy(posts, ['createdAt'], ['desc'])
+
+    console.log(r)
+
     return r
   },
   data(): {
     title: string
-    post: Partial<Post>
+    // post: Partial<Post>
   } {
     return {
       title: '',
-      post: {},
+      // post: {},
     }
   },
   computed: {
@@ -80,38 +110,37 @@ export default Vue.extend({
       isAuthenticated: 'auth/isAuthenticated',
     }),
     getTitle(): string {
-      return getTitle(this.$data.post.content)
+      return getTitle(this.$data.entity.content)
     },
     getSocialTitle(): string {
-      return getSocialTitle(this.$data.post.content) + ' - rippingyard'
+      return getSocialTitle(this.$data.entity.content) + ' - rippingyard'
     },
     getSummary(): string {
-      return getSummary(this.$data.post.content)
+      return getSummary(this.$data.entity.content)
     },
     mainContent(): string {
-      return removeTitle(this.$data.post.content)
+      return removeTitle(this.$data.entity.content)
     },
     thumbnail() {
-      return getThumbnail(this.$data.post.contentOriginal)
+      return getThumbnail(this.$data.entity.contentOriginal)
     },
   },
   mounted() {
-    if (
-      !this.$data.post.isPublic &&
-      !this.isAuthenticated
-    ) {
-      this.$data.post = {}
-      this.snack('ログインしてください')
-      this.$router.push('/login')
-    }
-    if (
-      !this.$data.post.isPublic &&
-      this.isAuthenticated &&
-      this.$store.state.auth.me.uid !== this.$data.post.owner.uid
-    ) {
-      this.$data.post = {}
-      throw new Error('会員限定記事です')
-    }
+    // if (
+    //   !this.$data.entity.isPublic
+    // ) {
+    //   this.$data.entity = {}
+    //   this.snack('ログインしてください')
+    //   this.$router.push('/login')
+    // }
+    // if (
+    //   !this.$data.entity.isPublic &&
+    //   this.isAuthenticated &&
+    //   this.$store.state.auth.me.uid !== this.$data.entity.owner.uid
+    // ) {
+    //   this.$data.entity = {}
+    //   throw new Error('会員限定記事です')
+    // }
   },
   // async mounted({
   //   post,
@@ -136,45 +165,48 @@ export default Vue.extend({
         post,
       })
     },
+    decodeEntity(entity: string) {
+      return decodeEntity(entity)
+    }
   },
   head() {
     return {
-      title: decodeEntities(getTitle(this.$data.post.content)),
+      title: decodeEntity(this.$data.entity.id),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle(this.$data.post.content),
+          content: decodeEntity(this.$data.entity.id),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle(this.$data.post.content),
+          content: decodeEntity(this.$data.entity.id),
         },
         {
           hid: 'description',
           name: 'description',
-          content: getSummary(this.$data.post.content),
+          content: getSummary(this.$data.entity.content),
         },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: getSummary(this.$data.post.content),
+          content: getSummary(this.$data.entity.content),
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: getSummary(this.$data.post.content),
+          content: getSummary(this.$data.entity.content),
         },
         {
           hid: 'og:url',
           property: 'og:url',
-          content: this.$data.post.sociallink,
+          content: this.$data.entity.sociallink,
         },
         {
           hid: 'twitter:url',
           name: 'twitter:url',
-          content: this.$data.post.sociallink,
+          content: this.$data.entity.sociallink,
         },
         // TODO: 他サーバーにあるものをOGImageとして使うのはいかがなものか
         // {
@@ -193,6 +225,15 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.heading {
+  padding: 0 0 $gap 0;
+  // border-top: 1px solid $gray-black;
+  > h1 {
+    font-size: 3rem;
+    font-weight: 800;
+  }
+}
+
 .footer {
   padding-top: 80px;
   font-size: 0.9rem;

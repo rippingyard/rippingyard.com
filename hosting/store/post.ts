@@ -1,19 +1,8 @@
 import dayjs from 'dayjs'
-// import { pick } from 'lodash'
 import { ActionContext } from 'vuex'
-// import {
-//   getTitle,
-//   removeTitle,
-//   stripTags,
-//   getTokens,
-//   getThumbnail,
-// } from '~/plugins/typography'
-// import { save as saveIndex, destroy as destroyIndex } from '~/services/search'
 
 import { Post } from '~/types/post'
 import { State } from '~/types/state'
-
-// const indexName = 'posts'
 
 interface ActionInterface {
   save: (

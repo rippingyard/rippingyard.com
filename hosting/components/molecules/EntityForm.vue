@@ -2,15 +2,22 @@
   <div>
     <h2>Entities</h2>
     <div>
-      <input v-model="input" type="text" @keyup.enter="addEntity">
+      <input
+        v-model="input"
+        type="text"
+        @keydown.enter="addEntity"
+        @compositionstart="startComposing"
+        @compositionend="stopComposing"
+      >
       <ul class="entities">
-        <li v-for="(entity, index) in post.entities" :key="index" @click="removeEntity(index)">{{ entity }}</li>
+        <li v-for="(entity, index) in post.entities" :key="index" @click="removeEntity(index)">{{ decodeEntity(entity) }}</li>
       </ul>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import { encodeEntity, decodeEntity } from '~/services/entity'
 export default Vue.extend({
   props: {
     post: {
@@ -21,16 +28,28 @@ export default Vue.extend({
   data() {
     return {
       input: '',
+      isComposing: false,
     }
   },
   methods: {
     addEntity() {
-      if (!this.post.entities || this.post.entities.byUser) this.post.entities = []
-      this.post.entities.push(this.input)
-      this.input = ''
+      if (!this.isComposing) {
+        if (!this.post.entities || this.post.entities.byUser) this.post.entities = []
+        this.post.entities.push(encodeEntity(this.input))
+        this.input = ''
+      }
     },
     removeEntity(index: number) {
       this.post.entities.splice(index, 1)
+    },
+    startComposing(): void {
+      this.isComposing = true
+    },
+    stopComposing(): void {
+      this.isComposing = false
+    },
+    decodeEntity(entity: string) {
+      return decodeEntity(entity)
     }
   }
 })
