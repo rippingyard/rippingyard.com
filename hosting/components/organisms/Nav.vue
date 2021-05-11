@@ -2,22 +2,25 @@
   <nav class="nav" :class="{ open: isOpen }">
     <NavTrigger :click="toggleNav" />
     <div class="body" @click="closeNav">
-      <ul class="links">
-        <li><nuxt-link to="/">TOP<small>トップ</small></nuxt-link></li>
-        <client-only>
-          <li v-if="isAutenticated">
-            <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
-            <ul>
-              <li><nuxt-link to="/home/posts">YOUR POSTS<small>投稿一覧</small></nuxt-link></li>
-              <li><nuxt-link to="/home/setting">SETTING<small>設定変更</small></nuxt-link></li>
-              <li><span @click="logout">LOGOUT<small>ログアウト</small></span></li>
-            </ul>
-          </li>
-        </client-only>
-        <client-only><li v-if="!isAutenticated">
-          <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
-        </li></client-only>
-      </ul>
+      <div class="inner">
+        <ul class="links">
+          <li><nuxt-link to="/">TOP<small>トップ</small></nuxt-link></li>
+          <client-only>
+            <li v-if="isAutenticated">
+              <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
+              <ul>
+                <li><nuxt-link to="/home/posts">YOUR POSTS<small>投稿一覧</small></nuxt-link></li>
+                <li><nuxt-link to="/home/post/create">POST AN ARTICLE<small>新規投稿</small></nuxt-link></li>
+                <li><nuxt-link to="/home/setting">SETTING<small>設定変更</small></nuxt-link></li>
+                <li><span @click="logout">LOGOUT<small>ログアウト</small></span></li>
+              </ul>
+            </li>
+          </client-only>
+          <client-only><li v-if="!isAutenticated">
+            <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
+          </li></client-only>
+        </ul>
+      </div>
     </div>
     <div class="overlay" @click="closeNav"></div>
   </nav>
@@ -69,9 +72,13 @@ export default Vue.extend({
   }
 
   .body {
-    padding: 50px 75px;
+    overflow-y: auto;
     position: relative;
     z-index: 100;
+    height: 100%;
+    > .inner {
+      padding: 50px 75px;
+    }
   }
 
   .overlay {

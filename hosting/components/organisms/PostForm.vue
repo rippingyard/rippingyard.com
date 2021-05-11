@@ -7,15 +7,6 @@
         <button type="is-text" class="button no-border" @click="showPreview">プレビュー</button>
       </div>
     </div>
-    <!-- <section v-if="isPreviewing" class="modal preview">
-      <div class="overlay" @click="closePreview"></div>
-      <div class="inner block container">
-        <button class="close" @click="closePreview"><fa-icon :icon="['far', 'times-circle']" class="icon" /></button>
-        <div class="block container">
-          <Content v-html="filteredContent" />
-        </div>
-      </div>
-    </section> -->
     <Modal v-if="isPreviewing" :on-close="closePreview">
       <div class="preview">
         <Content v-html="filteredContent" />
@@ -29,6 +20,9 @@
         <button type="is-primary" class="button no-border" @click="togglePublic">
           {{ isPublic ? '非公開にする' : '全世界に公開する' }}
         </button>
+      </div>
+      <div class="row">
+        <EntityForm :post="post" />
       </div>
       <div class="row">
         <button class="button" @click="submit">
@@ -47,6 +41,7 @@ import { isEmpty } from 'lodash'
 import { mapActions } from 'vuex'
 import { schemaPost } from '~/plugins/validators/post'
 import { filterContent } from '~/services/post'
+import { encodeEntity } from '~/services/entity'
 
 export default {
   props: {
@@ -95,6 +90,7 @@ export default {
   methods: {
     ...mapActions({
       savePost: 'post/save',
+      saveEntity: 'entity/save',
     }),
     updateContent(content) {
       this.content = content
@@ -122,6 +118,7 @@ export default {
         const params = {
           content: this.content,
           type: 'article',
+          entities: this.post.entities,
           status: this.status,
           isPublic: this.isPublic,
         }
@@ -130,8 +127,23 @@ export default {
 
         const { error } = schemaPost.validate(params)
         if (!isEmpty(error)) {
-          // console.log('Error', error.details)
+          console.log('Error', error.details)
           return this.snackAlert('投稿に失敗しました')
+        }
+
+        if (this.post.entities) {
+          const existanceChecks = this.post.entities.map(async e => {
+            return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
+          })
+          const existances = await Promise.all(existanceChecks)
+
+          const promises = existances.filter(e => !e.exists).map(async e => {
+            return await this.saveEntity({
+              id: e.id,
+            })
+          })
+          
+          if (promises) await Promise.all(promises)
         }
 
         const post = Object.assign(this.post, params)
@@ -144,7 +156,7 @@ export default {
 
         this.$router.push('/home/posts')
       } catch (e) {
-        // alert(e)
+        console.warn(e)
       }
     },
     async submit() {

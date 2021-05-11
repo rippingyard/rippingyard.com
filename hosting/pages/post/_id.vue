@@ -3,6 +3,9 @@
     <Header :post="post" />
     <Content v-html="post.content" />
     <AdsensePostBottom />
+    <div v-if="post.entities" class="entities">
+      <EntitySimpleList :entities="post.entities" />
+    </div>
     <div v-if="post.owner" class="owner">
       <UserCard :user="post.owner" />
     </div>
@@ -190,6 +193,10 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.entities {
+  margin-bottom: 30px;
+}
+
 .footer {
   padding-top: 80px;
   font-size: 0.9rem;
