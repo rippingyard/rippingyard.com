@@ -93,26 +93,16 @@ export const actions: ActionInterface = {
   },
   async destroyAll({ rootState }): Promise<void> {
 
-    console.log('Destroy All Monsters', rootState.auth)
-
     if (!rootState.auth.me) {
       throw new Error('権限がありません')
     }
-
     
     const entities = await this.$fire.firestore.collection('entities').get()
-    console.log(entities)
 
     const promises: any[] = []
     entities.forEach((doc:any) => {
-      console.log('E', doc)
-      promises.push(doc.delete())
+      promises.push(this.$fire.firestore.collection('entities').doc(doc.id).delete())
     })
-    
-    // (e: any) => {
-    //   console.log('Delete:', e)
-    //   // return await e.delete()
-    // })
 
     if (promises) await Promise.all(promises)
 

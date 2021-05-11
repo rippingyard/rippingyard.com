@@ -193,6 +193,10 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.entities {
+  margin-bottom: 30px;
+}
+
 .footer {
   padding-top: 80px;
   font-size: 0.9rem;

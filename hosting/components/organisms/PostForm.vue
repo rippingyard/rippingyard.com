@@ -91,7 +91,6 @@ export default {
     ...mapActions({
       savePost: 'post/save',
       saveEntity: 'entity/save',
-      destroyAllEntity: 'entity/destroyAll',
     }),
     updateContent(content) {
       this.content = content
@@ -131,8 +130,6 @@ export default {
           console.log('Error', error.details)
           return this.snackAlert('投稿に失敗しました')
         }
-
-        await this.destroyAllEntity()
 
         if (this.post.entities) {
           const existanceChecks = this.post.entities.map(async e => {

@@ -17,7 +17,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { encodeEntity, decodeEntity } from '~/services/entity'
+import { decodeEntity } from '~/services/entity'
 export default Vue.extend({
   props: {
     post: {
@@ -35,7 +35,7 @@ export default Vue.extend({
     addEntity() {
       if (!this.isComposing) {
         if (!this.post.entities || this.post.entities.byUser) this.post.entities = []
-        this.post.entities.push(encodeEntity(this.input))
+        this.post.entities.push(this.input)
         this.input = ''
       }
     },

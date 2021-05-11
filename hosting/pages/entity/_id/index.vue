@@ -30,8 +30,8 @@ import {
   getTitle,
   getSocialTitle,
   getSummary,
-  removeTitle,
-  getThumbnail,
+  // removeTitle,
+  // getThumbnail,
   // decodeEntities,
 } from '~/plugins/typography'
 
@@ -42,12 +42,12 @@ export default Vue.extend({
       posts?: Partial<Post>[]
     } = {}
     const entityId = encodeEntity(params.id) // TODO: 無毒化
-    r.entity = store.state.post.posts[entityId]
-    console.log('Post: Stored', store.state.post.posts)
-    if (r.entity) {
-      console.log('Post: Hit Cache', entityId)
-    } else {
-      console.log('Post: No Cache', entityId)
+    // r.entity = store.state.post.posts[entityId]
+    // console.log('Post: Stored', store.state.post.posts)
+    // if (r.entity) {
+    //   console.log('Post: Hit Cache', entityId)
+    // } else {
+    //   console.log('Post: No Cache', entityId)
       await $fire.firestore
         .collection('entities')
         .doc(entityId)
@@ -66,13 +66,13 @@ export default Vue.extend({
         .catch((e: any) => {
           error({ statusCode: 404, message: e.message })
         })
-    }
+    // }
 
     let promises: any[] = []
     const posts: Partial<Post>[] = []
     await $fire.firestore
       .collection('posts')
-      .where('entities', 'array-contains', entityId)
+      .where('entities', 'array-contains', decodeEntity(entityId))
       .limit(10)
       .orderBy('createdAt', 'desc')
       .get()
@@ -92,7 +92,7 @@ export default Vue.extend({
 
     r.posts = _.orderBy(posts, ['createdAt'], ['desc'])
 
-    console.log(r)
+    // console.log(r)
 
     return r
   },
@@ -115,56 +115,23 @@ export default Vue.extend({
     getSocialTitle(): string {
       return getSocialTitle(this.$data.entity.content) + ' - rippingyard'
     },
-    getSummary(): string {
-      return getSummary(this.$data.entity.content)
-    },
-    mainContent(): string {
-      return removeTitle(this.$data.entity.content)
-    },
-    thumbnail() {
-      return getThumbnail(this.$data.entity.contentOriginal)
-    },
+    // getSummary(): string {
+    //   return getSummary(this.$data.entity.content)
+    // },
+    // mainContent(): string {
+    //   return removeTitle(this.$data.entity.content)
+    // },
+    // thumbnail() {
+    //   return getThumbnail(this.$data.entity.contentOriginal)
+    // },
   },
-  mounted() {
-    // if (
-    //   !this.$data.entity.isPublic
-    // ) {
-    //   this.$data.entity = {}
-    //   this.snack('ログインしてください')
-    //   this.$router.push('/login')
-    // }
-    // if (
-    //   !this.$data.entity.isPublic &&
-    //   this.isAuthenticated &&
-    //   this.$store.state.auth.me.uid !== this.$data.entity.owner.uid
-    // ) {
-    //   this.$data.entity = {}
-    //   throw new Error('会員限定記事です')
-    // }
-  },
-  // async mounted({
-  //   post,
-  //   setPost,
-  //   getOwner,
-  // }: {
-  //   post: Post
-  //   setPost: Function
-  //   getOwner: Function
-  // }) {
-  //   setPost(post.id, post)
-  //   if (post) {
-  //     if (post.owner && post.owner.id) {
-  //       post.owner = await getOwner(post.owner.id)
-  //     }
-  //   }
-  // },
   methods: {
-    setPost(id: string, post: Partial<Post>): void {
-      return this.$store.commit('post/setPost', {
-        id,
-        post,
-      })
-    },
+    // setPost(id: string, post: Partial<Post>): void {
+    //   return this.$store.commit('post/setPost', {
+    //     id,
+    //     post,
+    //   })
+    // },
     decodeEntity(entity: string) {
       return decodeEntity(entity)
     }

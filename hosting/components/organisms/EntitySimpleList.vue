@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { decodeEntity } from '~/services/entity'
+import { encodeEntity, decodeEntity } from '~/services/entity'
 export default Vue.extend({
   props: {
     entities: {
@@ -15,11 +15,33 @@ export default Vue.extend({
   },
   methods: {
     permalink(entity: string): string {
-      return `/entity/${entity}`
+      return `/entity/${encodeEntity(entity)}`
     },
     decodeEntity(entity: string): string {
       return decodeEntity(entity)
+    },
+    encodeEntity(entity: string): string {
+      return encodeEntity(entity)
     }
   }
 })
 </script>
+<style lang="scss" scoped>
+ul {
+  li {
+    display: inline-block;
+    margin-right: 10px;
+    line-height: 1;
+    a {
+      display: block;
+      padding: 8px 10px;
+      border: 1px solid $gray-black;
+      border-radius: 18px;
+      &:hover {
+        border-color: $black;
+        background: $yellow;
+      }
+    }
+  }
+}
+</style>
