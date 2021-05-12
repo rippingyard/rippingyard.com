@@ -2,10 +2,17 @@
   <main class="block container is-wide">
     <Header :is-wide="true" />
     <ul class="masonry">
-      <li v-for="post in posts" :key="post.id">
+      <li v-for="post in firstPosts" :key="post.id">
         <PostItem :post="post" />
       </li>
     </ul>
+    <AdsenseTopMiddle />
+    <ul class="masonry">
+      <li v-for="post in endPosts" :key="post.id">
+        <PostItem :post="post" />
+      </li>
+    </ul>
+    <AdsenseTopBottom />
   </main>
 </template>
 
@@ -36,10 +43,14 @@ export default Vue.extend({
         })
       })
     await Promise.all(promises)
-    // console.log('promises:', promises)
-    // console.log('me', store.state.auth.follows)
+    
+    const allPosts = _.orderBy(posts, ['createdAt'], ['desc'])
+    const firstPosts = allPosts.slice(0, 6)
+    const endPosts = allPosts.slice(6, allPosts.length)
+
     return {
-      posts: _.orderBy(posts, ['createdAt'], ['desc']),
+      firstPosts,
+      endPosts,
     }
   },
   data() {

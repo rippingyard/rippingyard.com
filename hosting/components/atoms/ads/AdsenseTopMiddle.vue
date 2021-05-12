@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="ad" :class="{dev: !isPrd}">
-    <adsbygoogle ad-slot="2832620517" />
+    <adsbygoogle ad-slot="3474759621" />
   </div>
 </template>
 <script>
