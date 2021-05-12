@@ -31,7 +31,7 @@ export default Vue.extend({
       .collection('timelines')
       .doc('public')
       .collection('posts')
-      .limit(100)
+      .limit(36)
       .orderBy('publishedAt', 'desc')
       .get()
       .then((qs: any) => {

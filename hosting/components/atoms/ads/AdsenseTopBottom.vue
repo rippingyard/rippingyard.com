@@ -16,7 +16,7 @@ export default {
 <style scoped lang="scss">
 
 .ad {
-  min-height: 140px;
+  min-height: 200px;
   margin-bottom: $gap;
 }
 
