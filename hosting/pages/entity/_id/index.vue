@@ -72,13 +72,15 @@ export default Vue.extend({
     const posts: Partial<Post>[] = []
     await $fire.firestore
       .collection('posts')
+      .where('isPublic', '==', true)
       .where('entities', 'array-contains', decodeEntity(entityId))
-      .limit(10)
+      .limit(100)
       .orderBy('createdAt', 'desc')
       .get()
       .then((qs: any) => {
         promises = qs.docs.map(async (doc: any) => {
           const post = doc.data()
+          if (post.status !== 'published') return
           if (post.isDeleted === true) return
           const normalizedPost = await normalizePost(doc.id, post, store)
           return posts.push(normalizedPost)
