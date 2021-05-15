@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <h2><span>MENU</span></h2>
-    <ul class="main">
+    <ul class="links">
       <li>
         <nuxt-link to="/home/">
           <fa-icon icon="angle-right" class="icon" />ホーム
@@ -9,7 +9,7 @@
       </li>
     </ul>
     <h3>POST</h3>
-    <ul class="main">
+    <ul class="links">
       <li>
         <nuxt-link to="/home/posts/">
           <fa-icon icon="angle-right" class="icon" />投稿記事一覧
@@ -22,7 +22,7 @@
       </li>
     </ul>
     <!-- <h3>ENTITIES</h3> -->
-    <ul class="main">
+    <ul class="links">
       <li v-if="true === false">
         <nuxt-link to="/home/entities/">
           <fa-icon icon="angle-right" class="icon" />エンティティ管理
@@ -30,7 +30,7 @@
       </li>
     </ul>
     <h3>MISC</h3>
-    <ul class="main">
+    <ul class="links">
       <li>
         <nuxt-link to="/home/setting/">
           <fa-icon icon="angle-right" class="icon" />ユーザー設定
@@ -41,6 +41,11 @@
           <fa-icon icon="angle-right" class="icon" />招待
         </nuxt-link>
       </li>
+    </ul>
+    <hr class="sep" />
+    <ul class="links sub">
+      <li><nuxt-link to="/terms">利用規約</nuxt-link></li>
+      <li><nuxt-link to="/privacy">プライバシーポリシー</nuxt-link></li>
     </ul>
   </div>
 </template>
@@ -63,7 +68,7 @@
     padding: 10px 20px;
     color: $gray-black;
   }
-  .main {
+  .links {
     li {
       font-size: 0.95rem;
       font-weight: 800;
@@ -95,6 +100,24 @@
         }
       }
     }
+    &.sub {
+      li {
+        font-size: 0.85rem;
+        font-weight: 400;
+        a,
+        span {
+          padding: 5px 20px;
+          &:hover {
+            background-color: initial;
+            color: $yellow;
+          }
+        }
+      }
+    }
+  }
+  .sep {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 </style>
