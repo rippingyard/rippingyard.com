@@ -80,6 +80,7 @@ export default Vue.extend({
       .then((qs: any) => {
         promises = qs.docs.map(async (doc: any) => {
           const post = doc.data()
+          if (post.status !== 'published') return
           if (post.isDeleted === true) return
           const normalizedPost = await normalizePost(doc.id, post, store)
           return posts.push(normalizedPost)

@@ -10,9 +10,7 @@ body {
   background-color: $white;
 }
 
-// @import './modules/list';
-// @import './modules/article';
-// @import './modules/box';
+@import './modules/ad';
 @import './modules/block';
 @import './modules/badge';
 @import './modules/button';
