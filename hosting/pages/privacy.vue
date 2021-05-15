@@ -1,6 +1,6 @@
 ﻿<template>
   <article class="block container">
-    <Header :post="entity" />
+    <Header />
     <div class="heading">
       <h1>{{ title }}</h1>
       <LastUpdate date="2021年5月14日" />
