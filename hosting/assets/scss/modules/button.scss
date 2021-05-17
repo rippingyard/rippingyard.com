@@ -3,6 +3,7 @@
   border: 2px solid $black;
   font-weight: 800;
   display: inline-block;
+  color: $black !important;
 
   &:hover {
     background-color: $yellow;

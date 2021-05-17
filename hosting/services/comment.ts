@@ -84,7 +84,7 @@ export function filterContent(content: string) {
 }
 
 export function permalink(id: string): string {
-  return `/entity/${id}`
+  return `/post/${id}`
 }
 
 export function editlink(id: string): string {
@@ -104,12 +104,4 @@ export function getStatusLabel(status: string, isPublic: boolean = true): string
     default:
       return status
   }
-}
-
-export function encodeEntity(entity: string): string {
-  return encodeURIComponent(entity)
-}
-
-export function decodeEntity(entity: string): string {
-  return decodeURIComponent(entity)
 }

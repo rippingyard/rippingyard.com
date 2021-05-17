@@ -98,6 +98,52 @@ export function extractUrls(content: string) {
   return urls
 }
 
+export function renderWidgets(content: string) {
+  if (!content) return ''
+
+  // const contentPlain = stripTags(content)
+  const urls = extractUrls(content)
+
+  content = content.replace(/"http/g, '"[http]')
+
+  if (!urls) return content
+
+  urls.reverse()
+
+  let urlInfo: urlParse
+  let queries = null
+  let html = ''
+
+  urls.forEach(url => {
+    html = url
+    urlInfo = urlParse(url)
+    queries = queryString.parse(urlInfo.query.toString())
+
+    // console.log('URL Info', urlInfo)
+
+    switch (urlInfo.hostname) {
+      case 'youtube.com':
+      case 'jp.youtube.com':
+      case 'www.youtube.com':
+        if (queries.v) {
+          // console.log('youtubeId', queries.v)
+          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${queries.v}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
+        }
+        break
+
+      default:
+        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
+        break
+    }
+
+    content = content.replace(url, html)
+  })
+
+  content = content.replace(/"\[http\]/g, '"http')
+
+  return content
+}
+
 export function sanitize(content: string) {
   return !content
     ? ''

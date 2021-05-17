@@ -4,6 +4,10 @@ function isAuthenticated() {
   return request.auth != null;
 }
 
+// function printRequest() {
+//   return debug(request) || true;
+// }
+
 // function isMine(userID) {
 //   return request.auth.uid == userId;
 // }
@@ -28,6 +32,10 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
     match /entities/{userId} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
+    match /comments/{userId} {
     	allow read;
       allow write: if isAuthenticated();
     }
