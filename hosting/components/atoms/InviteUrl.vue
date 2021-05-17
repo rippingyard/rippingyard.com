@@ -57,3 +57,12 @@ export default Vue.extend({
   },
 })
 </script>
+<style lang="scss" scoped>
+.url {
+  font-size: 1.4rem;
+  font-family: serif;
+  font-weight: 800;
+  text-decoration: underline;
+  color: $black;
+}
+</style>

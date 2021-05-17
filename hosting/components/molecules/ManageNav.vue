@@ -36,7 +36,7 @@
           <fa-icon icon="angle-right" class="icon" />ユーザー設定
         </nuxt-link>
       </li>
-      <li v-if="true === false">
+      <li>
         <nuxt-link to="/home/invite/">
           <fa-icon icon="angle-right" class="icon" />招待
         </nuxt-link>

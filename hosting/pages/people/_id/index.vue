@@ -77,7 +77,7 @@ export default Vue.extend({
         .get()
         .then((qs: any) => {
           qs.forEach((doc: any) => {
-            r.user = omit(doc.data(), ['follows', 'followers'])
+            r.user = omit(doc.data(), ['follows', 'followers', 'invitedBy'])
             store.commit('user/setUser', r.user)
           })
         })

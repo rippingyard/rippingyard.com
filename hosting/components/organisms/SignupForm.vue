@@ -4,7 +4,7 @@
       <label>アカウント名</label>
       <input
         v-model="userName"
-        placeholder="アカウント名を入力"
+        placeholder="半角英数で入力"
         class="input"
       />
     </div>
@@ -33,10 +33,16 @@
 </template>
 
 <script>
-// import { db, auth } from '~/plugins/firebase'
-// // import User from '~/models/User'
-
+import dayjs from 'dayjs'
+import { isEmpty } from 'lodash'
+import { schemaCreateUser } from '~/plugins/validators/user'
 export default {
+  props: {
+    invitedBy: {
+      type: String,
+      default: null,
+    },
+  },
   data() {
     return {
       displayName: '',
@@ -47,47 +53,55 @@ export default {
   },
   methods: {
     async signup() {
-      // const $buefy = this.$buefy
-      // const $router = this.$router
+      const params = {
+        email: this.email,
+        password: this.password,
+        userName: this.userName,
+        // uid: this.$data.me.uid,
+        // displayName: this.displayName,
+        // profile: this.profile,
+        // avator: this.avator,
+      }
+
+      const { value, error } = schemaCreateUser.validate(params)
+      if (!isEmpty(error)) {
+        console.log('Error', error?.details)
+        return this.snackAlert('エラーが発生しました')
+      }
 
       const existance = await this.$fire.firestore
         .collection('users')
-        .where('userName', '==', this.userName)
+        .where('userName', '==', value.userName)
         .get()
 
       if (!existance.empty) {
-        return alert('既に存在するユーザーです')
+        return this.snackAlert('既に存在するユーザーです')
       }
 
       const result = await this.$fire.auth.createUserWithEmailAndPassword(
-        this.email,
-        this.password
+        value.email,
+        value.password
       )
+      
+      let parent = null
+      if (this.invitedBy) {
+        parent = this.$fire.firestore.doc(`users/${this.invitedBy}`)
+      }
 
       await this.$fire.firestore.collection('users').doc(result.user.uid).set({
-        id: result.user.uid,
-        displayName: this.userName,
-        userName: this.userName,
-        role: 'stranger',
+        uid: result.user.uid,
+        displayName: value.userName,
+        userName: value.userName,
+        role: 'resident',
+        invitedBy: parent,
+        createdAt: dayjs().toDate(),
+        updatedAt: dayjs().toDate(),
         isBanned: false,
         isDeleted: false,
       })
 
-      //   .then(async result => {
-      //     // console.log(result)
-
-      //     result.user.updateProfile({
-      //       displayName: this.userName,
-      //     })
-
-      //     $buefy.notification.open({
-      //       duration: 5000,
-      //       message: 'ユーザーの登録が完了しました',
-      //       position: 'is-bottom-right',
-      //       type: 'is-success',
-      //     })
-
-      this.$router.push('home')
+      this.snack('ユーザー登録が完了しました！')
+      this.$router.push('/home')
       //   })
       //   .catch(function (e) {
       //     console.log(e.code, e.message)

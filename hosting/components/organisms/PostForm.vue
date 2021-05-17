@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       content: '',
+      entities: [],
       isPublic: true,
       isPreviewing: false,
       isSetting: false,
@@ -84,6 +85,7 @@ export default {
     }
     this.content = this.post.content || ''
     this.isPublic = !!this.post.isPublic
+    this.entities = this.post.entities || []
     this.status = this.post.status
     console.log('isPublic', this.isPublic)
   },
@@ -118,7 +120,7 @@ export default {
         const params = {
           content: this.content,
           type: 'article',
-          entities: this.post.entities,
+          entities: this.entities,
           status: this.status,
           isPublic: this.isPublic,
         }
