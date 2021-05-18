@@ -29,7 +29,7 @@
         <div class="box wysiwyg">
           <h2>プロフィール</h2>
           <div class="textarea">
-            <TextArea :default="profile" @update="updateContent" />
+            <TextArea v-model="profile" />
           </div>
         </div>
         <div class="box wysiwyg">

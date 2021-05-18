@@ -6,7 +6,7 @@
         <ul class="links">
           <li><nuxt-link to="/">TOP<small>トップ</small></nuxt-link></li>
           <client-only>
-            <li v-if="isAutenticated">
+            <li v-if="isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
               <ul>
                 <li><nuxt-link to="/home/posts">YOUR POSTS<small>投稿一覧</small></nuxt-link></li>
@@ -16,7 +16,7 @@
               </ul>
             </li>
           </client-only>
-          <client-only><li v-if="!isAutenticated">
+          <client-only><li v-if="!isAuthenticated">
             <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
           </li></client-only>
         </ul>
@@ -35,7 +35,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    isAutenticated(): boolean {
+    isAuthenticated(): boolean {
       return this.$isAuthenticated(this.$store)
     },
   },
@@ -78,6 +78,9 @@ export default Vue.extend({
     height: 100%;
     > .inner {
       padding: 50px 75px;
+      @include mobile {
+        padding: 0;
+      }
     }
   }
 
