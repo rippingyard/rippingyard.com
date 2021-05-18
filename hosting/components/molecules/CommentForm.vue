@@ -7,15 +7,20 @@
           :reset-count="resetCount"
         />
         <div class="footer">
-          <div
-            :class="{'is-over': isOver}"
-            class="counter"
-          >{{ contentLength }} / {{ limit }}</div>
-          <button
-            :class="{'is-disabled': isOver || isEmpty}"
-            class="button"
-            @click="submit()"
-          >コメントする</button>
+          <div class="footer-main">
+            <div class="status"><span>{{ statusLabel }}</span></div>
+          </div>
+          <div class="footer-side">
+            <div
+              :class="{'is-over': isOver}"
+              class="counter"
+            >{{ contentLength }} / {{ limit }}</div>
+            <button
+              :class="{'is-disabled': isOver || isEmpty}"
+              class="button"
+              @click="submit()"
+            >コメントする</button>
+          </div>
         </div>
       </div>
     </div>
@@ -33,9 +38,13 @@ export default Vue.extend({
       type: String,
       default: null,
     },
+    isPublic: {
+      type: Boolean,
+      default: false,
+    },
     limit: {
       type: Number,
-      default: 180,
+      default: 320,
     },
   },
   data() {
@@ -57,6 +66,9 @@ export default Vue.extend({
     isEmpty(): boolean {
       return this.contentLength === 0
     },
+    statusLabel(): string {
+      return this.isPublic ? '全世界に公開' : '限定公開'
+    }
   },
   methods: {
     ...mapActions({
@@ -80,7 +92,7 @@ export default Vue.extend({
           content: this.content,
           entities: [],
           parentId: this.parentId,
-          isPublic: true,
+          isPublic: this.isPublic,
         }
 
         const { error } = schemaComment.validate(params)
@@ -117,9 +129,26 @@ export default Vue.extend({
   padding: 15px;
 
   .footer {
+    display: flex;
+    flex-direction: space-between;
     border-top: 1px solid $gray-black;
     padding-top: 15px;
-    text-align: right;
+    .footer-main {
+      text-align: left;
+      width: 50%;
+    }
+    .footer-side {
+      text-align: right;
+      width: 50%;
+    }
+    .status {
+      display: inline-block;
+      padding: 10px 0 0 6px;
+      > span {
+        font-weight: 800;
+        border-bottom: 2px solid $black;
+      }
+    }
     .counter {
       display: inline-block;
       margin-right: 10px;

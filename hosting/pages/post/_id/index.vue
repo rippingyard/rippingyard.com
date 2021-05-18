@@ -7,7 +7,10 @@
     <Content v-html="mainContent" />
     <AdsensePostBottom />
     <CommentList :parent-id="parentId" />
-    <CommentForm :parent-id="parentId" />
+    <CommentForm
+      :parent-id="parentId"
+      :is-public="post.isPublic"
+    />
     <div v-if="post.entities" class="entities">
       <EntitySimpleList :entities="post.entities" />
     </div>
@@ -27,7 +30,7 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
-import { normalize } from '~/services/post'
+import { normalize, docPath } from '~/services/post'
 import {
   getTitle,
   getSocialTitle,
@@ -97,7 +100,7 @@ export default Vue.extend({
       return removeTitle(this.$data.post.content)
     },
     parentId() {
-      return `posts/${this.$data.post.id}`
+      return docPath(this.$data.post.id)
     },
     thumbnail() {
       return getThumbnail(this.$data.post.contentOriginal)
