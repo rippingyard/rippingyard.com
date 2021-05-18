@@ -1,11 +1,14 @@
 ﻿<template>
   <ul>
     <li v-for="post in posts" :key="post.id">
-      <nuxt-link :to="post.permalink">
-        <h3 class="title">{{ getTitle(post.content) }}</h3>
+      <div class="body">
+        <h3 class="title"><nuxt-link :to="post.permalink">{{ getTitle(post.content) }}</nuxt-link></h3>
         <p class="date">{{ post.publishedAt }}</p>
         <p class="summary">{{ getSummary(post.content) }}</p>
-      </nuxt-link>
+      </div>
+      <div class="user">
+        <UserTip :user="post.owner" />
+      </div>
     </li>
   </ul>
 </template>
@@ -13,11 +16,7 @@
 import Vue from 'vue'
 import {
   getTitle,
-  // getSocialTitle,
   getSummary,
-  // removeTitle,
-  // getThumbnail,
-  // decodeEntities,
 } from '~/plugins/typography'
 export default Vue.extend({
   props: {
@@ -39,10 +38,11 @@ export default Vue.extend({
 <style lang="scss" scoped>
 ul {
   li {
+    display: flex;
     border-bottom: 1px solid $gray-black;
-    > a,
-    > span {
+    .body {
       display: block;
+      width: calc(100% - 180px);
       padding: $gap - 5px 0 $gap 0;
       .title {
         font-size: 1.9rem;
@@ -64,14 +64,10 @@ ul {
         padding-top: 6px;
         font-size: 0.9rem;
       }
-      &:hover {
-        background-color: rgba($color: $yellow, $alpha: 0.1) ;
-        .title,
-        .date,
-        .summary {
-          color: $yellow;
-        }
-      }
+    }
+    .user {
+      width: 180px;
+      padding: 20px 0;
     }
   }
 }

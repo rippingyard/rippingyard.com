@@ -87,8 +87,12 @@ export function permalink(id: string): string {
   return `/entity/${id}`
 }
 
-export function editlink(id: string): string {
-  return `/home/post/edit/${id}`
+// export function editlink(id: string): string {
+//   return `/home/post/edit/${id}`
+// }
+
+export function docPath(id: string): string {
+  return `entities/${id}`
 }
 
 export function sociallink(id: string): string {

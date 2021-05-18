@@ -1,19 +1,21 @@
 ﻿<template>
-  <div>
-    <h2>Entities</h2>
-    <div>
+  <ul class="entities">
+    <li class="input">
       <input
         v-model="input"
         type="text"
+        placeholder="キーワードを入力してください"
         @keydown.enter="addEntity"
         @compositionstart="startComposing"
         @compositionend="stopComposing"
       >
-      <ul class="entities">
-        <li v-for="(entity, index) in post.entities" :key="index" @click="removeEntity(index)">{{ decodeEntity(entity) }}</li>
-      </ul>
-    </div>
-  </div>
+    </li>
+    <li
+      v-for="(entity, index) in post.entities"
+      :key="index"
+      @click="removeEntity(index)"
+    >{{ decodeEntity(entity) }}</li>
+  </ul>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -65,6 +67,12 @@ export default Vue.extend({
     &:hover {
       cursor: pointer;
       background-color: $yellow;
+    }
+    &.input {
+      min-width: 195px;
+      &:hover {
+        background-color: $white;
+      }
     }
   }
 }

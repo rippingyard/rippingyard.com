@@ -5,6 +5,11 @@
       <h1>{{ decodeEntity(entity.id) }}</h1>
     </div>
     <Content v-html="entity.content" />
+    <CommentList :parent-id="parentId" />
+    <CommentForm
+      :parent-id="parentId"
+      :is-public="entity.isPublic"
+    />
     <AdsensePostBottom />
     <div class="posts">
       <PostSimpleList :posts="posts" />
@@ -24,15 +29,12 @@ import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Entity } from '~/types/entity'
-import { normalize, encodeEntity, decodeEntity } from '~/services/entity'
+import { normalize, encodeEntity, decodeEntity, docPath } from '~/services/entity'
 import { normalize as normalizePost } from '~/services/post'
 import {
   getTitle,
   getSocialTitle,
   getSummary,
-  // removeTitle,
-  // getThumbnail,
-  // decodeEntities,
 } from '~/plugins/typography'
 
 export default Vue.extend({
@@ -57,6 +59,7 @@ export default Vue.extend({
           r.entity = await normalize(doc.id, doc.data(), store)
           if (
             !doc.exists ||
+            !r.entity.isPublic ||
             r.entity.isDeleted === true
           ) {
             r.entity = {}
@@ -81,6 +84,7 @@ export default Vue.extend({
         promises = qs.docs.map(async (doc: any) => {
           const post = doc.data()
           if (post.status !== 'published') return
+          if (!post.isPublic) return
           if (post.isDeleted === true) return
           const normalizedPost = await normalizePost(doc.id, post, store)
           return posts.push(normalizedPost)
@@ -116,6 +120,9 @@ export default Vue.extend({
     },
     getSocialTitle(): string {
       return getSocialTitle(this.$data.entity.content) + ' - rippingyard'
+    },
+    parentId(): string {
+      return docPath(this.$data.entity.id)
     },
     // getSummary(): string {
     //   return getSummary(this.$data.entity.content)

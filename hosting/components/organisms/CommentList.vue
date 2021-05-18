@@ -7,7 +7,7 @@
         class="comment"
       >
         <div class="body">
-          <div class="content" v-html="comment.content"></div>
+          <div class="content wysiwyg" v-html="comment.content"></div>
           <p class="date">{{ comment.createdAt }}</p>
         </div>
         <div class="user">
@@ -47,7 +47,13 @@ export default Vue.extend({
 
         promises = qs.docs.map(async (doc: any) => {
           const comment = doc.data()
-          if (comment.isDeleted || !comment.isPublic || comment.status !== 'published') return
+          console.log('myId', this.$store.state.auth.me.uid)
+          console.log('myId', comment.owner.id)
+          if (
+            comment.isDeleted ||
+            (!comment.isPublic && this.$store.state.auth.me.uid !== comment.owner.id) ||
+            comment.status !== 'published'
+          ) return
           const normalizedComment = await normalize(comment.id, comment, this.$store)
           this.comments.push(normalizedComment)
         })

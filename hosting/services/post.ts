@@ -94,6 +94,10 @@ export function editlink(id: string): string {
   return `/home/post/edit/${id}`
 }
 
+export function docPath(id: string): string {
+  return `posts/${id}`
+}
+
 export function sociallink(id: string): string {
   return getDomain() + permalink(id)
 }
