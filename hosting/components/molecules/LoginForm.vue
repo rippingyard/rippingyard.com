@@ -3,8 +3,8 @@
     class="form"
     @submit.prevent="
       login({
-        email: email,
-        password: password,
+        email,
+        password,
       })
     "
   >
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapActions } from 'vuex'
+import { LoginParams } from '~/types/user'
 
 export default Vue.extend({
   data() {
@@ -44,9 +44,29 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions({
-      login: 'auth/login',
-    }),
+    async login({email, password}: LoginParams): Promise<void> {
+      console.log('login', email, password)
+      const res = await this.$store.dispatch('auth/login', {email, password})
+      console.log('res', res)
+
+      if (res.code) {
+        switch (res.code) {
+          case 'auth/user-not-found':
+            (this as any).snackAlert(`ユーザーが登録されていません`)
+            break
+
+          case 'auth/wrong-password':
+            (this as any).snackAlert(`パスワードが正しくありません`)
+            break
+          
+          default:
+            (this as any).snackAlert(`ログインに失敗しました`)
+            break
+        }
+        
+      }
+
+    }
   },
 })
 </script>

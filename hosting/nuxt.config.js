@@ -252,7 +252,7 @@ export default {
           
           const permalinks = []
 
-          const posts = await axios.get(`${fbAPI}timelines/public/posts`)
+          const posts = await axios.get(`${fbAPI}timelines/public/posts?pageSize=999`)
 
           posts.data.documents.forEach((doc) => {
             permalinks.push('/post/' + doc.name.split('/').slice(-1)[0])

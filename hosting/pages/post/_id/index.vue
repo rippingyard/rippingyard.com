@@ -1,8 +1,16 @@
 <template>
   <article class="block container">
     <Header :post="post" />
-    <Content v-html="post.content" />
+    <div v-if="getTitle" class="heading">
+      <h1>{{ getTitle }}</h1>
+    </div>
+    <Content v-html="mainContent" />
     <AdsensePostBottom />
+    <CommentList :parent-id="parentId" />
+    <CommentForm :parent-id="parentId" />
+    <div v-if="post.entities" class="entities">
+      <EntitySimpleList :entities="post.entities" />
+    </div>
     <div v-if="post.owner" class="owner">
       <UserCard :user="post.owner" />
     </div>
@@ -28,10 +36,6 @@ import {
   getThumbnail,
   decodeEntities,
 } from '~/plugins/typography'
-// import Header from '~/components/molecules/PostHeader'
-// import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
-// import ShareButtons from '~/components/molecules/Share/ShareButtons'
-// // import PostList from '~/components/organisms/PostList'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -52,7 +56,11 @@ export default Vue.extend({
         .then(async (doc: any) => {
           // console.log(doc)
           r.post = await normalize(doc.id, doc.data(), store)
-          if (!doc.exists || r.post.isDeleted === true || r.post.status !== 'published') {
+          if (
+            !doc.exists ||
+            r.post.isDeleted === true ||
+            r.post.status !== 'published'
+          ) {
             r.post = {}
             throw new Error('ページが見つかりません')
           }
@@ -88,16 +96,29 @@ export default Vue.extend({
     mainContent(): string {
       return removeTitle(this.$data.post.content)
     },
+    parentId() {
+      return `posts/${this.$data.post.id}`
+    },
     thumbnail() {
       return getThumbnail(this.$data.post.contentOriginal)
     },
   },
   mounted() {
-    if (!this.isAuthenticated && !this.$data.post.isPublic) {
+    if (
+      !this.$data.post.isPublic &&
+      !this.isAuthenticated
+    ) {
       this.$data.post = {}
       this.snack('ログインしてください')
-      this.$router.push('/login');
-      // throw new Error('会員限定記事です')
+      this.$router.push('/login')
+    }
+    if (
+      !this.$data.post.isPublic &&
+      this.isAuthenticated &&
+      this.$store.state.auth.me.uid !== this.$data.post.owner.uid
+    ) {
+      this.$data.post = {}
+      throw new Error('会員限定記事です')
     }
   },
   // async mounted({
@@ -180,6 +201,20 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.heading {
+  margin-bottom: $gap;
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.4;
+    font-weight: 800;
+    padding-top: 3rem;
+  }
+}
+
+.entities {
+  margin-bottom: 30px;
+}
+
 .footer {
   padding-top: 80px;
   font-size: 0.9rem;

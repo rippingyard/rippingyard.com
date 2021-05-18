@@ -34,7 +34,7 @@ export default Vue.extend({
   width: 480px;
   position: fixed;
   bottom: -70px;
-  right: 30px;
+  left: 30px;
   opacity: 0;
   background: $black;
   color: $white;

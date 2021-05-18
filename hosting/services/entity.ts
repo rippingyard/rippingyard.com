@@ -1,4 +1,4 @@
-import { DocumentData } from '@firebase/firestore-types'
+﻿import { DocumentData } from '@firebase/firestore-types'
 import { Store } from 'vuex'
 import { omit } from 'lodash'
 import dayjs from 'dayjs'
@@ -26,14 +26,11 @@ export async function normalize(
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
     if (!params.withoutOwner && post.owner) {
-      console.log('owner test', post.owner.id)
-      const cachedUser = await store.getters['user/one'](post.owner.id)
+      const cachedUser = await store.getters['user/one'](post.owner.uid)
       if (!cachedUser) {
         try {
           await post.owner?.get().then((doc: any) => {
-            // owner = doc.data()
-            owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt', 'invitedBy'])
-            console.log(owner)
+            owner = omit(doc.data(), ['follows', 'followers'])
             // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })
@@ -87,7 +84,7 @@ export function filterContent(content: string) {
 }
 
 export function permalink(id: string): string {
-  return `/post/${id}`
+  return `/entity/${id}`
 }
 
 export function editlink(id: string): string {
@@ -107,4 +104,12 @@ export function getStatusLabel(status: string, isPublic: boolean = true): string
     default:
       return status
   }
+}
+
+export function encodeEntity(entity: string): string {
+  return encodeURIComponent(entity)
+}
+
+export function decodeEntity(entity: string): string {
+  return decodeURIComponent(entity)
 }

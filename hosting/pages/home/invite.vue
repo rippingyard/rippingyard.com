@@ -8,9 +8,8 @@
       <div class="block container">
         <div class="box wysiwyg">
           <h2>友だちを招待する</h2>
-          <p>招待URLを使って、ripping yardに登録しましょう</p>
+          <p>招待URLを使って、友だちをripping yardに招待しましょう</p>
           <InviteUrl />
-          <InviteForm />
         </div>
       </div>
     </div>

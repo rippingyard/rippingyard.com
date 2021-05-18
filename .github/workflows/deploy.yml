@@ -6,8 +6,8 @@ name: Deploy
 on:
   push:
     branches: [ master, develop ]
-  # pull_request:
-  #   branches: [ master, develop ]
+  schedule:
+    - cron:  '0 5,17 * * *'
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2.1.5
       with:
         node-version: ${{ matrix.node-version }}
     - name: Hosting - Install dependencies
@@ -48,7 +48,7 @@ jobs:
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - name: Functions - Init for production
-      run: cd functions && npm install && npm run build
+      run: cd functions && yarn install && yarn build
       env:
         BAUTH_USER: ${{ secrets.BAUTH_USER }}
         BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
@@ -68,7 +68,7 @@ jobs:
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - name: Init functions for develop
-      run: cd functions && npm install && npm run build
+      run: cd functions && yarn install && yarn build
       env:
         BAUTH_USER: ${{ secrets.BAUTH_USER }}
         BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}

@@ -1,69 +1,67 @@
 <template>
-  <div>
-    <div class="editor">
-      <editor-menu-bubble
-        v-slot="{ commands, isActive, menu, getMarkAttrs }"
-        :editor="editor"
-        :keep-in-bounds="keepInBounds"
-        @hide="hideLinkMenu"
+  <div class="editor short">
+    <editor-menu-bubble
+      v-slot="{ commands, isActive, menu, getMarkAttrs }"
+      :editor="editor"
+      :keep-in-bounds="keepInBounds"
+      @hide="hideLinkMenu"
+    >
+      <div
+        :class="{ 'is-active': menu.isActive }"
+        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+        class="menububble"
       >
-        <div
-          :class="{ 'is-active': menu.isActive }"
-          :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-          class="menububble"
+        <form
+          v-if="linkMenuIsActive"
+          class="menububble__form"
+          @submit.prevent="setLinkUrl(commands.link, linkUrl)"
         >
-          <form
-            v-if="linkMenuIsActive"
-            class="menububble__form"
-            @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+          <fa-icon v-if="isActive.link()" icon="link" />
+          <fa-icon v-else icon="link" />
+          <input
+            ref="linkInput"
+            v-model="linkUrl"
+            type="text"
+            placeholder="https://"
+            class="menububble__input"
+            @keydown.esc="hideLinkMenu"
+          />
+          <button
+            type="button"
+            class="menububble__button"
+            @click="setLinkUrl(commands.link, null)"
           >
-            <fa-icon v-if="isActive.link()" icon="link" />
-            <fa-icon v-else icon="link" />
-            <input
-              ref="linkInput"
-              v-model="linkUrl"
-              type="text"
-              placeholder="https://"
-              class="menububble__input"
-              @keydown.esc="hideLinkMenu"
-            />
-            <button
-              type="button"
-              class="menububble__button"
-              @click="setLinkUrl(commands.link, null)"
-            >
-              <font-awesome-icon icon="trash-alt" />
-            </button>
-          </form>
-          <template v-else>
-            <button
-              :class="{ 'is-active': isActive.bold() }"
-              class="menububble__button"
-              @click="commands.bold"
-            >
-              <fa-icon icon="bold" />
-            </button>
+            <font-awesome-icon icon="trash-alt" />
+          </button>
+        </form>
+        <template v-else>
+          <button
+            :class="{ 'is-active': isActive.bold() }"
+            class="menububble__button"
+            @click="commands.bold"
+          >
+            <fa-icon icon="bold" />
+          </button>
 
-            <button
-              :class="{ 'is-active': isActive.italic() }"
-              class="menububble__button"
-              @click="commands.italic"
-            >
-              <fa-icon icon="italic" />
-            </button>
+          <button
+            :class="{ 'is-active': isActive.italic() }"
+            class="menububble__button"
+            @click="commands.italic"
+          >
+            <fa-icon icon="italic" />
+          </button>
 
-            <button
-              :class="{ 'is-active': isActive.link() }"
-              class="menububble__button"
-              @click="showLinkMenu(getMarkAttrs('link'))"
-            >
-              <fa-icon icon="link" />
-            </button>
-          </template>
-        </div>
-      </editor-menu-bubble>
-      <editor-content :editor="editor" />
-    </div>
+          <button
+            :class="{ 'is-active': isActive.link() }"
+            class="menububble__button"
+            @click="showLinkMenu(getMarkAttrs('link'))"
+          >
+            <fa-icon icon="link" />
+          </button>
+        </template>
+      </div>
+    </editor-menu-bubble>
+    <editor-content :editor="editor" />
   </div>
 </template>
 <script>
@@ -106,11 +104,15 @@ export default {
       type: String,
       default: '',
     },
+    resetCount: {
+      type: Number,
+      default: 0,
+    }
   },
   data() {
     return {
       editor: null,
-      content: this.default || '',
+      // content: this.default || '',
       linkUrl: null,
       linkMenuIsActive: false,
       keepInBounds: true,
@@ -132,7 +134,14 @@ export default {
   watch: {
     default(val) {
       console.log('Update TextArea', val)
-      this.content = val
+      this.content = ''
+    },
+    resetCount(val) {
+      console.log('Reset TextArea!', val)
+      if (val > 0) {
+        this.editor.clearContent()
+        // this.reset = false
+      }
     }
   },
   mounted() {
@@ -164,7 +173,7 @@ export default {
         }),
       ],
       onUpdate: s => {
-        this.$emit('update', s.getHTML())
+        this.$emit('input', s.getHTML())
       },
     })
   },
@@ -225,7 +234,7 @@ export default {
 </script>
 <style lang="scss">
 .editor {
-  min-height: 140px;
+  min-height: 140px !important;
   position: relative;
   &__floating-menu {
     position: absolute;

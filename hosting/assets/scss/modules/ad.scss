@@ -1,0 +1,20 @@
+﻿.ad {
+  &.dev {
+    .adsbygoogle {
+      position: relative;
+      background-color: rgba($color: #000, $alpha: 0.1);
+      &::before {
+        content: 'AD';
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        position: absolute;
+        font-weight: 800;
+        font-size: 0.8rem;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+      }
+    }
+  }
+}

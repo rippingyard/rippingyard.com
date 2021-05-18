@@ -15,12 +15,7 @@
 
 import _ from 'lodash'
 import { filterContent } from '~/services/post'
-// import { db } from '~/plugins/firebase'
-// import { getTitle, removeTitle } from '~/plugins/typography'
-// import AdBottom from '~/components/atoms/Ad/AdsensePostBottom'
 import Seeds from '~/assets/json/old/seeds.json'
-// import Title from '~/components/atoms/PostTitle'
-// import Belt from '~/components/atoms/Belt/Readable'
 
 export default {
   asyncData({ params, redirect, error }) {
