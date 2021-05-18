@@ -44,10 +44,6 @@
 </template>
 
 <script>
-// import PostTable from '~/components/organisms/PostTable'
-// import InfoMe from '~/components/molecules/InfoMe'
-// import Belt from '~/components/atoms/Belt/Global'
-
 export default {
   layout: 'manage',
   props: {

@@ -26,11 +26,14 @@ export async function normalize(
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
     if (!params.withoutOwner && post.owner) {
-      const cachedUser = await store.getters['user/one'](post.owner.uid)
+      console.log('owner test', post.owner.id)
+      const cachedUser = await store.getters['user/one'](post.owner.id)
       if (!cachedUser) {
         try {
           await post.owner?.get().then((doc: any) => {
-            owner = omit(doc.data(), ['follows', 'followers'])
+            // owner = doc.data()
+            owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt', 'invitedBy'])
+            console.log(owner)
             // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })

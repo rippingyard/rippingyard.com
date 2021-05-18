@@ -3,8 +3,11 @@
     <div class="column c20">
       <ManageNav />
     </div>
-    <div class="column c80">
-      <PostTable :data="posts" :check="toggleCheck" />
+    <div v-if="!isEmpty" class="column c80">
+      <PostTable
+        :data="posts"
+        :check="toggleCheck"
+      />
       <div class="console">
         <button
           class="button"
@@ -13,6 +16,12 @@
         >
           削除
         </button>
+      </div>
+    </div>
+    <div v-else class="column c80">
+      <div class="empty">
+        <h2>投稿がありません</h2>
+        <p><nuxt-link to="/home/post/create">新しく記事を追加</nuxt-link>してみましょう</p>
       </div>
     </div>
   </section>
@@ -72,6 +81,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    isEmpty() {
+      return this.$data.posts.length === 0
+    },
     isChecked() {
       return this.$data.checkedPosts.length > 0
     },
@@ -123,5 +135,20 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .console {
   padding: 20px;
+}
+.empty {
+  border-top: 1px solid $black;
+  padding: $gap * 3 $gap;
+  text-align: center;
+  > h2 {
+    font-size: 3rem;
+    font-weight: 800;
+  }
+  > p {
+    font-size: 1.4rem;
+    > a {
+      color: $blue;
+    }
+  }
 }
 </style>
