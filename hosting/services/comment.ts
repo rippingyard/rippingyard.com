@@ -1,9 +1,8 @@
 ﻿import { DocumentData } from '@firebase/firestore-types'
 import { Store } from 'vuex'
-import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import { sanitize, renderWidgets } from '~/plugins/typography'
-import { Post } from '~/types/post'
+import { Comment } from '~/types/comment'
 import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
@@ -14,23 +13,24 @@ interface Params {
 
 export async function normalize(
   id: string,
-  post: DocumentData | undefined,
+  comment: DocumentData | undefined,
   store: Store<any>,
   params: Params = {
     withoutOwner: false,
   }
-): Promise<Partial<Post>> {
-  if (!post) return {}
+): Promise<Partial<Comment>> {
+  if (!comment) return {}
 
   try {
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
-    if (!params.withoutOwner && post.owner) {
-      const cachedUser = await store.getters['user/one'](post.owner.uid)
+    if (!params.withoutOwner && comment.owner) {
+      const cachedUser = await store.getters['user/one'](comment.owner.id)
       if (!cachedUser) {
         try {
-          await post.owner?.get().then((doc: any) => {
-            owner = omit(doc.data(), ['follows', 'followers'])
+          await comment.owner?.get().then((doc: any) => {
+            // owner = omit(doc.data(), ['follows', 'followers'])
+            owner = decycle(doc.data())
             // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })
@@ -44,29 +44,25 @@ export async function normalize(
     }
 
     return decycle({
-      ...post,
+      ...comment,
       ...{
         id,
         permalink: permalink(id),
         sociallink: sociallink(id),
-        content: filterContent(post.content),
-        contentOriginal: post.content,
+        content: filterContent(comment.content),
+        contentOriginal: comment.content,
         // parent: null,
 
         owner,
 
-        isDeleted: post.isDeleted,
-
-        publishedAt: post.publishedAt
-          ? dayjs(post.publishedAt.toDate()).format('YYYY-MM-DD HH:mm')
+        isDeleted: comment.isDeleted,
+        
+        createdAt: comment.createdAt
+          ? dayjs(comment.createdAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
-        createdAt: post.createdAt
-          ? dayjs(post.createdAt.toDate()).format('YYYY-MM-DD HH:mm')
+        updatedAt: comment.updatedAt
+          ? dayjs(comment.updatedAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
-        updatedAt: post.updatedAt
-          ? dayjs(post.updatedAt.toDate()).format('YYYY-MM-DD HH:mm')
-          : '',
-        //   length: getLength(post.content),
       },
     })
   } catch (e) {
@@ -84,12 +80,12 @@ export function filterContent(content: string) {
 }
 
 export function permalink(id: string): string {
-  return `/entity/${id}`
+  return `/comment/${id}`
 }
 
-export function editlink(id: string): string {
-  return `/home/post/edit/${id}`
-}
+// export function editlink(id: string): string {
+//   return `/home/post/edit/${id}`
+// }
 
 export function sociallink(id: string): string {
   return getDomain() + permalink(id)
@@ -104,12 +100,4 @@ export function getStatusLabel(status: string, isPublic: boolean = true): string
     default:
       return status
   }
-}
-
-export function encodeEntity(entity: string): string {
-  return encodeURIComponent(entity)
-}
-
-export function decodeEntity(entity: string): string {
-  return decodeURIComponent(entity)
 }

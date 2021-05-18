@@ -2,9 +2,7 @@ import { DocumentData } from '@firebase/firestore-types'
 import { Store } from 'vuex'
 import { omit } from 'lodash'
 import dayjs from 'dayjs'
-import urlParse from 'url-parse'
-import queryString from 'query-string'
-import { sanitize, extractUrls, getSummary } from '~/plugins/typography'
+import { sanitize, renderWidgets } from '~/plugins/typography'
 import { Post } from '~/types/post'
 import { getDomain } from '~/plugins/util'
 
@@ -84,52 +82,6 @@ export function filterContent(content: string) {
 
   content = sanitize(content)
   content = renderWidgets(content)
-
-  return content
-}
-
-export function renderWidgets(content: string) {
-  if (!content) return ''
-
-  // const contentPlain = stripTags(content)
-  const urls = extractUrls(content)
-
-  content = content.replace(/"http/g, '"[http]')
-
-  if (!urls) return content
-
-  urls.reverse()
-
-  let urlInfo: urlParse
-  let queries = null
-  let html = ''
-
-  urls.forEach(url => {
-    html = url
-    urlInfo = urlParse(url)
-    queries = queryString.parse(urlInfo.query.toString())
-
-    // console.log('URL Info', urlInfo)
-
-    switch (urlInfo.hostname) {
-      case 'youtube.com':
-      case 'jp.youtube.com':
-      case 'www.youtube.com':
-        if (queries.v) {
-          // console.log('youtubeId', queries.v)
-          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${queries.v}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
-        }
-        break
-
-      default:
-        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
-        break
-    }
-
-    content = content.replace(url, html)
-  })
-
-  content = content.replace(/"\[http\]/g, '"http')
 
   return content
 }

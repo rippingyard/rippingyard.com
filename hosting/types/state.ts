@@ -1,5 +1,6 @@
 import { Post } from '~/types/post'
 import { User } from '~/types/user'
+import { Comment } from '~/types/comment'
 
 export type RootState = {
   version: string
@@ -8,6 +9,7 @@ export type RootState = {
 export type State = {
   auth: AuthState
   posts: PostState
+  comments: CommentState
   users: UserState
 }
 
@@ -24,6 +26,10 @@ export type UserState = {
 
 export type PostState = {
   [id: string]: Post
+}
+
+export type CommentState = {
+  [id: string]: Comment
 }
 
 export type SnackState = {

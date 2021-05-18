@@ -1,8 +1,13 @@
 <template>
   <article class="block container">
     <Header :post="post" />
-    <Content v-html="post.content" />
+    <div v-if="getTitle" class="heading">
+      <h1>{{ getTitle }}</h1>
+    </div>
+    <Content v-html="mainContent" />
     <AdsensePostBottom />
+    <CommentList :parent-id="parentId" />
+    <CommentForm :parent-id="parentId" />
     <div v-if="post.entities" class="entities">
       <EntitySimpleList :entities="post.entities" />
     </div>
@@ -90,6 +95,9 @@ export default Vue.extend({
     },
     mainContent(): string {
       return removeTitle(this.$data.post.content)
+    },
+    parentId() {
+      return `posts/${this.$data.post.id}`
     },
     thumbnail() {
       return getThumbnail(this.$data.post.contentOriginal)
@@ -193,6 +201,16 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.heading {
+  margin-bottom: $gap;
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.4;
+    font-weight: 800;
+    padding-top: 3rem;
+  }
+}
+
 .entities {
   margin-bottom: 30px;
 }
