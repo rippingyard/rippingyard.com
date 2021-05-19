@@ -40,6 +40,11 @@ ul {
   li {
     display: flex;
     border-bottom: 1px solid $gray-black;
+
+    @include mobile {
+      flex-direction: column;
+    }
+
     .body {
       display: block;
       width: calc(100% - 180px);
@@ -64,10 +69,18 @@ ul {
         padding-top: 6px;
         font-size: 0.9rem;
       }
+      @include mobile {
+        width: 100%;
+        padding-bottom: $gap - 5px;
+      }
     }
     .user {
       width: 180px;
       padding: 20px 0;
+      @include mobile {
+        width: 100%;
+        padding-top: 0;
+      }
     }
   }
 }

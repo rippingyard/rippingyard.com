@@ -239,6 +239,8 @@ export default {
           '/home/**',
           '/signup',
           '/signup/**',
+          '/terms',
+          '/privacy'
         ],
       },
       {
@@ -261,6 +263,27 @@ export default {
           return permalinks
         }
       },
+      // {
+      //   path: '/sitemaps/entities.xml',
+      //   gzip: false,
+      //   cacheTime: 1000 * 60 * 20,
+      //   filter ({ routes, _options }) {
+      //     return routes.filter((route) => route.url.match(/^\/entity\//))
+      //   },
+      //   routes: async () => {
+          
+      //     const permalinks = []
+
+      //     const entities = await axios.get(`${fbAPI}entities?pageSize=999`)
+
+      //     entities.data.documents.forEach((doc) => {
+      //       if (!doc.data.isPublic || doc.data.status !== 'published') return
+      //       permalinks.push('/entity/' + doc.name.split('/').slice(-1)[0])
+      //     })
+
+      //     return permalinks
+      //   }
+      // },
       {
         path: '/sitemaps/seeds.xml',
         gzip: true,

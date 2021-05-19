@@ -130,16 +130,33 @@ export default Vue.extend({
 
   .footer {
     display: flex;
-    flex-direction: space-between;
+    position: relative;
+    justify-content: space-between;
     border-top: 1px solid $gray-black;
     padding-top: 15px;
+
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+    }
+
     .footer-main {
       text-align: left;
       width: 50%;
+      @include mobile {
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        left: 0;
+      }
     }
     .footer-side {
       text-align: right;
       width: 50%;
+      @include mobile {
+        width: 100%;
+        text-align: right;
+      }
     }
     .status {
       display: inline-block;
@@ -147,6 +164,9 @@ export default Vue.extend({
       > span {
         font-weight: 800;
         border-bottom: 2px solid $black;
+      }
+      @include mobile {
+        padding-bottom: 10px;
       }
     }
     .counter {
