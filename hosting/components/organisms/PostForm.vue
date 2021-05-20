@@ -22,7 +22,7 @@
         </button>
       </div>
       <div class="row">
-        <EntityForm :post="post" />
+        <EntityForm v-model="entities" />
       </div>
       <div class="row">
         <button class="button" @click="submit">
@@ -35,7 +35,6 @@
     </Modal>
   </section>
 </template>
-
 <script>
 import { isEmpty } from 'lodash'
 import { mapActions } from 'vuex'
@@ -45,15 +44,9 @@ import { encodeEntity } from '~/services/entity'
 
 export default {
   props: {
-    // postId: {
-    //   type: String,
-    //   default: null,
-    // },
     post: {
       type: Object,
-      default: () => {
-        return {}
-      },
+      default: () => {},
     },
     submitLabel: {
       type: String,
@@ -79,6 +72,7 @@ export default {
     },
   },
   mounted() {
+    console.log('Mounted', this.post)
     if (!this.$isAuthenticated(this.$store)) {
       // console.log('Not Logined')
       this.$router.push('/')
@@ -115,7 +109,10 @@ export default {
     confirm() {
       this.showSetting()
     },
-    async save() {
+    save() {
+      console.log(this.entities)
+    },
+    async save_() {
       try {
         const params = {
           content: this.content,
@@ -133,8 +130,9 @@ export default {
           return this.snackAlert('投稿に失敗しました')
         }
 
-        if (this.post.entities) {
-          const existanceChecks = this.post.entities.map(async e => {
+        if (this.entities) {
+          const existanceChecks = this.entities.map(async e => {
+            console.log('Entity', e)
             return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
           })
           const existances = await Promise.all(existanceChecks)

@@ -11,7 +11,7 @@
       >
     </li>
     <li
-      v-for="(entity, index) in post.entities"
+      v-for="(entity, index) in entities"
       :key="index"
       @click="removeEntity(index)"
     >{{ decodeEntity(entity) }}</li>
@@ -21,28 +21,36 @@
 import Vue from 'vue'
 import { decodeEntity } from '~/services/entity'
 export default Vue.extend({
-  props: {
-    post: {
-      type: Object,
-      default: () => {}
-    },
-  },
-  data() {
+  // props: {
+  //   entities: {
+  //     type: Array,
+  //     default: () => []
+  //   },
+  // },
+  data(): {
+    entities: string[]
+    input: string
+    isComposing: boolean
+  } {
     return {
+      entities: [],
       input: '',
       isComposing: false,
     }
   },
+  mounted() {
+    console.log('Entities on mounted', this.entities)
+  },
   methods: {
     addEntity() {
       if (!this.isComposing) {
-        if (!this.post.entities || this.post.entities.byUser) this.post.entities = []
-        this.post.entities.push(this.input)
+        this.entities.push(this.input)
+        console.log('Entities', this.entities)
         this.input = ''
       }
     },
     removeEntity(index: number) {
-      this.post.entities.splice(index, 1)
+      this.entities.splice(index, 1)
     },
     startComposing(): void {
       this.isComposing = true
