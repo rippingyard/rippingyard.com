@@ -21,12 +21,12 @@
 import Vue from 'vue'
 import { decodeEntity } from '~/services/entity'
 export default Vue.extend({
-  // props: {
-  //   entities: {
-  //     type: Array,
-  //     default: () => []
-  //   },
-  // },
+  props: {
+    defaultEntities: {
+      type: Array,
+      default: () => []
+    },
+  },
   data(): {
     entities: string[]
     input: string
@@ -39,14 +39,14 @@ export default Vue.extend({
     }
   },
   mounted() {
-    console.log('Entities on mounted', this.entities)
+    this.$data.entities = this.defaultEntities
   },
   methods: {
     addEntity() {
       if (!this.isComposing) {
         this.entities.push(this.input)
-        console.log('Entities', this.entities)
         this.input = ''
+        this.$emit("updateEntities", this.entities)
       }
     },
     removeEntity(index: number) {
@@ -77,7 +77,10 @@ export default Vue.extend({
       background-color: $yellow;
     }
     &.input {
-      min-width: 195px;
+      > input {
+        min-width: 195px;
+        border: none;
+      }
       &:hover {
         background-color: $white;
       }
