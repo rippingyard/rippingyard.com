@@ -22,20 +22,30 @@
         </button>
       </div>
       <div class="row">
-        <EntityForm :post="post" />
+        <EntityForm
+          :default-entities="entities"
+          @updateEntities="updateEntities"
+        />
       </div>
       <div class="row">
-        <button class="button" @click="submit">
+        <button
+          class="button"
+          :class="{'is-disabled': isSaving}"
+          @click="submit"
+        >
           {{ status !== 'draft' ? submitLabel : isPublic ? '公開する' : '自分のノートとして保存する' }}
         </button>
-        <button class="button no-border" @click="draft">
+        <button
+          class="button no-border"
+          :class="{'is-disabled': isSaving}"
+          @click="draft"
+        >
           {{ draftLabel }}
         </button>
       </div>
     </Modal>
   </section>
 </template>
-
 <script>
 import { isEmpty } from 'lodash'
 import { mapActions } from 'vuex'
@@ -45,15 +55,9 @@ import { encodeEntity } from '~/services/entity'
 
 export default {
   props: {
-    // postId: {
-    //   type: String,
-    //   default: null,
-    // },
     post: {
       type: Object,
-      default: () => {
-        return {}
-      },
+      default: () => {},
     },
     submitLabel: {
       type: String,
@@ -67,6 +71,7 @@ export default {
       isPublic: true,
       isPreviewing: false,
       isSetting: false,
+      isSaving: false,
       status: 'published',
     }
   },
@@ -79,14 +84,16 @@ export default {
     },
   },
   mounted() {
+    console.log('Mounted', this.post)
     if (!this.$isAuthenticated(this.$store)) {
-      // console.log('Not Logined')
       this.$router.push('/')
     }
-    this.content = this.post.content || ''
-    this.isPublic = !!this.post.isPublic
-    this.entities = this.post.entities || []
-    this.status = this.post.status
+    if (this.post) {
+      this.content = this.post.content || ''
+      this.isPublic = !!this.post.isPublic
+      this.entities = this.post.entities || []
+      this.status = this.post.status
+    }
     console.log('isPublic', this.isPublic)
   },
   methods: {
@@ -115,8 +122,14 @@ export default {
     confirm() {
       this.showSetting()
     },
+    updateEntities(val) {
+      this.entities = val
+    },
     async save() {
+      if (this.isSaving) return
       try {
+        this.isSaving = true
+
         const params = {
           content: this.content,
           type: 'article',
@@ -124,7 +137,7 @@ export default {
           status: this.status,
           isPublic: this.isPublic,
         }
-        if (this.post.id) params.id = this.post.id
+        if (this.post?.id) params.id = this.post.id
         console.log('val', schemaPost.validate(params))
 
         const { error } = schemaPost.validate(params)
@@ -133,8 +146,9 @@ export default {
           return this.snackAlert('投稿に失敗しました')
         }
 
-        if (this.post.entities) {
-          const existanceChecks = this.post.entities.map(async e => {
+        if (this.entities) {
+          const existanceChecks = this.entities.map(async e => {
+            console.log('Entity', e)
             return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
           })
           const existances = await Promise.all(existanceChecks)
@@ -148,13 +162,15 @@ export default {
           if (promises) await Promise.all(promises)
         }
 
-        const post = Object.assign(this.post, params)
+        const post = this.post ? Object.assign(this.post, params) : params
 
         await this.savePost({
           post,
         })
 
         console.log('post', post)
+
+        this.isSaving = false
 
         this.$router.push('/home/posts')
       } catch (e) {
