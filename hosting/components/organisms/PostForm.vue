@@ -84,7 +84,6 @@ export default {
     },
   },
   mounted() {
-    console.log('Mounted', this.post)
     if (!this.$isAuthenticated(this.$store)) {
       this.$router.push('/')
     }
@@ -94,7 +93,6 @@ export default {
       this.entities = this.post.entities || []
       this.status = this.post.status
     }
-    console.log('isPublic', this.isPublic)
   },
   methods: {
     ...mapActions({
@@ -167,8 +165,6 @@ export default {
         await this.savePost({
           post,
         })
-
-        console.log('post', post)
 
         this.isSaving = false
 
