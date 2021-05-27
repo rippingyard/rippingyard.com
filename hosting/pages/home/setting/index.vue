@@ -20,7 +20,7 @@
               <h2>プロフィール画像</h2>
               <div>
                 <ImageUploader
-                  :default-image="avator" :on-change="updateImage"
+                  :default-image="avatar" :on-change="updateImage"
                 />
               </div>
             </div>
@@ -53,7 +53,7 @@ export default Vue.extend({
     this.me = await this.getUser(this.uid)
     this.displayName = this.$data.me.displayName || this.$data.me.uid
     this.profile = this.$data.me.profile || ''
-    this.avator = this.$data.me.avator || ''
+    this.avatar = this.$data.me.avatar || ''
   },
   data() {
     return {
@@ -62,7 +62,7 @@ export default Vue.extend({
       displayName: '',
       profile: '',
       image: '',
-      avator: '',
+      avatar: '',
       errors: {},
     }
   },
@@ -85,20 +85,20 @@ export default Vue.extend({
           const ext = getExt(this.image)
           if (!ext) return
 
-          const filename = `avators/${this.$data.me.uid}.${ext}`
+          const filename = `avatars/${this.$data.me.uid}.${ext}`
           const result = await (this as any).$fire.storage
             .ref()
             .child(filename)
             .put(this.image)
-          this.avator = await result.ref.getDownloadURL()
-          console.log('File', result, this.avator)
+          this.avatar = await result.ref.getDownloadURL()
+          console.log('File', result, this.avatar)
         }
 
         const params = {
           uid: this.$data.me.uid,
           displayName: this.displayName,
           profile: this.profile,
-          avator: this.avator,
+          avatar: this.avatar,
         }
         console.log('val', schemaUser.validate(params))
         const { value, error } = schemaUser.validate(params)

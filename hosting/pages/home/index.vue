@@ -5,6 +5,21 @@
     </div>
     <div class="column c80">
       <div class="block container">
+        <ul class="tabs">
+          <li :class="{'is-current': currentTab === 'notification'}" @click="switchTab('notification')"><h2>通知</h2></li>
+          <li :class="{'is-current': currentTab === 'activity'}" @click="switchTab('activity')"><h2>あなたの活動履歴</h2></li>
+        </ul>
+        <div v-show="currentTab === 'notification'" class="box no-border">
+          <NotificationSimpleList
+            :notifications="notifications"
+          />
+        </div>
+        <div v-show="currentTab === 'activity'" class="box no-border">
+          <ActivitySimpleList
+            :activities="activities"
+          />
+        </div>
+        <AdsenseHomeMiddle />
         <div class="heading">
           <h1>ripping yardでできること</h1>
         </div>
@@ -42,9 +57,13 @@
     </div>
   </section>
 </template>
+<script lang="ts">
+import Vue from 'vue'
+import { Activity } from '~/types/activity'
+import { Notification } from '~/types/notification'
+import { Context } from '~/types/context'
 
-<script>
-export default {
+export default Vue.extend({
   layout: 'manage',
   props: {
     test: {
@@ -55,19 +74,78 @@ export default {
   fetch() {
     this.me = this.$store.state.auth.me
   },
-  data() {
+  asyncData({ $fire, store }: Context) {
+    const r: {
+      activities: Partial<Activity>[]
+      notifications: Partial<Notification>[]
+    } = {
+      activities: [],
+      notifications: [],
+    }
+    $fire.firestore
+      .collection('activities')
+      .where(
+        'owner',
+        '==',
+        $fire.firestore.doc(`users/${store.state.auth.me.uid}`)
+      )
+      .where('type', 'in', ['comment:create', 'post:create', 'post:update'])
+      .limit(8)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((qs: any) => {
+        qs.forEach((doc: any) => {
+          const activity: Partial<Activity> = doc.data()
+          console.log('Activity', activity)
+          r.activities.push(activity)
+        })
+      })
+    
+    $fire.firestore
+      .collection('notifications')
+      .where(
+        'targets',
+        'array-contains',
+        $fire.firestore.doc(`users/${store.state.auth.me.uid}`)
+      )
+      .limit(24)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((qs: any) => {
+        qs.forEach((doc: any) => {
+          const notification: Partial<Notification> = doc.data()
+          console.log('Notification', notification)
+          r.notifications.push(notification)
+        })
+      })
+    
+    return r
+  },
+  data(): {
+    me: any,
+    activities: Partial<Activity>[],
+    notifications: Partial<Notification>[],
+    currentTab: 'notification' | 'activity'
+  } {
     return {
       me: null,
+      activities: [],
+      notifications: [],
+      currentTab: 'notification',
+    }
+  },
+  methods: {
+    switchTab(current: string) {
+      this.$data.currentTab = current
     }
   },
   middleware: ['auth'],
-  mounted() {},
   head: () => {
     return {
       title: 'HOME',
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -78,10 +156,30 @@ export default {
     color: $gray-black;
   }
 }
+.tabs {
+  padding: 6rem 30px 30px;
+  font-size: 1.4rem;
+  > li {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 800;
+    color: $gray-black;
+    &:hover {
+      cursor: pointer;
+    }
+    &.is-current {
+      color: $black;
+      border-bottom: 4px solid $black;
+    }
+  }
+}
 .box {
   padding: 0 30px;
   border-left: 4px solid $black;
   margin-bottom: 60px;
+  &.no-border {
+    border: none;
+  }
   h2 {
     line-height: 1;
     padding-top: 0;

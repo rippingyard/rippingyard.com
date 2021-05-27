@@ -43,5 +43,12 @@ service cloud.firestore {
     	allow read;
       allow write: if isAuthenticated();
     }
+    match /notifications/{notificationId} {
+    	allow read;
+      allow write: if isAuthenticated();
+      match /targets/{document=**} {
+        allow read;
+      }
+    }
   }
 }

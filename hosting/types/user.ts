@@ -1,11 +1,10 @@
 export type User = {
-  // id: string
   uid: string
   displayName: string
   userName: string
   code?: string
   profile?: string
-  avator?: string
+  avatar?: string
   createdAt: string | Date
   updatedAt: string | Date
 }

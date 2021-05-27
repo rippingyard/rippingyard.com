@@ -4,7 +4,7 @@
     <div class="columns">
       <div class="column c30">
         <div class="profile">
-          <p v-if="user.avator" class="avator" :style="avator"></p>
+          <p v-if="user.avatar" class="avatar" :style="avatar"></p>
           <h1 class="name">{{ user.displayName }}</h1>
           <p class="account">@{{ user.userName }}</p>
           <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
@@ -128,8 +128,8 @@ export default Vue.extend({
     ...mapGetters({
       getUser: 'user/one',
     }),
-    avator() {
-      return `background-image:url(${(this as any).user.avator})`
+    avatar() {
+      return `background-image:url(${(this as any).user.avatar})`
     },
     createdate() {
       return this.$data.user.createdAt?.second
@@ -266,7 +266,7 @@ export default Vue.extend({
     font-size: 2rem;
     font-weight: 800;
   }
-  .avator {
+  .avatar {
     width: 180px;
     height: 180px;
     border-radius: 999999px;
