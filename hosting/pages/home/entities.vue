@@ -31,47 +31,12 @@ import { normalize } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 
 export default {
-  // props: {
-  //   isTimeline: {
-  //     type: Boolean,
-  //     default: true,
-  //   },
-  //   limit: {
-  //     type: Number,
-  //     default: 12,
-  //   },
-  //   owner: {
-  //     type: String,
-  //     default: null,
-  //   },
-  // },
   layout: 'manage',
   middleware: ['auth'],
-  // computed: {
-  //   ...mapGetters({
-  //     getOwner: 'user/owner',
-  //   }),
-  // },
   async asyncData({ $fire, store }) {
     const posts = []
 
     const db = $fire.firestore.collection('posts')
-
-    // if (isTimeline) {
-    //   db = $fire.firestore
-    //     .collection('timelines')
-    //     .doc('public')
-    //     .collection('posts')
-    // } else {
-    //   db = $fire.firestore.collection('posts')
-    // }
-
-    // if (owner)
-    //   db = db.where(
-    //     'owner',
-    //     '==',
-    //     $fire.collection('users').doc(owner)
-    //   )
 
     await db
       .limit(1000)
@@ -93,8 +58,6 @@ export default {
   data() {
     return {
       posts: [],
-      // deletedItems: [],
-      // isLoading: false,
     }
   },
   methods: {

@@ -3,8 +3,16 @@
     <Wysiwyg :post="post" @update="updateContent" />
     <div class="console">
       <div class="buttons">
-        <button type="is-primary" class="button" @click="confirm">設定を確認して公開する</button>
-        <button type="is-text" class="button no-border" @click="showPreview">プレビュー</button>
+        <button
+          type="is-primary"
+          class="button"
+          @click="confirm"
+        >設定を確認して公開する</button>
+        <button
+          type="is-text"
+          class="button no-border"
+          @click="showPreview"
+        >プレビュー</button>
       </div>
     </div>
     <Modal v-if="isPreviewing" :on-close="closePreview">

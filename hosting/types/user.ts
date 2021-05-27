@@ -4,7 +4,7 @@ export type User = {
   userName: string
   code?: string
   profile?: string
-  avator?: string
+  avatar?: string
   createdAt: string | Date
   updatedAt: string | Date
 }

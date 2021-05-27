@@ -1,10 +1,10 @@
 ﻿<template>
   <div class="card">
     <nuxt-link
-      v-if="user.avator"
+      v-if="user.avatar"
       :to="permalink"
-      class="avator"
-      :style="avator"
+      class="avatar"
+      :style="avatar"
     />
     <h2 class="name">
       <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
@@ -25,7 +25,7 @@ export default Vue.extend({
           userName: '',
           displayName: '',
           profile: '',
-          avator: '',
+          avatar: '',
         }
       },
     },
@@ -34,8 +34,8 @@ export default Vue.extend({
     permalink() {
       return `/people/${(this.user as Partial<User>).userName}`
     },
-    avator() {
-      return `background-image:url(${(this.user as Partial<User>).avator})`
+    avatar() {
+      return `background-image:url(${(this.user as Partial<User>).avatar})`
     },
   },
 })
@@ -53,7 +53,7 @@ export default Vue.extend({
     flex-direction: row;
   }
 
-  .avator {
+  .avatar {
     width: 60px;
     height: 60px;
     border-radius: 999999px;

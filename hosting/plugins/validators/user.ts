@@ -4,7 +4,7 @@ export const schemaUser = Joi.object({
   uid: Joi.string().required(),
   displayName: Joi.string().required(),
   profile: Joi.string().allow('').optional(),
-  avator: Joi.string().allow('').optional(),
+  avatar: Joi.string().allow('').optional(),
 })
 
 export const schemaCreateUser = Joi.object({

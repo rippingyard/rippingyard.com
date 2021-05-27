@@ -12,11 +12,11 @@ export const removeTitle = (str: string) => {
   return str.replace(/<h.(?: .+?)?>.*?<\/h.>/, '')
 }
 
-export const getTitle = (str: string) => {
+export const getTitle = (str: string, length: number = 32) => {
   if (!str) return ''
   const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
   if (htag && htag[0] !== '') return htag[0]
-  return getSummary(str, 32)
+  return getSummary(str, length)
 }
 
 export const getThumbnail = (str: string) => {
