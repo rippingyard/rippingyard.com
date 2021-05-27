@@ -28,7 +28,7 @@ export const scheme = {
     bookmark: 0,
     pageview: 0,
   },
-  isPublic: false,
+  isPublic: true,
   isDeleted: false,
   createdAt: dayjs().toDate(),
   updatedAt: dayjs().toDate(),

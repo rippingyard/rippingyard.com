@@ -7,15 +7,20 @@
           :reset-count="resetCount"
         />
         <div class="footer">
-          <div
-            :class="{'is-over': isOver}"
-            class="counter"
-          >{{ contentLength }} / {{ limit }}</div>
-          <button
-            :class="{'is-disabled': isOver || isEmpty}"
-            class="button"
-            @click="submit()"
-          >コメントする</button>
+          <div class="footer-main">
+            <div class="status"><span>{{ statusLabel }}</span></div>
+          </div>
+          <div class="footer-side">
+            <div
+              :class="{'is-over': isOver}"
+              class="counter"
+            >{{ contentLength }} / {{ limit }}</div>
+            <button
+              :class="{'is-disabled': isOver || isEmpty}"
+              class="button"
+              @click="submit()"
+            >コメントする</button>
+          </div>
         </div>
       </div>
     </div>
@@ -33,9 +38,13 @@ export default Vue.extend({
       type: String,
       default: null,
     },
+    isPublic: {
+      type: Boolean,
+      default: false,
+    },
     limit: {
       type: Number,
-      default: 180,
+      default: 320,
     },
   },
   data() {
@@ -57,14 +66,15 @@ export default Vue.extend({
     isEmpty(): boolean {
       return this.contentLength === 0
     },
+    statusLabel(): string {
+      return this.isPublic ? '全世界に公開' : '限定公開'
+    }
   },
   methods: {
     ...mapActions({
       saveComment: 'comment/save',
+      saveActivity: 'activity/save',
     }),
-    // updateContent(content: string): void {
-    //   this.content = content
-    // },
     async submit(): Promise<any> {
       if (this.isEmpty) {
         return (this as any).snackAlert('コメントが空です')
@@ -80,7 +90,7 @@ export default Vue.extend({
           content: this.content,
           entities: [],
           parentId: this.parentId,
-          isPublic: true,
+          isPublic: this.isPublic,
         }
 
         const { error } = schemaComment.validate(params)
@@ -89,6 +99,7 @@ export default Vue.extend({
           return (this as any).snackAlert('投稿に失敗しました')
         }
 
+        let status = 'succeeded'
         try {
           await this.saveComment({
             comment: params,
@@ -96,10 +107,16 @@ export default Vue.extend({
           this.content = ''
           this.resetCount++
         } catch(e) {
-          return (this as any).snackAlert('投稿に失敗しました')
+          (this as any).snackAlert('投稿に失敗しました')
+          status = 'failed'
         }
 
-        console.log('finished to save', params)
+        await this.saveActivity({
+          type: 'comment:create',
+          status,
+          payload: params,
+        })
+        
       } catch (e) {
         console.warn(e)
       }
@@ -117,9 +134,46 @@ export default Vue.extend({
   padding: 15px;
 
   .footer {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
     border-top: 1px solid $gray-black;
     padding-top: 15px;
-    text-align: right;
+
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .footer-main {
+      text-align: left;
+      width: 50%;
+      @include mobile {
+        display: inline-block;
+        position: absolute;
+        top: 10px;
+        left: 0;
+      }
+    }
+    .footer-side {
+      text-align: right;
+      width: 50%;
+      @include mobile {
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .status {
+      display: inline-block;
+      padding: 10px 0 0 6px;
+      > span {
+        font-weight: 800;
+        border-bottom: 2px solid $black;
+      }
+      @include mobile {
+        padding-bottom: 10px;
+      }
+    }
     .counter {
       display: inline-block;
       margin-right: 10px;
