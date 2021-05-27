@@ -91,6 +91,7 @@ export default Vue.extend({
   methods: {
     ...mapActions({
       deletePost: 'post/delete',
+      saveActivity: 'activity/save',
     }),
     getTitle(content: string): string {
       return getTitle(content)
@@ -116,7 +117,13 @@ export default Vue.extend({
 
       const promises: any[] = []
 
-      this.$data.checkedPosts.map((id: string) => promises.push((this as any).deletePost(id)))
+      this.$data.checkedPosts.map((id: string) => {
+        promises.push((this as any).deletePost(id))
+        promises.push((this as any).saveActivity({
+          type: 'post:delete',
+          status: 'succeeded',
+        }))
+      })
 
       await Promise.all(promises)
 

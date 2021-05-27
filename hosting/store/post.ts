@@ -7,7 +7,7 @@ import { State } from '~/types/state'
 interface ActionInterface {
   save: (
     { rootState }: ActionContext<any, any>,
-    { post }: { post: Post }
+    post: Post
   ) => void
   delete: ({ rootState }: ActionContext<any, any>, id: string) => void
   $fire?: any
@@ -50,7 +50,7 @@ export const mutations = {
 }
 
 export const actions: ActionInterface = {
-  async save({ rootState }, { post }) {
+  async save({ rootState }, post) {
     try {
       // TODO: validation
       // TODO: auth処理

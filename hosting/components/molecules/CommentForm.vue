@@ -73,10 +73,8 @@ export default Vue.extend({
   methods: {
     ...mapActions({
       saveComment: 'comment/save',
+      saveActivity: 'activity/save',
     }),
-    // updateContent(content: string): void {
-    //   this.content = content
-    // },
     async submit(): Promise<any> {
       if (this.isEmpty) {
         return (this as any).snackAlert('コメントが空です')
@@ -101,6 +99,7 @@ export default Vue.extend({
           return (this as any).snackAlert('投稿に失敗しました')
         }
 
+        let status = 'succeeded'
         try {
           await this.saveComment({
             comment: params,
@@ -108,10 +107,16 @@ export default Vue.extend({
           this.content = ''
           this.resetCount++
         } catch(e) {
-          return (this as any).snackAlert('投稿に失敗しました')
+          (this as any).snackAlert('投稿に失敗しました')
+          status = 'failed'
         }
 
-        console.log('finished to save', params)
+        await this.saveActivity({
+          type: 'comment:create',
+          status,
+          payload: params,
+        })
+        
       } catch (e) {
         console.warn(e)
       }

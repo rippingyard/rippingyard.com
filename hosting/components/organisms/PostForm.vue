@@ -98,6 +98,7 @@ export default {
     ...mapActions({
       savePost: 'post/save',
       saveEntity: 'entity/save',
+      saveActivity: 'activity/save',
     }),
     updateContent(content) {
       this.content = content
@@ -124,17 +125,20 @@ export default {
       this.entities = val
     },
     async save() {
+      let status = 'failed'
       if (this.isSaving) return
+
+      const params = {
+        content: this.content,
+        type: 'article',
+        entities: this.entities,
+        status: this.status,
+        isPublic: this.isPublic,
+      }
+
       try {
         this.isSaving = true
 
-        const params = {
-          content: this.content,
-          type: 'article',
-          entities: this.entities,
-          status: this.status,
-          isPublic: this.isPublic,
-        }
         if (this.post?.id) params.id = this.post.id
         console.log('val', schemaPost.validate(params))
 
@@ -162,16 +166,24 @@ export default {
 
         const post = this.post ? Object.assign(this.post, params) : params
 
-        await this.savePost({
-          post,
-        })
-
-        this.isSaving = false
-
-        this.$router.push('/home/posts')
+        await this.savePost(post)
+        status = 'succeeded'
       } catch (e) {
         console.warn(e)
       }
+
+      await this.saveActivity({
+        type: this.post ? 'post:update' : 'post:create',
+        status,
+        payload: params,
+      })
+
+      this.isSaving = false
+
+      if (status === 'succeeded') {
+        this.$router.push('/home/posts')
+      }
+
     },
     async submit() {
       this.status = 'published'
