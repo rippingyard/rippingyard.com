@@ -43,5 +43,9 @@ service cloud.firestore {
     	allow read;
       allow write: if isAuthenticated();
     }
+    match /activities/{document=**} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
   }
 }
