@@ -47,8 +47,6 @@ export default Vue.extend({
 
         promises = qs.docs.map(async (doc: any) => {
           const comment = doc.data()
-          console.log('myId', this.$store.state.auth.me.uid)
-          console.log('myId', comment.owner.id)
           if (
             comment.isDeleted ||
             (!comment.isPublic && this.$store.state.auth.me.uid !== comment.owner.id) ||

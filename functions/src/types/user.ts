@@ -5,7 +5,7 @@
   userName: string
   code?: string
   profile?: string
-  avator?: string
+  avatar?: string
   follows?: any[]
   followers?: any[]
   createdAt: string | Date

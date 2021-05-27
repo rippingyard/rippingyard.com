@@ -47,10 +47,10 @@ export async function notify(
       })
 
       params.to = `post/${activity.payload.id}`
-      params.message = `${user.displayName}が、記事を投稿しました`
+      params.message = `<strong>${user.displayName}</strong>が、記事を投稿しました`
 
       if (user.followers) params.targets = user.followers
-      if (user.avator) params.image = user.avator
+      if (user.avatar) params.image = user.avatar
 
       console.log('post:create', params)
       break
@@ -71,7 +71,7 @@ export async function notify(
         await (activity.payload.parent as any).get().then((qs: any) => {
           parent = qs.data()
         })
-        console.log('親記事', parent, activity.payload.parent.parent.id)
+        // console.log('親記事', parent, activity.payload.parent.parent.id)
         // TODO: EntityとPostで分けたい
 
         if (
@@ -83,18 +83,18 @@ export async function notify(
 
         switch (activity.payload.parent.parent.id) {
           case 'posts':
-            params.message = `${user.displayName}が、記事にコメントしました`
+            params.message = `<strong>${user.displayName}</strong>が、記事にコメントしました`
             params.to = `post/${activity.payload.parent.id}`
             break
 
           case 'entities':
-            params.message = `${user.displayName}が、エンティティにコメントしました`
+            params.message = `<strong>${user.displayName}</strong>が、エンティティにコメントしました`
             params.to = `entity/${activity.payload.parent.id}`
             break
         }
       }
 
-      if (user.avator) params.image = user.avator
+      if (user.avatar) params.image = user.avatar
 
       if (!params.message) params.message = `${user.displayName}が、コメントしました`
 

@@ -57,10 +57,6 @@ export default {
         email: this.email,
         password: this.password,
         userName: this.userName,
-        // uid: this.$data.me.uid,
-        // displayName: this.displayName,
-        // profile: this.profile,
-        // avator: this.avator,
       }
 
       const { value, error } = schemaCreateUser.validate(params)
