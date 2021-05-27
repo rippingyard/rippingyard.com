@@ -63,9 +63,7 @@ export default Vue.extend({
             (this as any).snackAlert(`ログインに失敗しました`)
             break
         }
-        
       }
-
     }
   },
 })

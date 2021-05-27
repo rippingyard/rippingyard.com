@@ -31,11 +31,15 @@ service cloud.firestore {
     	allow read;
       allow write: if isAuthenticated();
     }
-    match /entities/{userId} {
+    match /entities/{entity} {
     	allow read;
       allow write: if isAuthenticated();
     }
-    match /comments/{userId} {
+    match /comments/{commentId} {
+    	allow read;
+      allow write: if isAuthenticated();
+    }
+    match /activities/{document=**} {
     	allow read;
       allow write: if isAuthenticated();
     }
