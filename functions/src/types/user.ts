@@ -6,6 +6,8 @@
   code?: string
   profile?: string
   avator?: string
+  follows?: any[]
+  followers?: any[]
   createdAt: string | Date
   updatedAt: string | Date
 }
