@@ -5,19 +5,21 @@
     </div>
     <div class="column c80">
       <div class="block container">
-        <ul class="tabs">
-          <li :class="{'is-current': currentTab === 'notification'}" @click="switchTab('notification')"><h2>通知</h2></li>
-          <li :class="{'is-current': currentTab === 'activity'}" @click="switchTab('activity')"><h2>あなたの活動履歴</h2></li>
-        </ul>
-        <div v-show="currentTab === 'notification'" class="box no-border">
-          <NotificationSimpleList
-            :notifications="notifications"
-          />
-        </div>
-        <div v-show="currentTab === 'activity'" class="box no-border">
-          <ActivitySimpleList
-            :activities="activities"
-          />
+        <div class="information">
+          <ul class="tabs">
+            <li :class="{'is-current': currentTab === 'notification'}" @click="switchTab('notification')"><h2>通知</h2></li>
+            <li :class="{'is-current': currentTab === 'activity'}" @click="switchTab('activity')"><h2>あなたの活動履歴</h2></li>
+          </ul>
+          <div v-show="currentTab === 'notification'" class="information-box">
+            <NotificationSimpleList
+              :notifications="notifications"
+            />
+          </div>
+          <div v-show="currentTab === 'activity'" class="information-box">
+            <ActivitySimpleList
+              :activities="activities"
+            />
+          </div>
         </div>
         <AdsenseHomeMiddle />
         <div class="heading">
@@ -65,12 +67,12 @@ import { Context } from '~/types/context'
 
 export default Vue.extend({
   layout: 'manage',
-  props: {
-    test: {
-      default: 'TEST',
-      type: String,
-    },
-  },
+  // props: {
+  //   test: {
+  //     default: 'TEST',
+  //     type: String,
+  //   },
+  // },
   fetch() {
     this.me = this.$store.state.auth.me
   },

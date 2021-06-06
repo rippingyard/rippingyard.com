@@ -1,30 +1,32 @@
 ﻿<template>
-  <client-only>
-    <div v-if="isAuthenticated" class="commentform">
-      <div class="textarea">
-        <TextArea
-          v-model="content"
-          :reset-count="resetCount"
-        />
-        <div class="footer">
-          <div class="footer-main">
-            <div class="status"><span>{{ statusLabel }}</span></div>
-          </div>
-          <div class="footer-side">
-            <div
-              :class="{'is-over': isOver}"
-              class="counter"
-            >{{ contentLength }} / {{ limit }}</div>
-            <button
-              :class="{'is-disabled': isOver || isEmpty}"
-              class="button"
-              @click="submit()"
-            >コメントする</button>
+  <div>
+    <client-only>
+      <div v-if="isAuthenticated" class="commentform">
+        <div class="textarea">
+          <TextArea
+            v-model="content"
+            :reset-count="resetCount"
+          />
+          <div class="footer">
+            <div class="footer-main">
+              <div class="status"><span>{{ statusLabel }}</span></div>
+            </div>
+            <div class="footer-side">
+              <div
+                :class="{'is-over': isOver}"
+                class="counter"
+              >{{ contentLength }} / {{ limit }}</div>
+              <button
+                :class="{'is-disabled': isOver || isEmpty}"
+                class="button"
+                @click="submit()"
+              >コメントする</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </client-only>
+    </client-only>
+  </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
