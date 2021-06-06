@@ -1,28 +1,39 @@
 <template>
-  <article class="block container">
-    <Header :post="post" />
-    <div v-if="getTitle" class="heading">
-      <h1>{{ getTitle }}</h1>
-    </div>
-    <Content v-html="mainContent" />
-    <AdsensePostBottom />
-    <CommentList :parent-id="parentId" />
-    <CommentForm
-      :parent-id="parentId"
-      :is-public="post.isPublic"
-    />
-    <div v-if="post.entities" class="entities">
-      <EntitySimpleList :entities="post.entities" />
-    </div>
-    <div v-if="post.owner" class="owner">
-      <UserCard :user="post.owner" />
-    </div>
-    <div class="footer">
-      <p class="date">
-        <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
-      </p>
-    </div>
-  </article>
+  <div class="block container">
+    <article class="post">
+      <Header :post="post" />
+      <div v-if="getTitle" class="heading">
+        <h1>{{ getTitle }}</h1>
+      </div>
+      <Content v-html="mainContent" />
+      <AdsensePostBottom />
+      <CommentList :parent-id="parentId" />
+      <CommentForm
+        :parent-id="parentId"
+        :is-public="post.isPublic"
+      />
+      <div v-if="post.entities" class="entities">
+        <EntitySimpleList :entities="post.entities" />
+      </div>
+      <div v-if="post.owner" class="owner">
+        <UserCard :user="post.owner" />
+      </div>
+      <div class="footer">
+        <p class="date">
+          <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+        </p>
+      </div>
+    </article>
+    <aside class="extra related">
+      <div class="heading">
+        <h2><span class="border">関連記事</span></h2>
+      </div>
+      <RelatedArticles
+        :tags="post.entities"
+        :exclude-id="post.id"
+      />
+    </aside>
+  </div>
 </template>
 
 <script lang="ts">
@@ -212,6 +223,23 @@ export default Vue.extend({
     font-weight: 800;
     padding-top: 3rem;
   }
+  h2 {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    font-weight: 800;
+    padding-top: 2.2rem;
+  }
+  h1,
+  h2 {
+    .border {
+      display: inline-block;
+      padding-bottom: 2px;
+      border-bottom: 4px solid $black;
+    }
+  }
+  .extra & {
+    margin-bottom: $gap / 2;
+  }
 }
 
 .entities {
@@ -240,5 +268,9 @@ export default Vue.extend({
       margin-right: 5px;
     }
   }
+}
+
+.extra {
+  padding-top: $gap;
 }
 </style>
