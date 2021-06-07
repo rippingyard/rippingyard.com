@@ -39,7 +39,7 @@ export const mutations = {
 }
 
 export const actions: ActionInterface = {
-  async getOne({ state }, id): Promise<null | User> {
+  async getOne(_, id): Promise<null | User> {
     let user = null
     // console.log('$fire', this)
     try {
@@ -49,8 +49,10 @@ export const actions: ActionInterface = {
         .get()
         .then((doc: any) => {
           user = doc.data()
-          if (user) state.users[id] = user
-          console.log('userFromDB', user)
+          // console.log('Mutations', mutations)
+          // // if (user) mutations.setUser(state, user)
+          // // if (user) state.users[id] = user
+          // console.log('userFromDB', user)
         })
       return user
     } catch (e) {

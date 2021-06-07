@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       editor: null,
-      // content: this.default || '',
+      content: this.default || '',
       linkUrl: null,
       linkMenuIsActive: false,
       keepInBounds: true,
@@ -133,8 +133,7 @@ export default {
   },
   watch: {
     default(val) {
-      console.log('Update TextArea', val)
-      this.content = ''
+      console.log('Set Default', val)
     },
     resetCount(val) {
       console.log('Reset TextArea!', val)
@@ -146,42 +145,45 @@ export default {
   },
   mounted() {
     console.log('content', this.content)
-    this.editor = new Editor({
-      content: this.content,
-      extensions: [
-        // new Blockquote(),
-        // new BulletList(),
-        // new CodeBlock(),
-        new HardBreak(),
-        new Heading({ levels: [1, 2, 3] }),
-        // new ListItem(),
-        // new OrderedList(),
-        new Link({
-          openOnClick: false,
-        }),
-        new Bold(),
-        new Italic(),
-        new History(),
-        // new Title(),
-        new Wysiwyg(),
-
-        new Placeholder({
-          showOnlyCurrent: false,
-          emptyNodeText: () => {
-            return 'ここに本文を書いていきましょう'
-          },
-        }),
-      ],
-      onUpdate: s => {
-        this.$emit('input', s.getHTML())
-      },
-    })
+    if (!this.editor) this.init()
   },
   beforeDestroy() {
     this.destroyPopup()
     this.editor.destroy()
   },
   methods: {
+    init() {
+      this.editor = new Editor({
+        content: this.content,
+        extensions: [
+          // new Blockquote(),
+          // new BulletList(),
+          // new CodeBlock(),
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          // new ListItem(),
+          // new OrderedList(),
+          new Link({
+            openOnClick: false,
+          }),
+          new Bold(),
+          new Italic(),
+          new History(),
+          // new Title(),
+          new Wysiwyg(),
+
+          new Placeholder({
+            showOnlyCurrent: false,
+            emptyNodeText: () => {
+              return 'ここに本文を書いていきましょう'
+            },
+          }),
+        ],
+        onUpdate: s => {
+          this.$emit('input', s.getHTML())
+        },
+      })
+    },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href
       this.linkMenuIsActive = true

@@ -29,7 +29,7 @@
         <div class="box wysiwyg">
           <h2>プロフィール</h2>
           <div class="textarea">
-            <TextArea v-model="profile" />
+            <TextArea v-model="profile" :default="profile" />
           </div>
         </div>
         <div class="box wysiwyg">
@@ -53,6 +53,7 @@ export default Vue.extend({
     this.me = await this.getUser(this.uid)
     this.displayName = this.$data.me.displayName || this.$data.me.uid
     this.profile = this.$data.me.profile || ''
+    console.log('Profile', this.profile)
     this.avatar = this.$data.me.avatar || ''
   },
   data() {
@@ -73,9 +74,9 @@ export default Vue.extend({
       getUser: 'user/getOne',
       saveUser: 'user/save',
     }),
-    updateContent(content: string): void {
-      this.profile = content
-    },
+    // updateContent(content: string): void {
+    //   this.profile = content
+    // },
     updateImage(file: any): void {
       this.image = file
     },
