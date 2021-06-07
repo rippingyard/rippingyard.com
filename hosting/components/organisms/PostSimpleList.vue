@@ -1,10 +1,13 @@
 ﻿<template>
-  <ul>
-    <li v-for="post in posts" :key="post.id">
+  <ul class="list">
+    <li v-for="post in posts" :key="post.id" class="item">
       <div class="body">
         <h3 class="title"><nuxt-link :to="post.permalink">{{ getTitle(post.content) }}</nuxt-link></h3>
         <p class="date">{{ post.publishedAt }}</p>
         <p class="summary">{{ getSummary(post.content) }}</p>
+        <div class="entities">
+          <EntitySimpleList :entities="post.entities" />
+        </div>
       </div>
       <div class="user">
         <UserTip :user="post.owner" />
@@ -14,10 +17,8 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import {
-  getTitle,
-  getSummary,
-} from '~/plugins/typography'
+import { permalink as entityLink } from '~/services/entity'
+import { getTitle, getSummary } from '~/plugins/typography'
 export default Vue.extend({
   props: {
     posts: {
@@ -32,12 +33,15 @@ export default Vue.extend({
     getSummary(content: string): string {
       return getSummary(content)
     },
+    getEntityLink(entity: string): string {
+      return entityLink(entity)
+    },
   }
 })
 </script>
 <style lang="scss" scoped>
-ul {
-  li {
+.list {
+  > li {
     display: flex;
     border-bottom: 1px solid $gray-black;
 
@@ -81,6 +85,9 @@ ul {
         width: 100%;
         padding-top: 0;
       }
+    }
+    .entities {
+      padding-top: 10px;
     }
   }
 }

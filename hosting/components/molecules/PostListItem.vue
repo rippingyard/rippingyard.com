@@ -15,6 +15,9 @@
         </nuxt-link>
       </div>
     </div>
+    <div class="entities">
+      <EntitySimpleList :entities="post.entities" />
+    </div>
     <p class="footer">
       <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
     </p>
@@ -90,17 +93,22 @@ export default Vue.extend({
   }
 }
 
+.entities {
+  padding-bottom: 15px;
+}
+
 .footer {
   font-size: 0.8rem;
   font-weight: 800;
   color: $gray-black;
   position: relative;
+  padding-top: 10px;
   &::before {
     content: '';
     width: 18px;
     height: 1px;
     background-color: $gray-black;
-    top: -10px;
+    top: 0;
     left: 0;
     display: block;
     position: absolute;
