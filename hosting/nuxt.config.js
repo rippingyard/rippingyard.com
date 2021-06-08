@@ -6,6 +6,9 @@ if (fbconfigEnv) fbconfigEnv = JSON.parse(fbconfigEnv)
 let algoliaEnv = process.env.ALGOLIA_CONFIG
 if (algoliaEnv) algoliaEnv = JSON.parse(algoliaEnv)
 
+let gaEnv = process.env.GA_CONFIG
+if (gaEnv) gaEnv = JSON.parse(gaEnv)
+
 const fbAPI = `https://firestore.googleapis.com/v1/projects/${(fbconfigEnv || require('./env.json').FIREBASE_CONFIG).projectId}/databases/(default)/documents/`
 
 export default {
@@ -18,6 +21,7 @@ export default {
     NODE_ENV: process.env.NODE_ENV,
     FIRE_ENV: process.env.FIRE_ENV,
     ALGOLIA_CONFIG: algoliaEnv || require('./env.json').ALGOLIA_CONFIG,
+    GA_CONFIG: gaEnv || require('./env.json').GA_CONFIG,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -343,6 +347,16 @@ export default {
       terserOptions: {
         compress: { drop_console: process.env.NODE_ENV === 'production' },
       },
+    },
+
+    extend(config, _ctx) {
+      config.node = {
+        fs: 'empty',
+        child_process: 'empty',
+        http2: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      }
     },
 
     // extend(config, ctx) {

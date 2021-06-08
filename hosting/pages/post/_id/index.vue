@@ -22,6 +22,9 @@
         <p class="date">
           <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
         </p>
+        <p class="pageview">
+          {{ pageview }} Views
+        </p>
       </div>
     </article>
     <aside class="extra related">
@@ -50,6 +53,7 @@ import {
   getThumbnail,
   decodeEntities,
 } from '~/plugins/typography'
+import { getPageview } from '~/plugins/ga'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -115,6 +119,9 @@ export default Vue.extend({
     },
     thumbnail() {
       return getThumbnail(this.$data.post.contentOriginal)
+    },
+    pageview() {
+      return getPageview()
     },
   },
   mounted() {
@@ -264,6 +271,7 @@ export default Vue.extend({
   }
   > p {
     display: inline-block;
+    margin-right: 10px;
     .icon {
       margin-right: 5px;
     }

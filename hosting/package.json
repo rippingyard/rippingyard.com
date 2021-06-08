@@ -45,6 +45,7 @@
     "destyle.css": "^2.0.2",
     "firebase": "^8.2.0",
     "fuse.js": "^6.4.6",
+    "googleapis": "^75.0.0",
     "joi": "^17.3.0",
     "json-cyclic": "^1.0.2",
     "lodash": "^4.17.20",
