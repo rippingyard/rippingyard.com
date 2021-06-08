@@ -134,13 +134,11 @@ export default {
   watch: {
     default(val) {
       console.log('Set Default', val)
+      if (this.editor) this.editor.setContent(val)
     },
     resetCount(val) {
       console.log('Reset TextArea!', val)
-      if (val > 0) {
-        this.editor.clearContent()
-        // this.reset = false
-      }
+      if (val > 0) this.editor.clearContent()
     }
   },
   mounted() {
