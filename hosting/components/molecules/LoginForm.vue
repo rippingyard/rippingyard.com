@@ -1,12 +1,7 @@
 <template>
   <form
     class="form"
-    @submit.prevent="
-      login({
-        email,
-        password,
-      })
-    "
+    @submit.prevent="login({email,password})"
   >
     <div class="field">
       <label>メールアドレス</label>

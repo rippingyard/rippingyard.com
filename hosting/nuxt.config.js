@@ -297,7 +297,6 @@ export default {
           return routes.filter((route) => route.url.match(/^\/seeds\//))
         },
         routes: () => {
-          
           const permalinks = []
 
           const seeds = require('./assets/json/old/seeds.json')
