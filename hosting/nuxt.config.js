@@ -206,6 +206,7 @@ export default {
         'faList',
         'faListOl',
         'faQuoteRight',
+        'faTag',
         'faTrashAlt',
         'faAngleRight',
         'faClock',
@@ -218,7 +219,10 @@ export default {
   },
 
   styleResources: {
-    scss: ['./assets/scss/variables.scss', './assets/scss/mixins.scss'],
+    scss: [
+      './assets/scss/variables.scss',
+      './assets/scss/mixins.scss'
+    ],
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -293,7 +297,6 @@ export default {
           return routes.filter((route) => route.url.match(/^\/seeds\//))
         },
         routes: () => {
-          
           const permalinks = []
 
           const seeds = require('./assets/json/old/seeds.json')

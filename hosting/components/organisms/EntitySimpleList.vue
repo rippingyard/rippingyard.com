@@ -1,6 +1,6 @@
 ﻿<template>
   <ul>
-    <li v-for="entity in entities" :key="entity"><nuxt-link :to="permalink(entity)">{{ decodeEntity(entity) }}</nuxt-link></li>
+    <li v-for="entity in entities" :key="entity"><nuxt-link :to="permalink(entity)"><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link></li>
   </ul>
 </template>
 <script lang="ts">
@@ -41,6 +41,10 @@ ul {
         border-color: $black;
         background: $yellow;
       }
+    }
+    .fa-tag {
+      margin-right: 5px;
+      font-size: 0.8rem;
     }
   }
 }

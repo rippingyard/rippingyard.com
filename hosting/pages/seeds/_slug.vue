@@ -1,14 +1,25 @@
 ﻿<template>
-  <article class="block container">
-    <Header />
-    <Content v-html="mainContent" />
-    <AdsensePostBottom />
-    <div class="footer">
-      <p class="date">
-        <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
-      </p>
-    </div>
-  </article>
+  <div class="block container">
+    <article>
+      <Header />
+      <Content v-html="mainContent" />
+      <AdsensePostBottom />
+      <div class="footer">
+        <p class="date">
+          <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+        </p>
+      </div>
+    </article>
+    <aside class="extra related">
+      <div class="heading">
+        <h2><span class="border">関連記事</span></h2>
+      </div>
+      <RelatedArticles
+        :tags="post.entities"
+        :exclude-id="post.id"
+      />
+    </aside>
+  </div>
 </template>
 
 <script>
@@ -90,6 +101,33 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.heading {
+  margin-bottom: $gap;
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.4;
+    font-weight: 800;
+    padding-top: 3rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    line-height: 1.4;
+    font-weight: 800;
+    padding-top: 2.2rem;
+  }
+  h1,
+  h2 {
+    .border {
+      display: inline-block;
+      padding-bottom: 2px;
+      border-bottom: 4px solid $black;
+    }
+  }
+  .extra & {
+    margin-bottom: $gap / 2;
+  }
+}
+
 .footer {
   padding-top: 80px;
   font-size: 0.9rem;

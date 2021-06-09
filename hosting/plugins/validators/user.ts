@@ -9,6 +9,6 @@ export const schemaUser = Joi.object({
 
 export const schemaCreateUser = Joi.object({
   email: Joi.string().email({ tlds: {allow: false} }).required(),
-  password: Joi.string().min(6).pattern(/^[a-zA-Z0-9_-]+$/).required(),
-  userName: Joi.string().min(3).max(32).pattern(/^[a-zA-Z0-9_-]+$/).required(),
+  password: Joi.string().min(6).max(128).token().required(),
+  userName: Joi.string().min(3).max(32).token().required(),
 })
