@@ -8,8 +8,9 @@
     <SignupForm :invited-by="parent.uid" />
   </main>
 </template>
-
 <script>
+import { mapGetters } from 'vuex'
+import { normalize as normalizeUser } from '~/services/user'
 export default {
   async asyncData({ $fire, params, error }) {
     console.log('Code', params.code)
@@ -28,10 +29,9 @@ export default {
         ss.forEach(doc => {
           users.push(doc.data())
         })
-        if (users.length > 1) {
-          throw new Error('ページが見つかりません')
-        }
-        parent = users[0]
+        parent = normalizeUser(users[0].uid, users[0])
+        delete parent.followers
+        delete parent.follows
         console.log('Parent', parent)
       })
       .catch(e => {
@@ -46,6 +46,16 @@ export default {
   data() {
     return {
       parent: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
+  },
+  created() {
+    if (this.isAuthenticated) {
+      this.$router.push('/home')
     }
   },
   head: () => {
