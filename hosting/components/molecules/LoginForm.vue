@@ -16,6 +16,7 @@
         placeholder="メールアドレスを入力"
         class="input"
       />
+      <p v-if="errors.email" class="error" @click="removeError('email')">{{ errors.email }}</p>
     </div>
     <div class="field">
       <label>パスワード</label>
@@ -25,6 +26,7 @@
         placeholder="パスワードを入力"
         class="input"
       />
+      <p v-if="errors.password" class="error" @click="removeError('password')">{{ errors.password }}</p>
     </div>
     <div class="buttons">
       <button class="button">ログイン</button>
@@ -34,18 +36,36 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { isEmpty } from 'lodash'
 import { LoginParams } from '~/types/user'
-
+import validate from '~/plugins/validator'
+import { schemaLogin } from '~/plugins/validators/auth'
 export default Vue.extend({
   data() {
     return {
       email: '',
       password: '',
+      errors: {},
     }
   },
   methods: {
+    removeError(key: string): void {
+      this.$set(this.errors, key, '')
+    },
     async login({email, password}: LoginParams): Promise<void> {
       console.log('login', email, password)
+
+      const params = {
+        email,
+        password,
+      }
+
+      const { errors } = validate(schemaLogin, params)
+      if (!isEmpty(errors)) {
+        this.errors = errors
+        return (this as any).snackAlert('入力項目に不備があります')
+      }
+
       const res = await this.$store.dispatch('auth/login', {email, password})
       console.log('res', res)
 
