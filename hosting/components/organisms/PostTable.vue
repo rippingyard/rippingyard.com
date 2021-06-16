@@ -16,13 +16,22 @@
           @change="check(datum.id)"
         />
       </td>
-      <td class="title">
-        <nuxt-link :to="editLink(datum)">
-          <strong>{{ title(datum.content) }}</strong>
-        </nuxt-link>
-        <nuxt-link v-if="canAccess(datum.status)" target="_blank" :to="permalink(datum.id)">
-          <fa-icon icon="external-link-alt" class="icon" />
-        </nuxt-link>
+      <td class="main">
+        <div class="title">
+          <nuxt-link :to="editLink(datum)">
+            <strong>{{ title(datum.content) }}</strong>
+          </nuxt-link>
+          <nuxt-link v-if="canAccess(datum.status)" target="_blank" :to="permalink(datum.id)">
+            <fa-icon icon="external-link-alt" class="icon" />
+          </nuxt-link>
+        </div>
+        <div class="entities">
+          <EntitySimpleList
+            :entities="datum.entities"
+            :is-simple="true"
+            :is-external="true"
+          />
+        </div>
       </td>
       <td>
         <span class="badge" :class="statusClass(datum.status, datum.isPublic)">{{ status(datum.status, datum.isPublic) }}</span>
@@ -79,10 +88,12 @@ th {
 }
 td {
   border-bottom: 1px solid $gray;
-  &.title {
-    font-size: 1.2rem;
-    .icon {
-      font-size: 0.85rem;
+  &.main {
+    .title {
+      font-size: 1.2rem;
+      .icon {
+        font-size: 0.85rem;
+      }
     }
   }
   a {

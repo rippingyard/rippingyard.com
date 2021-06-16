@@ -1,6 +1,6 @@
 ﻿<template>
-  <ul>
-    <li v-for="entity in entities" :key="entity"><nuxt-link :to="permalink(entity)"><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link></li>
+  <ul :class="{'is-simple': isSimple}">
+    <li v-for="entity in entities" :key="entity"><nuxt-link :to="permalink(entity)" :target="window"><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link></li>
   </ul>
 </template>
 <script lang="ts">
@@ -12,6 +12,19 @@ export default Vue.extend({
       type: Array,
       default: () => [],
     },
+    isSimple: {
+      type: Boolean,
+      default: false,
+    },
+    isExternal: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    window() {
+      return this.isExternal ? '_blank' : '_self'
+    }
   },
   methods: {
     permalink(entity: string): string {
@@ -30,7 +43,8 @@ export default Vue.extend({
 ul {
   li {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     line-height: 1;
     a {
       display: block;
@@ -45,6 +59,26 @@ ul {
     .fa-tag {
       margin-right: 5px;
       font-size: 0.8rem;
+    }
+  }
+
+  &.is-simple {
+    li {
+      font-size: 0.9rem;
+      margin-right: 8px;
+      a {
+        padding: 0;
+        border: none;
+        color: $blue;
+        &:hover {
+          background: none;
+          text-decoration: underline;
+        }
+      }
+      .fa-tag {
+        margin-right: 2px;
+        font-size: 0.8rem;
+      }
     }
   }
 }
