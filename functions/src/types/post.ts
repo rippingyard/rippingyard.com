@@ -12,6 +12,7 @@ export type Post = {
   owner?: User | DocumentData | null
   isPublic: boolean
   isDeleted: boolean
+  entities: string[]
   status: 'published' | 'draft'
   sociallink?: string
 }

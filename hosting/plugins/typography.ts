@@ -25,8 +25,6 @@ export const getThumbnail = (str: string) => {
   let image: null | string = null
   const urls = extractUrls(str)
 
-  // console.log('urls:', urls)
-
   if (!urls) return null
 
   urls.map((url: string) => {
