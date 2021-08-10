@@ -59,7 +59,7 @@ export default Vue.extend({
   },
   methods: {
     title: (content: string) => getTitle(content),
-    editLink: (post: Post) => editlink(post.id),
+    editLink: (post: Post) => editlink(post),
     permalink: (id: string) => permalink(id),
     canAccess: (status: string): boolean => {
       return status !== 'draft'

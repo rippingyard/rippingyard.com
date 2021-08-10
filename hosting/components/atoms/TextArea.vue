@@ -210,7 +210,7 @@ export default {
         getReferenceClientRect: node.getBoundingClientRect,
         appendTo: () => document.body,
         interactive: true,
-        sticky: true, // make sure position of tippy is updated when content changes
+        sticky: true,
         plugins: [sticky],
         content: this.$refs.suggestions,
         trigger: 'mouseenter', // manual

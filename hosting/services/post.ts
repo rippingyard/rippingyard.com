@@ -90,8 +90,10 @@ export function permalink(id: string): string {
   return `/post/${id}`
 }
 
-export function editlink(id: string): string {
-  return `/home/post/edit/${id}`
+export function editlink(post: Partial<Post>): string {
+  console.log('EditLink', post);
+  const postType = post.type === 'log' ? 'log' : 'post'
+  return `/home/${postType}/edit/${post.id}`
 }
 
 export function docPath(id: string): string {

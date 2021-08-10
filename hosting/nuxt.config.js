@@ -198,6 +198,7 @@ export default {
       solid: [
         'faBold',
         'faCode',
+        'faCommentAlt',
         'faExternalLinkAlt',
         'faHeading',
         'faImage',

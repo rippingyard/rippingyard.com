@@ -12,6 +12,11 @@ export const removeTitle = (str: string) => {
   return str.replace(/<h.(?: .+?)?>.*?<\/h.>/, '')
 }
 
+export const hasTitle = (str: string): boolean => {
+  if (!str) return false
+  return /<h.(?: .+?)?>.*?<\/h.>/.test(str)
+}
+
 export const getTitle = (str: string, length: number = 32) => {
   if (!str) return ''
   const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
@@ -19,15 +24,15 @@ export const getTitle = (str: string, length: number = 32) => {
   return getSummary(str, length)
 }
 
-export const getThumbnail = (str: string) => {
-  if (!str) return null
+export const getThumbnail = (str: string): string => {
+  if (!str) return ''
 
-  let image: null | string = null
+  let image: string = ''
   const urls = extractUrls(str)
 
   // console.log('urls:', urls)
 
-  if (!urls) return null
+  if (!urls) return ''
 
   urls.map((url: string) => {
     const urlInfo = urlParse(url)
