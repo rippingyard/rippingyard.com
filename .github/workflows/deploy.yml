@@ -43,7 +43,7 @@ jobs:
     - name: Functions - Set env to Production
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" ALGOLIA_CONFIG="${{ secrets.ALGOLIA_CONFIG_PRD }}" --project production
+        args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" runtime.ALGOLIA_CONFIG="${{ secrets.ALGOLIA_CONFIG_PRD }}" --project production
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -63,7 +63,7 @@ jobs:
     - name: Set env to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="develop" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" ALGOLIA_CONFIG="${{ secrets.ALGOLIA_CONFIG_DEV }}" --project default
+        args: functions:config:set runtime.env="develop" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" runtime.ALGOLIA_CONFIG="${{ secrets.ALGOLIA_CONFIG_DEV }}" --project default
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
