@@ -13,7 +13,10 @@ export async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, co
   const postId = snapshot.id
   const post = snapshot.data() as Post
 
-  console.log('Start!', postId, post)
+  console.log('functions.config()', functions.config())
+
+  // console.log('Start!', postId, post)
+  console.log('Start!', postId)
 
   // 共通タイムライン
   // 一旦該当の記事を消す
@@ -25,31 +28,37 @@ export async function syncPosts(snapshot: FirebaseFirestore.DocumentSnapshot, co
   // isPublicのもの
   if (post.isPublic) {
     await firestore.collection('timelines').doc('public').collection('posts').doc(postId).set(post, { merge: true })
+
+    // 全文検索登録
+    try {
+      await saveIndex('posts', {
+        objectID: postId,
+        title: getTitle(post.content),
+        body: stripTags(removeTitle(post.content || '')),
+        image: '',
+        type: post.type,
+        createdAt: dayjs(post.createdAt.toDate()).unix(),
+        publishedAt: dayjs(post.publishedAt.toDate()).unix(),
+        updatedAt: dayjs(post.updatedAt.toDate()).unix(),
+        owner: post.owner?.id,
+        // collaborators: [],
+        // tokens: getTokens(post.content),
+        entities: post.entities,
+        ...pick(post, [
+          'content',
+          'isDeleted',
+          'isPublic',
+          'status',
+        ]),
+      })
+      console.log('Index result', post.owner)
+    } catch (e) {
+      console.log('Error!', e)
+    }
   }
 
   // TODO: ユーザータイムライン
   // TODO: エンティティタイムライン
-  // 全文検索登録
-  saveIndex('posts', {
-    objectID: postId,
-    title: getTitle(post.content),
-    body: stripTags(removeTitle(post.content || '')),
-    image: '',
-    type: post.type,
-    createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
-    publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
-    updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
-    owner: post.owner?.uid,
-    // collaborators: [],
-    // tokens: getTokens(post.content),
-    entities: post.entities,
-    ...pick(post, [
-      'content',
-      'isDeleted',
-      'isPublic',
-      'status',
-    ]),
-  })
 }
 
 // export async function deletePost(snapshot: FirebaseFirestore.DocumentSnapshot, context: functions.EventContext) {

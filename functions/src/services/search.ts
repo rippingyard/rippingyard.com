@@ -15,17 +15,17 @@ interface SearchObject {
   collaborators?: string[]
   entities?: string[] | null
   tokens?: string[] | null
-  createdAt: string
-  publishedAt: string
-  updatedAt: string
+  createdAt: number
+  publishedAt: number
+  updatedAt: number
   owner: string
 }
 
 function init(indexName: string) {
   console.log('debug', functions.config().FIREBASE_CONFIG)
   if (!functions.config().ALGOLIA_CONFIG) return
-  const { appId, apiKey } = functions.config().ALGOLIA_CONFIG as any
-  const client = algoliasearch(appId, apiKey)
+  const { appId, apiKeyAdmin } = functions.config().ALGOLIA_CONFIG as any
+  const client = algoliasearch(appId, apiKeyAdmin)
   return client.initIndex(indexName)
 }
 

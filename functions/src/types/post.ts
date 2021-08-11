@@ -1,13 +1,13 @@
-﻿import { DocumentData } from '@firebase/firestore-types'
+﻿import { DocumentData, Timestamp } from '@firebase/firestore-types'
 import { User } from './user'
 
 export type Post = {
   id: string
   content: string
   contentOriginal: string
-  createdAt: string | Date
-  publishedAt: string | Date
-  updatedAt: string | Date
+  createdAt: Timestamp
+  publishedAt: Timestamp
+  updatedAt: Timestamp
   type: string
   owner?: User | DocumentData | null
   isPublic: boolean
