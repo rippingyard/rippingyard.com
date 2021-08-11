@@ -16,9 +16,6 @@
 export default {
   layout: 'manage',
   middleware: ['auth'],
-  mounted() {
-    console.log('TEST!')
-  },
   head: () => {
     return {
       title: '新規投稿 - HOME',
