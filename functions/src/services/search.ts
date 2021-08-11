@@ -22,9 +22,9 @@ interface SearchObject {
 }
 
 function init(indexName: string) {
-  console.log('algolia setting', functions.config().algolia)
+  console.log('algolia setting', functions.config().algolia.config)
   if (!functions.config().algolia) return
-  const { appId, apiKeyAdmin } = functions.config().algolia as any
+  const { appId, apiKeyAdmin } = functions.config().algolia.config as any
   const client = algoliasearch(appId, apiKeyAdmin)
   return client.initIndex(indexName)
 }
