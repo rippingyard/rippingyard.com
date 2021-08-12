@@ -9,7 +9,7 @@ export function getPageview() {
   const startDate = "2018-01-01"
   const endDate = "2018-04-01"
 
-  console.log(process.env.GA_CONFIG)
+  console.log('GA_CONFIG', process.env.GA_CONFIG)
 
   const client = new google.auth.JWT(credential.client_email, '', credential.private_key, ["https://www.googleapis.com/auth/analytics.readonly"], '')
 
