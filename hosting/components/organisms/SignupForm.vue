@@ -7,6 +7,7 @@
         placeholder="半角英数で入力"
         class="input"
       />
+      <p v-if="errors.userName" class="error" @click="removeError('userName')">{{ errors.userName }}</p>
     </div>
     <div class="field">
       <label>メールアドレス</label>
@@ -16,6 +17,7 @@
         placeholder="メールアドレスを入力"
         class="input"
       />
+      <p v-if="errors.email" class="error" @click="removeError('email')">{{ errors.email }}</p>
     </div>
     <div class="field">
       <label>パスワード</label>
@@ -25,6 +27,7 @@
         placeholder="パスワードを入力"
         class="input"
       />
+      <p v-if="errors.password" class="error" @click="removeError('password')">{{ errors.password }}</p>
     </div>
     <div class="buttons">
       <button class="button">新規登録</button>
@@ -35,6 +38,7 @@
 <script>
 import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
+import validate from '~/plugins/validator'
 import { schemaCreateUser } from '~/plugins/validators/user'
 export default {
   props: {
@@ -49,9 +53,13 @@ export default {
       userName: '',
       email: '',
       password: '',
+      errors: {},
     }
   },
   methods: {
+    removeError(key) {
+      this.$set(this.errors, key, '')
+    },
     async signup() {
       const params = {
         email: this.email,
@@ -59,10 +67,10 @@ export default {
         userName: this.userName,
       }
 
-      const { value, error } = schemaCreateUser.validate(params)
-      if (!isEmpty(error)) {
-        console.log('Error', error?.details)
-        return this.snackAlert('エラーが発生しました')
+      const { value, errors } = validate(schemaCreateUser, params)
+      if (!isEmpty(errors)) {
+        this.errors = errors
+        return this.snackAlert('入力項目に不備があります')
       }
 
       const existance = await this.$fire.firestore

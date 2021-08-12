@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.1.5
+      uses: actions/setup-node@v2.4.0
       with:
         node-version: ${{ matrix.node-version }}
     - name: Hosting - Install dependencies
@@ -43,7 +43,7 @@ jobs:
     - name: Functions - Set env to Production
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="production" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
+        args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -63,7 +63,7 @@ jobs:
     - name: Set env to Develop
       uses: w9jds/firebase-action@master
       with:
-        args: functions:config:set runtime.env="develop" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project default
+        args: functions:config:set runtime.env="develop" algolia.appid="${{ secrets.ALGOLIA_APPID_DEV }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_DEV }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_DEV }}" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project default
       if: ${{ github.ref != 'refs/heads/master' }}
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

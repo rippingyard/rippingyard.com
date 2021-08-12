@@ -2,7 +2,7 @@
   <div class="block container">
     <article class="post">
       <Header :post="post" />
-      <div v-if="getTitle" class="heading">
+      <div v-if="hasTitle" class="heading">
         <h1>{{ getTitle }}</h1>
       </div>
       <Content v-html="mainContent" />
@@ -46,6 +46,7 @@ import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { normalize, docPath } from '~/services/post'
 import {
+  hasTitle,
   getTitle,
   getSocialTitle,
   getSummary,
@@ -102,6 +103,9 @@ export default Vue.extend({
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
+    hasTitle(): boolean {
+      return hasTitle(this.$data.post.content)
+    },
     getTitle(): string {
       return getTitle(this.$data.post.content)
     },

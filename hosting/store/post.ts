@@ -98,27 +98,6 @@ export const actions: ActionInterface = {
 
       await db.set(newPost)
 
-      // saveIndex(indexName, {
-      //   objectID: post.id,
-      //   title: getTitle(post.content),
-      //   body: stripTags(removeTitle(post.content)),
-      //   image: getThumbnail(post.content),
-      //   createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
-      //   publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
-      //   updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
-      //   owner: post.owner?.uid,
-      //   collaborators: [],
-      //   tokens: getTokens(post.content),
-      //   entities: getTokens(post.content),
-      //   ...pick(newPost, [
-      //     'content',
-      //     'isDeleted',
-      //     'isPublic',
-      //     'type',
-      //     'status',
-      //   ]),
-      // })
-
     } catch (e) {}
   },
   async delete({ rootState }, id): Promise<void> {
