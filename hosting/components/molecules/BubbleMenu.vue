@@ -48,13 +48,15 @@ export default Vue.extend({
   },
   methods: {
     setLink() {
-      const url = window.prompt('URL')
-      this.editor
-        .chain()
-        .focus()
-        .extendMarkRange('link')
-        .setLink({ href: url })
-        .run()
+      if (process.client) {
+        const url = window.prompt('URL')
+        this.editor
+          .chain()
+          .focus()
+          .extendMarkRange('link')
+          .setLink({ href: url })
+          .run()
+      }
     },
   },
 })

@@ -7,7 +7,6 @@
           <div class="inner">
             <TextArea
               v-model="content"
-              :reset-count="resetCount"
             />
           </div>
           <div class="footer">

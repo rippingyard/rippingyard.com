@@ -1,7 +1,6 @@
 <template>
   <div class="editor short">
     <bubble-menu :editor="editor" />
-    <floating-menu :editor="editor" />
     <editor-content :editor="editor" />
   </div>
 </template>
