@@ -208,6 +208,7 @@ export default {
         'faList',
         'faListOl',
         'faQuoteRight',
+        'faRulerHorizontal',
         'faStrikethrough',
         'faTag',
         'faTrashAlt',

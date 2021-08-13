@@ -71,6 +71,21 @@
     // background-color: rgba($color: $orange, $alpha: 0.4);
   }
 
+  img {
+    display: block;
+    // margin-bottom: 25px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  hr {
+    display: block;
+    border: none;
+    height: 1px;
+    background-color: $gray-black;
+    margin-bottom: 25px;
+  }
+
   ul {
     list-style-type: disc;
     padding-left: 18px;

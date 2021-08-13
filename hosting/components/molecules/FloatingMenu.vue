@@ -20,6 +20,12 @@
       3
     </button>
     <button
+      :class="{ 'is-active': editor.isActive('image') }"
+      @click="uploadImage()"
+    >
+      <fa-icon icon="image" />
+    </button>
+    <button
       :class="{ 'is-active': editor.isActive('bulletList') }"
       @click="editor.chain().focus().toggleBulletList().run()"
     >
@@ -30,6 +36,11 @@
       @click="editor.chain().focus().toggleOrderedList().run()"
     >
       <fa-icon icon="list-ol" />
+    </button>
+    <button
+      @click="editor.chain().focus().setHorizontalRule().run()"
+    >
+      <fa-icon icon="ruler-horizontal" />
     </button>
     <button
       :class="{ 'is-active': editor.isActive('blockquote') }"
@@ -58,6 +69,18 @@ export default Vue.extend({
       default: () => {},
     },
   },
+  methods: {
+    uploadImage() {
+      this.$emit('showImageUploader')
+    },
+    // addImage() {
+    //   const url = window.prompt('URL')
+
+    //   if (url) {
+    //     this.editor.chain().focus().setImage({ src: url }).run()
+    //   }
+    // },
+  }
 })
 </script>
 <style lang="scss" scoped>

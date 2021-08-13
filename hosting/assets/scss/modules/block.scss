@@ -1,4 +1,5 @@
 .block {
+  position: relative;
 
   &.container {
     max-width: $tablet - ($gap * 2);
