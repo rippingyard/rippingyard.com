@@ -24,6 +24,10 @@ export const getTitle = (str: string, length: number = 32) => {
   return getSummary(str, length)
 }
 
+export const hasThumbnail = (str: string): boolean => {
+  return !!getThumbnail(str)
+}
+
 export const getThumbnail = (str: string): string => {
   if (!str) return ''
 
@@ -41,7 +45,7 @@ export const getThumbnail = (str: string): string => {
       case 'jp.youtube.com':
       case 'www.youtube.com':
         if (queries.v) {
-          // console.log('youtubeId', queries.v)
+          console.log('youtubeId', queries.v)
           image = `https://i.ytimg.com/vi/${queries.v}/hqdefault.jpg`
         }
         break
@@ -106,10 +110,9 @@ export function renderWidgets(content: string) {
 
   // const contentPlain = stripTags(content)
   const urls = extractUrls(content)
+  if (!urls) return content
 
   content = content.replace(/"http/g, '"[http]')
-
-  if (!urls) return content
 
   urls.reverse()
 
@@ -121,8 +124,6 @@ export function renderWidgets(content: string) {
     html = url
     urlInfo = urlParse(url)
     queries = queryString.parse(urlInfo.query.toString())
-
-    // console.log('URL Info', urlInfo)
 
     switch (urlInfo.hostname) {
       case 'youtube.com':

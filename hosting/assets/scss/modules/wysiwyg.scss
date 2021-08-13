@@ -81,6 +81,12 @@
     padding-left: 22px;
   }
 
+  li {
+    p {
+      padding-bottom: 0;
+    }
+  }
+
   pre {
     border: 3px solid $yellow;
     padding: 25px;

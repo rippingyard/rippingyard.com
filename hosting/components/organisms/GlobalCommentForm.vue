@@ -1,33 +1,35 @@
 ﻿<template>
-  <client-only>
-    <nav v-if="isAuthenticated" class="nav">
-      <CommentTrigger :click="toggleForm" />
-      <div class="form" :class="{ open: isOpen }">
-        <div class="inner">
-          <TextArea
-            v-model="content"
-            :reset-count="resetCount"
-          />
-        </div>
-        <div class="footer">
-          <div class="footer-main">
-            <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
+  <div>
+    <client-only>
+      <nav v-if="isAuthenticated" class="nav">
+        <CommentTrigger :click="toggleForm" />
+        <div class="form" :class="{ open: isOpen }">
+          <div class="inner">
+            <TextArea
+              v-model="content"
+              :reset-count="resetCount"
+            />
           </div>
-          <div class="footer-side">
-            <div
-              :class="{'is-over': isOver}"
-              class="counter"
-            >{{ contentLength }} / {{ limit }}</div>
-            <button
-              :class="{'is-disabled': isOver || isEmpty}"
-              class="button"
-              @click="submit()"
-            >投稿する</button>
+          <div class="footer">
+            <div class="footer-main">
+              <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
+            </div>
+            <div class="footer-side">
+              <div
+                :class="{'is-over': isOver}"
+                class="counter"
+              >{{ contentLength }} / {{ limit }}</div>
+              <button
+                :class="{'is-disabled': isOver || isEmpty}"
+                class="button"
+                @click="submit()"
+              >投稿する</button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
-  </client-only>
+      </nav>
+    </client-only>
+  </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'

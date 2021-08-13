@@ -1,6 +1,6 @@
 <template>
   <section class="block container">
-    <Wysiwyg :post="post" @update="updateContent" />
+    <Wysiwyg v-model="content" />
     <div class="console">
       <div class="buttons">
         <button
@@ -74,7 +74,7 @@ export default {
   },
   data() {
     return {
-      content: '',
+      content: '<h1>記事タイトル</h1><p></p>',
       entities: [],
       isPublic: true,
       isPreviewing: false,
@@ -96,7 +96,7 @@ export default {
       this.$router.push('/')
     }
     if (this.post) {
-      this.content = this.post.content || ''
+      this.content = this.post.content
       this.isPublic = !!this.post.isPublic
       this.entities = this.post.entities || []
       this.status = this.post.status
@@ -108,9 +108,9 @@ export default {
       saveEntity: 'entity/save',
       saveActivity: 'activity/save',
     }),
-    updateContent(content) {
-      this.content = content
-    },
+    // updateContent(content) {
+    //   this.content = content
+    // },
     togglePublic() {
       this.isPublic = !this.isPublic
     },
