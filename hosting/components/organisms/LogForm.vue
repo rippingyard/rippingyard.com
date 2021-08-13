@@ -1,13 +1,15 @@
-<template>
+﻿<template>
   <section class="block container">
-    <Wysiwyg v-model="content" />
+    <TextArea
+      v-model="content"
+    />
     <div class="console">
       <div class="buttons">
         <button
           type="is-primary"
           class="button"
-          @click="confirm"
-        >設定を確認して公開する</button>
+          @click="submit"
+        >{{ submitLabel }}</button>
         <button
           type="is-text"
           class="button no-border"
@@ -18,38 +20,6 @@
     <Modal v-if="isPreviewing" :on-close="closePreview">
       <div class="preview">
         <Content v-html="filteredContent" />
-      </div>
-    </Modal>
-    <Modal v-if="isSetting" :on-close="closeSetting">
-      <div class="row">
-        <div>
-          この記事は、<strong>{{ isPublic ? '全世界に公開中' : '本人限定ノート' }}</strong>です
-        </div>
-        <button type="is-primary" class="button no-border" @click="togglePublic">
-          {{ isPublic ? '非公開にする' : '全世界に公開する' }}
-        </button>
-      </div>
-      <div class="row">
-        <EntityForm
-          :default-entities="entities"
-          @updateEntities="updateEntities"
-        />
-      </div>
-      <div class="row">
-        <button
-          class="button"
-          :class="{'is-disabled': isSaving}"
-          @click="submit"
-        >
-          {{ status !== 'draft' ? submitLabel : isPublic ? '公開する' : '自分のノートとして保存する' }}
-        </button>
-        <button
-          class="button no-border"
-          :class="{'is-disabled': isSaving}"
-          @click="draft"
-        >
-          {{ draftLabel }}
-        </button>
       </div>
     </Modal>
   </section>
@@ -69,13 +39,14 @@ export default {
     },
     submitLabel: {
       type: String,
-      default: '新規投稿',
+      default: '更新する',
     },
   },
   data() {
     return {
-      content: '<h1>記事タイトル</h1><p></p>',
+      content: '',
       entities: [],
+      resetCount: 0,
       isPublic: true,
       isPreviewing: false,
       isSetting: false,
@@ -91,16 +62,17 @@ export default {
       return this.status === 'draft' ? '下書き保存' : '下書きに戻す'
     },
   },
-  mounted() {
+  created() {
     if (!this.$isAuthenticated(this.$store)) {
       this.$router.push('/')
     }
     if (this.post) {
-      this.content = this.post.content
+      this.content = this.post.content || ''
       this.isPublic = !!this.post.isPublic
       this.entities = this.post.entities || []
       this.status = this.post.status
     }
+    console.log('Content', this.content)
   },
   methods: {
     ...mapActions({
@@ -108,9 +80,9 @@ export default {
       saveEntity: 'entity/save',
       saveActivity: 'activity/save',
     }),
-    // updateContent(content) {
-    //   this.content = content
-    // },
+    updateContent(content) {
+      this.content = content
+    },
     togglePublic() {
       this.isPublic = !this.isPublic
     },
@@ -138,7 +110,7 @@ export default {
 
       const params = {
         content: this.content,
-        type: 'article',
+        type: 'log',
         entities: this.entities,
         status: this.status,
         isPublic: this.isPublic,
@@ -189,7 +161,7 @@ export default {
       this.isSaving = false
 
       if (status === 'succeeded') {
-        this.$router.push('/home/posts')
+        this.$router.push('/home/logs')
       }
 
     },
@@ -206,7 +178,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .preview {
-  padding: 0 $gap * 2 $gap;
+  padding: $gap * 1.4 $gap * 2;
 }
 
 .row {

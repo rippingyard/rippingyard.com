@@ -1,7 +1,7 @@
 <template>
-  <nuxt-link :to="post.permalink">
+  <nuxt-link :to="post.permalink" :class="{ noTitle: !hasTitle}">
     <div class="wysiwyg">
-      <h1>
+      <h1 v-if="hasTitle">
         {{ title }}
       </h1>
       <div v-if="thumbnail" class="image">
@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { getTitle, getSummary, getThumbnail } from '~/plugins/typography'
+import { hasTitle, getTitle, getSummary, getThumbnail, hasThumbnail } from '~/plugins/typography'
 
 export default Vue.extend({
   props: {
@@ -26,19 +26,24 @@ export default Vue.extend({
     },
   },
   computed: {
-    title() {
+    hasTitle(): boolean {
+      return hasTitle(this.post.content)
+    },
+    hasThumbnail(): boolean {
+      return hasThumbnail(this.post.contentOriginal)
+    },
+    title(): string {
       return getTitle(this.post.content)
     },
-    summary() {
-      return getSummary(this.post.content, 80)
+    summary(): string {
+      return getSummary(this.post.content, !this.hasTitle ? 240 : !this.hasThumbnail ? 180 : 80)
     },
-    thumbnail() {
+    thumbnail(): string {
       return getThumbnail(this.post.contentOriginal)
     },
   },
 })
 </script>
-
 <style lang="scss" scoped>
 .image {
   margin-bottom: 25px;
@@ -84,6 +89,9 @@ a {
         background-color: $white;
       }
     }
+  }
+  &.noTitle {
+    font-size: 1.4rem;
   }
 }
 </style>

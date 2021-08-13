@@ -20,6 +20,16 @@
           <fa-icon icon="angle-right" class="icon" />新規投稿
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/home/logs/">
+          <fa-icon icon="angle-right" class="icon" />ライフログ一覧
+        </nuxt-link>
+      </li>
+      <li v-if="true !== true">
+        <nuxt-link to="/home/comments/">
+          <fa-icon icon="angle-right" class="icon" />コメント一覧
+        </nuxt-link>
+      </li>
     </ul>
     <!-- <h3>ENTITIES</h3> -->
     <ul class="links">

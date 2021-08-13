@@ -33,7 +33,7 @@ export async function normalize(
           await post.owner?.get().then((doc: any) => {
             // owner = doc.data()
             owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt', 'invitedBy'])
-            console.log(owner)
+            // console.log(owner)
             // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })
@@ -90,8 +90,10 @@ export function permalink(id: string): string {
   return `/post/${id}`
 }
 
-export function editlink(id: string): string {
-  return `/home/post/edit/${id}`
+export function editlink(post: Partial<Post>): string {
+  console.log('EditLink', post);
+  const postType = post.type === 'log' ? 'log' : 'post'
+  return `/home/${postType}/edit/${post.id}`
 }
 
 export function docPath(id: string): string {

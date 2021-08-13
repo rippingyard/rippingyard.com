@@ -84,13 +84,13 @@ export default Vue.extend({
         })
     }
 
-    console.log('Promises', promises)
+    // console.log('Promises', promises)
 
     if (promises.length < 1) return
     
     await Promise.all(promises)
 
-    console.log('Related Posts', posts)
+    // console.log('Related Posts', posts)
 
     this.$data.posts = _.sampleSize(posts, 8) as any[]
   },

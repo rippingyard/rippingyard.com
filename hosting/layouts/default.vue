@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <Nav />
+    <GlobalCommentForm />
     <Nuxt />
     <Footer />
     <ActivityModal />
