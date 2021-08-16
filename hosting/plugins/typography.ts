@@ -178,6 +178,7 @@ export function sanitize(content: string) {
           'h5',
           'h6',
           'p',
+          'div',
           'strong',
           'b',
           'i',
@@ -187,6 +188,7 @@ export function sanitize(content: string) {
           'blockquote',
           'pre',
           'code',
+          'mark',
           'hr',
           'ul',
           'ol',
@@ -194,6 +196,7 @@ export function sanitize(content: string) {
           'br',
         ],
         allowedAttributes: {
+          div: ['class'],
           a: ['href', 'name', 'target'],
           img: ['src', 'alt', 'title'],
         },
@@ -217,8 +220,6 @@ export const decodeEntities = (str: string) => {
       .replace('&quot;', '"')
       .replace(new RegExp('&' + entity[0] + ';', 'g'), entity[1])
   })
-
-  // console.log('After:', str)
 
   return str
 }

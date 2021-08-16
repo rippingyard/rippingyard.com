@@ -6,7 +6,9 @@
     >
       <div class="inner">
         <div class="uploader">
-          <button v-if="image" @click="uploadImage()">アップロード</button>
+          <div v-if="image" class="console">
+            <button @click="uploadImage()">アップロード</button>
+          </div>
           <ImageUploader
             :on-change="updateImage"
           />
@@ -30,12 +32,19 @@ import StarterKit from '@tiptap/starter-kit'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import Subscript from '@tiptap/extension-subscript'
+import Highlight from '@tiptap/extension-highlight'
+import TextStyle from '@tiptap/extension-text-style'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
+import BubbleMenu from '@tiptap/extension-bubble-menu'
+import FloatingMenu from '@tiptap/extension-floating-menu'
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import Placeholder from '@tiptap/extension-placeholder'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import Gapcursor from '@tiptap/extension-gapcursor'
+
+import Caption from '~/plugins/editor/Caption'
 
 import { getExt } from '~/plugins/file'
 
@@ -80,15 +89,30 @@ export default Vue.extend({
         Document,
         Paragraph,
         Text,
+        Caption,
+        Highlight,
+        Subscript,
+        TextStyle,
         HorizontalRule,
         Image.configure({
-          inline: true,
+          inline: false,
         }),
         Link.configure({
           openOnClick: false,
         }),
         Placeholder.configure({
           placeholder: 'ここに本文を書いていきましょう'
+        }),
+        BubbleMenu.configure({
+          shouldShow: ({ editor }) => {
+            return !editor.isActive('image')
+          },
+        }),
+        FloatingMenu.configure({
+          // shouldShow: ({ editor, view, state, oldState }) => {
+          //   console.log('Editor!', view, state, oldState)
+          //   return editor.isActive('paragraph')
+          // },
         }),
         Dropcursor,
         Gapcursor,

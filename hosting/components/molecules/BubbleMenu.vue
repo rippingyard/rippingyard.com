@@ -13,6 +13,12 @@
       <fa-icon icon="italic" />
     </button>
     <button
+      :class="{ 'is-active': editor.isActive('highlight') }"
+      @click="editor.chain().focus().toggleHighlight().run()"
+    >
+      <fa-icon icon="highlighter" />
+    </button>
+    <button
       :class="{ 'is-active': editor.isActive('strike') }"
       @click="editor.chain().focus().toggleStrike().run()"
     >
