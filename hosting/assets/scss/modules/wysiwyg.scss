@@ -11,6 +11,10 @@
     color: $blue;
   }
 
+  mark {
+    background-color: $yellow;
+  }
+
   p,
   h1,
   h2,
@@ -20,10 +24,18 @@
   h6,
   ul,
   ol,
+  .caption,
   blockquote,
   pre {
     padding-bottom: 25px;
     font-size: 1rem;
+  }
+
+  div {
+    &.caption {
+      display: block;
+      font-size: 0.8rem;
+    }
   }
 
   h1 {
@@ -68,14 +80,16 @@
 
   strong {
     font-weight: 800;
-    // background-color: rgba($color: $orange, $alpha: 0.4);
   }
 
   img {
     display: block;
-    // margin-bottom: 25px;
+    margin-bottom: 25px;
     max-width: 100%;
     height: auto;
+    & + .caption {
+      margin-top: -15px;
+    }
   }
 
   hr {

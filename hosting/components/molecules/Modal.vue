@@ -3,7 +3,9 @@
     <div class="overlay" @click="onClose()"></div>
     <div class="inner block container">
       <button class="close" @click="onClose()"><fa-icon :icon="['far', 'times-circle']" class="icon" /></button>
-      <slot></slot>
+      <div class="frame">
+        <slot></slot>
+      </div>
     </div>
   </section>
 </template>
@@ -30,7 +32,6 @@ export default Vue.extend({
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
   padding: 50px 0;
   z-index: 20000;
   
@@ -38,9 +39,17 @@ export default Vue.extend({
     position: relative;
     background-color: $white;
     // padding: $gap * 2;
+    z-index: 20001;
+    border-radius: 10px;
+  }
+
+  .frame {
+    position: relative;
+    height: 100%;
+    z-index: 20001;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-    z-index: 20001;
+    overflow-y: auto;
   }
 
   .overlay {

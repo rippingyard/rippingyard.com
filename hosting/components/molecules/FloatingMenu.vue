@@ -1,5 +1,10 @@
 ﻿<template>
   <floating-menu v-if="editor" class="floatingmenu" :editor="editor">
+    <button
+      @click="editor.chain().focus().setParagraph().run()"
+    >
+      <fa-icon icon="paragraph" />
+    </button>
     <span><fa-icon icon="heading" class="icon" /></span>
     <button
       :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
@@ -24,6 +29,11 @@
       @click="uploadImage()"
     >
       <fa-icon icon="image" />
+    </button>
+    <button
+      @click="editor.chain().focus().setCaption().run()"
+    >
+      <fa-icon icon="closed-captioning" />
     </button>
     <button
       :class="{ 'is-active': editor.isActive('bulletList') }"
