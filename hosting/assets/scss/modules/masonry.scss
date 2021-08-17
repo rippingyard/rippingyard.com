@@ -2,14 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  // align-content: space-between;
   @include widescreen {
     & > li,
     & > dd,
     & > div {
       width: calc(32% - (#{$gap} / 3));
       overflow: hidden;
-      // margin-right: $gap;
       &:nth-child(3n) {
         margin-right: 0;
       }

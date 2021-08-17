@@ -64,10 +64,13 @@ export default Vue.extend({
 .masonry {
   & > li {
     margin-bottom: $gap;
+    @include mobile {
+      margin-bottom: $gap / 2;
+    }
     > a {
       display: block;
       position: relative;
-      padding: $gap;
+      padding: $gap / 2;
       height: 100%;
       border-radius: 2px;
       border: 8px solid $black;
