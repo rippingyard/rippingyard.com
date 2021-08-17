@@ -1,558 +1,172 @@
 <template>
   <div>
+    <Modal
+      v-if="showUploader"
+      :on-close="closeImageUploader"
+    >
+      <div class="inner">
+        <div class="uploader">
+          <div v-if="image" class="console">
+            <button @click="uploadImage()">アップロード</button>
+          </div>
+          <ImageUploader
+            :on-change="updateImage"
+          />
+        </div>
+      </div>
+    </Modal>
     <div class="editor">
-      <editor-floating-menu
-        v-slot="{ commands, isActive, menu }"
-        :editor="editor"
-      >
-        <div
-          :class="{ 'is-active': menu.isActive }"
-          :style="`top: ${menu.top}px`"
-          class="editor__floating-menu"
-        >
-          <button
-            :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-            class="menubar__button"
-            @click="commands.heading({ level: 2 })"
-          >
-            <fa-icon icon="heading" class="icon" />
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-            class="menubar__button"
-            @click="commands.heading({ level: 3 })"
-          >
-            H3
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.bullet_list() }"
-            class="menubar__button"
-            @click="commands.bullet_list"
-          >
-            <fa-icon icon="list" class="icon" />
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.ordered_list() }"
-            class="menubar__button"
-            @click="commands.ordered_list"
-          >
-            <fa-icon icon="list-ol" class="icon" />
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.blockquote() }"
-            class="menubar__button"
-            @click="commands.blockquote"
-          >
-            <fa-icon icon="quote-right" class="icon" />
-          </button>
-
-          <button
-            :class="{ 'is-active': isActive.code_block() }"
-            class="menubar__button"
-            @click="commands.code_block"
-          >
-            <fa-icon icon="code" class="icon" />
-          </button>
-        </div>
-      </editor-floating-menu>
-
-      <editor-menu-bubble
-        v-slot="{ commands, isActive, menu, getMarkAttrs }"
-        :editor="editor"
-        :keep-in-bounds="keepInBounds"
-        @hide="hideLinkMenu"
-      >
-        <div
-          :class="{ 'is-active': menu.isActive }"
-          :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-          class="menububble"
-        >
-          <form
-            v-if="linkMenuIsActive"
-            class="menububble__form"
-            @submit.prevent="setLinkUrl(commands.link, linkUrl)"
-          >
-            <fa-icon v-if="isActive.link()" icon="link" />
-            <fa-icon v-else icon="link" />
-            <input
-              ref="linkInput"
-              v-model="linkUrl"
-              type="text"
-              placeholder="https://"
-              class="menububble__input"
-              @keydown.esc="hideLinkMenu"
-            />
-            <button
-              type="button"
-              class="menububble__button"
-              @click="setLinkUrl(commands.link, null)"
-            >
-              <font-awesome-icon icon="trash-alt" />
-            </button>
-          </form>
-          <template v-else>
-            <button
-              :class="{ 'is-active': isActive.bold() }"
-              class="menububble__button"
-              @click="commands.bold"
-            >
-              <fa-icon icon="bold" />
-            </button>
-
-            <button
-              :class="{ 'is-active': isActive.italic() }"
-              class="menububble__button"
-              @click="commands.italic"
-            >
-              <fa-icon icon="italic" />
-            </button>
-
-            <button
-              :class="{ 'is-active': isActive.link() }"
-              class="menububble__button"
-              @click="showLinkMenu(getMarkAttrs('link'))"
-            >
-              <fa-icon icon="link" />
-            </button>
-          </template>
-        </div>
-      </editor-menu-bubble>
+      <bubble-menu :editor="editor" />
+      <floating-menu :editor="editor" @showImageUploader="showImageUploader()" />
       <editor-content :editor="editor" />
-    </div>
-
-    <div v-show="showSuggestions" ref="suggestions" class="suggestion-list">
-      <template v-if="hasResults">
-        <div
-          v-for="(user, index) in filteredUsers"
-          :key="user.uid"
-          :class="{ 'is-selected': navigatedUserIndex === index }"
-          class="suggestion-list__item"
-          @click="selectUser(user)"
-        >
-          {{ user.name }}
-        </div>
-      </template>
-      <div v-else class="suggestion-list__item is-empty">No users found</div>
     </div>
   </div>
 </template>
-<script>
-import Fuse from 'fuse.js'
-import tippy, { sticky } from 'tippy.js'
+<script lang="ts">
+import Vue from 'vue'
+import dayjs from 'dayjs'
 
-import {
-  Editor,
-  EditorContent,
-  EditorMenuBubble,
-  EditorFloatingMenu,
-} from 'tiptap'
+import { Editor, EditorContent } from '@tiptap/vue-2'
+import StarterKit from '@tiptap/starter-kit'
 
-import {
-  Blockquote,
-  BulletList,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  ListItem,
-  OrderedList,
-  // TodoItem,
-  // TodoList,
-  Bold,
-  // Code,
-  Italic,
-  // Link,
-  // Strike,
-  // Underline,
-  History,
-  Mention,
-  Placeholder,
-} from 'tiptap-extensions'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import Subscript from '@tiptap/extension-subscript'
+import Highlight from '@tiptap/extension-highlight'
+import TextStyle from '@tiptap/extension-text-style'
+import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
+import BubbleMenu from '@tiptap/extension-bubble-menu'
+import FloatingMenu from '@tiptap/extension-floating-menu'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import Placeholder from '@tiptap/extension-placeholder'
+import Dropcursor from '@tiptap/extension-dropcursor'
+import Gapcursor from '@tiptap/extension-gapcursor'
 
-import Wysiwyg from '~/plugins/editor/Wysiwyg'
-import Title from '~/plugins/editor/Title'
-import Link from '~/plugins/editor/Link'
-import { normalize } from '~/services/post'
+import Caption from '~/plugins/editor/Caption'
 
-export default {
+import { getExt } from '~/plugins/file'
+
+export default Vue.extend({
   components: {
     EditorContent,
-    EditorMenuBubble,
-    EditorFloatingMenu,
   },
   props: {
-    post: {
-      type: Object,
-      default: null,
+    // post: {
+    //   type: Object,
+    //   default: null,
+    // },
+    value: {
+      type: String,
+      default: '',
     },
   },
-  data() {
+  data(): {
+    editor: any,
+    image: any,
+    uploadedImage: string | null,
+    showUploader: boolean,
+  } {
     return {
       editor: null,
-      content: this.post ? this.post.content : '',
-      linkUrl: null,
-      linkMenuIsActive: false,
-      keepInBounds: true,
-      query: null,
-      suggestionRange: null,
-      filteredUsers: [],
-      navigatedUserIndex: 0,
-      insertMention: () => {},
+      image: null,
+      uploadedImage: null,
+      showUploader: false,
     }
   },
-  computed: {
-    hasResults() {
-      return this.filteredUsers.length
-    },
-    showSuggestions() {
-      return this.query || this.hasResults
+  watch: {
+    value(value) {
+      if (this.editor.getHTML() === value) return
+      this.editor.commands.setContent(this.value, false)
     },
   },
   mounted() {
     this.editor = new Editor({
-      // keepInBounds: true,
-      content: this.content,
-      // disablePasteRules: true,
+      content: this.value,
       extensions: [
-        new Blockquote(),
-        new BulletList(),
-        new CodeBlock(),
-        new HardBreak(),
-        new Heading({ levels: [1, 2, 3] }),
-        new ListItem(),
-        new OrderedList(),
-        new Link({
+        StarterKit,
+        Document,
+        Paragraph,
+        Text,
+        Caption,
+        Highlight,
+        Subscript,
+        TextStyle,
+        HorizontalRule,
+        Image.configure({
+          inline: false,
+        }),
+        Link.configure({
           openOnClick: false,
         }),
-        new Bold(),
-        // new Code(),
-        new Italic(),
-        // new Strike(),
-        // new Underline(),
-        new History(),
-        new Title(),
-        new Wysiwyg(),
-
-        new Mention({
-          matcher: {
-            char: '#',
-            allowSpaces: false,
-            startOfLine: false,
-          },
-          // a list of all suggested items
-          items: async () => {
-            await new Promise(resolve => {
-              setTimeout(resolve, 500)
-            })
-            return [
-              { id: 1, name: 'Sven Adlung' },
-              { id: 2, name: 'Patrick Baber' },
-              { id: 3, name: 'Nick Hirche' },
-              { id: 4, name: 'Philip Isik' },
-              { id: 5, name: 'Timo Isik' },
-              { id: 6, name: 'Philipp Kühn' },
-              { id: 7, name: 'Hans Pagel' },
-              { id: 8, name: 'Sebastian Schrama' },
-            ]
-          },
-          // is called when a suggestion starts
-          onEnter: ({ items, query, range, command, virtualNode }) => {
-            console.log('start!')
-            this.query = query
-            this.filteredUsers = items
-            this.suggestionRange = range
-            this.renderPopup(virtualNode)
-            // we save the command for inserting a selected mention
-            // this allows us to call it inside of our custom popup
-            // via keyboard navigation and on click
-            this.insertMention = command
-          },
-          // is called when a suggestion has changed
-          onChange: ({ items, query, range, virtualNode }) => {
-            console.log('change!!:', query)
-            this.query = query
-            this.filteredUsers = items
-            this.suggestionRange = range
-            this.navigatedUserIndex = 0
-            this.renderPopup(virtualNode)
-          },
-          // is called when a suggestion is cancelled
-          onExit: () => {
-            console.log('canceled')
-            // reset all saved values
-            this.query = null
-            this.filteredUsers = []
-            this.suggestionRange = null
-            this.navigatedUserIndex = 0
-            this.destroyPopup()
-          },
-          // is called on every keyDown event while a suggestion is active
-          onKeyDown: ({ event }) => {
-            if (event.key === 'ArrowUp') {
-              this.upHandler()
-              return true
-            }
-
-            if (event.key === 'ArrowDown') {
-              this.downHandler()
-              return true
-            }
-
-            if (event.key === 'Enter') {
-              this.enterHandler()
-              return true
-            }
-
-            return false
-          },
-          // is called when a suggestion has changed
-          // this function is optional because there is basic filtering built-in
-          // you can overwrite it if you prefer your own filtering
-          // in this example we use fuse.js with support for fuzzy search
-          onFilter: async (items, query) => {
-            console.log('Filter this:', query, items)
-            if (!query) return items
-
-            const tlHandler = this.$fire
-              .collection('posts')
-              .limit(10)
-              .orderBy('createdAt', 'desc')
-
-            const posts = []
-
-            await tlHandler.get().then(qs => {
-              qs.forEach(doc => {
-                // console.log(doc.id)
-                // console.log(doc.data())
-                posts.push(normalize(doc.id, doc.data()))
-              })
-            })
-
-            // console.log(posts)
-
-            const fuse = new Fuse(posts, {
-              threshold: 0.2,
-              keys: ['content'],
-            })
-
-            // console.log('fused', fuse.search(query).map(post => {
-            //   console.log('fusing:', post)
-            //   return post.item
-            // }))
-
-            return fuse.search(query).map(post => post.item)
+        Placeholder.configure({
+          placeholder: 'ここに本文を書いていきましょう'
+        }),
+        BubbleMenu.configure({
+          shouldShow: ({ editor }) => {
+            return !editor.isActive('image')
           },
         }),
-
-        new Placeholder({
-          showOnlyCurrent: false,
-          emptyNodeText: node => {
-            if (node.type.name === 'title') {
-              return '記事タイトル'
-            }
-            return 'ここに本文を書いていきましょう'
-          },
+        FloatingMenu.configure({
+          // shouldShow: ({ editor, view, state, oldState }) => {
+          //   console.log('Editor!', view, state, oldState)
+          //   return editor.isActive('paragraph')
+          // },
         }),
+        Dropcursor,
+        Gapcursor,
       ],
-      onUpdate: s => {
-        this.$emit('update', s.getHTML())
+      onUpdate: () => {
+        this.$emit('input', this.editor.getHTML())
       },
     })
   },
   beforeDestroy() {
-    this.destroyPopup()
     this.editor.destroy()
   },
   methods: {
-    showLinkMenu(attrs) {
-      this.linkUrl = attrs.href
-      this.linkMenuIsActive = true
-      this.$nextTick(() => {
-        this.$refs.linkInput.focus()
-      })
-    },
-    hideLinkMenu() {
-      this.linkUrl = null
-      this.linkMenuIsActive = false
-    },
-    setLinkUrl(command, url) {
-      command({ href: url })
-      this.hideLinkMenu()
-    },
+    async uploadImage() {
+      if (this.image) {
+        const ext = getExt(this.image)
+        if (!ext) return
 
-    // navigate to the previous item
-    // if it's the first item, navigate to the last one
-    upHandler() {
-      this.navigatedUserIndex =
-        (this.navigatedUserIndex + this.filteredUsers.length - 1) %
-        this.filteredUsers.length
-    },
-
-    // navigate to the next item
-    // if it's the last item, navigate to the first one
-    downHandler() {
-      this.navigatedUserIndex =
-        (this.navigatedUserIndex + 1) % this.filteredUsers.length
-    },
-
-    enterHandler() {
-      const user = this.filteredUsers[this.navigatedUserIndex]
-
-      if (user) {
-        this.selectUser(user)
+        const now = dayjs()
+        
+        const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
+        const result = await (this as any).$fire.storage
+          .ref()
+          .child(filename)
+          .put(this.image)
+        const url = await result.ref.getDownloadURL()
+        
+        this.editor.chain().focus().setImage({ src: url }).run()
+        this.closeImageUploader()
       }
     },
-
-    // we have to replace our suggestion text with a mention
-    // so it's important to pass also the position of your suggestion text
-    selectUser(user) {
-      this.insertMention({
-        range: this.suggestionRange,
-        attrs: {
-          id: user.uid,
-          label: user.uid,
-        },
-      })
-      this.editor.focus()
+    updateImage(file: any): void {
+      console.log('Image', file)
+      this.image = file
     },
-
-    // renders a popup with suggestions
-    // tiptap provides a virtualNode object for using popper.js (or tippy.js) for popups
-    renderPopup(node) {
-      if (this.popup) {
-        return
-      }
-
-      // ref: https://atomiks.github.io/tippyjs/v6/all-props/
-      this.popup = tippy('.page', {
-        getReferenceClientRect: node.getBoundingClientRect,
-        appendTo: () => document.body,
-        interactive: true,
-        sticky: true, // make sure position of tippy is updated when content changes
-        plugins: [sticky],
-        content: this.$refs.suggestions,
-        trigger: 'mouseenter', // manual
-        showOnCreate: true,
-        theme: 'dark',
-        placement: 'top-start',
-        inertia: true,
-        duration: [400, 200],
-      })
+    showImageUploader(): void {
+      this.showUploader = true
     },
-
-    destroyPopup() {
-      if (this.popup) {
-        console.log('popup', this.popup)
-        this.popup[0].destroy()
-        this.popup = null
-      }
+    closeImageUploader(): void {
+      this.showUploader = false
     },
-  },
-}
+  }
+})
 </script>
 <style lang="scss">
 .editor {
   min-height: 320px;
   position: relative;
-  &__floating-menu {
-    position: absolute;
-    z-index: 1;
-    margin-top: -3rem;
-    visibility: hidden;
-    opacity: 0;
-    padding: 4px;
-    border: 1px solid $gray-black;
-    border-radius: 5px;
-    transition: opacity 0.2s, visibility 0.2s;
-    background-color: $white;
-    &.is-active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .menubar__button {
-      padding: 5px;
-      border-radius: 3px;
-      line-height: 1;
-      &:hover {
-        cursor: pointer;
-        background-color: $yellow;
-      }
-    }
-  }
 }
-
-.is-empty {
-  &:first-child,
-  &:nth-child(2) {
-    &::before {
-      content: attr(data-empty-text);
-      float: left;
-      color: $gray-black;
-      pointer-events: none;
-      height: 0;
-    }
-    &:hover {
-      &::before {
-        opacity: 0.6;
-      }
-    }
-  }
+.inner {
+  width: 100%;
+  height: 100%;
 }
-
-.mention {
-  background: rgba($black, 0.1);
-  color: rgba($black, 0.6);
-  font-size: 0.8rem;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 0.2rem 0.5rem;
-  white-space: nowrap;
-}
-
-.mention-suggestion {
-  color: rgba($black, 0.6);
-}
-
-.suggestion-list {
-  padding: 0.2rem;
-  border: 2px solid rgba($black, 0.1);
-  font-size: 0.8rem;
-  font-weight: bold;
-
-  &__no-results {
-    padding: 0.2rem 0.5rem;
-  }
-
-  &__item {
-    border-radius: 5px;
-    padding: 0.2rem 0.5rem;
-    margin-bottom: 0.2rem;
-    cursor: pointer;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    &.is-selected,
-    &:hover {
-      background-color: rgba($white, 0.2);
-    }
-
-    &.is-empty {
-      opacity: 0.5;
-    }
-  }
-}
-
-.tippy-box[data-theme~='dark'] {
-  background-color: $black;
-  padding: 0;
-  font-size: 1rem;
-  text-align: inherit;
-  color: $white;
-  border-radius: 5px;
+.uploader {
+  padding: $gap;
 }
 </style>

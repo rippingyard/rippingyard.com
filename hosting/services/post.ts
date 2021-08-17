@@ -33,7 +33,7 @@ export async function normalize(
           await post.owner?.get().then((doc: any) => {
             // owner = doc.data()
             owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt', 'invitedBy'])
-            console.log(owner)
+            // console.log(owner)
             // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })

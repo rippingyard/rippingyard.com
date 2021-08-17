@@ -2,8 +2,6 @@
   <section class="block container">
     <TextArea
       v-model="content"
-      :default="content"
-      :reset-count="resetCount"
     />
     <div class="console">
       <div class="buttons">

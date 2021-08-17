@@ -24,10 +24,18 @@ export const getTitle = (str: string, length: number = 32) => {
   return getSummary(str, length)
 }
 
+export const hasThumbnail = (str: string): boolean => {
+  return !!getThumbnail(str)
+}
+
 export const getThumbnail = (str: string): string => {
   if (!str) return ''
 
   let image: string = ''
+  
+  image = extractFirstImage(str)
+  if (image) return image;
+
   const urls = extractUrls(str)
   
   if (!urls) return ''
@@ -87,18 +95,32 @@ export const stripTags = (content: string, linebreak = true) => {
       })
 }
 
-export function extractUrls(content: string) {
-  if (!content) return ''
+export function extractFirstImage(content: string): string {
+  const images = extractImages(content)
+  return images.length > 0 ? images[0] : ''
+}
 
-  content = stripTags(content)
+export function extractImages(content: string) {
+  const imgTags = content.match(/<img.*?src\s*=\s*["|'](.*?)["|'].*?>/gi)
+  if (!imgTags) return []
+  const images: string[] = []
+  imgTags.map(i => {
+    const image = i.match(/src\s*=\s*["|'](.*?)["|']/i)
+    if (image) images.push(image[1])
+  })
+  return images
+}
 
-  let urls = content.match(
+export function extractUrls(content: string): string[] {
+  if (!content) return []
+
+  const urls = stripTags(content).match(
     /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g
   )
 
-  if (urls) urls = _.uniq(urls).sort()
+  if (!urls) return []
 
-  return urls
+  return _.uniq(urls).sort()
 }
 
 export function renderWidgets(content: string) {
@@ -106,10 +128,9 @@ export function renderWidgets(content: string) {
 
   // const contentPlain = stripTags(content)
   const urls = extractUrls(content)
+  if (!urls) return content
 
   content = content.replace(/"http/g, '"[http]')
-
-  if (!urls) return content
 
   urls.reverse()
 
@@ -121,8 +142,6 @@ export function renderWidgets(content: string) {
     html = url
     urlInfo = urlParse(url)
     queries = queryString.parse(urlInfo.query.toString())
-
-    // console.log('URL Info', urlInfo)
 
     switch (urlInfo.hostname) {
       case 'youtube.com':
@@ -159,14 +178,17 @@ export function sanitize(content: string) {
           'h5',
           'h6',
           'p',
+          'div',
           'strong',
           'b',
           'i',
           'em',
           'a',
+          'img',
           'blockquote',
           'pre',
           'code',
+          'mark',
           'hr',
           'ul',
           'ol',
@@ -174,7 +196,9 @@ export function sanitize(content: string) {
           'br',
         ],
         allowedAttributes: {
+          div: ['class'],
           a: ['href', 'name', 'target'],
+          img: ['src', 'alt', 'title'],
         },
       })
 }
@@ -196,8 +220,6 @@ export const decodeEntities = (str: string) => {
       .replace('&quot;', '"')
       .replace(new RegExp('&' + entity[0] + ';', 'g'), entity[1])
   })
-
-  // console.log('After:', str)
 
   return str
 }

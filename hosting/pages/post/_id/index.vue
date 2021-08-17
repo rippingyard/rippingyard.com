@@ -69,7 +69,7 @@ export default Vue.extend({
         .doc(postId)
         .get()
         .then(async (doc: any) => {
-          // console.log(doc)
+          // console.log(doc.id, doc.data())
           r.post = await normalize(doc.id, doc.data(), store)
           if (
             !doc.exists ||
