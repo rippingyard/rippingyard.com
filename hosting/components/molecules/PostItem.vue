@@ -50,6 +50,10 @@ export default Vue.extend({
   img {
     max-width: 100%;
   }
+  @include mobile {
+    width: calc(100% + 32px);
+    margin-left: -16px;
+  }
 }
 .summary {
   margin-bottom: 60px;

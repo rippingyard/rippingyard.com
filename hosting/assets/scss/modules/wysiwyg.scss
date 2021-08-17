@@ -43,39 +43,57 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 3rem;
+    @include mobile {
+      font-size: 1.8rem;
+    }
   }
 
   h2 {
-    font-size: 1.8rem;
-    line-height: 1.4;
-    font-weight: 800;
-    padding-top: 2.2rem;
-  }
-
-  h3 {
     font-size: 1.6rem;
     line-height: 1.4;
     font-weight: 800;
-    padding-top: 1.8rem;
+    padding-top: 2.2rem;
+    @include mobile {
+      font-size: 1.4rem;
+    }
   }
 
-  h4 {
+  h3 {
     font-size: 1.4rem;
     line-height: 1.4;
     font-weight: 800;
+    padding-top: 1.8rem;
+    @include mobile {
+      font-size: 1.3rem;
+    }
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    font-weight: 800;
     padding-top: 1.4rem;
+    @include mobile {
+      font-size: 1.2rem;
+    }
   }
 
   h5 {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     line-height: 1.4;
     padding-top: 1rem;
+    @include mobile {
+      font-size: 1.1rem;
+    }
   }
 
   h6 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1.4;
     padding-top: 0.8rem;
+    @include mobile {
+      font-size: 1.05rem;
+    }
   }
 
   strong {

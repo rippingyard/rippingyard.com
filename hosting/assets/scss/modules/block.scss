@@ -10,9 +10,9 @@
     }
 
     @include mobile {
-      padding: 0 $gap;
+      padding: 0 $gap / 2;
       &.is-wide {
-        padding: 0 $gap;
+        padding: 0 $gap / 2;
       }
     }
   }
