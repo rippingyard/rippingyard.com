@@ -7,7 +7,7 @@
       <div class="inner">
         <div class="uploader">
           <div v-if="image" class="console">
-            <button @click="uploadImage()">アップロード</button>
+            <button class="button expanded" @click="uploadImage()">アップロード</button>
           </div>
           <ImageUploader
             :on-change="updateImage"
@@ -141,6 +141,7 @@ export default Vue.extend({
         const url = await result.ref.getDownloadURL()
         
         this.editor.chain().focus().setImage({ src: url }).run()
+        
         this.closeImageUploader()
       }
     },
@@ -168,5 +169,8 @@ export default Vue.extend({
 }
 .uploader {
   padding: $gap;
+}
+.console {
+  margin-bottom: 10px;
 }
 </style>

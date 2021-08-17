@@ -42,6 +42,7 @@
     "algoliasearch": "^4.9.3",
     "axios": "^0.21.1",
     "basic-auth-connect": "^1.0.0",
+    "client-compress": "^2.2.2",
     "dayjs": "^1.10.5",
     "firebase": "^8.3.3",
     "firebase-admin": "^9.2.0",
