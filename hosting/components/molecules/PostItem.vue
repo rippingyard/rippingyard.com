@@ -49,6 +49,7 @@ export default Vue.extend({
   margin-bottom: 25px;
   img {
     max-width: 100%;
+    margin: auto;
   }
   @include mobile {
     width: calc(100% + 32px);
