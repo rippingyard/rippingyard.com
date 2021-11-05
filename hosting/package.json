@@ -50,7 +50,7 @@
     "@types/sanitize-html": "^1.27.0",
     "@types/url-parse": "^1.4.3",
     "algoliasearch": "^4.8.5",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "client-compress": "^2.2.2",
     "core-js": "^3.6.5",
     "dayjs": "^1.9.7",
