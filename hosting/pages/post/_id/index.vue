@@ -5,13 +5,17 @@
       <div v-if="hasTitle" class="heading">
         <h1>{{ getTitle }}</h1>
       </div>
+      <div v-if="post.items" class="items">
+        <ul>
+          <li v-for="item of post.items" :key="item.id">
+            <ItemCard :item="item" />
+          </li>
+        </ul>
+      </div>
       <Content v-html="mainContent" />
       <AdsensePostBottom />
       <CommentList :parent-id="parentId" />
-      <CommentForm
-        :parent-id="parentId"
-        :is-public="post.isPublic"
-      />
+      <CommentForm :parent-id="parentId" :is-public="post.isPublic" />
       <div v-if="post.entities" class="entities">
         <EntitySimpleList :entities="post.entities" />
       </div>
@@ -28,10 +32,7 @@
       <div class="heading">
         <h2><span class="border">関連記事</span></h2>
       </div>
-      <RelatedArticles
-        :tags="post.entities"
-        :exclude-id="post.id"
-      />
+      <RelatedArticles :tags="post.entities" :exclude-id="post.id" />
     </aside>
   </div>
 </template>
@@ -49,7 +50,6 @@ import {
   getSummary,
   removeTitle,
   getThumbnail,
-  decodeEntities,
 } from '~/plugins/typography'
 
 export default Vue.extend({
@@ -122,10 +122,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    if (
-      !this.$data.post.isPublic &&
-      !this.isAuthenticated
-    ) {
+    if (!this.$data.post.isPublic && !this.isAuthenticated) {
       this.$data.post = {}
       this.snack('ログインしてください')
       this.$router.push('/login')
@@ -165,7 +162,7 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: decodeEntities(getTitle(this.$data.post.content)),
+      title: getTitle(this.$data.post.content),
       meta: [
         {
           hid: 'og:title',
@@ -244,6 +241,10 @@ export default Vue.extend({
   .extra & {
     margin-bottom: $gap / 2;
   }
+}
+
+.items {
+  margin-bottom: $gap;
 }
 
 .entities {

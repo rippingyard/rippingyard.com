@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "FIRE_ENV=local nuxt-ts",
+    "dev": "PORT=3333 FIRE_ENV=local nuxt-ts",
     "dev:stg": "nuxt-ts",
     "dev:prd": "FIRE_ENV=production nuxt-ts",
     "build": "nuxt-ts build",

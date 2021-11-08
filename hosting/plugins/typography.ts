@@ -20,8 +20,13 @@ export const hasTitle = (str: string): boolean => {
 export const getTitle = (str: string, length: number = 32) => {
   if (!str) return ''
   const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
-  if (htag && htag[0] !== '') return htag[0]
+  if (htag && htag[0] !== '') return decodeEntities(htag[0])
   return getSummary(str, length)
+}
+
+export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {
+  if (!nameObject) return ''
+  return nameObject[lang] || ''
 }
 
 export const hasThumbnail = (str: string): boolean => {
@@ -32,12 +37,12 @@ export const getThumbnail = (str: string): string => {
   if (!str) return ''
 
   let image: string = ''
-  
+
   image = extractFirstImage(str)
   if (image) return image;
 
   const urls = extractUrls(str)
-  
+
   if (!urls) return ''
 
   urls.map((url: string) => {
@@ -91,8 +96,8 @@ export const stripTags = (content: string, linebreak = true) => {
   return !content
     ? ''
     : sanitizeHtml(content, {
-        allowedTags: [],
-      })
+      allowedTags: [],
+    })
 }
 
 export function extractFirstImage(content: string): string {
@@ -109,6 +114,10 @@ export function extractImages(content: string) {
     if (image) images.push(image[1])
   })
   return images
+}
+
+export function isUrl(string: string): boolean {
+  return /^http(s)?:\/\//.test(string)
 }
 
 export function extractUrls(content: string): string[] {
@@ -170,37 +179,37 @@ export function sanitize(content: string) {
   return !content
     ? ''
     : sanitizeHtml(content, {
-        allowedTags: [
-          'h1',
-          'h2',
-          'h3',
-          'h4',
-          'h5',
-          'h6',
-          'p',
-          'div',
-          'strong',
-          'b',
-          'i',
-          'em',
-          'a',
-          'img',
-          'blockquote',
-          'pre',
-          'code',
-          'mark',
-          'hr',
-          'ul',
-          'ol',
-          'li',
-          'br',
-        ],
-        allowedAttributes: {
-          div: ['class'],
-          a: ['href', 'name', 'target'],
-          img: ['src', 'alt', 'title'],
-        },
-      })
+      allowedTags: [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'p',
+        'div',
+        'strong',
+        'b',
+        'i',
+        'em',
+        'a',
+        'img',
+        'blockquote',
+        'pre',
+        'code',
+        'mark',
+        'hr',
+        'ul',
+        'ol',
+        'li',
+        'br',
+      ],
+      allowedAttributes: {
+        div: ['class'],
+        a: ['href', 'name', 'target'],
+        img: ['src', 'alt', 'title'],
+      },
+    })
 }
 
 export const decodeEntities = (str: string) => {

@@ -13,6 +13,7 @@ export type Post = {
   isPublic: boolean
   isDeleted: boolean
   entities: string[]
+  items: DocumentData[]
   status: 'published' | 'draft'
   sociallink?: string
 }

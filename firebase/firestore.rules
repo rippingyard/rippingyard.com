@@ -27,6 +27,11 @@ service cloud.firestore {
       allow create: if isAuthenticated();
       allow update, delete: if isAuthenticated();
     }
+    match /items/{itemId} {
+      allow read;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated();
+    }
     match /users/{userId} {
     	allow read;
       allow write: if isAuthenticated();

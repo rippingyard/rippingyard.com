@@ -13,20 +13,20 @@ interface ActionInterface {
   $fire?: any
 }
 
-export const scheme = {
-  slug: null,
+export const scheme: Omit<Post, 'id' | 'contentOriginal'> = {
+  slug: '',
   owner: null,
-  collaborators: null,
-  content: null,
+  colaborators: [],
+  content: '',
   status: 'published',
   type: 'log',
-  parent: null,
   entities: [],
-  relatedPosts: {
-    byUser: [],
-    byTerm: [],
-    expiredAt: null,
-  },
+  items: [],
+  // relatedPosts: {
+  //   byUser: [],
+  //   byTerm: [],
+  //   expiredAt: null,
+  // },
   counts: {
     favorite: 0,
     bookmark: 0,
@@ -98,7 +98,7 @@ export const actions: ActionInterface = {
 
       await db.set(newPost)
 
-    } catch (e) {}
+    } catch (e) { }
   },
   async delete({ rootState }, id): Promise<void> {
     console.log('delete:', id)
