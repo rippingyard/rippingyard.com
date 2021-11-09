@@ -48,8 +48,6 @@ export async function normalize(
 
     const items: Partial<Item>[] = [];
     if (!params.withoutItems && post.items) {
-      console.log('items', post.items)
-
       for (const item of post.items) {
         let itemObject: Partial<Item> = {}
         const cachedItem = await store.getters['item/one'](item.id)
