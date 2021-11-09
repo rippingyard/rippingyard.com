@@ -3,6 +3,14 @@ import urlParse from 'url-parse'
 import queryString from 'query-string'
 import sanitizeHtml from 'sanitize-html'
 
+export const nl2br = (str: string): string => {
+  if (!str) return '';
+  str = sanitizeHtml(str, {
+    allowedTags: [],
+  });
+  return str.replace(/\n/g, '<br/>');
+}
+
 export const removeHtmlTags = (str: string) => {
   return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
 }

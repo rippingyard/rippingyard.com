@@ -8,14 +8,7 @@
             <div class="header">
               <input v-model="itemName" />
             </div>
-            <div v-if="fetchContent" class="embed">
-              <h1>{{ fetchContent.title }}</h1>
-              <p v-if="fetchContent.image" class="img">
-                <img :src="fetchContent.image" />
-              </p>
-              <p>{{ fetchContent.description }}</p>
-              <div v-html="fetchContent.html" />
-            </div>
+            <EmbedCard v-if="embed" :content="embed" />
             <TextArea v-model="content" />
           </div>
           <div class="footer">
@@ -45,12 +38,14 @@ import Vue from 'vue'
 import { mapActions } from 'vuex'
 import { getLength, isUrl } from '~/plugins/typography'
 import { Post } from '~/types/post'
+import { Embed } from '~/types/embed'
+import { Item } from '~/types/item'
 
 type DataType = {
   content: string
   itemName: string
   entities: string[]
-  fetchContent: any
+  embed: Embed
   resetCount: number
   status: 'published' | 'draft'
   isPublic: boolean
@@ -70,7 +65,9 @@ export default Vue.extend({
       content: '',
       itemName: '',
       entities: [],
-      fetchContent: {},
+      embed: {
+        isLoading: false,
+      },
       resetCount: 0,
       status: 'published',
       isPublic: true,
@@ -93,15 +90,16 @@ export default Vue.extend({
     },
   },
   watch: {
-    async itemName(url) {
-      console.log(url, isUrl(url))
-      const api = (this as any).$fire.functions.httpsCallable('apiFetchUrl')
-      // const result = await axios.get(url)
-      const res = await api({
-        url,
-      })
-      console.log('API', res)
-      this.fetchContent = res.data
+    async itemName(val) {
+      this.embed = {
+        isLoading: false,
+      }
+      if (isUrl(val)) {
+        this.embed = {
+          isLoading: true,
+        }
+        await this.fetchUrl(val)
+      }
     },
   },
   methods: {
@@ -116,6 +114,20 @@ export default Vue.extend({
     },
     closeForm(): void {
       this.isOpen = false
+    },
+    async fetchUrl(url: string): Promise<void> {
+      try {
+        const api = (this as any).$fire.functions.httpsCallable('apiFetchUrl')
+        const res = await api({
+          url,
+        })
+        this.embed = { ...res.data, isLoading: false }
+      } catch (e) {
+        this.embed = {
+          error: (e as any).message,
+          isLoading: false,
+        }
+      }
     },
     async submit(): Promise<void> {
       let status = 'failed'
@@ -132,7 +144,7 @@ export default Vue.extend({
       try {
         this.isSaving = true
 
-        let payload = {}
+        let payload: Partial<Item> = {}
         if (!isUrl(this.itemName)) {
           payload = {
             name: {
@@ -141,11 +153,17 @@ export default Vue.extend({
             type: 'unknown',
           }
         } else {
+          if (this.embed.isLoading && isUrl(this.itemName)) {
+            await this.fetchUrl(this.itemName)
+          }
           payload = {
             name: {
-              ja: this.itemName,
+              ja: this.embed.title || this.itemName,
             },
             url: this.itemName,
+            thumbnailImage: this.embed.image || '',
+            images: this.embed.image ? [this.embed.image] : [],
+            metadata: this.embed.url ? this.embed : {},
             type: 'bookmark',
           }
         }
@@ -266,17 +284,6 @@ export default Vue.extend({
     }
     .button {
       display: inline-block;
-    }
-  }
-}
-
-.embed {
-  .img {
-    width: 100px;
-    height: 100px;
-    > img {
-      max-width: 100%;
-      max-height: 100%;
     }
   }
 }

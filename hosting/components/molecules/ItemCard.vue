@@ -13,6 +13,7 @@
     <p class="type">
       <span>{{ item.type }}</span>
     </p>
+    <EmbedCard v-if="item.metadata" :content="item.metadata" />
   </div>
 </template>
 <script lang="ts">

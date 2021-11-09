@@ -7,8 +7,10 @@ export type Item = {
   name: ItemTitle | null
   type: 'item' | 'place' | 'work' | 'person' | 'bookmark' | 'unknown'
   thumbnailImage: string
+  url: string
   images: string[]
   entities: string[]
+  metadata?: { [key: string]: any }
   createdAt: string | Date
   updatedAt: string | Date
   hostGroup?: null

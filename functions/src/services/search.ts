@@ -22,7 +22,7 @@ interface SearchObject {
 }
 
 function init(indexName: string) {
-  console.log('algolia setting', functions.config().algolia.config)
+  console.log('algolia setting', functions.config().algolia)
   if (!functions.config().algolia.appid) return
   const appId: string = functions.config().algolia.appid
   const apiKeyAdmin: string = functions.config().algolia.apikeyadmin
