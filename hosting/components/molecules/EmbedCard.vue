@@ -1,22 +1,21 @@
 ﻿<template>
-  <div>
+  <section>
     <a v-if="content.url" :href="content.url" class="embed" target="_blank">
-      <p class="sitename">{{ content.site }}</p>
-      <h1 class="title">{{ content.title }}</h1>
-      <p class="url">{{ content.url }}</p>
+      <p v-if="content.image" class="img">
+        <img :src="content.image" />
+      </p>
       <div class="content">
+        <p class="sitename">{{ content.site }}</p>
+        <h1 class="title">{{ content.title }}</h1>
+        <p class="url">{{ content.url }}</p>
         <p
           class="description"
           v-html="nl2br(getSummary(content.description))"
         />
-        <p v-if="content.image" class="img">
-          <img :src="content.image" />
-        </p>
       </div>
     </a>
     <div v-if="content.error">エラーが発生しました：{{ content.error }}</div>
-    <div v-if="content.isLoading">Loading...</div>
-  </div>
+  </section>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -41,15 +40,19 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .embed {
-  display: block;
-  border: 1px solid $black;
+  display: flex;
+  // border: 1px solid $black;
   padding: 12px;
+  .content {
+    flex-grow: 1;
+  }
   .sitename {
     font-size: 0.8rem;
   }
   .title {
     font-size: 1rem;
     font-weight: 800;
+    overflow-wrap: anywhere;
   }
   .url {
     font-size: 0.8rem;
@@ -61,12 +64,11 @@ export default Vue.extend({
     overflow: hidden;
     margin: 8px 0;
   }
-  .content {
-    display: flex;
-  }
   .img {
-    width: 60px;
-    height: 60px;
+    flex-shrink: 0;
+    width: 140px;
+    padding-right: 15px;
+    // height: 60px;
     > img {
       max-width: 100%;
       max-height: 100%;
@@ -75,6 +77,7 @@ export default Vue.extend({
   .description {
     font-size: 0.8rem;
     line-height: 1.5;
+    overflow-wrap: anywhere;
   }
 }
 </style>

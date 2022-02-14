@@ -21,7 +21,7 @@ export const scheme: Omit<Item, 'id'> = {
   entities: [],
   images: [],
   thumbnailImage: '',
-  url: '',
+  path: '',
   metadata: {},
   counts: {
     favorite: 0,
@@ -33,20 +33,23 @@ export const scheme: Omit<Item, 'id'> = {
   updatedAt: dayjs().toDate(),
 }
 
-export const state = () => ({
+type StateType = {
+  items: { [id: string]: Item }
+}
+
+export const state = (): StateType => ({
   items: {},
 })
 
 export const mutations = {
   setItem(state: State, { id, item }: { id: string; item: Item }) {
-    state.items[id] = item
+    if (!state.items[id]) state.items[id] = item
   },
 }
 
 export const actions: ActionInterface = {
   async getOne(_, id): Promise<null | Item> {
     let item = null
-    // console.log('$fire', this)
     try {
       await this.$fire.firestore
         .collection('items')
@@ -81,12 +84,15 @@ export const actions: ActionInterface = {
 
       const newItem = { ...scheme, ...item }
 
+      console.log('newItem', newItem)
+
       await db.set(newItem)
 
       return this.$fire.firestore.doc(db.path)
 
     } catch (e: any) {
-      console.error(e.message)
+      console.error(e)
+      throw e
     }
   },
   async delete({ rootState }, id): Promise<void> {
@@ -109,4 +115,7 @@ export const getters = {
   one: (state: State) => (id: string) => {
     return state.items[id] || null
   },
+  all: (state: State) => () => {
+    return state.items || []
+  }
 }

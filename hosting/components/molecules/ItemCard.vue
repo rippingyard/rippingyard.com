@@ -1,25 +1,36 @@
 ﻿<template>
-  <div class="card">
-    <!-- <nuxt-link
-        v-if="user.avatar"
-        :to="permalink"
-        class="avatar"
-        :style="avatar"
-      /> -->
-    <h2 class="name">
-      <a v-if="isBookmark" :href="item.url" target="_blank">{{ name() }}</a>
-      <nuxt-link v-else :to="permalink">{{ name() }}</nuxt-link>
-    </h2>
-    <p class="type">
-      <span>{{ item.type }}</span>
-    </p>
-    <EmbedCard v-if="item.metadata" :content="item.metadata" />
+  <div class="card" :class="{ 'no-border': editable }">
+    <EmbedCard v-if="isBookmark" :content="item.metadata" />
+    <div v-else class="inner">
+      <ul v-if="editable" class="types">
+        <li
+          v-for="type of itemTypes"
+          :key="type.key"
+          :class="{
+            selected: type.key === item.type,
+            unset: type.key === 'unknown',
+          }"
+          @click="setType(type.key)"
+        >
+          {{ type.label }}
+        </li>
+      </ul>
+      <ul v-else class="types">
+        <li class="selected">
+          {{ typeLabel }}
+        </li>
+      </ul>
+      <h2 class="name">
+        {{ name() }}
+      </h2>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import { getI18nName } from '~/plugins/typography'
 import { Item } from '~/types/item'
+import { itemTypes } from '~/services/item'
 
 export default Vue.extend({
   props: {
@@ -30,16 +41,31 @@ export default Vue.extend({
           name: {
             ja: '',
           },
+          type: 'unknown',
         }
       },
     },
+    editable: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
+    itemTypes(): {
+      key: string
+      label: string
+    }[] {
+      return itemTypes
+    },
+    typeLabel(): string {
+      const type = this.itemTypes.find(t => t.key === this.item?.type)
+      return type ? type.label : '未設定'
+    },
     permalink(): string {
       return `/item/${(this.item as Partial<Item>).id}`
     },
     isBookmark(): boolean {
-      return this.item.type === 'bookmark' && this.item.url
+      return this.item?.type === 'bookmark' && this.item?.path
     },
     thumbnailImage(): string {
       return `background-image:url(${
@@ -54,14 +80,21 @@ export default Vue.extend({
     enName(): string {
       return getI18nName(this.item.name, 'en')
     },
+    setType(type: string): void {
+      this.item.type = type
+    },
   },
 })
 </script>
 <style lang="scss" scoped>
 .card {
-  border: 1px solid $gray;
+  border: 1px solid $gray-black;
   // background: $black;
-  padding: $gap / 2;
+  // padding: $gap / 2;
+
+  &.no-border {
+    border: none;
+  }
 
   .avatar {
     width: 80px;
@@ -76,35 +109,42 @@ export default Vue.extend({
     background-size: cover;
   }
 
-  .name {
-    font-size: 1.1rem;
-    font-weight: 800;
-    // padding: $gap / 2;
-    // border-bottom: 1px dashed $yellow;
-  }
-
-  .type {
-    > span {
-      font-size: 0.8rem;
+  .inner {
+    .name {
+      font-size: 1.2rem;
       font-weight: 800;
-      padding: 3px;
-      background-color: $black;
-      color: $white;
+      padding: $gap / 3;
+      // border-bottom: 1px dashed $yellow;
+    }
+
+    .types {
+      > li {
+        display: inline-block;
+        background-color: transparent;
+        color: $black;
+        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-bottom: 1px solid $black;
+        border-right: 1px solid $black;
+        cursor: pointer;
+        &.label {
+          cursor: default;
+        }
+        &:hover {
+          background-color: $gray;
+        }
+        &.selected {
+          background-color: $black;
+          color: $yellow;
+          &.unset {
+            color: $gray-black;
+          }
+        }
+      }
     }
   }
 
-  // .profile {
-  //   padding: ($gap/2) ($gap/2) 6px;
-  //   /deep/ p {
-  //     margin-bottom: 10px;
-  //     font-size: 0.9rem;
-  //   }
-  // }
-
   @include mobile {
-    padding: 4px;
-    border: 2px solid $yellow;
-
     .name {
       padding: $gap / 2;
     }

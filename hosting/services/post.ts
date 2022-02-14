@@ -46,6 +46,28 @@ export async function normalize(
       }
     }
 
+    let parent: Partial<Post | Item> | null = null;
+    if (!params.withoutItems && post.parent) {
+      if (post.parent.path.startsWith('items')) {
+        let itemObject: Partial<Item> = {}
+        const cachedItem = await store.getters['item/one'](post.parent.id)
+        if (!cachedItem) {
+          try {
+            await post.parent.get().then((doc: any) => {
+              itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
+              store.commit('item/setItem', itemObject)
+            })
+          } catch (e) {
+            console.warn('Error', e)
+          }
+        } else {
+          console.log('Cached!')
+          itemObject = cachedItem
+        }
+        if (itemObject.id) parent = itemObject
+      }
+    }
+
     const items: Partial<Item>[] = [];
     if (!params.withoutItems && post.items) {
       for (const item of post.items) {
@@ -76,10 +98,10 @@ export async function normalize(
         sociallink: sociallink(id),
         content: filterContent(post.content),
         contentOriginal: post.content,
-        // parent: null,
 
         owner,
         items,
+        parent,
 
         isDeleted: post.isDeleted,
 

@@ -25,11 +25,11 @@ export const hasTitle = (str: string): boolean => {
   return /<h.(?: .+?)?>.*?<\/h.>/.test(str)
 }
 
-export const getTitle = (str: string, length: number = 32) => {
+export const getTitle = (str: string, length: number = 32, alt?: string) => {
   if (!str) return ''
   const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
   if (htag && htag[0] !== '') return decodeEntities(htag[0])
-  return getSummary(str, length)
+  return alt || getSummary(str, length)
 }
 
 export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {

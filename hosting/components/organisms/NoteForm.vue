@@ -1,56 +1,52 @@
 ﻿<template>
-  <div>
+  <div v-show="isAuthenticated" class="form">
     <client-only>
-      <nav v-if="isAuthenticated" class="nav">
-        <CommentTrigger :click="toggleForm" />
-        <div class="form" :class="{ open: isOpen }">
-          <div class="inner">
-            <div class="header">
-              <input v-model="itemName" />
-            </div>
-            <EmbedCard v-if="embed" :content="embed" />
-            <TextArea v-model="content" />
-          </div>
-          <div class="footer">
-            <div class="footer-main">
-              <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
-            </div>
-            <div class="footer-side">
-              <div :class="{ 'is-over': isOver }" class="counter">
-                {{ contentLength }} / {{ limit }}
-              </div>
-              <button
-                :class="{ 'is-disabled': isOver || isEmpty }"
-                class="button"
-                @click="submit()"
-              >
-                投稿する
-              </button>
-            </div>
+      <div class="item bg-dotted">
+        <div class="inner">
+          <ItemForm :item="item" @update-item="updateItem" />
+        </div>
+      </div>
+      <div class="inner">
+        <TextArea v-model="content" />
+      </div>
+      <div class="footer bg-dotted">
+        <div class="footer-main">
+          <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
+          <button
+            :class="{ 'is-disabled': isOver || isEmpty }"
+            class="button"
+            @click="submit()"
+          >
+            投稿する
+          </button>
+        </div>
+        <div class="footer-side">
+          <div :class="{ 'is-over': isOver }" class="counter">
+            {{ contentLength }} / {{ limit }}
           </div>
         </div>
-      </nav>
+      </div>
     </client-only>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import { mapActions } from 'vuex'
-import { getLength, isUrl } from '~/plugins/typography'
+import { getLength } from '~/plugins/typography'
 import { Post } from '~/types/post'
-import { Embed } from '~/types/embed'
 import { Item } from '~/types/item'
+import { permalink } from '~/services/post'
 
 type DataType = {
   content: string
-  itemName: string
+  item: Item | null
   entities: string[]
-  embed: Embed
   resetCount: number
   status: 'published' | 'draft'
   isPublic: boolean
   isOpen: boolean
   isSaving: boolean
+  cleaningItem: number
 }
 
 export default Vue.extend({
@@ -63,16 +59,14 @@ export default Vue.extend({
   data(): DataType {
     return {
       content: '',
-      itemName: '',
       entities: [],
-      embed: {
-        isLoading: false,
-      },
       resetCount: 0,
+      item: null,
       status: 'published',
       isPublic: true,
       isOpen: false,
       isSaving: false,
+      cleaningItem: new Date().getTime(),
     }
   },
   computed: {
@@ -89,19 +83,6 @@ export default Vue.extend({
       return this.contentLength === 0
     },
   },
-  watch: {
-    async itemName(val) {
-      this.embed = {
-        isLoading: false,
-      }
-      if (isUrl(val)) {
-        this.embed = {
-          isLoading: true,
-        }
-        await this.fetchUrl(val)
-      }
-    },
-  },
   methods: {
     ...mapActions({
       saveItem: 'item/save',
@@ -115,19 +96,14 @@ export default Vue.extend({
     closeForm(): void {
       this.isOpen = false
     },
-    async fetchUrl(url: string): Promise<void> {
-      try {
-        const api = (this as any).$fire.functions.httpsCallable('apiFetchUrl')
-        const res = await api({
-          url,
-        })
-        this.embed = { ...res.data, isLoading: false }
-      } catch (e) {
-        this.embed = {
-          error: (e as any).message,
-          isLoading: false,
-        }
-      }
+    clearForm(): void {
+      this.content = ''
+      this.entities = []
+      this.item = null
+    },
+    updateItem(val: any): void {
+      console.log('updateItem', val)
+      this.item = !val ? null : val
     },
     async submit(): Promise<void> {
       let status = 'failed'
@@ -144,35 +120,31 @@ export default Vue.extend({
       try {
         this.isSaving = true
 
-        let payload: Partial<Item> = {}
-        if (!isUrl(this.itemName)) {
-          payload = {
-            name: {
-              ja: this.itemName,
-            },
-            type: 'unknown',
+        if (this.item) {
+          console.log('item save', this.item)
+          console.log('this.item.path', this.item.path)
+          console.log('this.item.type', this.item.type)
+          // TODO: 存在判定
+          const q = await (this as any).$fire.firestore
+            .collection('items')
+            .where('isDeleted', '==', false)
+            .where('path', '==', this.item.path)
+            .where('type', '==', this.item.type)
+            // .where('status', '==', 'published')
+            .limit(1)
+            .orderBy('createdAt', 'desc')
+            .get()
+
+          console.log('q', q.docs[0])
+
+          if (!q.empty) {
+            params.parent = q.docs[0].ref
+          } else {
+            const item = await this.saveItem(this.item)
+            params.parent = item
           }
-        } else {
-          if (this.embed.isLoading && isUrl(this.itemName)) {
-            await this.fetchUrl(this.itemName)
-          }
-          payload = {
-            name: {
-              ja: this.embed.title || this.itemName,
-            },
-            url: this.itemName,
-            thumbnailImage: this.embed.image || '',
-            images: this.embed.image ? [this.embed.image] : [],
-            metadata: this.embed.url ? this.embed : {},
-            type: 'bookmark',
-          }
+          console.log('parent', params.parent)
         }
-
-        const item = await this.saveItem(payload)
-
-        console.log('Item', item)
-
-        params.items = [item]
 
         //   if (this.post?.id) params.id = this.post.id
         //   console.log('val', schemaPost.validate(params))
@@ -199,10 +171,15 @@ export default Vue.extend({
         //     if (promises) await Promise.all(promises)
         //   }
 
-        await this.savePost(params)
+        const newPost = await this.savePost(params)
         status = 'succeeded'
+
+        console.log('NEWPOST!!!!', newPost)
+
+        this.clearForm()
+        this.$router.push(permalink(newPost.id))
       } catch (e) {
-        console.warn(e)
+        console.error(e)
       }
 
       await this.saveActivity({
@@ -218,28 +195,38 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .form {
-  position: fixed;
-  width: 440px;
-  // height: 300px;
-  right: 15px;
-  bottom: 60px;
+  width: 100%;
   z-index: 80000;
-  background-color: $gray;
   border-radius: 10px;
-  display: none;
-  &.open {
-    display: block;
-  }
-  .inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .item {
     padding: 20px;
+    border-bottom: 1px solid $black;
+    flex-shrink: 0;
+    > .inner {
+      background: $yellow;
+      border: 1px solid $black;
+    }
+  }
+
+  > .inner {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
   }
 
   .footer {
     display: flex;
     position: relative;
-    justify-content: space-between;
-    // border-top: 1px solid $gray-black;
-    padding: 10px;
+    width: 100%;
+    padding: 20px;
+    border-top: 1px solid $black;
+    flex-shrink: 0;
+    align-items: center;
 
     @include mobile {
       width: 100%;
@@ -247,8 +234,10 @@ export default Vue.extend({
     }
 
     .footer-main {
+      display: flex;
+      align-items: center;
       text-align: left;
-      width: 50%;
+      flex-grow: 1;
       @include mobile {
         display: inline-block;
         position: absolute;
@@ -257,8 +246,10 @@ export default Vue.extend({
       }
     }
     .footer-side {
+      display: flex;
+      align-items: center;
       text-align: right;
-      width: 50%;
+      flex-grow: 1;
       @include mobile {
         width: 100%;
         text-align: right;
@@ -278,6 +269,7 @@ export default Vue.extend({
     .counter {
       display: inline-block;
       margin-right: 10px;
+      flex-grow: 1;
       &.is-over {
         color: $red;
       }

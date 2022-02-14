@@ -50,7 +50,7 @@ export const mutations = {
 }
 
 export const actions: ActionInterface = {
-  async save({ rootState }, post) {
+  async save({ rootState }, post): Promise<Post> {
     try {
       // TODO: validation
       // TODO: auth処理
@@ -98,7 +98,12 @@ export const actions: ActionInterface = {
 
       await db.set(newPost)
 
-    } catch (e) { }
+      return newPost
+
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
   },
   async delete({ rootState }, id): Promise<void> {
     console.log('delete:', id)

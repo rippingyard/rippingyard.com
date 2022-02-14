@@ -7,7 +7,7 @@ export type Item = {
   name: ItemTitle | null
   type: 'item' | 'place' | 'work' | 'person' | 'bookmark' | 'unknown'
   thumbnailImage: string
-  url: string
+  path: string
   images: string[]
   entities: string[]
   metadata?: { [key: string]: any }

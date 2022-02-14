@@ -1,0 +1,75 @@
+﻿<template>
+  <svg
+    version="1.1"
+    class="loadingIcon"
+    :class="color"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    viewBox="0 0 52 52"
+    style="enable-background: new 0 0 52 52"
+    xml:space="preserve"
+  >
+    <path
+      class="loading__front"
+      d="M51,26c0,13.8-11.2,25-25,25S1,39.8,1,26S12.2,1,26,1S51,12.2,51,26z"
+    />
+    <path
+      class="loading__back"
+      d="M51,26c0,13.8-11.2,25-25,25S1,39.8,1,26S12.2,1,26,1S51,12.2,51,26z"
+    />
+  </svg>
+</template>
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  props: {
+    color: {
+      type: String,
+      default: 'white',
+    },
+  },
+})
+</script>
+<style lang="scss" scoped>
+.loadingIcon {
+  width: 80px;
+  animation: rotate-transition 1s ease-in-out infinite;
+  .loading__front {
+    fill: none;
+    stroke: $white;
+    stroke-width: 1;
+    // stroke-miterlimit: 10;
+    stroke-dasharray: 65% 295%;
+  }
+  .loading__back {
+    fill: none;
+    stroke: $white;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke-opacity: 0.5;
+  }
+  &.black {
+    .loading__front,
+    .loading__back {
+      stroke: $black;
+    }
+  }
+  &.yellow {
+    .loading__front,
+    .loading__back {
+      stroke: $yellow;
+    }
+  }
+}
+
+@keyframes rotate-transition {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

@@ -1,14 +1,16 @@
 <template>
-  <div class="block container">
+  <main>
     <Header />
-    <div class="heading">
-      <h1 class="title">{{ message }}</h1>
+    <div class="block">
+      <div class="heading">
+        <h1 class="title">{{ message }}</h1>
+      </div>
+      <div class="wysiwyg">
+        <p>エラーが発生しました。</p>
+        <p><NuxtLink class="button" to="/">トップに戻る</NuxtLink></p>
+      </div>
     </div>
-    <div class="wysiwyg">
-      <p>エラーが発生しました。</p>
-      <p><NuxtLink class="button" to="/">トップに戻る</NuxtLink></p>
-    </div>
-  </div>
+  </main>
 </template>
 
 <script>

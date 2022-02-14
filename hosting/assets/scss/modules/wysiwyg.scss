@@ -1,9 +1,7 @@
 
 .ProseMirror,
 .wysiwyg {
-  // color: #111;
   outline: none;
-  // font-size: 14px;
   line-height: 1.8;
   
   a {
@@ -29,6 +27,7 @@
   pre {
     padding-bottom: 25px;
     font-size: 1rem;
+    text-align: justify;
   }
 
   div {
@@ -43,7 +42,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 3rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.8rem;
     }
   }
@@ -53,7 +52,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 2.2rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.4rem;
     }
   }
@@ -63,7 +62,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 1.8rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.3rem;
     }
   }
@@ -73,7 +72,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 1.4rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.2rem;
     }
   }
@@ -82,7 +81,7 @@
     font-size: 1.15rem;
     line-height: 1.4;
     padding-top: 1rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.1rem;
     }
   }
@@ -91,7 +90,7 @@
     font-size: 1.1rem;
     line-height: 1.4;
     padding-top: 0.8rem;
-    @include mobile {
+    @include until($desktop) {
       font-size: 1.05rem;
     }
   }
@@ -121,11 +120,13 @@
   ul {
     list-style-type: disc;
     padding-left: 18px;
+    list-style-position: inside;
   }
 
   ol {
     list-style-type: decimal;
     padding-left: 22px;
+    list-style-position: inside;
   }
 
   li {
@@ -169,6 +170,42 @@
       right: 0;
       width: 100% !important;
       height: 100% !important;
+    }
+  }
+
+  &.is-article {
+    @include until($desktop) {
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      // ul,
+      // ol,
+      div,
+      blockquote,
+      pre {
+        padding-left: $gap / 2;
+        padding-right: $gap / 2;
+      }
+
+      ul {
+        list-style-type: disc;
+        padding-left: 18px;
+      }
+    
+      ol {
+        list-style-type: decimal;
+        padding-left: 22px;
+      }
+  
+      .widget-youtube {
+        margin-left: ($gap / 2) * -1;
+        margin-right: ($gap / 2) * -1;
+        width: calc(100% + #{$gap});
+      }
     }
   }
 

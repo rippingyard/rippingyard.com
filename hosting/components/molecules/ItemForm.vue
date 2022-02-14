@@ -1,0 +1,265 @@
+﻿<template>
+  <section class="inner">
+    <div v-show="status !== 'shown'">
+      <p class="label">何について書きますか？</p>
+      <input v-model="itemName" class="input" @keypress.enter="fetchItem" />
+    </div>
+    <div v-if="status === 'loading'" class="loading">
+      <LoadingIcon color="yellow" />
+    </div>
+    <div v-else-if="status !== 'hidden'" class="embed">
+      <button class="close" @click="resetItem"></button>
+      <ItemCard :item="item" :no-border="true" :editable="true" />
+    </div>
+    <div v-if="isSuggesting" class="suggest">
+      <ul>
+        <li
+          v-for="suggestedItem of suggestedItems"
+          :key="suggestedItem.id"
+          :class="{ 'is-selected': suggestedItem.id === selectedItemId }"
+          @click="selectItem(suggestedItem)"
+        >
+          {{ suggestedItem.name.ja }}
+        </li>
+      </ul>
+      <div class="overflow" @click="clearSuggestItems()" />
+    </div>
+  </section>
+</template>
+<script lang="ts">
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { Embed } from '~/types/embed'
+import { isUrl } from '~/plugins/typography'
+import { Item } from '~/types/item'
+
+type DataType = {
+  itemName: string
+  embed: Embed
+  status: 'hidden' | 'loading' | 'shown'
+  selectedItemId: string | null
+  hideSuggesting: boolean
+  timer: NodeJS.Timeout | null
+}
+
+export default Vue.extend({
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data(): DataType {
+    return {
+      itemName: '',
+      embed: {},
+      status: 'hidden',
+      selectedItemId: null,
+      hideSuggesting: false,
+      timer: null,
+    }
+  },
+  computed: {
+    ...mapGetters({
+      items: 'item/all',
+    }),
+    suggestedItems(): Item[] {
+      if (!this.itemName) return []
+      const keys: string[] = Object.keys(this.items())
+      const items: Item[] = []
+      for (const key of keys) {
+        if (
+          this.items()[key]?.path &&
+          (this.items()[key].path.match(new RegExp(this.itemName)) ||
+            this.items()[key].name.ja.match(new RegExp(this.itemName)))
+        ) {
+          items.push(this.items()[key])
+        }
+      }
+      console.log('suggestedItems', items)
+      return items.slice(0, 5)
+    },
+    isSuggesting(): boolean {
+      return !this.hideSuggesting && this.suggestedItems.length > 0
+    },
+  },
+  watch: {
+    itemName(): void {
+      this.resetItem()
+    },
+    item(val: Item | null): void {
+      console.log('item updated', val)
+      if (!val) {
+        this.itemName = ''
+        this.status = 'hidden'
+        this.resetItem()
+      }
+    },
+  },
+  async created() {
+    const q = (this as any).$fire.firestore
+      .collection('items')
+      .where('isDeleted', '==', false)
+      .where('status', '==', 'published')
+      .limit(1000)
+      .orderBy('createdAt', 'desc')
+    const qs = await q.get()
+    for (const doc of qs.docs) {
+      const item: Item = doc.data()
+      this.$store.commit('item/setItem', { id: item.id, item })
+    }
+    console.log('items', this.items())
+  },
+  methods: {
+    resetItem(): void {
+      this.embed = {}
+      this.status = 'hidden'
+      this.hideSuggesting = false
+      this.$emit('update-item')
+    },
+    async fetchItem(): Promise<void> {
+      console.log('startFetch', this.itemName)
+      this.status = 'loading'
+
+      const payload: Partial<Item> = {
+        name: {
+          ja: this.itemName,
+        },
+        type: 'unknown',
+        path: this.itemName,
+      }
+
+      if (isUrl(this.itemName)) {
+        this.embed = {}
+        await this.fetchUrl(this.itemName)
+
+        payload.type = 'bookmark'
+        payload.name = {
+          ja: this.embed.title || this.itemName,
+        }
+        payload.thumbnailImage = this.embed.image || ''
+        payload.images = this.embed.image ? [this.embed.image] : []
+        payload.metadata = this.embed.url ? this.embed : {}
+      }
+
+      this.$emit('update-item', payload)
+      this.status = 'shown'
+    },
+    async fetchUrl(url: string): Promise<void> {
+      try {
+        const api = (this as any).$fire.functions.httpsCallable('apiFetchUrl')
+        const res = await api({
+          url,
+        })
+        this.embed = { ...res.data, status: 'shown' }
+      } catch (e) {
+        this.status = 'hidden'
+        this.embed = {
+          error: (e as any).message,
+        }
+      }
+    },
+    selectItem(item: Item): void {
+      this.selectedItemId = item.id
+      this.status = 'shown'
+      this.hideSuggesting = true
+      this.$emit('update-item', item)
+    },
+    clearSuggestItems(): void {
+      this.hideSuggesting = true
+    },
+  },
+})
+</script>
+<style lang="scss" scoped>
+.inner {
+  position: relative;
+  z-index: 100;
+  .label {
+    display: inline-block;
+    background-color: $black;
+    color: $yellow;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-bottom: 1px solid $black;
+    border-right: 1px solid $black;
+  }
+  .input {
+    font-size: 1.1rem;
+    font-weight: 800;
+    width: 100%;
+    padding: 3px 13px 13px;
+  }
+  .embed {
+    position: relative;
+    border: 7px $black solid;
+    overflow: hidden;
+    .close {
+      display: block;
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      width: 24px;
+      height: 26px;
+      cursor: pointer;
+      background-color: $black;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: 12px;
+        background: $yellow;
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+  .suggest {
+    position: absolute;
+    z-index: 100;
+    left: -1px;
+    bottom: -301px;
+    width: calc(100% + 2px);
+    height: 300px;
+    > ul {
+      > li {
+        border: 1px solid $black;
+        border-top: 0;
+        padding: 8px $gap / 4;
+        background-color: $yellow;
+        color: $black;
+        cursor: pointer;
+        &.is-selected {
+          background-color: $black;
+          color: $yellow;
+        }
+      }
+    }
+    .overflow {
+      position: fixed;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+.loading {
+  display: flex;
+  padding: $gap 0;
+  background-color: $black;
+  align-items: center;
+  justify-content: center;
+}
+</style>

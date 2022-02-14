@@ -116,8 +116,17 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: ['destyle.css', '~/assets/scss/app.scss'],
 
+  loading: {
+    color: '#111111',
+  },
+
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/middleware/gtm', '~/plugins/auth', '~/middleware/snack'],
+  plugins: [
+    '~/middleware/gtm',
+    '~/plugins/auth',
+    '~/plugins/velocity',
+    '~/middleware/snack',
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -182,7 +191,13 @@ export default {
                 // },
               }
               : true,
-          storage: true,
+          storage:
+            process.env.FIRE_ENV === 'local'
+              ? {
+                emulatorPort: 9199,
+                emulatorHost: 'localhost',
+              }
+              : true,
         },
         // onFirebaseHosting: true,
       },
@@ -206,6 +221,7 @@ export default {
     icons: {
       solid: [
         'faAngleRight',
+        'faBell',
         'faBold',
         'faClock',
         'faClosedCaptioning',
@@ -221,8 +237,11 @@ export default {
         'faListOl',
         'faParagraph',
         'faQuoteRight',
+        'faPlusCircle',
         'faRulerHorizontal',
         'faStrikethrough',
+        'faSearch',
+        'faTachometerAlt',
         'faTag',
         'faTimes',
         'faTrashAlt',

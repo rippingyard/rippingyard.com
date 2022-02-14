@@ -1,23 +1,24 @@
 <template>
-  <section class="columns">
-    <div class="column c20">
-      <ManageNav />
+  <main class="page">
+    <ManageHeading label="記事編集" />
+    <div class="form">
+      <PostForm :post="post" submit-label="記事更新" />
     </div>
-    <main class="column c80">
-      <ManageHeading label="記事編集" />
-      <div class="form">
-        <PostForm :post="post" submit-label="記事更新" />
-      </div>
-    </main>
-  </section>
+  </main>
 </template>
+<script lang="ts">
+import Vue from 'vue'
 
-<script>
-export default {
-  layout: 'manage',
+type DataType = {
+  postId?: string
+  post?: any
+}
+
+export default Vue.extend({
+  // layout: 'manage',
   middleware: ['auth'],
-  async asyncData({ $fire, params, error }) {
-    const r = {}
+  async asyncData({ $fire, params, error }: any) {
+    const r: DataType = {}
 
     // if( !query.id ) throw '記事が見つかりません'
 
@@ -31,7 +32,7 @@ export default {
       .collection('posts')
       .doc(postId)
       .get()
-      .then(doc => {
+      .then((doc: any) => {
         r.post = doc.data()
         r.post.id = doc.id
 
@@ -44,17 +45,13 @@ export default {
             uid: r.post.owner.id,
           }
         }
-
-        // console.log('before filter', r.post)
       })
-      .catch(e => {
+      .catch((e: any) => {
         error({
           statusCode: 404,
           message: e.message || 'ページが見つかりません',
         })
       })
-
-    // console.log('return value', r)
 
     return r
   },
@@ -64,9 +61,13 @@ export default {
       title: '記事編集 - HOME',
     }
   },
-}
+})
 </script>
 <style lang="scss" scoped>
+.page {
+  margin-top: $gap;
+  border: 1px solid $gray-black;
+}
 .form {
   padding: 10px 60px 60px;
 }

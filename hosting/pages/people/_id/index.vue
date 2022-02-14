@@ -1,7 +1,42 @@
 ﻿<template>
   <article class="block container is-wide">
-    <Header :is-wide="true" />
-    <div class="columns">
+    <div class="block container">
+      <Header />
+      <ul class="tabs">
+        <li
+          :class="{ active: isActiveTab('posts') }"
+          @click="activateTab('posts')"
+        >
+          記事
+        </li>
+        <li
+          :class="{ active: isActiveTab('profile') }"
+          @click="activateTab('profile')"
+        >
+          プロフィール
+        </li>
+      </ul>
+      <div class="contents">
+        <div v-if="isActiveTab('posts')" class="content">
+          <ul class="list">
+            <li v-for="post in posts" :key="post.id">
+              <PostListItem :post="post" />
+            </li>
+          </ul>
+        </div>
+        <div v-if="isActiveTab('profile')" class="content">
+          <div class="block">
+            <h1>プロフィール</h1>
+            <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
+          </div>
+          <div v-if="createdate" class="block">
+            <h1>登録日</h1>
+            <p>{{ createdate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="columns">
       <div class="column c30">
         <div class="profile">
           <p v-if="user.avatar" class="avatar" :style="avatar"></p>
@@ -46,7 +81,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </article>
 </template>
 
@@ -61,12 +96,15 @@ import { Post } from '~/types/post'
 import { normalize, filterContent } from '~/services/post'
 import { getSummary } from '~/plugins/typography'
 
+type DataType = {
+  user?: Partial<User>
+  posts?: Partial<Post>[]
+  activeTab: string
+}
+
 export default Vue.extend({
-  async asyncData({ $fire, params, store }: Context) {
-    const r: {
-      user?: Partial<User>
-      posts?: Partial<Post>[]
-    } = {}
+  async asyncData({ $fire, params, store }: Context): Promise<any> {
+    const r: Partial<DataType> = {}
     const userId = params.id // TODO: 無毒化
 
     const cachedUser = await store.getters['user/one'](userId)
@@ -115,12 +153,10 @@ export default Vue.extend({
 
     return r
   },
-  data(): {
-    user: Partial<User>
-    activeTab: string
-  } {
+  data(): DataType {
     return {
       user: {},
+      posts: [],
       activeTab: 'posts',
     }
   },
@@ -128,10 +164,10 @@ export default Vue.extend({
     ...mapGetters({
       getUser: 'user/one',
     }),
-    avatar() {
+    avatar(): string {
       return `background-image:url(${(this as any).user.avatar})`
     },
-    createdate() {
+    createdate(): string {
       return this.$data.user.createdAt?.second
         ? dayjs(this.$data.user.createdAt.second).format('YYYY-MM-DD HH:mm')
         : ''
@@ -154,13 +190,13 @@ export default Vue.extend({
   //   }
   // },
   methods: {
-    activateTab(tab: string) {
+    activateTab(tab: string): void {
       this.activeTab = tab
     },
-    isActiveTab(tab: string) {
+    isActiveTab(tab: string): boolean {
       return this.activeTab === tab
     },
-    filterContent(content: string) {
+    filterContent(content: string): string {
       return filterContent(content)
     },
   },

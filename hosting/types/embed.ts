@@ -6,5 +6,5 @@
   url?: string
   html?: string
   error?: string
-  isLoading: boolean
+  // status: 'hidden' | 'loading' | 'shown'
 }

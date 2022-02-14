@@ -27,7 +27,8 @@
       "@types/node",
       "@types/jest",
       "@nuxt/types",
-      "@nuxtjs/firebase"
+      "@nuxtjs/firebase",
+      "velocity-animate"
     ]
   },
   "exclude": [

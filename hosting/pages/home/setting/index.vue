@@ -20,7 +20,8 @@
               <h2>プロフィール画像</h2>
               <div>
                 <ImageUploader
-                  :default-image="avatar" :on-change="updateImage"
+                  :default-image="avatar"
+                  :on-change="updateImage"
                 />
               </div>
             </div>
@@ -47,7 +48,7 @@ import { getExt } from '~/plugins/file'
 import { schemaUser } from '~/plugins/validators/user'
 
 export default Vue.extend({
-  layout: 'manage',
+  // layout: 'manage',
   async fetch() {
     this.uid = this.$store.state.auth.me.uid
     this.me = await this.getUser(this.uid)

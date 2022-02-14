@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "PORT=3333 FIRE_ENV=local nuxt-ts",
-    "dev:stg": "nuxt-ts",
-    "dev:prd": "FIRE_ENV=production nuxt-ts",
+    "dev:stg": "PORT=3333 nuxt-ts",
+    "dev:prd": "PORT=3333 FIRE_ENV=production nuxt-ts",
     "build": "nuxt-ts build",
     "build:analyze": "nuxt-ts build --analyze",
     "start": "nuxt-ts start",
@@ -68,6 +68,7 @@
     "sanitize-html": "^2.3.0",
     "tippy.js": "^6.2.7",
     "url-parse": "^1.4.7",
+    "velocity-animate": "^1.5.2",
     "vuex": "^3.6.0"
   },
   "devDependencies": {
