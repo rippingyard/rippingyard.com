@@ -1,7 +1,9 @@
 ﻿.field {
   position: relative;
   padding-bottom: 40px;
-  // margin-bottom: $gap;
+  &.widget {
+    padding-bottom: 20px;
+  }
   > label {
     display: block;
     font-size: 0.9rem;
@@ -35,6 +37,12 @@
     }
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  &.dark {
+    .input {
+      border-color: $white;
     }
   }
 }

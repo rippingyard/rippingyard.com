@@ -4,10 +4,7 @@
       <ManageNav />
     </div>
     <div v-if="!isEmpty" class="column c80">
-      <PostTable
-        :data="posts"
-        :check="toggleCheck"
-      />
+      <PostTable :data="posts" :check="toggleCheck" />
       <div class="console">
         <button
           class="button"
@@ -36,7 +33,7 @@ import { Post } from '~/types/post'
 import { getTitle } from '~/plugins/typography'
 
 export default Vue.extend({
-  layout: 'manage',
+  // layout: 'manage',
   middleware: ['auth'],
   async asyncData({ $fire, store }: Context) {
     const posts: Partial<Post>[] = []
@@ -104,21 +101,24 @@ export default Vue.extend({
       if (!this.$data.checkedPosts.includes(id)) {
         this.$data.checkedPosts.push(id)
       } else {
-        this.$data.checkedPosts = this.$data.checkedPosts.filter((p: string) => p !== id)
+        this.$data.checkedPosts = this.$data.checkedPosts.filter(
+          (p: string) => p !== id
+        )
       }
     },
     async deletePosts() {
-
       if (this.$data.checkedPosts.length === 0) return
 
       const promises: any[] = []
 
       this.$data.checkedPosts.map((id: string) => {
         promises.push((this as any).deletePost(id))
-        promises.push((this as any).saveActivity({
-          type: 'post:delete',
-          status: 'succeeded',
-        }))
+        promises.push(
+          (this as any).saveActivity({
+            type: 'post:delete',
+            status: 'succeeded',
+          })
+        )
       })
 
       await Promise.all(promises)

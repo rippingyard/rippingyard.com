@@ -31,7 +31,7 @@ export default Vue.extend({
     },
   },
   data(): {
-    editor: any,
+    editor: any
   } {
     return {
       editor: null,
@@ -55,7 +55,7 @@ export default Vue.extend({
           openOnClick: false,
         }),
         Placeholder.configure({
-          placeholder: 'ここに本文を書いていきましょう'
+          placeholder: 'ここに本文を書いていきましょう',
         }),
       ],
       onUpdate: () => {
@@ -70,7 +70,7 @@ export default Vue.extend({
 </script>
 <style lang="scss">
 .editor {
-  min-height: 320px;
+  min-height: 240px;
   position: relative;
 }
 </style>

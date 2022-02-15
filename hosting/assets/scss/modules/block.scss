@@ -1,18 +1,46 @@
 .block {
   position: relative;
+  box-sizing: border-box;
 
-  &.container {
-    max-width: $tablet - ($gap * 2);
+  &.main {
+    max-width: $mainSize;
+  }
+
+  &.sub {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $navSize;
+  }
+
+  &.sticky {
+    height: 100%;
+    > .block {
+      position: sticky;
+      top: $gap;
+    }
+  }
+
+  @include until($desktop) {
+    max-width: $mainSize;
     margin: auto;
-    &.is-wide {
-      max-width: 100%;
-      padding: 0 50px;
+
+    &.main {
+      margin: auto;
+    }
+    
+    &.sub {
+      position: relative;
+      top: 0;
+      right: 0;
+      max-width: $mainSize;
+      margin: auto;
     }
 
-    @include mobile {
-      padding: 0 $gap;
-      &.is-wide {
-        padding: 0 $gap;
+    &.sticky {
+      height: inherit;
+      > .block {
+        position: relative;
       }
     }
   }

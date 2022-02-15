@@ -2,6 +2,14 @@
 
 @import './paletton';
 
+$gap: 40px;
+$navSize: 180px;
+$navMargin: $gap;
+
+$mainSize: 690px;
+
+$mobileHeaderHeight: 50px;
+
 // Fonts
 $font-normal: 'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
 // $font-normal: arial, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", osaka, メイリオ, meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
@@ -15,22 +23,22 @@ $white-transparent: hsla(0, 0%, 96%, 0%);
 $black: #111;
 $gray: #EEE;
 $gray-black: #AAA;
-$orange:       hsl(14,  100%, 53%);
-$yellow:       $rgba-secondary-2-0;
+$orange:       hsl(14, 100%, 53%);
+$yellow:       #FFD12B;
 $yellow-transparent: $rgba-secondary-2-0-t;
 $green:        $rgba-secondary-2-2;
 $turquoise:    $rgba-secondary-1-2;
-$cyan:         #0FC8FF;
+$cyan:         #2BCEFE;
 // $cyan:         $rgba-secondary-1-1;
 $cyan-transparent:         $rgba-secondary-1-1-t;
 $blue:         $rgba-secondary-1-0;
 $purple:       $rgba-primary-0;
-$red:          $rgba-primary-0;
+$red:          #F00;
 
-$gap: 32px;
 $tablet: 769px;
-$desktop: 960px + (2 * $gap);
-$widescreen: 1200px + (2 * $gap);
+$desktop: $mainSize + (($navSize + $navMargin) * 2);
+$widescreen: $desktop;
+// $widescreen: 1200px + (2 * $gap);
 $widescreen-enabled: true;
 $fullhd: 1344px + (2 * $gap);
 $fullhd-enabled: false;

@@ -3,11 +3,14 @@
     "rules": "firebase/firestore.rules",
     "indexes": "firebase/firestore.indexes.json"
   },
-  "functions": {
-  },
+  "functions": {},
   "hosting": {
     "public": "hosting/dist",
     "rewrites": [
+      {
+        "source": "/api/fetch/url/**",
+        "function": "apiFetchUrl"
+      },
       {
         "source": "**",
         "function": "ssr"
@@ -35,6 +38,9 @@
     },
     "firestore": {
       "port": 8080
+    },
+    "storage": {
+      "port": 9199
     },
     "hosting": {
       "port": 5000

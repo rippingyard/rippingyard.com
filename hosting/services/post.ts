@@ -5,11 +5,13 @@ import dayjs from 'dayjs'
 import { sanitize, renderWidgets } from '~/plugins/typography'
 import { Post } from '~/types/post'
 import { getDomain } from '~/plugins/util'
+import { Item } from '~/types/item'
 
 const { decycle } = require('json-cyclic')
 
 interface Params {
   withoutOwner?: boolean
+  withoutItems?: boolean
 }
 
 export async function normalize(
@@ -18,6 +20,7 @@ export async function normalize(
   store: Store<any>,
   params: Params = {
     withoutOwner: false,
+    withoutItems: false,
   }
 ): Promise<Partial<Post>> {
   if (!post) return {}
@@ -31,10 +34,7 @@ export async function normalize(
       if (!cachedUser) {
         try {
           await post.owner?.get().then((doc: any) => {
-            // owner = doc.data()
             owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt', 'invitedBy'])
-            // console.log(owner)
-            // console.log('Owner from firestore')
             store.commit('user/setUser', owner)
           })
         } catch (e) {
@@ -46,6 +46,50 @@ export async function normalize(
       }
     }
 
+    let parent: Partial<Post | Item> | null = null;
+    if (!params.withoutItems && post.parent) {
+      if (post.parent.path.startsWith('items')) {
+        let itemObject: Partial<Item> = {}
+        const cachedItem = await store.getters['item/one'](post.parent.id)
+        if (!cachedItem) {
+          try {
+            await post.parent.get().then((doc: any) => {
+              itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
+              store.commit('item/setItem', itemObject)
+            })
+          } catch (e) {
+            console.warn('Error', e)
+          }
+        } else {
+          console.log('Cached!')
+          itemObject = cachedItem
+        }
+        if (itemObject.id) parent = itemObject
+      }
+    }
+
+    const items: Partial<Item>[] = [];
+    if (!params.withoutItems && post.items) {
+      for (const item of post.items) {
+        let itemObject: Partial<Item> = {}
+        const cachedItem = await store.getters['item/one'](item.id)
+        if (!cachedItem) {
+          try {
+            await item.get().then((doc: any) => {
+              itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
+              store.commit('item/setItem', itemObject)
+            })
+          } catch (e) {
+            console.warn('Error', e)
+          }
+        } else {
+          console.log('Cached!')
+          itemObject = cachedItem
+        }
+        if (itemObject.id) items.push(itemObject)
+      }
+    }
+
     return decycle({
       ...post,
       ...{
@@ -54,9 +98,10 @@ export async function normalize(
         sociallink: sociallink(id),
         content: filterContent(post.content),
         contentOriginal: post.content,
-        // parent: null,
 
         owner,
+        items,
+        parent,
 
         isDeleted: post.isDeleted,
 
@@ -102,6 +147,10 @@ export function docPath(id: string): string {
 
 export function sociallink(id: string): string {
   return getDomain() + permalink(id)
+}
+
+export function isPublic(post: Post): boolean {
+  return !post.isDeleted && post.isPublic === true && post.status === 'published'
 }
 
 export function getStatusLabel(status: string, isPublic: boolean = true): string {

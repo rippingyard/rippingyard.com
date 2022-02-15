@@ -5,6 +5,15 @@
   display: inline-block;
   color: $black !important;
 
+  &.expanded {
+    width: 100%;
+  }
+
+  &.light {
+    color: $white !important;
+    border-color: $white;
+  }
+
   &:hover {
     background-color: $yellow;
     // color: $yellow;
@@ -25,4 +34,8 @@
       background-color: transparent;
     }
   }
+}
+
+.buttons {
+  display: flex;
 }
