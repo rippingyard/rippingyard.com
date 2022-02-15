@@ -5,7 +5,7 @@
 export type Item = {
   id: string
   name: ItemTitle | null
-  type: 'item' | 'place' | 'work' | 'person' | 'bookmark' | 'unknown'
+  type: 'item' | 'place' | 'work' | 'keyword' | 'person' | 'group' | 'event' | 'bookmark' | 'unknown'
   thumbnailImage: string
   description: string
   path: string
