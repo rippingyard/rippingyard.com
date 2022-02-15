@@ -324,26 +324,33 @@ export default {
       //     return permalinks
       //   }
       // },
-      {
-        path: '/sitemaps/seeds.xml',
-        gzip: true,
-        lastmod: new Date(1593090856034),
-        cacheTime: 1000 * 60 * 60 * 24 * 30,
-        filter({ routes, _options }) {
-          return routes.filter((route) => route.url.match(/^\/seeds\//))
-        },
-        routes: () => {
-          const permalinks = []
+      // {
+      //   path: '/sitemaps/seeds.xml',
+      //   gzip: true,
+      //   lastmod: new Date(1593090856034),
+      //   cacheTime: 1000 * 60 * 60 * 24 * 30,
+      //   filter({ routes, _options }) {
+      //     return routes.filter((route) => route.url.match(/^\/seeds\//))
+      //   },
+      //   routes: () => {
 
-          const seeds = require('./assets/json/old/seeds.json')
+      //     const permalinks = []
 
-          seeds.forEach((seed) => {
-            permalinks.push('/seeds/' + seed.slug)
-          })
+      //     const storage = this.$fire.storage
+      //     const pathref = storage.ref('seeds/seeds.json')
 
-          return permalinks
-        }
-      }
+      //     const url = await pathref.getDownloadURL()
+      //     const res = await axios.get(url)
+
+      //     const seeds = res.data
+
+      //     seeds.forEach((seed) => {
+      //       permalinks.push('/seeds/' + seed.slug)
+      //     })
+
+      //     return permalinks
+      //   }
+      // }
     ]
   },
 
