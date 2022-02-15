@@ -62,13 +62,13 @@
     </div>
   </main>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
+import { User } from '~/types/user'
 import { normalize, docPath } from '~/services/post'
 import {
   hasTitle,
@@ -79,7 +79,6 @@ import {
   getThumbnail,
   getI18nName,
 } from '~/plugins/typography'
-import { User } from '~/types/user'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -185,17 +184,17 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: getTitle(this.$data.post.content),
+      title: getTitle(this.$data.post),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'description',

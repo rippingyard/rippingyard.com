@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     title(post: Post): string {
-      return getTitle(post.content)
+      return getTitle(post)
     },
     async loadMore(): Promise<void> {
       console.log(

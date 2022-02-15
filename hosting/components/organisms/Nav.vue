@@ -459,22 +459,10 @@ export default Vue.extend({
     }
 
     .block {
-      // margin-bottom: 20px;
       &.login {
-        // background-color: $black;
-        // border-radius: 20px;
         padding: 20px;
         border-bottom: 1px solid $black;
         border-right: 1px solid $black;
-        // color: $white;
-        // margin-left: $navMargin / 2;
-      }
-      &.widget {
-        // background-color: $black;
-        // border-radius: 20px;
-        // padding: 20px;
-        // color: $white;
-        // margin-left: $navMargin / 2;
       }
     }
 

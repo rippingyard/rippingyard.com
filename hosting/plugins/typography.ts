@@ -2,6 +2,7 @@ import _ from 'lodash'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
 import sanitizeHtml from 'sanitize-html'
+import { Post } from '~/types/post'
 
 export const nl2br = (str: string): string => {
   if (!str) return '';
@@ -25,11 +26,24 @@ export const hasTitle = (str: string): boolean => {
   return /<h.(?: .+?)?>.*?<\/h.>/.test(str)
 }
 
-export const getTitle = (str: string, length: number = 32, alt?: string) => {
+export const getTitle = (str: string | Post, length: number = 32, alt?: string) => {
   if (!str) return ''
-  const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
-  if (htag && htag[0] !== '') return decodeEntities(htag[0])
-  return alt || getSummary(str, length)
+  if (typeof str === 'string') {
+    const htags = getHtags(str)
+    if (htags && htags[0] !== '') return decodeEntities(htags[0])
+    return alt || getSummary(str, length)
+  } else {
+    const htags = getHtags(str.content)
+    if (htags && htags[0] !== '') return decodeEntities(htags[0])
+    if (str.parent) {
+      if (str.parent.name.ja) return str.parent.name.ja
+    }
+    return alt || getSummary(str.content, length)
+  }
+}
+
+export const getHtags = (str: string) => {
+  return str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
 }
 
 export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {
