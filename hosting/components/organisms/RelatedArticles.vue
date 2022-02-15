@@ -16,12 +16,18 @@ export default Vue.extend({
     excludeId: {
       type: String,
       default: '',
-    }
+    },
   },
   async fetch() {
-    const selectedTags: string[] = _.sampleSize(_.uniq(this.tags), 10) as string[]
+    const selectedTags: string[] = _.sampleSize(
+      _.uniq(this.tags),
+      10
+    ) as string[]
 
-    console.log('Selected Tags', selectedTags.map((e: string) => decodeEntity(e)))
+    // console.log(
+    //   'Selected Tags',
+    //   selectedTags.map((e: string) => decodeEntity(e))
+    // )
 
     let promises: any[] = []
     const posts: Partial<Post>[] = []
@@ -30,7 +36,12 @@ export default Vue.extend({
       await (this as any).$fire.firestore
         .collection('posts')
         .where('isPublic', '==', true)
-        .where('entities', 'array-contains-any', selectedTags.map((e: string) => decodeEntity(e)))
+        .where('isDeleted', '!=', true)
+        .where(
+          'entities',
+          'array-contains-any',
+          selectedTags.map((e: string) => decodeEntity(e))
+        )
         .limit(10)
         .orderBy('publishedAt', 'desc')
         .get()
@@ -44,8 +55,13 @@ export default Vue.extend({
                 post.status !== 'published' ||
                 !post.isPublic ||
                 post.isDeleted === true
-              ) return
-              const normalizedPost = await normalizePost(doc.id, post, this.$store)
+              )
+                return
+              const normalizedPost = await normalizePost(
+                doc.id,
+                post,
+                this.$store
+              )
               return posts.push(normalizedPost)
             })
         })
@@ -73,8 +89,13 @@ export default Vue.extend({
               post.status !== 'published' ||
               !post.isPublic ||
               post.isDeleted === true
-            ) return
-            const normalizedPost = await normalizePost(doc.id, post, this.$store)
+            )
+              return
+            const normalizedPost = await normalizePost(
+              doc.id,
+              post,
+              this.$store
+            )
             return posts.push(normalizedPost)
           })
         })
@@ -84,19 +105,15 @@ export default Vue.extend({
         })
     }
 
-    // console.log('Promises', promises)
-
     if (promises.length < 1) return
-    
-    await Promise.all(promises)
 
-    // console.log('Related Posts', posts)
+    await Promise.all(promises)
 
     this.$data.posts = _.sampleSize(posts, 8) as any[]
   },
   data() {
     return {
-      posts: []
+      posts: [],
     }
   },
 })

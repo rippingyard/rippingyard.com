@@ -1,11 +1,8 @@
 <template>
   <main>
     <Header :image="thumbnail" />
-    <div v-if="hasTitle" class="heading">
+    <div class="heading">
       <h1>{{ getTitle }}</h1>
-    </div>
-    <div v-else-if="post.parent" class="heading">
-      <h1>{{ itemName(post.parent) }}</h1>
     </div>
     <div class="block">
       <div class="block main">
@@ -62,16 +59,15 @@
     </div>
   </main>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
+import { User } from '~/types/user'
 import { normalize, docPath } from '~/services/post'
 import {
-  hasTitle,
   getTitle,
   getSocialTitle,
   getSummary,
@@ -79,7 +75,6 @@ import {
   getThumbnail,
   getI18nName,
 } from '~/plugins/typography'
-import { User } from '~/types/user'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -128,11 +123,8 @@ export default Vue.extend({
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
-    hasTitle(): boolean {
-      return hasTitle(this.$data.post.content)
-    },
     getTitle(): string {
-      return getTitle(this.$data.post.content)
+      return getTitle(this.$data.post)
     },
     getSocialTitle(): string {
       return getSocialTitle(this.$data.post.content) + ' - rippingyard'
@@ -185,17 +177,17 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: getTitle(this.$data.post.content),
+      title: getTitle(this.$data.post),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'description',

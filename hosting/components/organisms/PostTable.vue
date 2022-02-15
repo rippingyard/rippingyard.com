@@ -19,9 +19,13 @@
       <td class="main">
         <div class="title">
           <nuxt-link :to="editLink(datum)">
-            <strong>{{ title(datum.content) }}</strong>
+            <strong>{{ title(datum) }}</strong>
           </nuxt-link>
-          <nuxt-link v-if="canAccess(datum.status)" target="_blank" :to="permalink(datum.id)">
+          <nuxt-link
+            v-if="canAccess(datum.status)"
+            target="_blank"
+            :to="permalink(datum.id)"
+          >
             <fa-icon icon="external-link-alt" class="icon" />
           </nuxt-link>
         </div>
@@ -34,7 +38,9 @@
         </div>
       </td>
       <td>
-        <span class="badge" :class="statusClass(datum.status, datum.isPublic)">{{ status(datum.status, datum.isPublic) }}</span>
+        <span class="badge" :class="statusClass(datum.status, datum.isPublic)">
+          {{ status(datum.status, datum.isPublic) }}
+        </span>
       </td>
       <td>{{ datum.publishedAt }}</td>
     </tr>
@@ -64,7 +70,8 @@ export default Vue.extend({
     canAccess: (status: string): boolean => {
       return status !== 'draft'
     },
-    status: (status: string, isPublic: boolean) => getStatusLabel(status, isPublic),
+    status: (status: string, isPublic: boolean) =>
+      getStatusLabel(status, isPublic),
     statusClass(status: string, isPublic: boolean): string {
       if (status === 'draft') return 'is-log'
       if (isPublic) return 'is-info'

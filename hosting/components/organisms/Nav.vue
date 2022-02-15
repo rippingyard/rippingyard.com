@@ -201,33 +201,7 @@
         <NoteForm />
       </section>
     </div>
-    <transition
-      name="overlay"
-      @beforeEnter="reset()"
-      @enter="startOpen()"
-      @beforeLeave="startClose()"
-    >
-      <div v-show="isOpen" class="overlay">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="308"
-          height="308"
-          viewBox="0 0 308 308"
-          class="overlay-object1"
-        >
-          <circle cx="154" cy="154" r="154" />
-        </svg>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="180"
-          height="180"
-          viewBox="0 0 180 180"
-          class="overlay-object2"
-        >
-          <circle cx="90" cy="90" r="90" />
-        </svg>
-      </div>
-    </transition>
+    <div class="overlay"></div>
   </nav>
 </template>
 <script lang="ts">
@@ -277,15 +251,15 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.el1 = document.querySelector('.overlay-object1')
-    this.el2 = document.querySelector('.overlay-object2')
-    this.$nextTick(() => {
-      const mql = window.matchMedia('(max-width: 600px)')
-      this.func(mql)
-      window.addEventListener('resize', val => {
-        console.log('resize!', val)
-      })
-    })
+    // this.el1 = document.querySelector('.overlay-object1')
+    // this.el2 = document.querySelector('.overlay-object2')
+    // this.$nextTick(() => {
+    //   const mql = window.matchMedia('(max-width: 600px)')
+    //   this.func(mql)
+    //   window.addEventListener('resize', val => {
+    //     console.log('resize!', val)
+    //   })
+    // })
   },
   methods: {
     ...mapActions({
@@ -319,59 +293,59 @@ export default Vue.extend({
       //   scale: 1,
       // }
     },
-    startOpen(): void {
-      ;(this as any).$velocity(
-        this.el1,
-        {
-          top: `${Math.random() * 50 - 25}%`,
-          left: `${Math.random() * 50 - 25}%`,
-          scale: 8,
-        },
-        {
-          duration: 400,
-          easing: 'easeOutExpo',
-        }
-      )
-      ;(this as any).$velocity(
-        this.el2,
-        {
-          // bottom: `${Math.random() * 100 - 50}%`,
-          // left: `${Math.random() * 100 - 50}%`,
-          scale: 10,
-        },
-        {
-          duration: 600,
-          easing: 'easeOutExpo',
-        }
-      )
-    },
-    startClose(_el: any, done: any): void {
-      ;(this as any).$velocity(
-        this.el1,
-        {
-          top: `${Math.random() * 200 - 100}px`,
-          left: `${Math.random() * 200 - 100}px`,
-          scale: 1,
-        },
-        {
-          duration: 10,
-          easing: 'easeOutExpo',
-        }
-      )
-      ;(this as any).$velocity(
-        this.el2,
-        {
-          bottom: `${Math.random() * 200 - 50}px`,
-          left: `${Math.random() * 200 - 50}px`,
-          scale: 2,
-        },
-        {
-          duration: 10,
-          easing: 'easeOutExpo',
-        },
-        { complete: done }
-      )
-    },
+    // startOpen(): void {
+    //   ;(this as any).$velocity(
+    //     this.el1,
+    //     {
+    //       top: `${Math.random() * 50 - 25}%`,
+    //       left: `${Math.random() * 50 - 25}%`,
+    //       scale: 8,
+    //     },
+    //     {
+    //       duration: 400,
+    //       easing: 'easeOutExpo',
+    //     }
+    //   )
+    //   ;(this as any).$velocity(
+    //     this.el2,
+    //     {
+    //       // bottom: `${Math.random() * 100 - 50}%`,
+    //       // left: `${Math.random() * 100 - 50}%`,
+    //       scale: 10,
+    //     },
+    //     {
+    //       duration: 600,
+    //       easing: 'easeOutExpo',
+    //     }
+    //   )
+    // },
+    // startClose(_el: any, done: any): void {
+    //   ;(this as any).$velocity(
+    //     this.el1,
+    //     {
+    //       top: `${Math.random() * 200 - 100}px`,
+    //       left: `${Math.random() * 200 - 100}px`,
+    //       scale: 1,
+    //     },
+    //     {
+    //       duration: 10,
+    //       easing: 'easeOutExpo',
+    //     }
+    //   )
+    //   ;(this as any).$velocity(
+    //     this.el2,
+    //     {
+    //       bottom: `${Math.random() * 200 - 50}px`,
+    //       left: `${Math.random() * 200 - 50}px`,
+    //       scale: 2,
+    //     },
+    //     {
+    //       duration: 10,
+    //       easing: 'easeOutExpo',
+    //     },
+    //     { complete: done }
+    //   )
+    // },
     logout(): void {
       this.signout()
       this.snack('ログアウトしました')
@@ -394,7 +368,7 @@ export default Vue.extend({
   left: calc(50vw - #{($mainSize / 2) + $navSize + $navMargin});
   width: $navSize;
   height: calc(100vh - #{$navMargin * 1.5});
-  z-index: 99999;
+  z-index: 999;
 
   > .inner {
     display: flex;
@@ -459,22 +433,10 @@ export default Vue.extend({
     }
 
     .block {
-      // margin-bottom: 20px;
       &.login {
-        // background-color: $black;
-        // border-radius: 20px;
         padding: 20px;
         border-bottom: 1px solid $black;
         border-right: 1px solid $black;
-        // color: $white;
-        // margin-left: $navMargin / 2;
-      }
-      &.widget {
-        // background-color: $black;
-        // border-radius: 20px;
-        // padding: 20px;
-        // color: $white;
-        // margin-left: $navMargin / 2;
       }
     }
 
@@ -670,6 +632,7 @@ export default Vue.extend({
 
   .overlay {
     display: none;
+    background-color: $yellow;
     border: 1px solid $black;
     width: $mainSize + $navMargin + (($navSize + $navMargin) * 2);
     height: calc(100% - #{$navMargin});
@@ -680,22 +643,22 @@ export default Vue.extend({
     overflow: hidden;
     // opacity: 0;
     // background-color: $white;
-    .overlay-object1 {
-      position: absolute;
-      fill: $red;
-      top: -50px;
-      left: -50px;
-      filter: blur(1rem);
-      // mix-blend-mode: hard-light;
-    }
-    .overlay-object2 {
-      position: absolute;
-      fill: $yellow;
-      bottom: -50px;
-      left: 30px;
-      filter: blur(0.5rem);
-      // mix-blend-mode: hard-light;
-    }
+    // .overlay-object1 {
+    //   position: absolute;
+    //   fill: $red;
+    //   top: -50px;
+    //   left: -50px;
+    //   filter: blur(1rem);
+    //   // mix-blend-mode: hard-light;
+    // }
+    // .overlay-object2 {
+    //   position: absolute;
+    //   fill: $yellow;
+    //   bottom: -50px;
+    //   left: 30px;
+    //   filter: blur(0.5rem);
+    //   // mix-blend-mode: hard-light;
+    // }
   }
 
   &.isOpen {

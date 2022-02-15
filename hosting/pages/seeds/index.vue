@@ -12,34 +12,14 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { filterContent } from '~/services/post'
-import Seeds from '~/assets/json/old/seeds.json'
 
 export default {
-  asyncData({ error }) {
-
-    const r = {
-      seeds: Seeds.reverse()
-    }
-
-    if( r.seeds.length < 1 ) {
-      error({ statusCode: 404, message: 'ページが見つかりません' })
-      return r
-    }
-
-    // r.post = {
-    //   title: seed[0].title,
-    //   content: seed[0].body,
-    //   user: seed[0].user_id,
-    //   publishedAt: seed[0].published_at,
-    // }
-
-    return r
-
-  },
   data() {
     return {
-      title: ''
+      title: '',
+      seeds: [],
     }
   },
   computed: {
@@ -47,13 +27,13 @@ export default {
       return filterContent(this.getTitle + this.post.content)
     },
     getName() {
-      switch(this.post.user) {
+      switch (this.post.user) {
         case 37:
           return 'labofromjmq'
 
         case 24:
           return 'compuedit'
-        
+
         case 4:
           return 'joynesan'
 
@@ -62,11 +42,26 @@ export default {
 
         case 2:
           return 'mcatm'
-        
+
         default:
           return 'ripping yard'
       }
     },
+  },
+  async mounted() {
+    const storage = this.$fire.storage
+    const pathref = storage.ref('seeds/seeds.json')
+
+    const url = await pathref.getDownloadURL()
+    const res = await axios.get(url)
+
+    const Seeds = res.data
+
+    this.seeds = Seeds.reverse()
+
+    // if (this.seeds.length < 1) {
+    //   error({ statusCode: 404, message: 'ページが見つかりません' })
+    // }
   },
   methods: {
     permalink(seed) {
@@ -75,10 +70,9 @@ export default {
   },
   head: () => {
     return {
-      title: 'Seeds'
+      title: 'Seeds',
     }
-  }
-
+  },
 }
 </script>
 <style lang="scss" scoped>

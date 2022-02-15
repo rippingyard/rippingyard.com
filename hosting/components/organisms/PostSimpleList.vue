@@ -7,7 +7,7 @@
       <div class="body">
         <h3 class="title">
           <nuxt-link :to="post.permalink">
-            {{ getTitle(post.content) }}
+            {{ getTitle(post) }}
           </nuxt-link>
         </h3>
         <p class="date">{{ post.publishedAt }}</p>
@@ -26,6 +26,8 @@
 import Vue from 'vue'
 import { permalink as entityLink } from '~/services/entity'
 import { getTitle, getSummary } from '~/plugins/typography'
+import { Post } from '~/types/post'
+
 export default Vue.extend({
   props: {
     posts: {
@@ -46,8 +48,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    getTitle(content: string): string {
-      return getTitle(content)
+    getTitle(post: Post): string {
+      return getTitle(post)
     },
     getSummary(content: string): string {
       return getSummary(content)

@@ -124,7 +124,7 @@ export default {
   plugins: [
     '~/middleware/gtm',
     '~/plugins/auth',
-    '~/plugins/velocity',
+    // '~/plugins/velocity',
     '~/middleware/snack',
   ],
 

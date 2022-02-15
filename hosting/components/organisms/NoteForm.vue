@@ -3,7 +3,7 @@
     <client-only>
       <div class="item bg-dotted">
         <div class="inner">
-          <ItemForm :item="item" @update-item="updateItem" />
+          <ItemForm :item="item" color="yellow" @update-item="updateItem" />
         </div>
       </div>
       <div class="inner">
