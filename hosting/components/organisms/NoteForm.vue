@@ -128,7 +128,7 @@ export default Vue.extend({
             .where('type', '==', this.item.type)
             // .where('status', '==', 'published')
             .limit(1)
-            .orderBy('createdAt', 'desc')
+            // .orderBy('createdAt', 'desc')
             .get()
 
           if (!q.empty) {

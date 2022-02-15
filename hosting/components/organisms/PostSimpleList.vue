@@ -12,7 +12,7 @@
         </h3>
         <p class="date">{{ post.publishedAt }}</p>
         <p class="summary">{{ getSummary(post.content) }}</p>
-        <div v-if="post.entities.length > 0" class="entities">
+        <div v-if="post.entities && post.entities.length > 0" class="entities">
           <EntitySimpleList :entities="post.entities" />
         </div>
       </div>
