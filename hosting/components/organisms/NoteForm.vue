@@ -121,10 +121,6 @@ export default Vue.extend({
         this.isSaving = true
 
         if (this.item) {
-          console.log('item save', this.item)
-          console.log('this.item.path', this.item.path)
-          console.log('this.item.type', this.item.type)
-          // TODO: 存在判定
           const q = await (this as any).$fire.firestore
             .collection('items')
             .where('isDeleted', '==', false)
@@ -134,8 +130,6 @@ export default Vue.extend({
             .limit(1)
             .orderBy('createdAt', 'desc')
             .get()
-
-          console.log('q', q.docs[0])
 
           if (!q.empty) {
             params.parent = q.docs[0].ref

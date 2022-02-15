@@ -2,7 +2,13 @@
   <section class="inner">
     <div v-show="status !== 'shown'">
       <p class="label">何について書きますか？</p>
-      <input v-model="itemName" class="input" @keypress.enter="fetchItem" />
+      <input
+        v-model="itemName"
+        class="input"
+        @keypress.enter="fetchItem"
+        @keyup.down="nextItem"
+        @keyup.up="prevItem"
+      />
     </div>
     <div v-if="status === 'loading'" class="loading">
       <LoadingIcon color="yellow" />
@@ -14,12 +20,15 @@
     <div v-if="isSuggesting" class="suggest">
       <ul>
         <li
-          v-for="suggestedItem of suggestedItems"
+          v-for="(suggestedItem, i) of suggestedItems"
           :key="suggestedItem.id"
-          :class="{ 'is-selected': suggestedItem.id === selectedItemId }"
+          :class="{
+            'is-selected': item && suggestedItem.id === item.id,
+            'is-pointed': i === suggestPointer,
+          }"
           @click="selectItem(suggestedItem)"
         >
-          {{ suggestedItem.name.ja }}
+          {{ name(suggestedItem) }}
         </li>
       </ul>
       <div class="overflow" @click="clearSuggestItems()" />
@@ -37,7 +46,8 @@ type DataType = {
   itemName: string
   embed: Embed
   status: 'hidden' | 'loading' | 'shown'
-  selectedItemId: string | null
+  // selectedItemId: string | null
+  suggestPointer: null | number
   hideSuggesting: boolean
   timer: NodeJS.Timeout | null
 }
@@ -54,7 +64,8 @@ export default Vue.extend({
       itemName: '',
       embed: {},
       status: 'hidden',
-      selectedItemId: null,
+      // selectedItemId: null,
+      suggestPointer: null,
       hideSuggesting: false,
       timer: null,
     }
@@ -89,6 +100,7 @@ export default Vue.extend({
     },
     item(val: Item | null): void {
       console.log('item updated', val)
+      this.status = 'shown'
       if (!val) {
         this.itemName = ''
         this.status = 'hidden'
@@ -117,33 +129,51 @@ export default Vue.extend({
       this.hideSuggesting = false
       this.$emit('update-item')
     },
+    nextItem(): void {
+      console.log('this.suggestPointer', this.suggestPointer)
+      if (this.suggestPointer === null) this.suggestPointer = -1
+      this.suggestPointer =
+        this.suggestedItems.length > this.suggestPointer + 1
+          ? this.suggestPointer + 1
+          : this.items.length
+    },
+    prevItem(): void {
+      if (this.suggestPointer === null) return
+      this.suggestPointer =
+        this.suggestPointer > 0 ? this.suggestPointer - 1 : 0
+    },
     async fetchItem(): Promise<void> {
       console.log('startFetch', this.itemName)
       this.status = 'loading'
 
-      const payload: Partial<Item> = {
-        name: {
-          ja: this.itemName,
-        },
-        type: 'unknown',
-        path: this.itemName,
-      }
-
-      if (isUrl(this.itemName)) {
-        this.embed = {}
-        await this.fetchUrl(this.itemName)
-
-        payload.type = 'bookmark'
-        payload.name = {
-          ja: this.embed.title || this.itemName,
+      if (
+        this.suggestPointer !== null &&
+        this.suggestedItems[this.suggestPointer]
+      ) {
+        this.selectItem(this.suggestedItems[this.suggestPointer])
+      } else {
+        const payload: Partial<Item> = {
+          name: {
+            ja: this.itemName,
+          },
+          type: 'unknown',
+          path: this.itemName,
         }
-        payload.thumbnailImage = this.embed.image || ''
-        payload.images = this.embed.image ? [this.embed.image] : []
-        payload.metadata = this.embed.url ? this.embed : {}
-      }
+        if (isUrl(this.itemName)) {
+          this.embed = {}
+          await this.fetchUrl(this.itemName)
 
-      this.$emit('update-item', payload)
-      this.status = 'shown'
+          payload.type = 'bookmark'
+          payload.name = {
+            ja: this.embed.title || this.itemName,
+          }
+          payload.thumbnailImage = this.embed.image || ''
+          payload.images = this.embed.image ? [this.embed.image] : []
+          payload.metadata = this.embed.url ? this.embed : {}
+        }
+        this.status = 'shown'
+        this.$emit('update-item', payload)
+      }
     },
     async fetchUrl(url: string): Promise<void> {
       try {
@@ -160,13 +190,20 @@ export default Vue.extend({
       }
     },
     selectItem(item: Item): void {
-      this.selectedItemId = item.id
+      // this.selectedItemId = item.id
       this.status = 'shown'
       this.hideSuggesting = true
       this.$emit('update-item', item)
     },
     clearSuggestItems(): void {
       this.hideSuggesting = true
+    },
+    name(item: Item): string {
+      console.log('name', item)
+      if (!item) return ''
+      if (item.name?.ja) return item.name.ja
+      if (item.path) return item.path
+      return ''
     },
   },
 })
@@ -242,6 +279,9 @@ export default Vue.extend({
         &.is-selected {
           background-color: $black;
           color: $yellow;
+        }
+        &.is-pointed {
+          background-color: $gray;
         }
       }
     }
