@@ -7,6 +7,7 @@ export type Item = {
   name: ItemTitle | null
   type: 'item' | 'place' | 'work' | 'person' | 'bookmark' | 'unknown'
   thumbnailImage: string
+  description: string
   path: string
   images: string[]
   entities: string[]

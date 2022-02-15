@@ -59,19 +59,19 @@ export default {
       return getTitle(post)
     },
     async loadMore(): Promise<void> {
-      console.log(
-        'last post',
-        (this as any).$data.posts[(this as any).posts.length - 1]
-      )
+      // console.log(
+      //   'last post',
+      //   (this as any).$data.posts[(this as any).posts.length - 1]
+      // )
       await this.getPosts(
         (this as any).$data.posts[(this as any).posts.length - 1].publishedAt
       )
     },
     async getPosts(startAt: string): Promise<void> {
-      console.log(
-        'Timestamp',
-        firebase.firestore.Timestamp.fromDate(new Date(startAt)).toDate()
-      )
+      // console.log(
+      //   'Timestamp',
+      //   firebase.firestore.Timestamp.fromDate(new Date(startAt)).toDate()
+      // )
       let q = (this as any).$fire.firestore
         .collection('posts')
         .where('isDeleted', '==', false)
@@ -82,10 +82,10 @@ export default {
         .orderBy('publishedAt', 'desc')
 
       if (startAt) {
-        console.log(
-          'firestore',
-          firebase.firestore.Timestamp.fromDate(new Date(startAt))
-        )
+        // console.log(
+        //   'firestore',
+        //   firebase.firestore.Timestamp.fromDate(new Date(startAt))
+        // )
         q = q.startAt(firebase.firestore.Timestamp.fromDate(new Date(startAt)))
       }
 

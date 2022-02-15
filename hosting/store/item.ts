@@ -22,6 +22,7 @@ export const scheme: Omit<Item, 'id'> = {
   images: [],
   thumbnailImage: '',
   path: '',
+  description: '',
   metadata: {},
   counts: {
     favorite: 0,

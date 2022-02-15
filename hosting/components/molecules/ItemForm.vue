@@ -162,6 +162,7 @@ export default Vue.extend({
           },
           type: 'unknown',
           path: this.itemName,
+          entities: [],
         }
         if (isUrl(this.itemName)) {
           this.embed = {}
@@ -200,6 +201,7 @@ export default Vue.extend({
       this.$emit('update-item', item)
     },
     clearSuggestItems(): void {
+      this.suggestPointer = null
       this.hideSuggesting = true
     },
     name(item: Item): string {
@@ -221,6 +223,7 @@ export default Vue.extend({
     background-color: $white;
     color: $black;
     font-size: 0.8rem;
+    line-height: 1.9;
     padding: 3px 8px;
     border-bottom: 1px solid $black;
     border-right: 1px solid $black;
