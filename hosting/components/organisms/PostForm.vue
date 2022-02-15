@@ -1,6 +1,10 @@
 <template>
   <section class="block container">
-    <ItemForm :item="item" @update-item="updateItem" />
+    <div class="item bg-dotted">
+      <div class="inner">
+        <ItemForm :item="item" @update-item="updateItem" />
+      </div>
+    </div>
     <Wysiwyg v-model="content" />
     <div class="console">
       <div class="buttons">
@@ -14,6 +18,9 @@
     </div>
     <Modal v-if="isPreviewing" :on-close="closePreview">
       <div class="preview">
+        <div v-if="item" class="parent">
+          <ItemCard :item="item" />
+        </div>
         <Content v-html="filteredContent" />
       </div>
     </Modal>
@@ -251,6 +258,20 @@ export default {
 <style lang="scss" scoped>
 .preview {
   padding: 0 $gap * 2 $gap;
+  > .parent {
+    margin-top: $gap;
+    margin-bottom: $gap;
+  }
+}
+
+.item {
+  padding: 20px;
+  border: 1px solid $black;
+  margin-bottom: $gap;
+  > .inner {
+    background: $white;
+    border: 1px solid $black;
+  }
 }
 
 .row {

@@ -1,5 +1,5 @@
 ﻿<template>
-  <section class="inner">
+  <section class="inner" :class="[color]">
     <div v-show="status !== 'shown'">
       <p class="label">何について書きますか？</p>
       <input
@@ -57,6 +57,10 @@ export default Vue.extend({
     item: {
       type: Object,
       default: () => {},
+    },
+    color: {
+      type: String,
+      default: 'white',
     },
   },
   data(): DataType {
@@ -214,8 +218,8 @@ export default Vue.extend({
   z-index: 100;
   .label {
     display: inline-block;
-    background-color: $black;
-    color: $yellow;
+    background-color: $white;
+    color: $black;
     font-size: 0.8rem;
     padding: 3px 8px;
     border-bottom: 1px solid $black;
@@ -249,7 +253,7 @@ export default Vue.extend({
         left: 50%;
         width: 2px;
         height: 12px;
-        background: $yellow;
+        background: $white;
       }
 
       &::before {
@@ -273,13 +277,14 @@ export default Vue.extend({
         border: 1px solid $black;
         border-top: 0;
         padding: 8px $gap / 4;
-        background-color: $yellow;
+        background-color: $white;
         color: $black;
         cursor: pointer;
         &.is-selected {
           background-color: $black;
           color: $yellow;
         }
+        &:hover,
         &.is-pointed {
           background-color: $gray;
         }
@@ -292,6 +297,42 @@ export default Vue.extend({
       height: 100%;
       top: 0;
       left: 0;
+    }
+  }
+  &.yellow {
+    .label {
+      background-color: $black;
+      color: $yellow;
+      border-bottom: 1px solid $black;
+      border-right: 1px solid $black;
+    }
+    .embed {
+      border: 7px $black solid;
+      .close {
+        background-color: $black;
+        &::before,
+        &::after {
+          background: $yellow;
+        }
+      }
+    }
+    .suggest {
+      > ul {
+        > li {
+          border: 1px solid $black;
+          border-top: 0;
+          background-color: $yellow;
+          color: $black;
+          &.is-selected {
+            background-color: $black;
+            color: $yellow;
+          }
+          &:hover,
+          &.is-pointed {
+            background-color: $gray;
+          }
+        }
+      }
     }
   }
 }

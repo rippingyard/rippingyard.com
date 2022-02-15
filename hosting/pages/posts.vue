@@ -1,13 +1,7 @@
 ﻿<template>
   <section class="block container">
     <Header />
-    <ul>
-      <li v-for="post in posts" :key="post.id">
-        <nuxt-link :to="post.permalink">
-          <h2>{{ title(post) }}</h2>
-        </nuxt-link>
-      </li>
-    </ul>
+    <PostSimpleList :posts="posts" />
     <div class="console">
       <button class="button" @click="loadMore()">もっと読む</button>
     </div>
@@ -121,18 +115,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-ul {
-  > li {
-    border-top: 1px dashed $black;
-    > a {
-      padding: $gap 0;
-      line-height: 1.3;
-      display: block;
-      > h2 {
-        font-size: 2rem;
-        font-weight: 800;
-      }
-    }
-  }
+.console {
+  padding: $gap 0;
 }
 </style>
