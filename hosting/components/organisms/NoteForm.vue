@@ -126,9 +126,7 @@ export default Vue.extend({
             .where('isDeleted', '==', false)
             .where('path', '==', this.item.path)
             .where('type', '==', this.item.type)
-            // .where('status', '==', 'published')
             .limit(1)
-            // .orderBy('createdAt', 'desc')
             .get()
 
           if (!q.empty) {
