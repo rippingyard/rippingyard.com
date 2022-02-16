@@ -34,15 +34,16 @@ export default Vue.extend({
   width: 480px;
   position: fixed;
   bottom: -70px;
-  left: 30px;
+  right: 0;
   opacity: 0;
   background: $black;
   color: $white;
-  border-radius: 6px;
-  padding: 16px 20px;
+  // border-radius: 6px;
+  padding: 22px 26px;
   transition: 0.14s ease-out;
+  z-index: 100000;
   &.isOpen {
-    bottom: 30px;
+    bottom: 0;
     opacity: 1;
   }
   &.isDanger {

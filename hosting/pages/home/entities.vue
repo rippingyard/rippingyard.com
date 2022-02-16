@@ -31,7 +31,7 @@ import { normalize } from '~/services/post'
 import { getTitle } from '~/plugins/typography'
 
 export default {
-  layout: 'manage',
+  // layout: 'manage',
   middleware: ['auth'],
   async asyncData({ $fire, store }) {
     const posts = []

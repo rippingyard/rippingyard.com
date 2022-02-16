@@ -1,20 +1,15 @@
 <template>
-  <section class="columns">
-    <div class="column c20">
-      <ManageNav />
+  <main class="page">
+    <ManageHeading label="新規投稿" />
+    <div class="form">
+      <PostForm />
     </div>
-    <main class="column c80">
-      <ManageHeading label="新規投稿" />
-      <div class="form">
-        <PostForm />
-      </div>
-    </main>
-  </section>
+  </main>
 </template>
 
 <script>
 export default {
-  layout: 'manage',
+  // layout: 'manage',
   middleware: ['auth'],
   head: () => {
     return {
@@ -24,6 +19,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.page {
+  margin-top: $gap;
+  border: 1px solid $gray-black;
+}
 .form {
   padding: 10px 60px 60px;
 }

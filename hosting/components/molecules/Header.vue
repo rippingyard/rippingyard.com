@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :class="{ 'is-wide': isWide }">
+  <div class="header">
     <div class="brand">
       <nuxt-link to="/">
         <SvgLogo />
@@ -16,9 +16,9 @@ export default Vue.extend({
     SvgLogo,
   },
   props: {
-    isWide: {
-      type: Boolean,
-      default: false,
+    image: {
+      type: String,
+      default: '',
     },
   },
 })
@@ -26,24 +26,56 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .header {
-  z-index: 10000;
+  // z-index: 10000;
   position: relative;
-  max-width: 780px;
-  margin: 40px auto 120px;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  height: $navSize;
+  margin: $navMargin auto $navMargin;
+  padding-left: $navMargin;
+  background-color: $cyan;
+
+  background-size: cover;
+  background-position: 50% 50%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: $navSize;
+    // background-color: $black;
+    bottom: -12px;
+    right: -12px;
+
+    background: radial-gradient(rgba($black, 0.6) 1px, transparent 1px),
+      radial-gradient(rgba($black, 0.6) 1px, transparent 1px), transparent;
+    background-size: 14px 14px, 14px 14px;
+    background-position: 2px 2px, 9px 9px, 2px 2px;
+  }
 
   &.is-wide {
     max-width: 100%;
   }
 
   .brand {
+    mix-blend-mode: multiply;
     svg {
       width: 30px;
       height: 30px;
     }
   }
 
-  @include mobile {
-    margin: ($gap / 2) auto 40px;
+  @include until($desktop) {
+    margin-top: 0;
+    margin-bottom: $navMargin / 2;
+    height: $navSize * 0.5;
+    &::before {
+      height: $navSize * 0.5;
+    }
+    .brand {
+      display: none;
+    }
   }
 }
 </style>

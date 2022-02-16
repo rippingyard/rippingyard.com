@@ -34,11 +34,11 @@ $ yarn install
 ### Development
 
 ```sh
-$ yarn start:emulator
+$ yarn dev
 $ cd hosting
 $ yarn dev
 $ cd ../functions
-$ yarn watch
+$ yarn dev
 ```
 
 ### Check

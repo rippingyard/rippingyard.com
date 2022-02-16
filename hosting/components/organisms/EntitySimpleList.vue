@@ -1,6 +1,10 @@
 ﻿<template>
-  <ul :class="{'is-simple': isSimple}">
-    <li v-for="entity in entities" :key="entity"><nuxt-link :to="permalink(entity)" :target="window"><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link></li>
+  <ul :class="{ 'is-simple': isSimple }">
+    <li v-for="entity in entities" :key="entity">
+      <nuxt-link :to="permalink(entity)" :target="window"
+        ><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link
+      >
+    </li>
   </ul>
 </template>
 <script lang="ts">
@@ -24,7 +28,7 @@ export default Vue.extend({
   computed: {
     window() {
       return this.isExternal ? '_blank' : '_self'
-    }
+    },
   },
   methods: {
     permalink(entity: string): string {
@@ -35,8 +39,8 @@ export default Vue.extend({
     },
     encodeEntity(entity: string): string {
       return encodeEntity(entity)
-    }
-  }
+    },
+  },
 })
 </script>
 <style lang="scss" scoped>

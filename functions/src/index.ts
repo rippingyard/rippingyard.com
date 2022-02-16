@@ -1,8 +1,10 @@
+// import firebase from 'firebase'
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import * as serverSsr from './modules/ssr'
 import { syncPosts } from './modules/sync'
 import { notify } from './modules/notify'
+import { fetchUrl } from './controllers/fetch/url'
 
 admin.initializeApp(functions.config().firebase)
 const firestore = admin.firestore()
@@ -10,6 +12,11 @@ const firestore = admin.firestore()
 // SSR
 export const ssr = functions.https.onRequest((request, response) => {
   serverSsr(request, response)
+})
+
+// API
+export const apiFetchUrl = functions.https.onRequest((request, response) => {
+  fetchUrl(request, response)
 })
 
 // onPostCreate

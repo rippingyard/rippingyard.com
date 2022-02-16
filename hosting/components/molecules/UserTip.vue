@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="card">
+  <div class="card" :class="{ 'is-dark': isDark }">
     <nuxt-link
       v-if="user.avatar"
       :to="permalink"
@@ -8,7 +8,9 @@
     />
     <h2 class="name">
       <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
-      <nuxt-link :to="permalink" class="account">@{{ user.userName }}</nuxt-link>
+      <nuxt-link :to="permalink" class="account">
+        @{{ user.userName }}
+      </nuxt-link>
     </h2>
   </div>
 </template>
@@ -29,6 +31,10 @@ export default Vue.extend({
         }
       },
     },
+    isDark: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     permalink() {
@@ -44,14 +50,9 @@ export default Vue.extend({
 .card {
   display: flex;
   flex-direction: column;
-  background: $white;
-  padding: 8px;
+  // padding: 8px;
   color: $black;
   position: relative;
-
-  @include mobile {
-    flex-direction: row;
-  }
 
   .avatar {
     width: 60px;
@@ -76,17 +77,29 @@ export default Vue.extend({
         font-size: 0.9rem;
       }
     }
-    @include mobile {
+  }
+
+  @include mobile {
+    flex-direction: row;
+    padding: $gap / 2 0 0;
+    .name {
+      padding: $gap / 2;
       width: calc(100% - 50px);
       text-align: left;
       padding-top: 0;
     }
   }
 
-  @include mobile {
-    padding: 4px;
+  &.is-dark {
+    .avatar {
+      border: 1px solid $black;
+    }
     .name {
-      padding: $gap / 2;
+      > a {
+        &.account {
+          color: $black;
+        }
+      }
     }
   }
 }

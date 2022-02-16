@@ -1,5 +1,6 @@
 @import './variables';
 @import './mixins';
+@import './utils';
 
 html,
 body {
@@ -12,11 +13,13 @@ body {
 }
 
 @import './modules/ad';
+@import './modules/background';
 @import './modules/block';
 @import './modules/badge';
 @import './modules/button';
 @import './modules/column';
 @import './modules/field';
+@import './modules/frame';
 @import './modules/masonry';
 @import './modules/wysiwyg';
 @import './modules/editor';

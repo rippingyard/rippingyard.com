@@ -1,55 +1,79 @@
 <template>
-  <div class="block container">
-    <article class="post">
-      <Header :post="post" />
-      <div v-if="hasTitle" class="heading">
-        <h1>{{ getTitle }}</h1>
+  <main>
+    <Header :image="thumbnail" />
+    <div class="heading">
+      <h1>{{ getTitle }}</h1>
+    </div>
+    <div class="block">
+      <div class="block main">
+        <article class="post">
+          <div v-if="post.parent" class="parent">
+            <ItemCard :item="post.parent" />
+          </div>
+          <Content v-html="mainContent" />
+          <AdsensePostBottom />
+          <div v-if="post.owner" class="owner">
+            <UserCard :user="post.owner" />
+          </div>
+          <CommentList :parent-id="parentId" />
+          <CommentForm :parent-id="parentId" :is-public="post.isPublic" />
+          <div v-if="post.entities" class="entities">
+            <EntitySimpleList :entities="post.entities" />
+          </div>
+          <div class="footer">
+            <p class="date">
+              <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+            </p>
+          </div>
+        </article>
       </div>
-      <Content v-html="mainContent" />
-      <AdsensePostBottom />
-      <CommentList :parent-id="parentId" />
-      <CommentForm
-        :parent-id="parentId"
-        :is-public="post.isPublic"
-      />
-      <div v-if="post.entities" class="entities">
-        <EntitySimpleList :entities="post.entities" />
+      <div class="block sub sticky">
+        <div class="block">
+          <div v-if="post.owner" class="owner">
+            <nuxt-link
+              v-if="post.owner.avatar"
+              :to="userlink(post.owner)"
+              class="avatar"
+              :style="avatar(post.owner)"
+            />
+            <p class="name">{{ post.owner.displayName }}</p>
+            <p class="account">@{{ post.owner.userName }}</p>
+          </div>
+        </div>
       </div>
-      <div v-if="post.owner" class="owner">
-        <UserCard :user="post.owner" />
+    </div>
+    <div class="block">
+      <div v-if="post.items.length > 0" class="items">
+        <ul>
+          <li v-for="item of post.items" :key="item.id">
+            <ItemCard :item="item" />
+          </li>
+        </ul>
       </div>
-      <div class="footer">
-        <p class="date">
-          <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
-        </p>
-      </div>
-    </article>
-    <aside class="extra related">
-      <div class="heading">
-        <h2><span class="border">関連記事</span></h2>
-      </div>
-      <RelatedArticles
-        :tags="post.entities"
-        :exclude-id="post.id"
-      />
-    </aside>
-  </div>
+      <aside class="extra related">
+        <div class="heading">
+          <h2><span class="border">関連記事</span></h2>
+        </div>
+        <RelatedArticles :tags="entities" :exclude-id="post.id" />
+      </aside>
+    </div>
+  </main>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
+import { Item } from '~/types/item'
+import { User } from '~/types/user'
 import { normalize, docPath } from '~/services/post'
 import {
-  hasTitle,
   getTitle,
   getSocialTitle,
   getSummary,
   removeTitle,
   getThumbnail,
-  decodeEntities,
+  getI18nName,
 } from '~/plugins/typography'
 
 export default Vue.extend({
@@ -57,7 +81,7 @@ export default Vue.extend({
     const r: {
       post?: Partial<Post>
     } = {}
-    const postId = params.id // TODO: 無毒化
+    const postId = params.id
     r.post = store.state.post.posts[postId]
     console.log('Post: Stored', store.state.post.posts)
     if (r.post) {
@@ -69,7 +93,7 @@ export default Vue.extend({
         .doc(postId)
         .get()
         .then(async (doc: any) => {
-          // console.log(doc.id, doc.data())
+          console.log(doc.id, doc.data())
           r.post = await normalize(doc.id, doc.data(), store)
           if (
             !doc.exists ||
@@ -87,11 +111,11 @@ export default Vue.extend({
     return r
   },
   data(): {
-    title: string
+    // title: string
     post: Partial<Post>
   } {
     return {
-      title: '',
+      // title: '',
       post: {},
     }
   },
@@ -99,11 +123,8 @@ export default Vue.extend({
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
-    hasTitle(): boolean {
-      return hasTitle(this.$data.post.content)
-    },
     getTitle(): string {
-      return getTitle(this.$data.post.content)
+      return getTitle(this.$data.post)
     },
     getSocialTitle(): string {
       return getSocialTitle(this.$data.post.content) + ' - rippingyard'
@@ -114,18 +135,22 @@ export default Vue.extend({
     mainContent(): string {
       return removeTitle(this.$data.post.content)
     },
-    parentId() {
+    parentId(): string {
       return docPath(this.$data.post.id)
     },
-    thumbnail() {
+    thumbnail(): string {
       return getThumbnail(this.$data.post.contentOriginal)
+    },
+    entities(): string[] {
+      const entities: string[] = []
+      if (this.post.entities) entities.push(...this.post.entities)
+      if (this.post.parent?.entities)
+        entities.push(...this.post.parent?.entities)
+      return entities
     },
   },
   mounted() {
-    if (
-      !this.$data.post.isPublic &&
-      !this.isAuthenticated
-    ) {
+    if (!this.$data.post.isPublic && !this.isAuthenticated) {
       this.$data.post = {}
       this.snack('ログインしてください')
       this.$router.push('/login')
@@ -139,22 +164,6 @@ export default Vue.extend({
       throw new Error('会員限定記事です')
     }
   },
-  // async mounted({
-  //   post,
-  //   setPost,
-  //   getOwner,
-  // }: {
-  //   post: Post
-  //   setPost: Function
-  //   getOwner: Function
-  // }) {
-  //   setPost(post.id, post)
-  //   if (post) {
-  //     if (post.owner && post.owner.id) {
-  //       post.owner = await getOwner(post.owner.id)
-  //     }
-  //   }
-  // },
   methods: {
     setPost(id: string, post: Partial<Post>): void {
       return this.$store.commit('post/setPost', {
@@ -162,20 +171,30 @@ export default Vue.extend({
         post,
       })
     },
+    itemName(item: Item): string {
+      if (!item.name) return ''
+      return getI18nName(item.name)
+    },
+    userlink(user: User) {
+      return `/people/${user.userName}`
+    },
+    avatar(user: User) {
+      return `background-image:url(${user.avatar})`
+    },
   },
   head() {
     return {
-      title: decodeEntities(getTitle(this.$data.post.content)),
+      title: getTitle(this.$data.post),
       meta: [
         {
           hid: 'og:title',
           property: 'og:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: getTitle(this.$data.post.content),
+          content: getTitle(this.$data.post),
         },
         {
           hid: 'description',
@@ -244,10 +263,31 @@ export default Vue.extend({
   .extra & {
     margin-bottom: $gap / 2;
   }
+  @include until($desktop) {
+    padding: 0 ($gap / 2);
+    margin-bottom: $gap / 2;
+    h1 {
+      padding-top: $gap / 2;
+    }
+  }
+}
+
+.parent {
+  margin: 0 0 $gap / 2;
+  @include until($desktop) {
+    margin: 0 $gap / 2 $gap / 2;
+  }
+}
+
+.items {
+  margin-bottom: 25px;
 }
 
 .entities {
   margin-bottom: 30px;
+  @include until($desktop) {
+    padding: 0 $gap / 2;
+  }
 }
 
 .footer {
@@ -272,9 +312,43 @@ export default Vue.extend({
       margin-right: 5px;
     }
   }
+
+  @include until($desktop) {
+    padding-left: $gap / 2;
+    padding-right: $gap / 2;
+    &::before {
+      left: $gap / 2;
+    }
+  }
 }
 
 .extra {
   padding-top: $gap;
+}
+
+.avatar {
+  display: block;
+  margin: 0 auto 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 999999px;
+  border: 4px solid $black;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.name {
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.account {
+  text-align: center;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: $gray-black;
 }
 </style>

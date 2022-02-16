@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-  layout: 'manage',
+  // layout: 'manage',
   fetch() {
     this.me = this.$store.state.auth.me
   },

@@ -1,67 +1,111 @@
 <template>
-  <main class="block container is-wide">
-    <Header :is-wide="true" />
-    <ul class="masonry">
-      <li v-for="post in firstPosts" :key="post.id">
-        <PostItem :post="post" />
-      </li>
-    </ul>
-    <AdsenseTopMiddle />
-    <ul class="masonry">
-      <li v-for="post in endPosts" :key="post.id">
-        <PostItem :post="post" />
-      </li>
-    </ul>
-    <AdsenseTopBottom />
+  <main>
+    <div v-if="isLoading" class="block container loading">
+      <LoadingIcon color="yellow" />
+    </div>
+    <div v-else>
+      <Header />
+      <ul class="masonry">
+        <li v-for="post in firstPosts" :key="post.id">
+          <PostItem :post="post" />
+        </li>
+      </ul>
+      <AdsenseTopMiddle />
+      <ul class="masonry">
+        <li v-for="post in endPosts" :key="post.id">
+          <PostItem :post="post" />
+        </li>
+      </ul>
+      <AdsenseTopBottom />
+      <ul class="masonry">
+        <li v-for="post in articles" :key="post.id">
+          <PostItem :post="post" />
+        </li>
+      </ul>
+    </div>
   </main>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import _ from 'lodash'
+import { orderBy } from 'lodash'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
-import { normalize } from '~/services/post'
+import { Item } from '~/types/item'
+import { normalize, isPublic } from '~/services/post'
+
+type DataType = {
+  articles: Post[]
+  items: Item[]
+  unsubscribeHandler: any
+}
 
 export default Vue.extend({
   async asyncData({ $fire, store }: Context) {
-    const posts: Partial<Post>[] = []
-    let promises: any[] = []
-    await $fire.firestore
-      .collection('timelines')
-      .doc('public')
+    const articles: Partial<Post>[] = []
+    const qs = await $fire.firestore
       .collection('posts')
+      .where('isPublic', '==', true)
+      .where('status', '==', 'published')
+      .where('type', '==', 'article')
       .limit(36)
       .orderBy('publishedAt', 'desc')
       .get()
-      .then((qs: any) => {
-        promises = qs.docs.map(async (doc: any) => {
-          const post = doc.data()
-          if (post.isDeleted === true) return
-          const normalizedPost = await normalize(doc.id, post, store)
-          return posts.push(normalizedPost)
-        })
-      })
-    await Promise.all(promises)
-    
-    const allPosts = _.orderBy(posts, ['createdAt'], ['desc'])
-    const firstPosts = allPosts.slice(0, 6)
-    const endPosts = allPosts.slice(6, allPosts.length)
+
+    for (const doc of qs.docs) {
+      const post = doc.data()
+      if (isPublic(post)) {
+        articles.push(await normalize(doc.id, post, store))
+      }
+    }
 
     return {
-      firstPosts,
-      endPosts,
+      articles,
     }
   },
-  data() {
+  data(): DataType {
     return {
-      posts: [],
+      items: [],
+      articles: [],
+      unsubscribeHandler: null,
     }
+  },
+  computed: {
+    posts(): Post[] {
+      return this.$store.state.global.posts
+    },
+    sortedPosts(): Post[] {
+      return orderBy(this.posts, ['createdAt'], ['desc'])
+    },
+    firstPosts(): Post[] {
+      return this.sortedPosts.slice(0, 6)
+    },
+    endPosts(): Post[] {
+      return this.sortedPosts.slice(6, this.posts.length)
+    },
+    isLoading(): boolean {
+      return !this.$store.state.global.posts
+    },
   },
 })
 </script>
 <style lang="scss" scoped>
+.skyscraper {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  > img {
+    max-width: 100%;
+  }
+}
 .masonry {
+  @include mobile {
+    margin-left: $gap / 2;
+    margin-right: $gap / 2;
+  }
   & > li {
     margin-bottom: $gap;
     @include mobile {
@@ -70,12 +114,8 @@ export default Vue.extend({
     > a {
       display: block;
       position: relative;
-      padding: $gap / 2;
       height: 100%;
-      border-radius: 2px;
-      border: 8px solid $black;
       &:hover {
-        border: 8px solid $black;
         cursor: pointer;
       }
       /deep/ h1 {
@@ -87,11 +127,20 @@ export default Vue.extend({
         bottom: 30px;
       }
       @include mobile {
-        // padding: $gap / 2 $gap;
-        border: 6px solid $black;
         margin-bottom: $gap / 2;
+
+        /deep/ h1 {
+          padding-bottom: $gap / 2;
+        }
       }
     }
   }
+}
+.loading {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 </style>

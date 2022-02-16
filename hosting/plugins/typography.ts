@@ -2,6 +2,15 @@ import _ from 'lodash'
 import urlParse from 'url-parse'
 import queryString from 'query-string'
 import sanitizeHtml from 'sanitize-html'
+import { Post } from '~/types/post'
+
+export const nl2br = (str: string): string => {
+  if (!str) return '';
+  str = sanitizeHtml(str, {
+    allowedTags: [],
+  });
+  return str.replace(/\n/g, '<br/>');
+}
 
 export const removeHtmlTags = (str: string) => {
   return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
@@ -17,11 +26,29 @@ export const hasTitle = (str: string): boolean => {
   return /<h.(?: .+?)?>.*?<\/h.>/.test(str)
 }
 
-export const getTitle = (str: string, length: number = 32) => {
+export const getTitle = (str: string | Post, length: number = 32, alt?: string) => {
   if (!str) return ''
-  const htag = str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
-  if (htag && htag[0] !== '') return htag[0]
-  return getSummary(str, length)
+  if (typeof str === 'string') {
+    const htags = getHtags(str)
+    if (htags && htags[0] !== '') return decodeEntities(htags[0])
+    return alt || getSummary(str, length)
+  } else {
+    const htags = getHtags(str.content)
+    if (htags && htags[0] !== '') return decodeEntities(htags[0])
+    if (str.parent) {
+      if (str.parent.name.ja) return str.parent.name.ja
+    }
+    return alt || getSummary(str.content, length)
+  }
+}
+
+export const getHtags = (str: string) => {
+  return str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
+}
+
+export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {
+  if (!nameObject) return ''
+  return nameObject[lang] || ''
 }
 
 export const hasThumbnail = (str: string): boolean => {
@@ -32,12 +59,12 @@ export const getThumbnail = (str: string): string => {
   if (!str) return ''
 
   let image: string = ''
-  
+
   image = extractFirstImage(str)
   if (image) return image;
 
   const urls = extractUrls(str)
-  
+
   if (!urls) return ''
 
   urls.map((url: string) => {
@@ -91,8 +118,8 @@ export const stripTags = (content: string, linebreak = true) => {
   return !content
     ? ''
     : sanitizeHtml(content, {
-        allowedTags: [],
-      })
+      allowedTags: [],
+    })
 }
 
 export function extractFirstImage(content: string): string {
@@ -109,6 +136,10 @@ export function extractImages(content: string) {
     if (image) images.push(image[1])
   })
   return images
+}
+
+export function isUrl(string: string): boolean {
+  return /^http(s)?:\/\//.test(string)
 }
 
 export function extractUrls(content: string): string[] {
@@ -170,37 +201,37 @@ export function sanitize(content: string) {
   return !content
     ? ''
     : sanitizeHtml(content, {
-        allowedTags: [
-          'h1',
-          'h2',
-          'h3',
-          'h4',
-          'h5',
-          'h6',
-          'p',
-          'div',
-          'strong',
-          'b',
-          'i',
-          'em',
-          'a',
-          'img',
-          'blockquote',
-          'pre',
-          'code',
-          'mark',
-          'hr',
-          'ul',
-          'ol',
-          'li',
-          'br',
-        ],
-        allowedAttributes: {
-          div: ['class'],
-          a: ['href', 'name', 'target'],
-          img: ['src', 'alt', 'title'],
-        },
-      })
+      allowedTags: [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'p',
+        'div',
+        'strong',
+        'b',
+        'i',
+        'em',
+        'a',
+        'img',
+        'blockquote',
+        'pre',
+        'code',
+        'mark',
+        'hr',
+        'ul',
+        'ol',
+        'li',
+        'br',
+      ],
+      allowedAttributes: {
+        div: ['class'],
+        a: ['href', 'name', 'target'],
+        img: ['src', 'alt', 'title'],
+      },
+    })
 }
 
 export const decodeEntities = (str: string) => {
