@@ -7,11 +7,11 @@
       <EntityTable :data="posts">
         <template slot-scope="props">
           <TableColumn field="content" label="タイトル">
-            <strong
-              ><nuxt-link :to="props.row.permalink" target="_blank">{{
-                getTitle(props.row.content)
-              }}</nuxt-link></strong
-            >
+            <strong>
+              <nuxt-link :to="props.row.permalink" target="_blank">
+                {{ getTitle(props.row.content) }}
+              </nuxt-link>
+            </strong>
           </TableColumn>
           <TableColumn field="content" label="公開日">
             <small>{{ props.row.publishedAt }}</small>
