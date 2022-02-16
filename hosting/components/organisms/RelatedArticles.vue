@@ -43,6 +43,8 @@ export default Vue.extend({
           selectedTags.map((e: string) => decodeEntity(e))
         )
         .limit(10)
+        .orderBy('isDeleted', 'desc')
+        .orderBy('isPublic', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
@@ -73,10 +75,12 @@ export default Vue.extend({
 
     if (promises.length < 1) {
       await (this as any).$fire.firestore
-        .collection('timelines')
-        .doc('public')
         .collection('posts')
+        .where('isPublic', '==', true)
+        .where('isDeleted', '!=', true)
         .limit(20)
+        .orderBy('isDeleted', 'desc')
+        .orderBy('isPublic', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {

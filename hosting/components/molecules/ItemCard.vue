@@ -1,6 +1,10 @@
 ﻿<template>
   <div class="card" :class="{ 'no-border': editable }">
-    <EmbedCard v-if="isBookmark" :content="item.metadata" />
+    <EmbedCard
+      v-if="isBookmark"
+      :content="item.metadata"
+      :entities="item.entities || []"
+    />
     <div v-else class="inner">
       <ul v-if="editable && !item.id" class="types is-selectable">
         <li
@@ -28,19 +32,19 @@
         </li>
       </ul>
       <h2 class="name">{{ name }}</h2>
-      <ul v-if="editable && !item.id" class="categories is-selectable">
-        <li
-          v-for="category of categories"
-          :key="`category-${category.id}`"
-          :class="{
-            selected: item.entities.includes(category.id),
-          }"
-          @click="toggleCategory(category.id)"
-        >
-          {{ category.label }}
-        </li>
-      </ul>
     </div>
+    <ul v-if="editable && !item.id" class="categories is-selectable">
+      <li
+        v-for="category of categories"
+        :key="`category-${category.id}`"
+        :class="{
+          selected: item.entities.includes(category.id),
+        }"
+        @click="toggleCategory(category.id)"
+      >
+        {{ category.label }}
+      </li>
+    </ul>
   </div>
 </template>
 <script lang="ts">
@@ -191,38 +195,38 @@ export default Vue.extend({
         }
       }
     }
+  }
 
-    .categories {
-      padding: 0 $gap / 3;
+  .categories {
+    padding: 0 $gap / 3;
+    > li {
+      display: inline-block;
+      background-color: transparent;
+      font-size: 0.8rem;
+      color: $black;
+      line-height: 1.9;
+      padding: 0 8px 3px 0;
+    }
+    &.is-selectable {
+      padding: 0;
       > li {
-        display: inline-block;
-        background-color: transparent;
-        font-size: 0.8rem;
-        color: $black;
-        line-height: 1.9;
-        padding: 0 8px 3px 0;
-      }
-      &.is-selectable {
-        padding: 0;
-        > li {
-          opacity: 0.6;
-          padding: 3px 8px;
-          border-top: 1px solid $black;
-          border-right: 1px solid $black;
-          cursor: pointer;
-          &.label {
-            cursor: default;
-          }
-          &:hover {
-            opacity: 1;
-          }
-          &.selected {
-            background-color: $black;
-            color: $yellow;
-            opacity: 1;
-            &.unset {
-              color: $gray-black;
-            }
+        opacity: 0.6;
+        padding: 3px 8px;
+        border-top: 1px solid $black;
+        border-right: 1px solid $black;
+        cursor: pointer;
+        &.label {
+          cursor: default;
+        }
+        &:hover {
+          opacity: 1;
+        }
+        &.selected {
+          background-color: $black;
+          color: $yellow;
+          opacity: 1;
+          &.unset {
+            color: $gray-black;
           }
         }
       }

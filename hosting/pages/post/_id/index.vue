@@ -54,7 +54,7 @@
         <div class="heading">
           <h2><span class="border">関連記事</span></h2>
         </div>
-        <RelatedArticles :tags="post.entities" :exclude-id="post.id" />
+        <RelatedArticles :tags="entities" :exclude-id="post.id" />
       </aside>
     </div>
   </main>
@@ -140,6 +140,13 @@ export default Vue.extend({
     },
     thumbnail(): string {
       return getThumbnail(this.$data.post.contentOriginal)
+    },
+    entities(): string[] {
+      const entities: string[] = []
+      if (this.post.entities) entities.push(...this.post.entities)
+      if (this.post.parent?.entities)
+        entities.push(...this.post.parent?.entities)
+      return entities
     },
   },
   mounted() {
