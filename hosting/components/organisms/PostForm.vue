@@ -129,12 +129,10 @@ export default {
   methods: {
     ...mapActions({
       savePost: 'post/save',
+      saveItem: 'item/save',
       saveEntity: 'entity/save',
       saveActivity: 'activity/save',
     }),
-    // updateContent(content) {
-    //   this.content = content
-    // },
     togglePublic() {
       this.isPublic = !this.isPublic
     },
@@ -185,12 +183,12 @@ export default {
         }
 
         if (this.item) {
+          console.log('this.item', this.item)
           const q = await this.$fire.firestore
             .collection('items')
             .where('isDeleted', '==', false)
             .where('path', '==', this.item.path)
             .where('type', '==', this.item.type)
-            // .where('status', '==', 'published')
             .limit(1)
             .orderBy('createdAt', 'desc')
             .get()
