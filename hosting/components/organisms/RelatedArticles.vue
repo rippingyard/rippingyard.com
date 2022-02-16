@@ -44,7 +44,6 @@ export default Vue.extend({
         )
         .limit(10)
         .orderBy('isDeleted', 'desc')
-        .orderBy('isPublic', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
@@ -80,7 +79,6 @@ export default Vue.extend({
         .where('isDeleted', '!=', true)
         .limit(20)
         .orderBy('isDeleted', 'desc')
-        .orderBy('isPublic', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
