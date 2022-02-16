@@ -35,7 +35,7 @@ export default Vue.extend({
   height: $mobileHeaderHeight;
   // mix-blend-mode: multiply;
   text-align: center;
-  z-index: 10000;
+  z-index: 6000;
 
   .brand {
     display: inline-block;

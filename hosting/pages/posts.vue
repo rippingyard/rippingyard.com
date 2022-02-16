@@ -3,7 +3,9 @@
     <Header />
     <PostSimpleList :posts="posts" />
     <div class="console">
-      <button class="button" @click="loadMore()">もっと読む</button>
+      <button class="button expanded centered" @click="loadMore()">
+        もっと読む
+      </button>
     </div>
   </section>
 </template>

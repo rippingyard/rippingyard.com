@@ -104,16 +104,18 @@
             <fa-icon icon="search" class="icon" />
           </span>
         </li>
-        <li
-          v-if="isAuthenticated"
-          :class="{ active: isActiveTab('post') }"
-          @click="onClickTab('post')"
-        >
-          <span class="pconly">新規投稿<small>Post</small></span>
-          <span class="sponly">
-            <fa-icon icon="plus-circle" class="icon" />
-          </span>
-        </li>
+        <client-only>
+          <li
+            v-if="isAuthenticated"
+            :class="{ active: isActiveTab('post') }"
+            @click="onClickTab('post')"
+          >
+            <span class="pconly">新規投稿<small>Post</small></span>
+            <span class="sponly">
+              <fa-icon icon="plus-circle" class="icon" />
+            </span>
+          </li>
+        </client-only>
       </ul>
       <client-only>
         <section v-if="activeTab === 'dashboard'" class="inner">
@@ -142,7 +144,7 @@
                     <fa-icon icon="angle-right" class="icon" />新規投稿
                   </nuxt-link>
                 </li>
-                <li>
+                <li v-if="true !== true">
                   <nuxt-link to="/home/logs/">
                     <fa-icon icon="angle-right" class="icon" />ライフログ一覧
                   </nuxt-link>
@@ -368,7 +370,7 @@ export default Vue.extend({
   left: calc(50vw - #{($mainSize / 2) + $navSize + $navMargin});
   width: $navSize;
   height: calc(100vh - #{$navMargin * 1.5});
-  z-index: 999;
+  z-index: 9999;
 
   > .inner {
     display: flex;

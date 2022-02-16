@@ -40,7 +40,9 @@ export default Vue.extend({
       .collection('posts')
       .where('isPublic', '==', true)
       .where('status', '==', 'published')
-      .where('type', '==', 'note')
+      .where('type', 'in', ['note', 'article'])
+      .orderBy('publishedAt', 'desc')
+      .limit(25)
       .onSnapshot({
         error: (e: any) => {
           console.error('firestore error', e)
