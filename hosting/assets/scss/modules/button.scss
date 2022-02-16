@@ -9,6 +9,10 @@
     width: 100%;
   }
 
+  &.centered {
+    text-align: center;
+  }
+
   &.light {
     color: $white !important;
     border-color: $white;

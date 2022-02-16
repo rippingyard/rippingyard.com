@@ -17,11 +17,12 @@
         </li>
       </ul>
       <AdsenseTopBottom />
-      <ul class="masonry">
-        <li v-for="post in articles" :key="post.id">
-          <PostItem :post="post" />
-        </li>
-      </ul>
+      <PostSimpleList :posts="articles" />
+      <div class="console">
+        <nuxt-link to="/posts" class="button expanded centered">
+          すべての記事を読む
+        </nuxt-link>
+      </div>
     </div>
   </main>
 </template>
@@ -142,5 +143,8 @@ export default Vue.extend({
   display: flex;
   justify-content: center;
   align-content: center;
+}
+.console {
+  padding: $gap 0 0;
 }
 </style>
