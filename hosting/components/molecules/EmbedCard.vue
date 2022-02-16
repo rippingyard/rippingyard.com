@@ -12,6 +12,14 @@
           class="description"
           v-html="nl2br(getSummary(content.description))"
         />
+        <ul v-if="entities.length > 0" class="types">
+          <li
+            v-for="category of filteredEntities"
+            :key="`category-${category.id}`"
+          >
+            {{ category.label }}
+          </li>
+        </ul>
       </div>
     </a>
     <div v-if="content.error">エラーが発生しました：{{ content.error }}</div>
@@ -20,12 +28,25 @@
 <script lang="ts">
 import Vue from 'vue'
 import { nl2br, getSummary } from '~/plugins/typography'
+import { categories } from '~/services/category'
+import { Category } from '~/types/category'
 
 export default Vue.extend({
   props: {
     content: {
       type: Object,
       default: () => {},
+    },
+    entities: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  computed: {
+    filteredEntities(): Category[] {
+      return categories.filter(c =>
+        (this as any).entities.find((e: string) => e === c.id)
+      )
     },
   },
   methods: {
@@ -43,6 +64,7 @@ export default Vue.extend({
   display: flex;
   // border: 1px solid $black;
   padding: 12px;
+  overflow: hidden;
   .content {
     flex-grow: 1;
   }
@@ -78,6 +100,16 @@ export default Vue.extend({
     font-size: 0.8rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
+  }
+  .types {
+    > li {
+      display: inline-block;
+      background: transparent;
+      color: $black;
+      font-size: 0.8rem;
+      line-height: 1.9;
+      padding: 3px 8px 3px 0;
+    }
   }
 }
 </style>
