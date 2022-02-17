@@ -121,12 +121,18 @@
     list-style-type: disc;
     padding-left: 18px;
     list-style-position: inside;
+    li {
+      list-style: disc;
+    }
   }
 
   ol {
     list-style-type: decimal;
     padding-left: 22px;
     list-style-position: inside;
+    li {
+      list-style: decimal;
+    }
   }
 
   li {
