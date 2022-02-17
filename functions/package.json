@@ -53,6 +53,7 @@
     "joi": "^17.4.0",
     "json-cyclic": "^1.0.2",
     "nuxt": "^2.15.4",
+    "nuxt-dropzone": "^1.0.4",
     "oembed-parser": "^1.5.2",
     "sanitize-html": "^2.4.0",
     "tippy.js": "^6.3.1",
