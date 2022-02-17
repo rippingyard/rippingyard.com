@@ -42,7 +42,7 @@ export default Vue.extend({
       .where('status', '==', 'published')
       .where('type', 'in', ['note', 'article'])
       .orderBy('publishedAt', 'desc')
-      .limit(25)
+      .limit(30)
       .onSnapshot({
         error: (e: any) => {
           console.error('firestore error', e)
