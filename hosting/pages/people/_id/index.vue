@@ -132,11 +132,12 @@ export default Vue.extend({
     const posts: Partial<Post>[] = []
     let promises: any[] = []
     await $fire.firestore
-      .collection('timelines')
-      .doc('public')
       .collection('posts')
       .where('owner', '==', $fire.firestore.doc(`users/${r.user.uid}`))
+      .where('isDeleted', '!=', true)
+      .where('isPublic', '==', true)
       .limit(100)
+      .orderBy('isDeleted', 'desc')
       .orderBy('publishedAt', 'desc')
       .get()
       .then((qs: any) => {

@@ -66,7 +66,7 @@ export default Vue.extend({
     await Promise.all(promises)
 
     return {
-      posts: _.orderBy(posts, ['createdAt'], ['desc']),
+      posts: _.orderBy(posts, ['publishedAt'], ['desc']),
     }
   },
   data() {
