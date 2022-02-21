@@ -72,6 +72,7 @@
     "sanitize-html": "^2.3.0",
     "tippy.js": "^6.2.7",
     "url-parse": "^1.4.7",
+    "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.6.0"
   },
   "devDependencies": {

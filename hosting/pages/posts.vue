@@ -84,11 +84,9 @@ export default {
         .orderBy('publishedAt', 'desc')
 
       if (startAt) {
-        // console.log(
-        //   'firestore',
-        //   firebase.firestore.Timestamp.fromDate(new Date(startAt))
-        // )
-        q = q.startAt(firebase.firestore.Timestamp.fromDate(new Date(startAt)))
+        q = q.startAfter(
+          firebase.firestore.Timestamp.fromDate(new Date(startAt))
+        )
       }
 
       const qs = await q.get()

@@ -126,6 +126,10 @@ export default {
     '~/plugins/auth',
     // '~/plugins/velocity',
     '~/middleware/snack',
+    {
+      src: '~/plugins/datepicker',
+      mode: 'client'
+    },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

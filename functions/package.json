@@ -57,7 +57,8 @@
     "oembed-parser": "^1.5.2",
     "sanitize-html": "^2.4.0",
     "tippy.js": "^6.3.1",
-    "url-parse": "^1.5.2"
+    "url-parse": "^1.5.2",
+    "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {
     "@types/sanitize-html": "^2.3.1",

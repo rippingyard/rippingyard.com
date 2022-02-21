@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="inner">
-        <TextArea v-model="content" />
+        <Wysiwyg v-model="content" />
       </div>
       <div class="footer bg-dotted">
         <div class="footer-main">
@@ -21,6 +21,7 @@
           </button>
         </div>
         <div class="footer-side">
+          <DatePicker v-model="date" />
           <div :class="{ 'is-over': isOver }" class="counter">
             {{ contentLength }} / {{ limit }}
           </div>
@@ -39,6 +40,7 @@ import { permalink } from '~/services/post'
 
 type DataType = {
   content: string
+  date: Date
   item: Item | null
   entities: string[]
   resetCount: number
@@ -59,6 +61,7 @@ export default Vue.extend({
   data(): DataType {
     return {
       content: '',
+      date: new Date(),
       entities: [],
       resetCount: 0,
       item: null,
@@ -114,6 +117,7 @@ export default Vue.extend({
         type: 'note',
         entities: this.entities,
         status: this.status,
+        publishedAt: this.date,
         isPublic: this.isPublic,
       }
 
