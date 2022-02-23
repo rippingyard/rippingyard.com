@@ -23,5 +23,6 @@ export type Post = {
   }
   items: DocumentData[]
   status: 'published' | 'draft'
+  permalink?: string
   sociallink?: string
 }
