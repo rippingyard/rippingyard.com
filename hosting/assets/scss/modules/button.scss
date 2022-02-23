@@ -3,7 +3,7 @@
   border: 2px solid $black;
   font-weight: 800;
   display: inline-block;
-  color: $black !important;
+  color: $black;
 
   &.expanded {
     width: 100%;
@@ -14,13 +14,24 @@
   }
 
   &.light {
-    color: $white !important;
+    color: $white;
     border-color: $white;
+  }
+
+  &.twitter {
+    background-color: rgb(29, 155, 240);
+    &:hover {
+      background-color: rgba(29, 155, 240, 0.6);
+    }
   }
 
   &:hover {
     background-color: $yellow;
     // color: $yellow;
+  }
+
+  &.is-wide {
+    width: 100%;
   }
 
   &.no-border {
