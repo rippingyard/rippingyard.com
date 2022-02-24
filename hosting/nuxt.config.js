@@ -254,7 +254,10 @@ export default {
       regular: [
         'faTimesCircle',
       ],
-      brands: [],
+      brands: [
+        'faFacebook',
+        'faTwitter',
+      ],
     },
   },
 

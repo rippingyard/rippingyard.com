@@ -39,6 +39,11 @@
             <p class="name">{{ post.owner.displayName }}</p>
             <p class="account">@{{ post.owner.userName }}</p>
           </div>
+          <div class="social">
+            <button class="button twitter is-wide" @click="openTweetForm">
+              <fa-icon :icon="['fab', 'twitter']" class="icon" />ツイートする
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -180,6 +185,23 @@ export default Vue.extend({
     },
     avatar(user: User) {
       return `background-image:url(${user.avatar})`
+    },
+    openTweetForm() {
+      if (screen) {
+        const width: number = 560
+        const height: number = 600
+        const left: number = (screen.availWidth - width) / 2
+        const top: number = (screen.availHeight - height) / 2
+        const url: string = encodeURI(
+          `https://www.rippingyard.com${this.post.permalink}`
+        )
+        const text: string = encodeURI(`${this.getTitle} - ripping yard`)
+        window.open(
+          `https://twitter.com/share?url=${url}&text=${text}`,
+          'tweet',
+          `innerWidth=${width},innerHeight=${height},left=${left},top=${top},resizable=no`
+        )
+      }
     },
   },
   head() {
@@ -326,29 +348,48 @@ export default Vue.extend({
   padding-top: $gap;
 }
 
-.avatar {
-  display: block;
-  margin: 0 auto 10px;
-  width: 80px;
-  height: 80px;
-  border-radius: 999999px;
-  border: 4px solid $black;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
+.owner {
+  border-bottom: 1px solid $gray-black;
+  padding-bottom: $gap / 2;
+  margin-bottom: $gap / 2;
+  .avatar {
+    display: block;
+    margin: 0 auto 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 999999px;
+    border: 4px solid $black;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .name {
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .account {
+    text-align: center;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: $gray-black;
+  }
 }
 
-.name {
-  text-align: center;
-  font-weight: 800;
-  font-size: 1.2rem;
-  line-height: 1.2;
-}
-
-.account {
-  text-align: center;
-  font-weight: 400;
-  font-size: 0.8rem;
-  color: $gray-black;
+.social {
+  .button {
+    text-align: center;
+    padding: 10px 0;
+    border: 0;
+    color: $white;
+    font-weight: 800;
+    font-size: 0.9rem;
+    .icon {
+      margin-right: 5px;
+    }
+  }
 }
 </style>
