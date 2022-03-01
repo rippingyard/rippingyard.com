@@ -43,7 +43,7 @@
       "port": 9199
     },
     "hosting": {
-      "port": 5000
+      "port": 5555
     },
     "pubsub": {
       "port": 8085

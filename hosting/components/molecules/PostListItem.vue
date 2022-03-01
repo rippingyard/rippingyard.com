@@ -55,8 +55,8 @@ export default Vue.extend({
 .item {
   padding: $gap;
 
-  @include mobile {
-    // padding: $gap / 2;
+  @include until-desktop {
+    padding: $gap / 2;
   }
 }
 
@@ -67,7 +67,8 @@ export default Vue.extend({
   line-height: 1.4;
   padding-right: $gap;
 
-  @include mobile {
+  @include until-desktop {
+    font-size: 1.4rem;
     line-height: 1.3;
     padding-right: 0;
   }
@@ -75,8 +76,8 @@ export default Vue.extend({
 
 .parent {
   margin: 0 0 $gap / 2;
-  @include until($desktop) {
-    margin: 0 $gap / 2 $gap / 2;
+  @include until-desktop {
+    margin: 0 0 $gap / 2;
   }
 }
 
@@ -97,9 +98,9 @@ export default Vue.extend({
   margin-bottom: 42px;
   padding-right: $gap;
 
-  @include mobile {
+  @include until-desktop {
     padding-right: 0;
-    margin-bottom: $gap;
+    margin-bottom: $gap / 2;
   }
 }
 

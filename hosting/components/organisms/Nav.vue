@@ -123,7 +123,7 @@
             title="A SMARTER WAY<br />TO RECORD OUR LIVES"
             subtitle="生命を記録する冴えたやり方 - リッピングヤード"
           />
-          <div v-if="isAuthenticated" class="block">
+          <div v-if="isAuthenticated">
             <div class="links">
               <ul>
                 <li>
@@ -183,7 +183,7 @@
               </ul>
             </div>
           </div>
-          <div v-else class="block login bg-dotted">
+          <div v-else class="login bg-dotted">
             <LoginForm :is-widget="true" />
           </div>
         </section>
@@ -216,10 +216,6 @@ type DataType = {
   activeTab: TabMode
   showSearch: boolean
   isOpen: boolean
-  el1: Element | null
-  el2: Element | null
-  vl1: any
-  vl2: any
 }
 
 type TabMode = 'dashboard' | 'notification' | 'article' | 'comment'
@@ -233,10 +229,6 @@ export default Vue.extend({
       activeTab: 'dashboard',
       showSearch: false,
       isOpen: false,
-      el1: null,
-      el2: null,
-      vl1: null,
-      vl2: null,
     }
   },
   computed: {
@@ -251,17 +243,6 @@ export default Vue.extend({
     $route(): void {
       this.isOpen = false
     },
-  },
-  mounted() {
-    // this.el1 = document.querySelector('.overlay-object1')
-    // this.el2 = document.querySelector('.overlay-object2')
-    // this.$nextTick(() => {
-    //   const mql = window.matchMedia('(max-width: 600px)')
-    //   this.func(mql)
-    //   window.addEventListener('resize', val => {
-    //     console.log('resize!', val)
-    //   })
-    // })
   },
   methods: {
     ...mapActions({
@@ -283,82 +264,10 @@ export default Vue.extend({
     isActiveTab(tab: TabMode): boolean {
       return this.activeTab === tab
     },
-    reset(_el: any): void {
-      // ;(this.el1 as any).style = {
-      //   top: '-50px',
-      //   left: '-50px',
-      //   scale: 1,
-      // }
-      // ;(this.el1 as any).style = {
-      //   bottom: '-50px',
-      //   left: '50px',
-      //   scale: 1,
-      // }
-    },
-    // startOpen(): void {
-    //   ;(this as any).$velocity(
-    //     this.el1,
-    //     {
-    //       top: `${Math.random() * 50 - 25}%`,
-    //       left: `${Math.random() * 50 - 25}%`,
-    //       scale: 8,
-    //     },
-    //     {
-    //       duration: 400,
-    //       easing: 'easeOutExpo',
-    //     }
-    //   )
-    //   ;(this as any).$velocity(
-    //     this.el2,
-    //     {
-    //       // bottom: `${Math.random() * 100 - 50}%`,
-    //       // left: `${Math.random() * 100 - 50}%`,
-    //       scale: 10,
-    //     },
-    //     {
-    //       duration: 600,
-    //       easing: 'easeOutExpo',
-    //     }
-    //   )
-    // },
-    // startClose(_el: any, done: any): void {
-    //   ;(this as any).$velocity(
-    //     this.el1,
-    //     {
-    //       top: `${Math.random() * 200 - 100}px`,
-    //       left: `${Math.random() * 200 - 100}px`,
-    //       scale: 1,
-    //     },
-    //     {
-    //       duration: 10,
-    //       easing: 'easeOutExpo',
-    //     }
-    //   )
-    //   ;(this as any).$velocity(
-    //     this.el2,
-    //     {
-    //       bottom: `${Math.random() * 200 - 50}px`,
-    //       left: `${Math.random() * 200 - 50}px`,
-    //       scale: 2,
-    //     },
-    //     {
-    //       duration: 10,
-    //       easing: 'easeOutExpo',
-    //     },
-    //     { complete: done }
-    //   )
-    // },
     logout(): void {
       this.signout()
       this.snack('ログアウトしました')
       this.$router.push('/')
-    },
-    func(mql: { matches: any }): void {
-      if (mql.matches) {
-        console.log('ウィンドウが 600px 以下です')
-      } else {
-        console.log('ウィンドウが 601px 以上です')
-      }
     },
   },
 })
@@ -434,12 +343,10 @@ export default Vue.extend({
       overflow-y: auto;
     }
 
-    .block {
-      &.login {
-        padding: 20px;
-        border-bottom: 1px solid $black;
-        border-right: 1px solid $black;
-      }
+    .login {
+      padding: 20px;
+      border-bottom: 1px solid $black;
+      border-right: 1px solid $black;
     }
 
     .links {
@@ -641,26 +548,7 @@ export default Vue.extend({
     position: fixed;
     top: $navMargin / 2;
     left: calc(50vw - #{($mainSize / 2) + $navSize + ($navMargin * 1.5)});
-    // z-index: 99;
     overflow: hidden;
-    // opacity: 0;
-    // background-color: $white;
-    // .overlay-object1 {
-    //   position: absolute;
-    //   fill: $red;
-    //   top: -50px;
-    //   left: -50px;
-    //   filter: blur(1rem);
-    //   // mix-blend-mode: hard-light;
-    // }
-    // .overlay-object2 {
-    //   position: absolute;
-    //   fill: $yellow;
-    //   bottom: -50px;
-    //   left: 30px;
-    //   filter: blur(0.5rem);
-    //   // mix-blend-mode: hard-light;
-    // }
   }
 
   &.isOpen {
@@ -734,28 +622,12 @@ export default Vue.extend({
       height: auto;
       z-index: 100;
     }
-    .logo {
-      display: none;
-      // width: 160px;
-      // height: 100px;
-      // .box {
-      //   &:nth-of-type(1) {
-      //     right: 20px;
-      //   }
-      //   &:nth-of-type(2) {
-      //     right: 25px;
-      //   }
-      //   &:nth-of-type(3) {
-      //     right: 30px;
-      //   }
-      // }
-    }
+    .logo,
     .body {
       display: none;
     }
 
     .foot {
-      // padding: 0 15px 15px;
       position: absolute;
       width: calc(100vw - #{$navMargin / 2});
       bottom: $navMargin / 4;
@@ -771,8 +643,6 @@ export default Vue.extend({
     .extra {
       top: $navMargin / 4;
       left: $navMargin / 4 + 160px;
-      // width: calc(100% - #{$navMargin / 2} - 160px);
-      // height: calc(100% - #{($navMargin / 2) - $navMargin - 10px});
 
       .tabs {
         .sponly {
@@ -816,8 +686,6 @@ export default Vue.extend({
           &.close {
             display: block;
             position: relative;
-            // width: 16px;
-            // height: 16px;
             margin: auto;
             cursor: pointer;
 

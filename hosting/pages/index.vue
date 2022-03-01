@@ -103,13 +103,13 @@ export default Vue.extend({
   }
 }
 .masonry {
-  @include mobile {
+  @include until-desktop {
     margin-left: $gap / 2;
     margin-right: $gap / 2;
   }
   & > li {
     margin-bottom: $gap;
-    @include mobile {
+    @include until-desktop {
       margin-bottom: $gap / 2;
     }
     > a {

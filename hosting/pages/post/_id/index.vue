@@ -286,8 +286,9 @@ export default Vue.extend({
     margin-bottom: $gap / 2;
   }
   @include until($desktop) {
+    max-width: $mainSize;
     padding: 0 ($gap / 2);
-    margin-bottom: $gap / 2;
+    margin: 0 auto $gap / 2;
     h1 {
       padding-top: $gap / 2;
     }
