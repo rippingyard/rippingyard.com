@@ -66,7 +66,7 @@ export default Vue.extend({
     display: flex;
     border-bottom: 1px solid $gray-black;
 
-    @include mobile {
+    @include until-desktop {
       flex-direction: column;
       border-bottom: none;
     }
@@ -76,20 +76,10 @@ export default Vue.extend({
       width: calc(100% - 180px);
       padding: $gap - 5px 0 $gap 0;
 
-      @include mobile {
-        width: 100%;
-        padding: $gap / 2 $gap / 2 0;
-      }
-
       .title {
         font-size: 1.9rem;
         font-weight: 800;
         line-height: 1.4;
-
-        @include mobile {
-          line-height: 1.3;
-          padding-right: 0;
-        }
       }
       .date {
         font-size: 0.9rem;
@@ -103,13 +93,26 @@ export default Vue.extend({
     .user {
       width: 180px;
       padding: 20px 0;
-      @include mobile {
-        width: 100%;
-        padding: 0 $gap / 2 $gap / 2;
-      }
     }
     .entities {
       padding-top: 10px;
+    }
+
+    @include until-desktop {
+      padding: 0 $gap / 2;
+      .body {
+        padding: $gap/2 0 0;
+        width: 100%;
+        .title {
+          font-size: 1.4rem;
+          line-height: 1.3;
+          padding-right: 0;
+        }
+      }
+      .user {
+        width: 100%;
+        padding: 0 0 $gap / 2;
+      }
     }
   }
   &.has-margin {
@@ -136,6 +139,22 @@ export default Vue.extend({
       }
       .date {
         font-size: 0.8rem;
+      }
+      @include until-desktop {
+        padding: 0 $gap / 2;
+        .body {
+          padding: $gap/2 0 0;
+          width: 100%;
+          .title {
+            font-size: 1.4rem;
+            line-height: 1.3;
+            padding-right: 0;
+          }
+        }
+        .user {
+          width: 100%;
+          padding: 0 0 $gap / 2;
+        }
       }
     }
   }

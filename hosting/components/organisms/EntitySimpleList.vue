@@ -1,9 +1,9 @@
 ﻿<template>
-  <ul :class="{ 'is-simple': isSimple }">
+  <ul :class="{ 'is-simple': isSimple, 'is-dark': isDark }">
     <li v-for="entity in entities" :key="entity">
-      <nuxt-link :to="permalink(entity)" :target="window"
-        ><fa-icon icon="tag" />{{ decodeEntity(entity) }}</nuxt-link
-      >
+      <nuxt-link :to="permalink(entity)" :target="window">
+        <fa-icon icon="tag" />{{ decodeEntity(entity) }}
+      </nuxt-link>
     </li>
   </ul>
 </template>
@@ -17,6 +17,10 @@ export default Vue.extend({
       default: () => [],
     },
     isSimple: {
+      type: Boolean,
+      default: false,
+    },
+    isDark: {
       type: Boolean,
       default: false,
     },
@@ -68,7 +72,7 @@ ul {
 
   &.is-simple {
     li {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       margin-right: 8px;
       a {
         padding: 0;
@@ -82,6 +86,14 @@ ul {
       .fa-tag {
         margin-right: 2px;
         font-size: 0.8rem;
+      }
+    }
+  }
+
+  &.is-dark {
+    li {
+      a {
+        border: 1px solid $black;
       }
     }
   }

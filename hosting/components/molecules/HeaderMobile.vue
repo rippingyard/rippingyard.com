@@ -49,6 +49,7 @@ export default Vue.extend({
 
   @include until($desktop) {
     display: block;
+    border-bottom: 1px solid $gray-black;
   }
 }
 </style>

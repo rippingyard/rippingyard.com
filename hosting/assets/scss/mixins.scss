@@ -48,6 +48,12 @@
   }
 }
 
+@mixin until-desktop {
+  @media screen and (max-width: ($desktop - 1px)) {
+    @content;
+  }
+}
+
 @mixin until-widescreen {
   @if $widescreen-enabled {
     @media screen and (max-width: ($widescreen - 1px)) {
