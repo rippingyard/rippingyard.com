@@ -79,14 +79,14 @@ export default Vue.extend({
     }
   }
 
-  @include mobile {
+  @include until-desktop {
     flex-direction: row;
     padding: $gap / 2 0 0;
     .name {
-      padding: $gap / 2;
+      padding: 8px 0 $gap / 2 $gap / 2;
       width: calc(100% - 50px);
       text-align: left;
-      padding-top: 0;
+      line-height: 1.2;
     }
   }
 

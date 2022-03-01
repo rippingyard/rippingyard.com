@@ -34,7 +34,7 @@ export default Vue.extend({
   height: $navSize;
   margin: $navMargin auto $navMargin;
   padding-left: $navMargin;
-  background-color: $cyan;
+  background-color: $black;
 
   background-size: cover;
   background-position: 50% 50%;
@@ -48,8 +48,8 @@ export default Vue.extend({
     bottom: -12px;
     right: -12px;
 
-    background: radial-gradient(rgba($black, 0.6) 1px, transparent 1px),
-      radial-gradient(rgba($black, 0.6) 1px, transparent 1px), transparent;
+    background: radial-gradient(rgba($yellow, 0.6) 1px, transparent 1px),
+      radial-gradient(rgba($cyan, 0.6) 1px, transparent 1px), transparent;
     background-size: 14px 14px, 14px 14px;
     background-position: 2px 2px, 9px 9px, 2px 2px;
   }
@@ -67,10 +67,11 @@ export default Vue.extend({
   }
 
   @include until($desktop) {
-    margin-top: 0;
-    margin-bottom: $navMargin / 2;
-    height: $navSize * 0.5;
+    background: none;
+    margin: 0;
+    height: $gap;
     &::before {
+      display: none;
       height: $navSize * 0.5;
     }
     .brand {
@@ -79,7 +80,6 @@ export default Vue.extend({
   }
 }
 </style>
-
 <style lang="scss">
 .logo_svg__svg-logo-outer {
   fill: $black;

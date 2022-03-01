@@ -36,52 +36,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="columns">
-      <div class="column c30">
-        <div class="profile">
-          <p v-if="user.avatar" class="avatar" :style="avatar"></p>
-          <h1 class="name">{{ user.displayName }}</h1>
-          <p class="account">@{{ user.userName }}</p>
-          <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
-          <FollowButton :user="user" />
-        </div>
-      </div>
-      <div class="column c70">
-        <ul class="tabs">
-          <li
-            :class="{ active: isActiveTab('posts') }"
-            @click="activateTab('posts')"
-          >
-            記事
-          </li>
-          <li
-            :class="{ active: isActiveTab('profile') }"
-            @click="activateTab('profile')"
-          >
-            プロフィール
-          </li>
-        </ul>
-        <div class="contents">
-          <div v-if="isActiveTab('posts')" class="content">
-            <ul class="list">
-              <li v-for="post in posts" :key="post.id">
-                <PostListItem :post="post" />
-              </li>
-            </ul>
-          </div>
-          <div v-if="isActiveTab('profile')" class="content">
-            <div class="block">
-              <h1>プロフィール</h1>
-              <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
-            </div>
-            <div v-if="createdate" class="block">
-              <h1>登録日</h1>
-              <p>{{ createdate }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </article>
 </template>
 
@@ -174,22 +128,6 @@ export default Vue.extend({
         : ''
     },
   },
-  // async mounted({
-  //   post,
-  //   setPost,
-  //   getOwner,
-  // }: {
-  //   post: Post
-  //   setPost: Function
-  //   getOwner: Function
-  // }) {
-  //   setPost(post.id, post)
-  //   if (post) {
-  //     if (post.owner && post.owner.id) {
-  //       post.owner = await getOwner(post.owner.id)
-  //     }
-  //   }
-  // },
   methods: {
     activateTab(tab: string): void {
       this.activeTab = tab
