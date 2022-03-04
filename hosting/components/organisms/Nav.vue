@@ -253,8 +253,10 @@ export default Vue.extend({
       this.isOpen = false
     },
   },
-  async mounted() {
-    this.canPostArticle = await this.can('postArticle')
+  async created() {
+    if (process.client) {
+      this.canPostArticle = await this.can('postArticle')
+    }
   },
   methods: {
     ...mapActions({

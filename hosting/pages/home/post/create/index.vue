@@ -17,9 +17,11 @@ export default Vue.extend({
       me: this.$store.state.auth.me,
     }
   },
-  async mounted() {
-    const can = await this.can('postArticle')
-    if (!can) this.$router.push('/')
+  async created() {
+    if (process.client) {
+      const can = await this.can('postArticle')
+      if (!can) this.$router.push('/')
+    }
   },
   head: () => {
     return {
