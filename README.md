@@ -46,7 +46,7 @@ $ yarn dev
 ```sh
 $ cd hosting
 $ yarn generate
-$ open http://localhost:5000
+$ open http://localhost:5555
 ```
 
 ### Deploy
