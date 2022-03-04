@@ -3,6 +3,8 @@ name: Deploy to Production
 on:
   release:
     types: [created]
+  schedule:
+    - cron: '0 5,17,22 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
