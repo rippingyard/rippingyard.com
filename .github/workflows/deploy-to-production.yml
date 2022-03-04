@@ -1,0 +1,47 @@
+name: Deploy to Production
+
+on:
+  release:
+    types: [created]
+  schedule:
+    - cron:  '0 5,17 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Hosting - Install dependencies
+      run: cd hosting && yarn install
+    - name: Hosting - Test
+      run: cd hosting && yarn test
+    - name: Hosting - Generate html files for production
+      run: yarn run build
+      env:
+        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
+        ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
+        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+    - name: Functions - Set env to Production
+      uses: w9jds/firebase-action@master
+      with:
+        args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Functions - Init for production
+      run: cd functions && yarn install && yarn build
+      env:
+        BAUTH_USER: ${{ secrets.BAUTH_USER }}
+        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
+    - name: Deploy to Production
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting,functions --project production
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

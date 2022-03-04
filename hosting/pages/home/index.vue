@@ -66,18 +66,7 @@ import Vue from 'vue'
 import { Activity } from '~/types/activity'
 import { Notification } from '~/types/notification'
 import { Context } from '~/types/context'
-
 export default Vue.extend({
-  // layout: 'manage',
-  // props: {
-  //   test: {
-  //     default: 'TEST',
-  //     type: String,
-  //   },
-  // },
-  fetch() {
-    this.me = this.$store.state.auth.me
-  },
   asyncData({ $fire, store }: Context) {
     const r: {
       activities: Partial<Activity>[]
@@ -132,7 +121,7 @@ export default Vue.extend({
     currentTab: 'notification' | 'activity'
   } {
     return {
-      me: null,
+      me: this.$store.state.auth.me || null,
       activities: [],
       notifications: [],
       currentTab: 'notification',

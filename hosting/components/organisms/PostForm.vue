@@ -111,9 +111,9 @@ export default {
     },
   },
   async mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      this.$router.push('/')
-    }
+    // if (!this.$isAuthenticated(this.$store)) {
+    //   this.$router.push('/')
+    // }
     if (this.post) {
       this.content = this.post.content
       this.isPublic = !!this.post.isPublic

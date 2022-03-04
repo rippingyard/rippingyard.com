@@ -64,7 +64,10 @@
             <li v-else @click="onClickTab('dashboard')">
               <fa-icon icon="list" class="icon" /> MENU
             </li>
-            <li v-if="isAuthenticated" @click="onClickTab('post')">
+            <li
+              v-if="isAuthenticated && canPostArticle"
+              @click="onClickTab('post')"
+            >
               <fa-icon icon="plus-circle" class="icon" /> POST
             </li>
           </ul>
@@ -106,7 +109,7 @@
         </li>
         <client-only>
           <li
-            v-if="isAuthenticated"
+            v-if="isAuthenticated && canPostArticle"
             :class="{ active: isActiveTab('post') }"
             @click="onClickTab('post')"
           >
@@ -199,7 +202,11 @@
       <section v-if="showSearch" v-show="activeTab === 'search'" class="inner">
         <Search />
       </section>
-      <section v-show="activeTab === 'post'" class="inner">
+      <section
+        v-if="canPostArticle"
+        v-show="activeTab === 'post'"
+        class="inner"
+      >
         <NoteForm />
       </section>
     </div>
@@ -216,6 +223,7 @@ type DataType = {
   activeTab: TabMode
   showSearch: boolean
   isOpen: boolean
+  canPostArticle: boolean
 }
 
 type TabMode = 'dashboard' | 'notification' | 'article' | 'comment'
@@ -229,6 +237,7 @@ export default Vue.extend({
       activeTab: 'dashboard',
       showSearch: false,
       isOpen: false,
+      canPostArticle: false,
     }
   },
   computed: {
@@ -243,6 +252,11 @@ export default Vue.extend({
     $route(): void {
       this.isOpen = false
     },
+  },
+  async created() {
+    if (process.client) {
+      this.canPostArticle = await this.can('postArticle')
+    }
   },
   methods: {
     ...mapActions({
