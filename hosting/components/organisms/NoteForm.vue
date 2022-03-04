@@ -1,7 +1,7 @@
 ﻿<template>
-  <div v-show="isAuthenticated" class="form">
+  <div class="form">
     <client-only>
-      <div class="item bg-dotted">
+      <div v-show="isAuthenticated" class="item bg-dotted">
         <div class="inner">
           <ItemForm :item="item" color="yellow" @update-item="updateItem" />
         </div>

@@ -123,7 +123,7 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '~/middleware/gtm',
-    '~/middleware/auth',
+    '~/middleware/permission',
     '~/middleware/snack',
     {
       src: '~/plugins/datepicker',

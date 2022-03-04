@@ -44,8 +44,7 @@ $ yarn dev
 ### Check
 
 ```sh
-$ cd hosting
-$ yarn generate
+$ yarn build
 $ open http://localhost:5555
 ```
 
