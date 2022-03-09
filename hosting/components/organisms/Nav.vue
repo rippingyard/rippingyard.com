@@ -127,63 +127,99 @@
             subtitle="生命を記録する冴えたやり方 - リッピングヤード"
           />
           <div v-if="isAuthenticated">
-            <div class="links">
-              <ul>
-                <li>
-                  <nuxt-link to="/home/">
-                    <fa-icon icon="angle-right" class="icon" />ホーム
-                  </nuxt-link>
-                </li>
-              </ul>
-              <h3>POST</h3>
-              <ul>
-                <li>
-                  <nuxt-link to="/home/posts/">
-                    <fa-icon icon="angle-right" class="icon" />投稿記事一覧
-                  </nuxt-link>
-                </li>
-                <li>
-                  <nuxt-link to="/home/post/create/">
-                    <fa-icon icon="angle-right" class="icon" />新規投稿
-                  </nuxt-link>
-                </li>
-                <li v-if="true !== true">
-                  <nuxt-link to="/home/logs/">
-                    <fa-icon icon="angle-right" class="icon" />ライフログ一覧
-                  </nuxt-link>
-                </li>
-                <li v-if="true !== true">
-                  <nuxt-link to="/home/comments/">
-                    <fa-icon icon="angle-right" class="icon" />コメント一覧
-                  </nuxt-link>
-                </li>
-              </ul>
-              <!-- <h3>ENTITIES</h3> -->
-              <ul>
-                <li v-if="true === false">
-                  <nuxt-link to="/home/entities/">
-                    <fa-icon icon="angle-right" class="icon" />エンティティ管理
-                  </nuxt-link>
-                </li>
-              </ul>
-              <h3>MISC</h3>
-              <ul>
-                <li>
-                  <nuxt-link to="/home/setting/">
-                    <fa-icon icon="angle-right" class="icon" />ユーザー設定
-                  </nuxt-link>
-                </li>
-                <li>
-                  <nuxt-link to="/home/invite/">
-                    <fa-icon icon="angle-right" class="icon" />招待
-                  </nuxt-link>
-                </li>
-                <li>
-                  <span @click="logout">
-                    <fa-icon icon="angle-right" class="icon" />ログアウト
-                  </span>
-                </li>
-              </ul>
+            <div class="columns">
+              <div class="column links">
+                <ul>
+                  <li>
+                    <nuxt-link to="/">
+                      <fa-icon icon="angle-right" class="icon" />トップ
+                    </nuxt-link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <nuxt-link to="/posts/">
+                      <fa-icon icon="angle-right" class="icon" />記事一覧
+                    </nuxt-link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <nuxt-link to="/terms/">
+                      <fa-icon icon="angle-right" class="icon" />利用規約
+                    </nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/privacy/">
+                      <fa-icon
+                        icon="angle-right"
+                        class="icon"
+                      />プライバシーポリシー
+                    </nuxt-link>
+                  </li>
+                </ul>
+              </div>
+              <div class="column links">
+                <ul>
+                  <li>
+                    <nuxt-link to="/home/">
+                      <fa-icon icon="angle-right" class="icon" />ホーム
+                    </nuxt-link>
+                  </li>
+                </ul>
+                <h3>POST</h3>
+                <ul>
+                  <li>
+                    <nuxt-link to="/home/posts/">
+                      <fa-icon icon="angle-right" class="icon" />投稿記事一覧
+                    </nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/home/post/create/">
+                      <fa-icon icon="angle-right" class="icon" />新規投稿
+                    </nuxt-link>
+                  </li>
+                  <li v-if="true !== true">
+                    <nuxt-link to="/home/logs/">
+                      <fa-icon icon="angle-right" class="icon" />ライフログ一覧
+                    </nuxt-link>
+                  </li>
+                  <li v-if="true !== true">
+                    <nuxt-link to="/home/comments/">
+                      <fa-icon icon="angle-right" class="icon" />コメント一覧
+                    </nuxt-link>
+                  </li>
+                </ul>
+                <!-- <h3>ENTITIES</h3> -->
+                <ul>
+                  <li v-if="true === false">
+                    <nuxt-link to="/home/entities/">
+                      <fa-icon
+                        icon="angle-right"
+                        class="icon"
+                      />エンティティ管理
+                    </nuxt-link>
+                  </li>
+                </ul>
+                <h3>MISC</h3>
+                <ul>
+                  <li>
+                    <nuxt-link to="/home/setting/">
+                      <fa-icon icon="angle-right" class="icon" />ユーザー設定
+                    </nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/home/invite/">
+                      <fa-icon icon="angle-right" class="icon" />招待
+                    </nuxt-link>
+                  </li>
+                  <li>
+                    <span @click="logout">
+                      <fa-icon icon="angle-right" class="icon" />ログアウト
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div v-else class="login bg-dotted">
@@ -364,6 +400,7 @@ export default Vue.extend({
     }
 
     .links {
+      min-width: 320px;
       padding: $gap / 2;
       h3 {
         font-weight: 800;
