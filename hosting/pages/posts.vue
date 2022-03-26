@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase'
+// import { forestore } from 'firebase'
 import { isPublic, normalize } from '~/services/post'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
@@ -72,7 +72,7 @@ export default {
     async getPosts(startAt: string): Promise<void> {
       // console.log(
       //   'Timestamp',
-      //   firebase.firestore.Timestamp.fromDate(new Date(startAt)).toDate()
+      //   firestore.Timestamp.fromDate(new Date(startAt)).toDate()
       // )
       let q = (this as any).$fire.firestore
         .collection('posts')
@@ -85,7 +85,7 @@ export default {
 
       if (startAt) {
         q = q.startAfter(
-          firebase.firestore.Timestamp.fromDate(new Date(startAt))
+          (this as any).$fire.firestore.Timestamp.fromDate(new Date(startAt))
         )
       }
 

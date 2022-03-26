@@ -6,7 +6,7 @@ import { Request } from 'express';
 export class HttpController {
   constructor(private readonly httpService: HttpService) {}
 
-  @Get()
+  @Get('*')
   async ssr(@Req() req: Request): Promise<string> {
     return await this.httpService.ssr(req);
   }

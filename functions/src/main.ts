@@ -15,7 +15,6 @@ const createHttpServer = async (expressInstance) => {
     HttpModule,
     new ExpressAdapter(expressInstance),
   );
-  console.log('start the server');
   return app.init();
 };
 
