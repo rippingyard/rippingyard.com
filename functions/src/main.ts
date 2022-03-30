@@ -1,25 +1,41 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as express from 'express';
-import { NestFactory } from '@nestjs/core';
-import { HttpModule } from './http/http.module';
-import { ExpressAdapter } from '@nestjs/platform-express';
+import { initHttp } from './http';
+import { initFetchUrl } from './api/fetchUrl';
+import { syncPost } from './worker/syncPost';
 
 admin.initializeApp(functions.config().firebase);
-// const firestore = admin.firestore()
+const firestore = admin.firestore();
 
-const server = express();
+/**
+ * SSR
+ */
+export const ssr = functions.https.onRequest(initHttp());
 
-const createHttpServer = async (expressInstance) => {
-  const app = await NestFactory.create(
-    HttpModule,
-    new ExpressAdapter(expressInstance),
-  );
-  return app.init();
-};
+/**
+ * APIs
+ */
+// fetchUrl
+export const apiFetchUrl = functions.https.onRequest(initFetchUrl());
 
-createHttpServer(server)
-  .then(() => console.log('Server started'))
-  .catch((e) => console.error(e));
+/**
+ * Workers
+ */
+// onPostCreate
+export const onPostCreate = functions.firestore
+  .document('/posts/{postId}')
+  .onCreate(async (snapshot, context) => {
+    await syncPost(snapshot, context, firestore);
+  });
 
-export const ssr = functions.https.onRequest(server);
+// onPostUpdate
+export const onPostUpdate = functions.firestore
+  .document('/posts/{postId}')
+  .onUpdate(async (change, context) => {
+    await syncPost(change.after, context, firestore);
+  });
+
+// // onActivityCreate
+// export const onActivityCreate = functions.firestore.document('/activities/{activityId}').onCreate(async (snapshot, context) => {
+//   await notify(snapshot, context, firestore);
+// })
