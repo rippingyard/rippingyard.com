@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import { initHttp } from './http';
 import { initFetchUrl } from './api/fetchUrl';
 import { syncPost } from './worker/syncPost';
+import { notify } from './worker/notify';
 
 admin.initializeApp(functions.config().firebase);
 const firestore = admin.firestore();
@@ -35,7 +36,9 @@ export const onPostUpdate = functions.firestore
     await syncPost(change.after, context, firestore);
   });
 
-// // onActivityCreate
-// export const onActivityCreate = functions.firestore.document('/activities/{activityId}').onCreate(async (snapshot, context) => {
-//   await notify(snapshot, context, firestore);
-// })
+// onActivityCreate
+export const onActivityCreate = functions.firestore
+  .document('/activities/{activityId}')
+  .onCreate(async (snapshot, context) => {
+    await notify(snapshot, context, firestore);
+  });
