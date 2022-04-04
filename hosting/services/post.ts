@@ -4,8 +4,9 @@ import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import { sanitize, renderWidgets } from '~/plugins/typography'
 import { Post } from '~/types/post'
-import { getDomain } from '~/plugins/util'
 import { Item } from '~/types/item'
+// import { normalize as normalizeItem } from '~/services/item'
+import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
 
@@ -54,6 +55,8 @@ export async function normalize(
         if (!cachedItem) {
           try {
             await post.parent.get().then((doc: any) => {
+              // itemObject = await normalizeItem(post.parent.id, doc.data() as Item, store) as Partial<Item>;
+              // console.log('itemObject', itemObject)
               itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
               store.commit('item/setItem', itemObject)
             })

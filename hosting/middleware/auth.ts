@@ -9,4 +9,3 @@ export default function ({ route, store, redirect }: AuthInterface) {
     redirect('/login/')
   }
 }
-

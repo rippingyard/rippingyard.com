@@ -76,6 +76,7 @@ export default Vue.extend({
 
 .parent {
   margin: 0 0 $gap / 2;
+  padding-right: $gap;
   @include until-desktop {
     margin: 0 0 $gap / 2;
   }
