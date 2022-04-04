@@ -1,4 +1,6 @@
-﻿type ItemTitle = {
+﻿import { Timestamp } from '@firebase/firestore-types'
+
+type ItemTitle = {
   [lang: string]: string,
 }
 
@@ -12,7 +14,7 @@ export type Item = {
   images: string[]
   entities: string[]
   metadata?: { [key: string]: any }
-  createdAt: string | Date
+  createdAt: string | Timestamp
   updatedAt: string | Date
   hostGroup?: null
   isDeleted: boolean

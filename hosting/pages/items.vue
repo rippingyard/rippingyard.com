@@ -1,7 +1,7 @@
 ﻿<template>
   <section class="block container">
     <Header />
-    <PostSimpleList :posts="posts" />
+    <ItemList :items="items" />
     <div class="console">
       <button class="button expanded centered" @click="loadMore()">
         もっと読む
@@ -12,68 +12,68 @@
 
 <script lang="ts">
 import { Timestamp } from 'firebase/firestore'
-import { isPublic, normalize } from '~/services/post'
+import { normalize } from '~/services/item'
 import { Context } from '~/types/context'
-import { Post } from '~/types/post'
-import { getTitle } from '~/plugins/typography'
+// import { Post } from '~/types/post'
+import { Item } from '~/types/item'
+import { getI18nName } from '~/plugins/typography'
 
 type DataType = {
-  posts: Partial<Post>[]
+  items: Partial<Item>[]
   lastDate: any
 }
 
-const limit = 25;
+const limit = 100;
 
 export default {
   async asyncData({ $fire, store }: Context): Promise<DataType> {
-    const posts: Partial<Post>[] = []
+    const items: Partial<Item>[] = []
     let lastDate: any
     const qs = await $fire.firestore
-      .collection('posts')
-      .where('isDeleted', '==', false)
-      .where('isPublic', '==', true)
-      .where('status', '==', 'published')
-      // .where('type', '==', 'article')
+      .collection('items')
+      // .where('isDeleted', '==', false)
       .limit(limit)
-      .orderBy('publishedAt', 'desc')
+      .orderBy('createdAt', 'desc')
       .get()
 
     for (const doc of qs.docs) {
-      const post = doc.data()
-      lastDate = post.publishedAt
-      if (isPublic(post)) {
-        posts.push(await normalize(doc.id, post, store))
-      }
+      const item = doc.data()
+      lastDate = item.publishedAt
+      items.push(await normalize(doc.id, item, store))
     }
+
+    console.log('items', items)
+
     return {
-      posts,
+      items,
       lastDate,
     }
   },
   data(): DataType {
     return {
-      posts: [],
+      items: [],
       lastDate: null,
     }
   },
   methods: {
-    title(post: Post): string {
-      return getTitle(post)
+    title(item: Item): string {
+      if (!item.name) return ''
+      return getI18nName(item.name)
     },
     async loadMore(): Promise<void> {
       await this.getPosts(
-        (this as any).$data.posts[(this as any).posts.length - 1].publishedAt
+        (this as any).$data.items[(this as any).items.length - 1].createdAt
       )
     },
     async getPosts(startAt: string): Promise<void> {
       let q = (this as any).$fire.firestore
-        .collection('posts')
+        .collection('items')
         .where('isDeleted', '==', false)
-        .where('isPublic', '==', true)
-        .where('status', '==', 'published')
+        // .where('isPublic', '==', true)
+        // .where('status', '==', 'published')
         // .where('type', 'in', ['article', 'note'])
         .limit(limit)
-        .orderBy('publishedAt', 'desc')
+        .orderBy('createdAt', 'desc')
 
       if (startAt) {
         q = q.startAfter(
@@ -86,22 +86,18 @@ export default {
       console.log('qs.docs', qs.docs)
 
       for (const doc of qs.docs) {
-        const post: any = doc.data()
-        ;(this as any).$data.lastDate = post.publishedAt
-        if (isPublic(post)) {
-          console.log('post', post)
-          ;(this as any).posts.push(
-            await normalize(doc.id, post, (this as any).$store)
+        const item: any = doc.data()
+        ;(this as any).$data.lastDate = item.createdAt
+          console.log('item', item)
+          ;(this as any).items.push(
+            await normalize(doc.id, item, (this as any).$store)
           )
-        } else {
-          console.log('unPublished post', post)
-        }
       }
     },
   },
   head: (): any => {
     return {
-      title: 'Posts',
+      title: 'Items',
     }
   },
 }

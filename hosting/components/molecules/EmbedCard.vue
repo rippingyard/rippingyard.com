@@ -1,5 +1,5 @@
 ﻿<template>
-  <section>
+  <section v-if="content">
     <a v-if="content.url" :href="content.url" class="embed" target="_blank">
       <p v-if="content.image" class="img">
         <img :src="content.image" />
