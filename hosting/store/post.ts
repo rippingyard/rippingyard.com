@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { Timestamp } from 'firebase/firestore'
 import { ActionContext } from 'vuex'
 
 import { Post } from '~/types/post'
@@ -34,9 +34,9 @@ export const scheme: Omit<Post, 'id' | 'contentOriginal'> = {
   },
   isPublic: false,
   isDeleted: false,
-  publishedAt: dayjs().toDate(),
-  createdAt: dayjs().toDate(),
-  updatedAt: dayjs().toDate(),
+  publishedAt: Timestamp.now(),
+  createdAt: Timestamp.now(),
+  updatedAt: Timestamp.now(),
 }
 
 export const state = () => ({
@@ -68,14 +68,10 @@ export const actions: ActionInterface = {
 
       // TODO: slug
 
-      post.updatedAt = dayjs().toDate()
+      post.updatedAt = Timestamp.now()
 
-      post.createdAt = post.createdAt
-        ? dayjs(post.createdAt).toDate()
-        : dayjs().toDate()
-      post.publishedAt = post.publishedAt
-        ? dayjs(post.publishedAt).toDate()
-        : dayjs().toDate()
+      post.createdAt = post.createdAt || Timestamp.now()
+      post.publishedAt = post.publishedAt || Timestamp.now()
 
       if (!post.owner) {
         post.owner = await this.$fire.firestore

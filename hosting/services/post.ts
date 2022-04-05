@@ -17,15 +17,13 @@ interface Params {
 
 export async function normalize(
   id: string,
-  post: DocumentData | undefined,
+  post: DocumentData,
   store: Store<any>,
   params: Params = {
     withoutOwner: false,
     withoutItems: false,
   }
-): Promise<Partial<Post>> {
-  if (!post) return {}
-
+): Promise<Post> {
   try {
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
@@ -55,8 +53,6 @@ export async function normalize(
         if (!cachedItem) {
           try {
             await post.parent.get().then((doc: any) => {
-              // itemObject = await normalizeItem(post.parent.id, doc.data() as Item, store) as Partial<Item>;
-              // console.log('itemObject', itemObject)
               itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
               store.commit('item/setItem', itemObject)
             })

@@ -1,5 +1,5 @@
-﻿import dayjs from 'dayjs'
-import { ActionContext } from 'vuex'
+﻿import { ActionContext } from 'vuex'
+import { Timestamp } from 'firebase/firestore'
 
 import { Item } from '~/types/item'
 import { State } from '~/types/state'
@@ -30,8 +30,8 @@ export const scheme: Omit<Item, 'id'> = {
     pageview: 0,
   },
   isDeleted: false,
-  createdAt: dayjs().toDate(),
-  updatedAt: dayjs().toDate(),
+  createdAt: Timestamp.now(),
+  updatedAt: Timestamp.now(),
 }
 
 type StateType = {
@@ -72,11 +72,9 @@ export const actions: ActionInterface = {
         throw new Error('権限がありません')
       }
 
-      item.updatedAt = dayjs().toDate()
+      item.updatedAt = Timestamp.now()
 
-      item.createdAt = item.createdAt
-        ? dayjs(item.createdAt).toDate()
-        : dayjs().toDate()
+      item.createdAt = item.createdAt || Timestamp.now()
 
       let db = this.$fire.firestore.collection('items')
 
