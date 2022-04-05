@@ -57,8 +57,8 @@ export default Vue.extend({
       return entityLink(entity)
     },
     permalink(item: Item) {
-      return permalink(item.id);
-    }
+      return permalink(item.id)
+    },
   },
 })
 </script>
@@ -75,7 +75,7 @@ export default Vue.extend({
 
     .body {
       display: block;
-      width: calc(100% - 180px);
+      // width: calc(100% - 180px);
       padding: $gap - 5px 0 $gap 0;
 
       .title {

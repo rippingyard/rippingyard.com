@@ -1,4 +1,4 @@
-﻿import { DocumentData } from '@firebase/firestore-types'
+﻿import { DocumentData, Timestamp } from '@firebase/firestore-types'
 import { User } from '~/types/user'
 
 export type Entity = {
@@ -6,9 +6,9 @@ export type Entity = {
   aliases: string[]
   content: string
   contentOriginal: string
-  createdAt: string | Date
-  publishedAt: string | Date
-  updatedAt: string | Date
+  createdAt: Timestamp
+  publishedAt: Timestamp
+  updatedAt: Timestamp
   owner?: User | DocumentData | null
   collaborators?: User[] | DocumentData[] | null
   isPublic: boolean

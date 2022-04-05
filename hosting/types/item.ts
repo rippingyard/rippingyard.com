@@ -14,8 +14,8 @@ export type Item = {
   images: string[]
   entities: string[]
   metadata?: { [key: string]: any }
-  createdAt: string | Timestamp
-  updatedAt: string | Date
+  createdAt: Timestamp
+  updatedAt: Timestamp
   hostGroup?: null
   isDeleted: boolean
   counts: {

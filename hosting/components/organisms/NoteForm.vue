@@ -33,6 +33,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapActions } from 'vuex'
+import { Timestamp } from 'firebase/firestore'
 import { getLength } from '~/plugins/typography'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
@@ -117,7 +118,7 @@ export default Vue.extend({
         type: 'note',
         entities: this.entities,
         status: this.status,
-        publishedAt: this.date,
+        publishedAt: Timestamp.fromDate(this.date),
         isPublic: this.isPublic,
       }
 

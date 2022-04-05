@@ -1,4 +1,4 @@
-﻿import dayjs from 'dayjs'
+﻿import { Timestamp } from 'firebase/firestore'
 import { ActionContext } from 'vuex'
 
 import { Entity } from '~/types/entity'
@@ -30,8 +30,8 @@ export const scheme = {
   },
   isPublic: true,
   isDeleted: false,
-  createdAt: dayjs().toDate(),
-  updatedAt: dayjs().toDate(),
+  createdAt: Timestamp.now(),
+  updatedAt: Timestamp.now(),
 }
 
 export const actions: ActionInterface = {
@@ -46,11 +46,8 @@ export const actions: ActionInterface = {
         throw new Error('権限がありません')
       }
 
-      entity.updatedAt = dayjs().toDate()
-
-      entity.createdAt = entity.createdAt
-        ? dayjs(entity.createdAt).toDate()
-        : dayjs().toDate()
+      entity.updatedAt = Timestamp.now()
+      entity.createdAt = entity.createdAt || Timestamp.now()
 
       if (!entity.owner) {
         entity.owner = await this.$fire.firestore

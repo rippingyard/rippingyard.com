@@ -3,7 +3,7 @@ import { Store } from 'vuex'
 import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import { sanitize, renderWidgets } from '~/plugins/typography'
-import { Post } from '~/types/post'
+import { Entity } from '~/types/entity'
 import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
@@ -19,7 +19,7 @@ export async function normalize(
   params: Params = {
     withoutOwner: false,
   }
-): Promise<Partial<Post>> {
+): Promise<Partial<Entity>> {
   if (!post) return {}
 
   try {
