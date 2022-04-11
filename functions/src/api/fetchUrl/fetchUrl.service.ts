@@ -10,6 +10,7 @@ type Embed = {
   image?: string;
   url?: string;
   html?: string;
+  video?: any;
   error?: string;
 };
 
@@ -61,6 +62,9 @@ export class fetchUrlService {
           if (result.openGraph.image.url)
             data.image = result.openGraph.image.url;
         }
+        if (result.openGraph.video) {
+          data.video = result.openGraph.video;
+        }
       }
       console.log('Result', result);
       if (hasProvider(url)) {
@@ -70,8 +74,14 @@ export class fetchUrlService {
         if (oembed.title) data.title = oembed.title;
         if (oembed.thumbnail_url) data.image = oembed.thumbnail_url;
         if (oembed.html) data.html = oembed.html;
-        console.log('oembed', oembed);
       }
+
+      // By Site
+      if (url.match(/^https:\/\/(.*)\.bandcamp\.com/)) {
+        data.site = 'bandcamp';
+      }
+
+      console.log('data', data);
       return {
         data,
       };

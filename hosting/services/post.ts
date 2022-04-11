@@ -48,12 +48,17 @@ export async function normalize(
     let parent: Partial<Post | Item> | null = null;
     if (!params.withoutItems && post.parent) {
       if (post.parent.path.startsWith('items')) {
-        let itemObject: Partial<Item> = {}
+        let itemObject: Partial<Item & {
+          parentType: 'item'
+        }> = {}
         const cachedItem = await store.getters['item/one'](post.parent.id)
         if (!cachedItem) {
           try {
             await post.parent.get().then((doc: any) => {
-              itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
+              itemObject = {
+                ...omit(doc.data() as Item, ['createdAt', 'updatedAt']),
+                parentType: 'item',
+              }
               store.commit('item/setItem', itemObject)
             })
           } catch (e) {

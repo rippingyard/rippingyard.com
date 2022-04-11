@@ -12,6 +12,12 @@
           </div>
           <Content v-html="mainContent" />
           <AdsensePostBottom />
+          <div v-if="post.parent" class="parent">
+            <ItemWidget
+              v-if="post.parent.parentType === 'item'"
+              :item="post.parent"
+            />
+          </div>
           <div v-if="post.owner" class="owner">
             <UserCard :user="post.owner" />
           </div>
@@ -81,11 +87,13 @@ import {
   getI18nName,
 } from '~/plugins/typography'
 
+type DataType = {
+  post?: Post
+}
+
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
-    const r: {
-      post?: Partial<Post>
-    } = {}
+    const r: DataType = {}
     const postId = params.id
     r.post = store.state.post.posts[postId]
     console.log('Post: Stored', store.state.post.posts)
@@ -98,14 +106,13 @@ export default Vue.extend({
         .doc(postId)
         .get()
         .then(async (doc: any) => {
-          console.log(doc.id, doc.data())
+          // console.log(doc.id, doc.data())
           r.post = await normalize(doc.id, doc.data(), store)
           if (
             !doc.exists ||
             r.post.isDeleted === true ||
             r.post.status !== 'published'
           ) {
-            r.post = {}
             throw new Error('ページが見つかりません')
           }
         })
@@ -115,38 +122,35 @@ export default Vue.extend({
     }
     return r
   },
-  data(): {
-    // title: string
-    post: Partial<Post>
-  } {
-    return {
-      // title: '',
-      post: {},
-    }
+  data(): DataType {
+    return {}
   },
   computed: {
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
     getTitle(): string {
-      return getTitle(this.$data.post)
+      return this.post ? getTitle(this.post) : ''
     },
     getSocialTitle(): string {
-      return getSocialTitle(this.$data.post.content) + ' - rippingyard'
+      return this.post
+        ? getSocialTitle(this.post.content) + ' - rippingyard'
+        : ''
     },
     getSummary(): string {
-      return getSummary(this.$data.post.content)
+      return this.post ? getSummary(this.post.content) : ''
     },
     mainContent(): string {
-      return removeTitle(this.$data.post.content)
+      return this.post ? removeTitle(this.post.content) : ''
     },
     parentId(): string {
-      return docPath(this.$data.post.id)
+      return this.post ? docPath(this.post.id) : ''
     },
     thumbnail(): string {
-      return getThumbnail(this.$data.post.contentOriginal)
+      return this.post ? getThumbnail(this.post.contentOriginal) : ''
     },
     entities(): string[] {
+      if (!this.post) return []
       const entities: string[] = []
       if (this.post.entities) entities.push(...this.post.entities)
       if (this.post.parent?.entities)
@@ -154,8 +158,9 @@ export default Vue.extend({
       return entities
     },
   },
-  mounted() {
-    if (!this.$data.post.isPublic && !this.isAuthenticated) {
+  mounted(): void {
+    if (!this.post) throw new Error('ページが見つかりません')
+    if (!this.post.isPublic && !this.isAuthenticated) {
       this.$data.post = {}
       this.snack('ログインしてください')
       this.$router.push('/login')
@@ -180,22 +185,22 @@ export default Vue.extend({
       if (!item.name) return ''
       return getI18nName(item.name)
     },
-    userlink(user: User) {
+    userlink(user: User): string {
       return `/people/${user.userName}`
     },
-    avatar(user: User) {
+    avatar(user: User): string {
       return `background-image:url(${user.avatar})`
     },
-    openTweetForm() {
+    openTweetForm(): void {
       if (screen) {
-        const width: number = 560
-        const height: number = 600
-        const left: number = (screen.availWidth - width) / 2
-        const top: number = (screen.availHeight - height) / 2
-        const url: string = encodeURI(
-          `https://www.rippingyard.com${this.post.permalink}`
+        const width = 560
+        const height = 600
+        const left = (screen.availWidth - width) / 2
+        const top = (screen.availHeight - height) / 2
+        const url = encodeURI(
+          `https://www.rippingyard.com${this.post?.permalink}`
         )
-        const text: string = encodeURI(`${this.getTitle} - ripping yard`)
+        const text = encodeURI(`${this.getTitle} - ripping yard`)
         window.open(
           `https://twitter.com/share?url=${url}&text=${text}`,
           'tweet',
@@ -204,7 +209,7 @@ export default Vue.extend({
       }
     },
   },
-  head() {
+  head(): any {
     return {
       title: getTitle(this.$data.post),
       meta: [
