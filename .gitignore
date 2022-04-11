@@ -2,5 +2,7 @@
 .emulator
 .firebase
 
+firebase-export*
+
 # log
 *-debug.log
