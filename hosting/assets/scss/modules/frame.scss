@@ -1,0 +1,14 @@
+﻿.frame {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding-left: calc(50vw - #{$mainSize / 2});
+  padding-right: calc(50vw - #{($mainSize / 2) + $navSize + $navMargin});
+  max-width: 100%;
+
+  @include until($desktop) {
+    padding: $mobileHeaderHeight 0;
+    margin: auto;
+    overflow-x: hidden;
+  }
+}

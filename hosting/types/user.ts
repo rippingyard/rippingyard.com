@@ -5,6 +5,7 @@ export type User = {
   code?: string
   profile?: string
   avatar?: string
+  role: 'mayor' | 'resident' | 'stranger'
   createdAt: string | Date
   updatedAt: string | Date
 }

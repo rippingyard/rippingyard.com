@@ -1,37 +1,47 @@
 .masonry {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  // align-content: space-between;
-  @include widescreen {
-    & > li,
-    & > dd,
-    & > div {
-      width: calc(32% - (#{$gap} / 3));
-      overflow: hidden;
-      // margin-right: $gap;
-      &:nth-child(3n) {
-        margin-right: 0;
-      }
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+  grid-column-gap: $gap;
+  column-count: 2;
+
+  &>li,
+  &>dd,
+  &>div {
+    // width: calc(32% - (#{$gap} / 3));
+    // width: calc(50% - (#{$gap} / 2));
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+
+    &:nth-child(3n) {
+      margin-right: 0;
     }
   }
-  @include until-widescreen {
-    & > li,
-    & > dd,
-    & > div {
+
+  @include until-desktop {
+
+    column-count: 1;
+
+    &>li,
+    &>dd,
+    &>div {
       width: calc(50% - (#{$gap} / 2));
       box-sizing: border-box;
       overflow: hidden;
       margin-right: $gap;
+
       &:nth-child(2n) {
         margin-right: 0;
       }
     }
   }
+
   @include mobile {
-    & > li,
-    & > dd,
-    & > div {
+
+    &>li,
+    &>dd,
+    &>div {
       width: 100%;
       overflow: hidden;
       margin-right: 0;

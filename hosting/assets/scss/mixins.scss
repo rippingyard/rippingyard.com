@@ -5,13 +5,13 @@
 }
 
 @mixin until($device) {
-  @media screen and (max-width: $device - 1px) {
+  @media screen and (max-width: ($device - 1px)) {
     @content;
   }
 }
 
 @mixin mobile {
-  @media screen and (max-width: $tablet - 1px) {
+  @media screen and (max-width: ($tablet - 1px)) {
     @content;
   }
 }
@@ -23,13 +23,13 @@
 }
 
 @mixin tablet-only {
-  @media screen and (min-width: $tablet) and (max-width: $desktop - 1px) {
+  @media screen and (min-width: $tablet) and (max-width: ($desktop - 1px)) {
     @content;
   }
 }
 
 @mixin touch {
-  @media screen and (max-width: $desktop - 1px) {
+  @media screen and (max-width: ($desktop - 1px)) {
     @content;
   }
 }
@@ -42,15 +42,21 @@
 
 @mixin desktop-only {
   @if $widescreen-enabled {
-    @media screen and (min-width: $desktop) and (max-width: $widescreen - 1px) {
+    @media screen and (min-width: $desktop) and (max-width: ($widescreen - 1px)) {
       @content;
     }
   }
 }
 
+@mixin until-desktop {
+  @media screen and (max-width: ($desktop - 1px)) {
+    @content;
+  }
+}
+
 @mixin until-widescreen {
   @if $widescreen-enabled {
-    @media screen and (max-width: $widescreen - 1px) {
+    @media screen and (max-width: ($widescreen - 1px)) {
       @content;
     }
   }
@@ -66,7 +72,7 @@
 
 @mixin widescreen-only {
   @if $widescreen-enabled and $fullhd-enabled {
-    @media screen and (min-width: $widescreen) and (max-width: $fullhd - 1px) {
+    @media screen and (min-width: $widescreen) and (max-width: ($fullhd - 1px)) {
       @content;
     }
   }
@@ -74,7 +80,7 @@
 
 @mixin until-fullhd {
   @if $fullhd-enabled {
-    @media screen and (max-width: $fullhd - 1px) {
+    @media screen and (max-width: ($fullhd - 1px)) {
       @content;
     }
   }
@@ -85,5 +91,11 @@
     @media screen and (min-width: $fullhd) {
       @content;
     }
+  }
+}
+
+@mixin short {
+  @media screen and (max-height: 570px) {
+    @content;
   }
 }

@@ -7,6 +7,9 @@
             {{ title }}
           </nuxt-link>
         </h1>
+        <div v-if="post.parent" class="parent">
+          <ItemCard :item="post.parent" />
+        </div>
         <div class="summary" v-html="summary"></div>
       </div>
       <div v-if="thumbnail" class="image column c20">
@@ -36,7 +39,7 @@ export default Vue.extend({
   },
   computed: {
     title() {
-      return getTitle(this.post.content)
+      return getTitle(this.post)
     },
     summary() {
       return getSummary(this.post.content, 120)
@@ -52,8 +55,8 @@ export default Vue.extend({
 .item {
   padding: $gap;
 
-  @include mobile {
-    // padding: $gap / 2;
+  @include until-desktop {
+    padding: $gap / 2;
   }
 }
 
@@ -64,9 +67,18 @@ export default Vue.extend({
   line-height: 1.4;
   padding-right: $gap;
 
-  @include mobile {
+  @include until-desktop {
+    font-size: 1.4rem;
     line-height: 1.3;
     padding-right: 0;
+  }
+}
+
+.parent {
+  margin: 0 0 $gap / 2;
+  padding-right: $gap;
+  @include until-desktop {
+    margin: 0 0 $gap / 2;
   }
 }
 
@@ -87,9 +99,9 @@ export default Vue.extend({
   margin-bottom: 42px;
   padding-right: $gap;
 
-  @include mobile {
+  @include until-desktop {
     padding-right: 0;
-    margin-bottom: $gap;
+    margin-bottom: $gap / 2;
   }
 }
 

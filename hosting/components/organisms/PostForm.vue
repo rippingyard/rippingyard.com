@@ -1,31 +1,42 @@
 <template>
   <section class="block container">
-    <Wysiwyg :post="post" @update="updateContent" />
+    <div class="item bg-dotted">
+      <div class="inner">
+        <ItemForm :item="item" @update-item="updateItem" />
+      </div>
+    </div>
+    <Wysiwyg v-model="content" />
     <div class="console">
       <div class="buttons">
-        <button
-          type="is-primary"
-          class="button"
-          @click="confirm"
-        >設定を確認して公開する</button>
-        <button
-          type="is-text"
-          class="button no-border"
-          @click="showPreview"
-        >プレビュー</button>
+        <button type="is-primary" class="button" @click="confirm">
+          設定を確認して公開する
+        </button>
+        <button type="is-text" class="button no-border" @click="showPreview">
+          プレビュー
+        </button>
       </div>
     </div>
     <Modal v-if="isPreviewing" :on-close="closePreview">
       <div class="preview">
+        <div v-if="item" class="parent">
+          <ItemCard :item="item" />
+        </div>
         <Content v-html="filteredContent" />
       </div>
     </Modal>
     <Modal v-if="isSetting" :on-close="closeSetting">
       <div class="row">
         <div>
-          この記事は、<strong>{{ isPublic ? '全世界に公開中' : '本人限定ノート' }}</strong>です
+          この記事は、<strong>{{
+            isPublic ? '全世界に公開中' : '本人限定ノート'
+          }}</strong>
+          です
         </div>
-        <button type="is-primary" class="button no-border" @click="togglePublic">
+        <button
+          type="is-primary"
+          class="button no-border"
+          @click="togglePublic"
+        >
           {{ isPublic ? '非公開にする' : '全世界に公開する' }}
         </button>
       </div>
@@ -38,14 +49,20 @@
       <div class="row">
         <button
           class="button"
-          :class="{'is-disabled': isSaving}"
+          :class="{ 'is-disabled': isSaving }"
           @click="submit"
         >
-          {{ status !== 'draft' ? submitLabel : isPublic ? '公開する' : '自分のノートとして保存する' }}
+          {{
+            status !== 'draft'
+              ? submitLabel
+              : isPublic
+              ? '公開する'
+              : '自分のノートとして保存する'
+          }}
         </button>
         <button
           class="button no-border"
-          :class="{'is-disabled': isSaving}"
+          :class="{ 'is-disabled': isSaving }"
           @click="draft"
         >
           {{ draftLabel }}
@@ -74,12 +91,14 @@ export default {
   },
   data() {
     return {
-      content: '',
+      content: '<h1>記事タイトル</h1><p></p>',
       entities: [],
+      item: null,
       isPublic: true,
       isPreviewing: false,
       isSetting: false,
       isSaving: false,
+      type: 'article',
       status: 'published',
     }
   },
@@ -91,26 +110,29 @@ export default {
       return this.status === 'draft' ? '下書き保存' : '下書きに戻す'
     },
   },
-  mounted() {
-    if (!this.$isAuthenticated(this.$store)) {
-      this.$router.push('/')
-    }
+  async mounted() {
+    // if (!this.$isAuthenticated(this.$store)) {
+    //   this.$router.push('/')
+    // }
     if (this.post) {
-      this.content = this.post.content || ''
+      this.content = this.post.content
       this.isPublic = !!this.post.isPublic
       this.entities = this.post.entities || []
+      this.type = this.post.type || 'article'
       this.status = this.post.status
+      if (this.post.parent) {
+        const parent = await this.post.parent.get()
+        if (parent.exists) this.updateItem(parent.data())
+      }
     }
   },
   methods: {
     ...mapActions({
       savePost: 'post/save',
+      saveItem: 'item/save',
       saveEntity: 'entity/save',
       saveActivity: 'activity/save',
     }),
-    updateContent(content) {
-      this.content = content
-    },
     togglePublic() {
       this.isPublic = !this.isPublic
     },
@@ -132,13 +154,17 @@ export default {
     updateEntities(val) {
       this.entities = val
     },
+    updateItem(val) {
+      console.log('updated!', val)
+      this.item = !val ? null : val
+    },
     async save() {
       let status = 'failed'
       if (this.isSaving) return
 
       const params = {
         content: this.content,
-        type: 'article',
+        type: this.type,
         entities: this.entities,
         status: this.status,
         isPublic: this.isPublic,
@@ -156,19 +182,43 @@ export default {
           return this.snackAlert('投稿に失敗しました')
         }
 
+        if (this.item) {
+          console.log('this.item', this.item)
+          const q = await this.$fire.firestore
+            .collection('items')
+            .where('isDeleted', '==', false)
+            .where('path', '==', this.item.path)
+            .where('type', '==', this.item.type)
+            .limit(1)
+            .orderBy('createdAt', 'desc')
+            .get()
+
+          if (!q.empty) {
+            params.parent = q.docs[0].ref
+          } else {
+            const item = await this.saveItem(this.item)
+            params.parent = item
+          }
+          console.log('parent', params.parent)
+        }
+
         if (this.entities) {
           const existanceChecks = this.entities.map(async e => {
             console.log('Entity', e)
-            return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
+            return await this.$fire.firestore
+              .doc(`entities/${encodeEntity(e)}`)
+              .get()
           })
           const existances = await Promise.all(existanceChecks)
 
-          const promises = existances.filter(e => !e.exists).map(async e => {
-            return await this.saveEntity({
-              id: e.id,
+          const promises = existances
+            .filter(e => !e.exists)
+            .map(async e => {
+              return await this.saveEntity({
+                id: e.id,
+              })
             })
-          })
-          
+
           if (promises) await Promise.all(promises)
         }
 
@@ -191,7 +241,6 @@ export default {
       if (status === 'succeeded') {
         this.$router.push('/home/posts')
       }
-
     },
     async submit() {
       this.status = 'published'
@@ -207,6 +256,20 @@ export default {
 <style lang="scss" scoped>
 .preview {
   padding: 0 $gap * 2 $gap;
+  > .parent {
+    margin-top: $gap;
+    margin-bottom: $gap;
+  }
+}
+
+.item {
+  padding: 20px;
+  border: 1px solid $black;
+  margin-bottom: $gap;
+  > .inner {
+    background: $white;
+    border: 1px solid $black;
+  }
 }
 
 .row {

@@ -1,63 +1,13 @@
-
-.menububble{
-  position: absolute;
-  display: flex;
-  z-index: 20;
-  background: $white;
-  border: 1px solid $gray-black;
-  border-radius: 5px;
-  padding: .3rem;
-  margin-bottom:.5rem;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: opacity .2s, visibility .2s;
-  transition: opacity .2s, visibility .2s;
-
-  &.is-active{
-    opacity: 1;
-    visibility: visible;
+.ProseMirror {
+  .is-editor-empty {
+    &:first-child {
+      &::before {
+        content: attr(data-placeholder);
+        float: left;
+        color: $gray-black;
+        pointer-events: none;
+        height: 0;
+      }
+    }
   }
-}
-
-.menububble__button{
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  background: transparent;
-  border:0;
-  color: $black;
-  padding: 4px;
-  // padding:.2rem .5rem;
-  margin-right: .2rem;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:last-child {
-    margin-right:0;
-  }
-  &:hover {
-    background-color: $yellow;
-  }
-  &.is-active {
-    background-color:hsla(0,0%,100%,.2);
-  }
-}
-
-.menububble__form{
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  > svg {
-    margin-right: 5px;
-  }
-}
-
-.menububble__input{
-  font: inherit;
-  border: none;
-  background: transparent;
-  color: $black;
 }

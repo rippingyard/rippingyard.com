@@ -1,21 +1,25 @@
 @import './variables';
 @import './mixins';
+@import './utils';
 
 html,
 body {
   font-size: 14px;
   line-height: 1.8;
+  // font-feature-settings: 'palt';
   color: $black;
   font-family: $font-normal;
   background-color: $white;
 }
 
 @import './modules/ad';
+@import './modules/background';
 @import './modules/block';
 @import './modules/badge';
 @import './modules/button';
 @import './modules/column';
 @import './modules/field';
+@import './modules/frame';
 @import './modules/masonry';
 @import './modules/wysiwyg';
 @import './modules/editor';

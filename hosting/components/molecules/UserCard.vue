@@ -82,7 +82,7 @@ export default Vue.extend({
     }
   }
 
-  @include mobile {
+  @include until-desktop {
     padding: 4px;
     border: 2px solid $yellow;
 

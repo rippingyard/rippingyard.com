@@ -14,53 +14,20 @@
       <div class="heading">
         <h2><span class="border">関連記事</span></h2>
       </div>
-      <RelatedArticles
-        :tags="post.entities"
-        :exclude-id="post.id"
-      />
+      <RelatedArticles :tags="post.entities" :exclude-id="post.id" />
     </aside>
   </div>
 </template>
 
 <script>
-
-import _ from 'lodash'
+import axios from 'axios'
 import { filterContent } from '~/services/post'
-import Seeds from '~/assets/json/old/seeds.json'
 
 export default {
-  asyncData({ params, redirect, error }) {
-
-    const r = {}
-
-    const slug = params.slug
-
-    if (!slug) redirect('/')
-
-    console.log(slug)
-
-    const seed = _.filter(Seeds, o => { return o.slug === slug })
-
-    if( seed.length < 1 ) {
-      error({ statusCode: 404, message: 'ページが見つかりません' })
-      return r
-    }
-
-    console.log(seed)
-
-    r.post = {
-      title: seed[0].title,
-      content: seed[0].body,
-      user: seed[0].user_id,
-      publishedAt: seed[0].published_at,
-    }
-
-    return r
-
-  },
   data() {
     return {
-      title: ''
+      title: '',
+      post: {},
     }
   },
   computed: {
@@ -71,13 +38,13 @@ export default {
       return filterContent(this.getTitle + this.post.content)
     },
     getName() {
-      switch(this.post.user) {
+      switch (this.post.user) {
         case 37:
           return 'labofromjmq'
 
         case 24:
           return 'compuedit'
-        
+
         case 4:
           return 'joynesan'
 
@@ -86,18 +53,47 @@ export default {
 
         case 2:
           return 'mcatm'
-        
+
         default:
           return 'ripping yard'
       }
     },
   },
-  head: (context) => {
-    return {
-      title: context.post.title
-    }
-  }
+  async mounted() {
+    const slug = this.$route.params.slug
 
+    if (!slug) this.redirect('/')
+
+    console.log(slug)
+
+    const storage = this.$fire.storage
+    const pathref = storage.ref('seeds/seeds.json')
+
+    const url = await pathref.getDownloadURL()
+    const res = await axios.get(url)
+
+    const Seeds = res.data
+
+    const seed = Seeds.find(s => {
+      return s.slug === slug
+    })
+
+    if (!seed) {
+      this.error({ statusCode: 404, message: 'ページが見つかりません' })
+    }
+
+    this.post = {
+      title: seed.title,
+      content: seed.body,
+      user: seed.user_id,
+      publishedAt: seed.published_at,
+    }
+  },
+  head: context => {
+    return {
+      title: context.post.title,
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>

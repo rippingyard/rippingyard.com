@@ -16,16 +16,31 @@
           @change="check(datum.id)"
         />
       </td>
-      <td class="title">
-        <nuxt-link :to="editLink(datum)">
-          <strong>{{ title(datum.content) }}</strong>
-        </nuxt-link>
-        <nuxt-link v-if="canAccess(datum.status)" target="_blank" :to="permalink(datum.id)">
-          <fa-icon icon="external-link-alt" class="icon" />
-        </nuxt-link>
+      <td class="main">
+        <div class="title">
+          <nuxt-link :to="editLink(datum)">
+            <strong>{{ title(datum) }}</strong>
+          </nuxt-link>
+          <nuxt-link
+            v-if="canAccess(datum.status)"
+            target="_blank"
+            :to="permalink(datum.id)"
+          >
+            <fa-icon icon="external-link-alt" class="icon" />
+          </nuxt-link>
+        </div>
+        <div class="entities">
+          <EntitySimpleList
+            :entities="datum.entities"
+            :is-simple="true"
+            :is-external="true"
+          />
+        </div>
       </td>
       <td>
-        <span class="badge" :class="statusClass(datum.status, datum.isPublic)">{{ status(datum.status, datum.isPublic) }}</span>
+        <span class="badge" :class="statusClass(datum.status, datum.isPublic)">
+          {{ status(datum.status, datum.isPublic) }}
+        </span>
       </td>
       <td>{{ datum.publishedAt }}</td>
     </tr>
@@ -50,12 +65,13 @@ export default Vue.extend({
   },
   methods: {
     title: (content: string) => getTitle(content),
-    editLink: (post: Post) => editlink(post.id),
+    editLink: (post: Post) => editlink(post),
     permalink: (id: string) => permalink(id),
     canAccess: (status: string): boolean => {
       return status !== 'draft'
     },
-    status: (status: string, isPublic: boolean) => getStatusLabel(status, isPublic),
+    status: (status: string, isPublic: boolean) =>
+      getStatusLabel(status, isPublic),
     statusClass(status: string, isPublic: boolean): string {
       if (status === 'draft') return 'is-log'
       if (isPublic) return 'is-info'
@@ -79,10 +95,12 @@ th {
 }
 td {
   border-bottom: 1px solid $gray;
-  &.title {
-    font-size: 1.2rem;
-    .icon {
-      font-size: 0.85rem;
+  &.main {
+    .title {
+      font-size: 1.2rem;
+      .icon {
+        font-size: 0.85rem;
+      }
     }
   }
   a {

@@ -34,19 +34,18 @@ $ yarn install
 ### Development
 
 ```sh
-$ yarn start:emulator
+$ yarn dev
 $ cd hosting
 $ yarn dev
 $ cd ../functions
-$ yarn watch
+$ yarn dev
 ```
 
 ### Check
 
 ```sh
-$ cd hosting
-$ yarn generate
-$ open http://localhost:5000
+$ yarn build
+$ open http://localhost:5555
 ```
 
 ### Deploy

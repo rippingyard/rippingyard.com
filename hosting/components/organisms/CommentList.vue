@@ -1,11 +1,7 @@
 ﻿<template>
   <div class="container">
     <ul class="comments">
-      <li
-        v-for="comment in comments"
-        :key="comment.id"
-        class="comment"
-      >
+      <li v-for="comment in comments" :key="comment.id" class="comment">
         <div class="body">
           <div class="content wysiwyg" v-html="comment.content"></div>
           <p class="date">{{ comment.createdAt }}</p>
@@ -28,12 +24,12 @@ export default Vue.extend({
     },
   },
   data(): {
-    comments: any[],
+    comments: any[]
     unsubscribe: any
   } {
     return {
       comments: [],
-      unsubscribe: () => {}
+      unsubscribe: () => {},
     }
   },
   async mounted(): Promise<void> {
@@ -49,18 +45,24 @@ export default Vue.extend({
           const comment = doc.data()
           if (
             comment.isDeleted ||
-            (!comment.isPublic && this.$store.state.auth.me.uid !== comment.owner.id) ||
+            (!comment.isPublic &&
+              this.$store.state.auth.me.uid !== comment.owner.id) ||
             comment.status !== 'published'
-          ) return
-          const normalizedComment = await normalize(comment.id, comment, this.$store)
+          )
+            return
+          const normalizedComment = await normalize(
+            comment.id,
+            comment,
+            this.$store
+          )
           this.comments.push(normalizedComment)
         })
 
         qs.docChanges().forEach((change: any) => {
           if (change.type === 'added') {
-            console.log('New Comment: ', change.doc.data());
+            console.log('New Comment: ', change.doc.data())
           }
-        });
+        })
       })
     await Promise.all(promises)
   },
@@ -83,6 +85,8 @@ export default Vue.extend({
   }
   @include mobile {
     flex-direction: column;
+    border-top: none;
+    padding: 0 $gap / 2 $gap / 2;
   }
 }
 .body {
@@ -114,6 +118,10 @@ export default Vue.extend({
 
   @include mobile {
     width: 100%;
+
+    .date {
+      display: none;
+    }
   }
 }
 .user {

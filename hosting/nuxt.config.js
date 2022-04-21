@@ -116,8 +116,20 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: ['destyle.css', '~/assets/scss/app.scss'],
 
+  loading: {
+    color: '#111111',
+  },
+
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/middleware/gtm', '~/plugins/auth', '~/middleware/snack'],
+  plugins: [
+    '~/middleware/gtm',
+    '~/middleware/permission',
+    '~/middleware/snack',
+    {
+      src: '~/plugins/datepicker',
+      mode: 'client'
+    },
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -156,24 +168,39 @@ export default {
           auth:
             process.env.FIRE_ENV === 'local'
               ? {
-                  emulatorPort: 9099,
-                  emulatorHost: 'http://localhost',
-                  disableEmulatorWarnings: true,
-                }
+                emulatorPort: 9099,
+                emulatorHost: 'http://localhost',
+                disableEmulatorWarnings: true,
+              }
+              : true,
+          functions:
+            process.env.FIRE_ENV === 'local'
+              ? {
+                location: 'us-central1',
+                emulatorPort: 5001,
+                emulatorHost: 'http://localhost',
+                disableEmulatorWarnings: true,
+              }
               : true,
           firestore:
             process.env.FIRE_ENV === 'local'
               ? {
-                  // enablePersistence: true,
-                  emulatorPort: 8080,
-                  emulatorHost: 'localhost',
-                  // settings: {
-                  //   host: 'localhost',
-                  //   ssl: false,
-                  // },
-                }
+                // enablePersistence: true,
+                emulatorPort: 8080,
+                emulatorHost: 'localhost',
+                // settings: {
+                //   host: 'localhost',
+                //   ssl: false,
+                // },
+              }
               : true,
-          storage: true,
+          storage:
+            process.env.FIRE_ENV === 'local'
+              ? {
+                emulatorPort: 9199,
+                emulatorHost: 'localhost',
+              }
+              : true,
         },
         // onFirebaseHosting: true,
       },
@@ -196,25 +223,40 @@ export default {
     // https://fontawesome.com/icons?d=gallery&m=free
     icons: {
       solid: [
+        'faAngleRight',
+        'faBell',
         'faBold',
+        'faClock',
+        'faClosedCaptioning',
         'faCode',
+        'faCommentAlt',
         'faExternalLinkAlt',
         'faHeading',
+        'faHighlighter',
         'faImage',
         'faItalic',
         'faLink',
         'faList',
         'faListOl',
+        'faParagraph',
         'faQuoteRight',
+        'faPlusCircle',
+        'faRulerHorizontal',
+        'faStrikethrough',
+        'faSearch',
+        'faTachometerAlt',
         'faTag',
+        'faTimes',
         'faTrashAlt',
-        'faAngleRight',
-        'faClock',
+        'faUnlink',
       ],
       regular: [
         'faTimesCircle',
       ],
-      brands: [],
+      brands: [
+        'faFacebook',
+        'faTwitter',
+      ],
     },
   },
 
@@ -251,11 +293,11 @@ export default {
         path: '/sitemaps/posts.xml',
         gzip: false,
         cacheTime: 1000 * 60 * 20,
-        filter ({ routes, _options }) {
+        filter({ routes, _options }) {
           return routes.filter((route) => route.url.match(/^\/post\//))
         },
         routes: async () => {
-          
+
           const permalinks = []
 
           const posts = await axios.get(`${fbAPI}timelines/public/posts?pageSize=999`)
@@ -275,7 +317,7 @@ export default {
       //     return routes.filter((route) => route.url.match(/^\/entity\//))
       //   },
       //   routes: async () => {
-          
+
       //     const permalinks = []
 
       //     const entities = await axios.get(`${fbAPI}entities?pageSize=999`)
@@ -288,26 +330,33 @@ export default {
       //     return permalinks
       //   }
       // },
-      {
-        path: '/sitemaps/seeds.xml',
-        gzip: true,
-        lastmod: new Date(1593090856034),
-        cacheTime: 1000 * 60 * 60 * 24 * 30,
-        filter ({ routes, _options }) {
-          return routes.filter((route) => route.url.match(/^\/seeds\//))
-        },
-        routes: () => {
-          const permalinks = []
+      // {
+      //   path: '/sitemaps/seeds.xml',
+      //   gzip: true,
+      //   lastmod: new Date(1593090856034),
+      //   cacheTime: 1000 * 60 * 60 * 24 * 30,
+      //   filter({ routes, _options }) {
+      //     return routes.filter((route) => route.url.match(/^\/seeds\//))
+      //   },
+      //   routes: () => {
 
-          const seeds = require('./assets/json/old/seeds.json')
+      //     const permalinks = []
 
-          seeds.forEach((seed) => {
-            permalinks.push('/seeds/' + seed.slug)
-          })
+      //     const storage = this.$fire.storage
+      //     const pathref = storage.ref('seeds/seeds.json')
 
-          return permalinks
-        }
-      }
+      //     const url = await pathref.getDownloadURL()
+      //     const res = await axios.get(url)
+
+      //     const seeds = res.data
+
+      //     seeds.forEach((seed) => {
+      //       permalinks.push('/seeds/' + seed.slug)
+      //     })
+
+      //     return permalinks
+      //   }
+      // }
     ]
   },
 

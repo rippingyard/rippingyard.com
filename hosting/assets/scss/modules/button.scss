@@ -3,11 +3,35 @@
   border: 2px solid $black;
   font-weight: 800;
   display: inline-block;
-  color: $black !important;
+  color: $black;
+
+  &.expanded {
+    width: 100%;
+  }
+
+  &.centered {
+    text-align: center;
+  }
+
+  &.light {
+    color: $white;
+    border-color: $white;
+  }
+
+  &.twitter {
+    background-color: rgb(29, 155, 240);
+    &:hover {
+      background-color: rgba(29, 155, 240, 0.6);
+    }
+  }
 
   &:hover {
     background-color: $yellow;
     // color: $yellow;
+  }
+
+  &.is-wide {
+    width: 100%;
   }
 
   &.no-border {
@@ -25,4 +49,8 @@
       background-color: transparent;
     }
   }
+}
+
+.buttons {
+  display: flex;
 }

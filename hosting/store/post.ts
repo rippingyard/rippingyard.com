@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { Timestamp } from 'firebase/firestore'
 import { ActionContext } from 'vuex'
 
 import { Post } from '~/types/post'
@@ -13,20 +13,20 @@ interface ActionInterface {
   $fire?: any
 }
 
-export const scheme = {
-  slug: null,
+export const scheme: Omit<Post, 'id' | 'contentOriginal'> = {
+  slug: '',
   owner: null,
-  collaborators: null,
-  content: null,
+  colaborators: [],
+  content: '',
   status: 'published',
   type: 'log',
-  parent: null,
   entities: [],
-  relatedPosts: {
-    byUser: [],
-    byTerm: [],
-    expiredAt: null,
-  },
+  items: [],
+  // relatedPosts: {
+  //   byUser: [],
+  //   byTerm: [],
+  //   expiredAt: null,
+  // },
   counts: {
     favorite: 0,
     bookmark: 0,
@@ -34,9 +34,9 @@ export const scheme = {
   },
   isPublic: false,
   isDeleted: false,
-  publishedAt: dayjs().toDate(),
-  createdAt: dayjs().toDate(),
-  updatedAt: dayjs().toDate(),
+  publishedAt: Timestamp.now(),
+  createdAt: Timestamp.now(),
+  updatedAt: Timestamp.now(),
 }
 
 export const state = () => ({
@@ -50,7 +50,7 @@ export const mutations = {
 }
 
 export const actions: ActionInterface = {
-  async save({ rootState }, post) {
+  async save({ rootState }, post): Promise<Post> {
     try {
       // TODO: validation
       // TODO: auth処理
@@ -68,14 +68,10 @@ export const actions: ActionInterface = {
 
       // TODO: slug
 
-      post.updatedAt = dayjs().toDate()
+      post.updatedAt = Timestamp.now()
 
-      post.createdAt = post.createdAt
-        ? dayjs(post.createdAt).toDate()
-        : dayjs().toDate()
-      post.publishedAt = post.publishedAt
-        ? dayjs(post.publishedAt).toDate()
-        : dayjs().toDate()
+      post.createdAt = post.createdAt || Timestamp.now()
+      post.publishedAt = post.publishedAt || Timestamp.now()
 
       if (!post.owner) {
         post.owner = await this.$fire.firestore
@@ -98,28 +94,12 @@ export const actions: ActionInterface = {
 
       await db.set(newPost)
 
-      // saveIndex(indexName, {
-      //   objectID: post.id,
-      //   title: getTitle(post.content),
-      //   body: stripTags(removeTitle(post.content)),
-      //   image: getThumbnail(post.content),
-      //   createdAt: dayjs(post.createdAt).format('YYYY-MM-DD HH:mm'),
-      //   publishedAt: dayjs(post.publishedAt).format('YYYY-MM-DD HH:mm'),
-      //   updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DD HH:mm'),
-      //   owner: post.owner?.uid,
-      //   collaborators: [],
-      //   tokens: getTokens(post.content),
-      //   entities: getTokens(post.content),
-      //   ...pick(newPost, [
-      //     'content',
-      //     'isDeleted',
-      //     'isPublic',
-      //     'type',
-      //     'status',
-      //   ]),
-      // })
+      return newPost
 
-    } catch (e) {}
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
   },
   async delete({ rootState }, id): Promise<void> {
     console.log('delete:', id)

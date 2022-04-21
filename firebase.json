@@ -4,10 +4,15 @@
     "indexes": "firebase/firestore.indexes.json"
   },
   "functions": {
+    "runtime": "nodejs14"
   },
   "hosting": {
     "public": "hosting/dist",
     "rewrites": [
+      {
+        "source": "/api/fetch/url/**",
+        "function": "apiFetchUrl"
+      },
       {
         "source": "**",
         "function": "ssr"
@@ -36,8 +41,11 @@
     "firestore": {
       "port": 8080
     },
+    "storage": {
+      "port": 9199
+    },
     "hosting": {
-      "port": 5000
+      "port": 5555
     },
     "pubsub": {
       "port": 8085

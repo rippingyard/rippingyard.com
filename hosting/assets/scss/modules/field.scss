@@ -1,5 +1,9 @@
 ﻿.field {
-  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 40px;
+  &.widget {
+    padding-bottom: 20px;
+  }
   > label {
     display: block;
     font-size: 0.9rem;
@@ -11,5 +15,34 @@
     border-bottom: 1px solid $black;
     font-size: 1.1rem;
     padding: 5px 0;
+  }
+  .error {
+    color: $white;
+    font-size: 0.8rem;
+    padding: 5px;
+    margin-top: 5px;
+    background-color: $red;
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    &::after {
+      content: "";
+      border-style: solid;
+      border-width: 7px;
+      border-color: transparent transparent $red transparent;
+      position: absolute;
+      top: -7px;
+      transform: translateY(-50%);
+      left: 20px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &.dark {
+    .input {
+      border-color: $white;
+    }
   }
 }

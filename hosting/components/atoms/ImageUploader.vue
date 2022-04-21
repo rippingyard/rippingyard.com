@@ -4,7 +4,7 @@
       <div class="dz-preview">
         <div class="dz-image">
           <img :src="image" />
-          <button class="button" @click="removeImage">画像を削除する</button>
+          <button class="button" @click="removeImage"><fa-icon icon="times" /></button>
         </div>
       </div>
     </div>
@@ -69,6 +69,7 @@ export default Vue.extend({
         // dictUploadCanceled: '',
         // dictCancelUploadConfirmation: '',
         dictRemoveFile: '画像を削除する',
+        // dictRemoveFile: '<fa-icon icon="bold" />',
         // dictRemoveFileConfirmation: '',
         dictMaxFilesExceeded:
           '{{maxFiles}}つ以上の画像はアップロード出来ません',
@@ -97,8 +98,8 @@ export default Vue.extend({
           // console.log('Original File Accepted!')
 
           const image = await resizeImage(originalFile, {
-            width: 1200,
-            height: 1200,
+            width: 1800,
+            height: 1800,
           })
 
           return typeof this.onChange === 'function'

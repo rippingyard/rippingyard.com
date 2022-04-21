@@ -9,7 +9,7 @@
   &.c80 { width: 80%; }
   &.c90 { width: 90%; }
 
-  @include mobile {
+  @include until($desktop) {
     &.c10 { width: 100%; }
     &.c20 { width: 100%; }
     &.c30 { width: 100%; }
@@ -32,7 +32,7 @@
       }
     }
   }
-  @include mobile {
+  @include until($desktop) {
     display: block;
   }
 }

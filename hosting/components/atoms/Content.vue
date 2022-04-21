@@ -1,5 +1,5 @@
 <template>
-  <div class="wysiwyg" v-html="content"></div>
+  <div class="wysiwyg is-article" v-html="content"></div>
 </template>
 <script lang="ts">
 import Vue from 'vue'

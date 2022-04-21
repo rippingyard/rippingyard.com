@@ -3,24 +3,24 @@
     <client-only>
       <div v-if="isAuthenticated" class="commentform">
         <div class="textarea">
-          <TextArea
-            v-model="content"
-            :reset-count="resetCount"
-          />
+          <TextArea v-model="content" />
           <div class="footer">
             <div class="footer-main">
-              <div class="status"><span>{{ statusLabel }}</span></div>
+              <div class="status">
+                <span>{{ statusLabel }}</span>
+              </div>
             </div>
             <div class="footer-side">
-              <div
-                :class="{'is-over': isOver}"
-                class="counter"
-              >{{ contentLength }} / {{ limit }}</div>
+              <div :class="{ 'is-over': isOver }" class="counter">
+                {{ contentLength }} / {{ limit }}
+              </div>
               <button
-                :class="{'is-disabled': isOver || isEmpty}"
+                :class="{ 'is-disabled': isOver || isEmpty }"
                 class="button"
                 @click="submit()"
-              >コメントする</button>
+              >
+                コメントする
+              </button>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default Vue.extend({
     },
     statusLabel(): string {
       return this.isPublic ? '全世界に公開' : '限定公開'
-    }
+    },
   },
   methods: {
     ...mapActions({
@@ -83,7 +83,9 @@ export default Vue.extend({
       }
 
       if (this.isOver) {
-        return (this as any).snackAlert(`コメントできる文字数をオーバーしています`)
+        return (this as any).snackAlert(
+          `コメントできる文字数をオーバーしています`
+        )
       }
 
       // console.log('Comment', this.content)
@@ -108,8 +110,8 @@ export default Vue.extend({
           })
           this.content = ''
           this.resetCount++
-        } catch(e) {
-          (this as any).snackAlert('投稿に失敗しました')
+        } catch (e) {
+          ;(this as any).snackAlert('投稿に失敗しました')
           status = 'failed'
         }
 
@@ -118,7 +120,6 @@ export default Vue.extend({
           status,
           payload: params,
         })
-        
       } catch (e) {
         console.warn(e)
       }
@@ -129,6 +130,10 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .commentform {
   margin-bottom: $gap;
+  @include mobile {
+    margin-left: $gap / 2;
+    margin-right: $gap / 2;
+  }
 }
 
 .textarea {
