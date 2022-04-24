@@ -1,17 +1,14 @@
 ﻿<template>
   <main class="block container">
     <Header />
-    <h1 class="title">パスワードを変更する</h1>
-    <form
-      class="form"
-      @submit.prevent="reset(email)"
-    >
+    <h1 class="title">パスワードをリセットする</h1>
+    <form class="form" @submit.prevent="reset(email)">
       <div class="field">
         <label>メールアドレス</label>
         <input
           v-model="email"
           type="email"
-          placeholder="メールアドレスを入力"
+          placeholder="登録メールアドレスを入力"
           class="input"
         />
       </div>
@@ -23,31 +20,42 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import { getDomain } from '~/plugins/util'
 import { schemaResetPassword } from '~/plugins/validators/auth'
+
+type DataType = {
+  email: string
+}
+
 export default Vue.extend({
-  data() {
+  data(): DataType {
     return {
       email: '',
     }
   },
   methods: {
     reset(email: string): void {
-      const { error } = schemaResetPassword.validate({email})
+      const { error } = schemaResetPassword.validate({ email })
       if (error) {
         console.log('Error', error.details)
         return (this as any).snackAlert('メールアドレスを入力してください')
       }
       const auth = (this as any).$fire.auth
-      auth.sendPasswordResetEmail(this.email).then(() => {
-        console.log('E-Mail', this.email)
-      })
-    }
+      auth
+        .sendPasswordResetEmail(this.email, {
+          url: `${getDomain()}/auth`,
+          handleCodeInApp: true,
+        })
+        .then(() => {
+          console.log('E-Mail', this.email)
+        })
+    },
   },
-  head() {
+  head(): any {
     return {
       title: 'Password Reset',
     }
-  }
+  },
 })
 </script>
 <style lang="scss" scoped>

@@ -4,7 +4,10 @@
     <h1 class="title">Login</h1>
     <LoginForm />
     <div class="footer">
-      <p>パスワードを忘れた場合は<nuxt-link to="/password-reset">こちら</nuxt-link></p>
+      <p>
+        パスワードを忘れた場合は
+        <nuxt-link to="/password/reset">こちら</nuxt-link>
+      </p>
     </div>
   </main>
 </template>
