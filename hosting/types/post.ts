@@ -1,4 +1,4 @@
-import { DocumentData } from '@firebase/firestore-types'
+import { DocumentData, Timestamp } from '@firebase/firestore-types'
 import { User } from '~/types/user'
 
 export type Post = {
@@ -7,9 +7,9 @@ export type Post = {
   content: string
   contentOriginal: string
   colaborators: DocumentData[]
-  createdAt: string | Date
-  publishedAt: string | Date
-  updatedAt: string | Date
+  createdAt: Timestamp
+  publishedAt: Timestamp
+  updatedAt: Timestamp
   type: 'article' | 'note' | 'log'
   owner?: User | DocumentData | null
   parent?: DocumentData

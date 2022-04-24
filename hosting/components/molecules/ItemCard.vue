@@ -31,7 +31,7 @@
           {{ category.label }}
         </li>
       </ul>
-      <h2 class="name">{{ name }}</h2>
+      <h2 class="name"><nuxt-link :to="permalink">{{ name }}</nuxt-link></h2>
     </div>
     <ul v-if="editable && !item.id" class="categories is-selectable">
       <li

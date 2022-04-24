@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import firebase from 'firebase'
+import { Timestamp } from 'firebase/firestore'
 import { isPublic, normalize } from '~/services/post'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
@@ -22,8 +22,10 @@ type DataType = {
   lastDate: any
 }
 
+const limit = 25;
+
 export default {
-  async asyncData({ $fire, store }: Context) {
+  async asyncData({ $fire, store }: Context): Promise<DataType> {
     const posts: Partial<Post>[] = []
     let lastDate: any
     const qs = await $fire.firestore
@@ -32,11 +34,9 @@ export default {
       .where('isPublic', '==', true)
       .where('status', '==', 'published')
       // .where('type', '==', 'article')
-      .limit(10)
+      .limit(limit)
       .orderBy('publishedAt', 'desc')
       .get()
-
-    console.log('qs', qs)
 
     for (const doc of qs.docs) {
       const post = doc.data()
@@ -61,31 +61,23 @@ export default {
       return getTitle(post)
     },
     async loadMore(): Promise<void> {
-      // console.log(
-      //   'last post',
-      //   (this as any).$data.posts[(this as any).posts.length - 1]
-      // )
       await this.getPosts(
         (this as any).$data.posts[(this as any).posts.length - 1].publishedAt
       )
     },
     async getPosts(startAt: string): Promise<void> {
-      // console.log(
-      //   'Timestamp',
-      //   firebase.firestore.Timestamp.fromDate(new Date(startAt)).toDate()
-      // )
       let q = (this as any).$fire.firestore
         .collection('posts')
         .where('isDeleted', '==', false)
         .where('isPublic', '==', true)
         .where('status', '==', 'published')
         // .where('type', 'in', ['article', 'note'])
-        .limit(10)
+        .limit(limit)
         .orderBy('publishedAt', 'desc')
 
       if (startAt) {
         q = q.startAfter(
-          firebase.firestore.Timestamp.fromDate(new Date(startAt))
+          Timestamp.fromDate(new Date(startAt))
         )
       }
 
@@ -107,7 +99,7 @@ export default {
       }
     },
   },
-  head: () => {
+  head: (): any => {
     return {
       title: 'Posts',
     }

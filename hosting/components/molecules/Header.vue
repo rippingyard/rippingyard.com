@@ -31,8 +31,8 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   max-width: 100%;
-  height: $navSize;
-  margin: $navMargin auto $navMargin;
+  height: $navMargin;
+  margin: 0 auto $navMargin;
   padding-left: $navMargin;
   background-color: $black;
 

@@ -17,9 +17,9 @@
           <li>
             <nuxt-link to="/posts/">POSTS<small>記事一覧</small></nuxt-link>
           </li>
-          <!-- <li>
+          <li>
             <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
-          </li> -->
+          </li>
           <client-only>
             <li v-if="isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>

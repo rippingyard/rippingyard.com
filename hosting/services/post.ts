@@ -4,8 +4,9 @@ import { omit } from 'lodash'
 import dayjs from 'dayjs'
 import { sanitize, renderWidgets } from '~/plugins/typography'
 import { Post } from '~/types/post'
-import { getDomain } from '~/plugins/util'
 import { Item } from '~/types/item'
+// import { normalize as normalizeItem } from '~/services/item'
+import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
 
@@ -16,15 +17,13 @@ interface Params {
 
 export async function normalize(
   id: string,
-  post: DocumentData | undefined,
+  post: DocumentData,
   store: Store<any>,
   params: Params = {
     withoutOwner: false,
     withoutItems: false,
   }
-): Promise<Partial<Post>> {
-  if (!post) return {}
-
+): Promise<Post> {
   try {
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
@@ -49,12 +48,17 @@ export async function normalize(
     let parent: Partial<Post | Item> | null = null;
     if (!params.withoutItems && post.parent) {
       if (post.parent.path.startsWith('items')) {
-        let itemObject: Partial<Item> = {}
+        let itemObject: Partial<Item & {
+          parentType: 'item'
+        }> = {}
         const cachedItem = await store.getters['item/one'](post.parent.id)
         if (!cachedItem) {
           try {
             await post.parent.get().then((doc: any) => {
-              itemObject = omit(doc.data() as Item, ['createdAt', 'updatedAt'])
+              itemObject = {
+                ...omit(doc.data() as Item, ['createdAt', 'updatedAt']),
+                parentType: 'item',
+              }
               store.commit('item/setItem', itemObject)
             })
           } catch (e) {
