@@ -1,8 +1,10 @@
 ﻿name: Deploy to Staging
 
 on:
-  push:
-    branches: [ main, develop ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches: [ main ]
+    tags-ignore: [ dependencies ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,7 +12,10 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout from ${{ github.head_ref }}
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
