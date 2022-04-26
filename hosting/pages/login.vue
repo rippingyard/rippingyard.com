@@ -3,6 +3,12 @@
     <Header />
     <h1 class="title">Login</h1>
     <LoginForm />
+    <div class="footer">
+      <p>
+        パスワードを忘れた場合は
+        <nuxt-link to="/password/reset">こちら</nuxt-link>
+      </p>
+    </div>
   </main>
 </template>
 
@@ -45,5 +51,14 @@ export default Vue.extend({
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 10px;
+}
+.footer {
+  font-size: 0.9rem;
+  color: $black;
+  padding-top: $gap;
+  a {
+    color: $blue;
+    text-decoration: underline;
+  }
 }
 </style>
