@@ -1,8 +1,9 @@
 ﻿name: Deploy to Staging
 
 on:
-  push:
-    branches: [ main, develop ]
+  pull_request:
+    types: [opened, reopened]
+    branches: [ main ]
 jobs:
   build:
     runs-on: ubuntu-latest

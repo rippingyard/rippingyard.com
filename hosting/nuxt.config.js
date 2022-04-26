@@ -263,6 +263,7 @@ export default {
         'faTwitter',
       ],
     },
+    addCss: true,
   },
 
   styleResources: {
