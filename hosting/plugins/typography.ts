@@ -165,7 +165,7 @@ export function renderWidgets(content: string) {
 
   urls.reverse()
 
-  let urlInfo: urlParse<string>
+  let urlInfo: urlParse
   let queries = null
   let html = ''
 
