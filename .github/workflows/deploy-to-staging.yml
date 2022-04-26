@@ -12,8 +12,10 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v3
-      - ref: ${{ github.ref }}
+    - name: Checkout from ${{ github.ref }}
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
