@@ -1,0 +1,3 @@
+﻿NODE_ENV=development
+BAUTH_USER=user
+BAUTH_PASSWORD=password

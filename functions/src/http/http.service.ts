@@ -18,7 +18,6 @@ const { renderRoute } = new Nuxt({
 @Injectable()
 export class HttpService {
   async ssr(req: Request): Promise<string> {
-    console.log('req.url', req.url);
     const { html } = await renderRoute(req.url, { req });
     return html;
   }
