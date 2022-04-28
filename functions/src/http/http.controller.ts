@@ -8,24 +8,18 @@ import {
 } from '@nestjs/common';
 import { HttpService } from './http.service';
 import { Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthExceptionFilter } from '../auth/exception.filter';
-import { ConfigService } from '@nestjs/config';
+import { BasicAuthGuard } from '../auth/basic.guard';
 
 @Controller()
 export class HttpController {
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly httpService: HttpService) {}
 
   @Get('*')
   @Header('Cache-Control', 'public, max-age=300, s-maxage=600')
   @UseFilters(new AuthExceptionFilter())
-  @UseGuards(AuthGuard('basic-auth'))
+  @UseGuards(BasicAuthGuard)
   async ssr(@Req() req: Request): Promise<string> {
-    const result = await this.httpService.ssr(req);
-    console.log(this.configService.get<string>('NODE_ENV'));
-    return result;
+    return await this.httpService.ssr(req);
   }
 }
