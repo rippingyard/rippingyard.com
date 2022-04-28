@@ -7,7 +7,7 @@ import { BasicAuthStrategy } from '../auth/basic.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env/local'],
+      envFilePath: ['env/local'],
     }),
     HttpModule,
   ],
