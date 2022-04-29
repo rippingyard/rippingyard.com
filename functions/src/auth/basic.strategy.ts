@@ -15,6 +15,7 @@ export class BasicAuthStrategy extends PassportStrategy(
   async validate(username: string, password: string) {
     const verifiedUsername = this.configService.get<string>('BAUTH_USER');
     const verifiedPassword = this.configService.get<string>('BAUTH_PASSWORD');
+    console.log('BAUTH', verifiedUsername, verifiedPassword);
     return username === verifiedUsername && password === verifiedPassword;
   }
 }
