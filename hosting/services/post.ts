@@ -28,7 +28,6 @@ export async function normalize(
     let owner: DocumentData = {}
     // TODO: owner.createdAt、owner.updatedAtを正しく処理する
     if (!params.withoutOwner && post.owner) {
-      console.log('owner test', post.owner.id)
       const cachedUser = await store.getters['user/one'](post.owner.id)
       if (!cachedUser) {
         try {
@@ -140,7 +139,6 @@ export function permalink(id: string): string {
 }
 
 export function editlink(post: Partial<Post>): string {
-  console.log('EditLink', post);
   const postType = post.type === 'log' ? 'log' : 'post'
   return `/home/${postType}/edit/${post.id}`
 }

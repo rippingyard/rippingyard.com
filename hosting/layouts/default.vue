@@ -54,7 +54,7 @@ export default Vue.extend({
             switch (change.type) {
               case 'added':
                 post = change.doc.data()
-                console.log('New Post', post)
+                // console.log('New Post', post)
                 if (isPublic(post)) {
                   this.$store.commit(
                     'global/setPost',

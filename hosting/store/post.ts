@@ -90,8 +90,6 @@ export const actions: ActionInterface = {
 
       const newPost = Object.assign(scheme, post)
 
-      console.log('saved post', post)
-
       await db.set(newPost)
 
       return newPost
@@ -102,7 +100,6 @@ export const actions: ActionInterface = {
     }
   },
   async delete({ rootState }, id): Promise<void> {
-    console.log('delete:', id)
 
     if (!rootState.auth.me) {
       throw new Error('権限がありません')

@@ -1,20 +1,14 @@
 ﻿<template>
   <section class="block container">
-    <TextArea
-      v-model="content"
-    />
+    <TextArea v-model="content" />
     <div class="console">
       <div class="buttons">
-        <button
-          type="is-primary"
-          class="button"
-          @click="submit"
-        >{{ submitLabel }}</button>
-        <button
-          type="is-text"
-          class="button no-border"
-          @click="showPreview"
-        >プレビュー</button>
+        <button type="is-primary" class="button" @click="submit">
+          {{ submitLabel }}
+        </button>
+        <button type="is-text" class="button no-border" @click="showPreview">
+          プレビュー
+        </button>
       </div>
     </div>
     <Modal v-if="isPreviewing" :on-close="closePreview">
@@ -72,7 +66,7 @@ export default {
       this.entities = this.post.entities || []
       this.status = this.post.status
     }
-    console.log('Content', this.content)
+    // console.log('Content', this.content)
   },
   methods: {
     ...mapActions({
@@ -120,27 +114,31 @@ export default {
         this.isSaving = true
 
         if (this.post?.id) params.id = this.post.id
-        console.log('val', schemaPost.validate(params))
+        // console.log('val', schemaPost.validate(params))
 
         const { error } = schemaPost.validate(params)
         if (!isEmpty(error)) {
-          console.log('Error', error.details)
+          console.error('Error', error.details)
           return this.snackAlert('投稿に失敗しました')
         }
 
         if (this.entities) {
           const existanceChecks = this.entities.map(async e => {
-            console.log('Entity', e)
-            return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
+            // console.log('Entity', e)
+            return await this.$fire.firestore
+              .doc(`entities/${encodeEntity(e)}`)
+              .get()
           })
           const existances = await Promise.all(existanceChecks)
 
-          const promises = existances.filter(e => !e.exists).map(async e => {
-            return await this.saveEntity({
-              id: e.id,
+          const promises = existances
+            .filter(e => !e.exists)
+            .map(async e => {
+              return await this.saveEntity({
+                id: e.id,
+              })
             })
-          })
-          
+
           if (promises) await Promise.all(promises)
         }
 
@@ -163,7 +161,6 @@ export default {
       if (status === 'succeeded') {
         this.$router.push('/home/logs')
       }
-
     },
     async submit() {
       this.status = 'published'

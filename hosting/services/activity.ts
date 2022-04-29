@@ -43,7 +43,6 @@ export function activityLink(activity: Partial<Activity>): string {
   let link = '/'
 
   if (activity.type === 'comment:create') {
-    console.log('Parent', activity.payload.parent.parent.id)
     switch (activity.payload.parent.parent.id) {
       case 'posts':
         link = `/post/${activity.payload.parent.id}`
@@ -58,8 +57,6 @@ export function activityLink(activity: Partial<Activity>): string {
     // console.log('Parent', activity.payload.parent.parent.id)
     link = `/post/${activity.payload.id}`
   }
-
-  console.log('Link', activity.payload)
 
   return link
 }

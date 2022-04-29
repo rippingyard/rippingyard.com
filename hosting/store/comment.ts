@@ -42,7 +42,6 @@ export const mutations = {
 export const actions: ActionInterface = {
   async save({ rootState }, { comment }) {
     try {
-      console.log('Posted Comment', comment)
 
       // TODO: validation
       // TODO: auth処理
@@ -68,7 +67,6 @@ export const actions: ActionInterface = {
 
       if (comment.parentId) {
         comment.parent = await this.$fire.firestore.doc(comment.parentId)
-        console.log('Parent', comment.parent)
         delete comment.parentId
       }
 
@@ -79,14 +77,11 @@ export const actions: ActionInterface = {
 
       const newComment = Object.assign(scheme, comment)
 
-      console.log('saved comment', newComment)
-
       await db.set(newComment)
 
     } catch (e) {}
   },
   async delete({ rootState }, id): Promise<void> {
-    console.log('delete:', id)
 
     if (!rootState.auth.me) {
       throw new Error('権限がありません')

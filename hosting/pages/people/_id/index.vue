@@ -74,7 +74,7 @@ export default Vue.extend({
           })
         })
     } else {
-      console.log('Cached!')
+      // console.log('Cached!')
       r.user = cachedUser
     }
 

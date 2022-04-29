@@ -6,10 +6,7 @@
     </div>
     <Content v-html="entity.content" />
     <CommentList :parent-id="parentId" />
-    <CommentForm
-      :parent-id="parentId"
-      :is-public="entity.isPublic"
-    />
+    <CommentForm :parent-id="parentId" :is-public="entity.isPublic" />
     <AdsensePostBottom />
     <div class="posts">
       <PostSimpleList :posts="posts" />
@@ -29,13 +26,14 @@ import { mapGetters } from 'vuex'
 import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Entity } from '~/types/entity'
-import { normalize, encodeEntity, decodeEntity, docPath } from '~/services/entity'
-import { normalize as normalizePost } from '~/services/post'
 import {
-  getTitle,
-  getSocialTitle,
-  getSummary,
-} from '~/plugins/typography'
+  normalize,
+  encodeEntity,
+  decodeEntity,
+  docPath,
+} from '~/services/entity'
+import { normalize as normalizePost } from '~/services/post'
+import { getTitle, getSocialTitle, getSummary } from '~/plugins/typography'
 
 export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
@@ -50,25 +48,20 @@ export default Vue.extend({
     //   console.log('Post: Hit Cache', entityId)
     // } else {
     //   console.log('Post: No Cache', entityId)
-      await $fire.firestore
-        .collection('entities')
-        .doc(entityId)
-        .get()
-        .then(async (doc: any) => {
-          console.log(doc)
-          r.entity = await normalize(doc.id, doc.data(), store)
-          if (
-            !doc.exists ||
-            !r.entity.isPublic ||
-            r.entity.isDeleted === true
-          ) {
-            r.entity = {}
-            throw new Error('ページが見つかりません')
-          }
-        })
-        .catch((e: any) => {
-          error({ statusCode: 404, message: e.message })
-        })
+    await $fire.firestore
+      .collection('entities')
+      .doc(entityId)
+      .get()
+      .then(async (doc: any) => {
+        r.entity = await normalize(doc.id, doc.data(), store)
+        if (!doc.exists || !r.entity.isPublic || r.entity.isDeleted === true) {
+          r.entity = {}
+          throw new Error('ページが見つかりません')
+        }
+      })
+      .catch((e: any) => {
+        error({ statusCode: 404, message: e.message })
+      })
     // }
 
     let promises: any[] = []
@@ -93,7 +86,7 @@ export default Vue.extend({
       .catch((e: any) => {
         error({ statusCode: 404, message: e.message })
       })
-    
+
     await Promise.all(promises)
 
     r.posts = _.orderBy(posts, ['createdAt'], ['desc'])
@@ -143,7 +136,7 @@ export default Vue.extend({
     // },
     decodeEntity(entity: string) {
       return decodeEntity(entity)
-    }
+    },
   },
   head() {
     return {

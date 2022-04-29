@@ -103,7 +103,7 @@ export default Vue.extend({
       this.resetItem()
     },
     item(val: Item | null): void {
-      console.log('item updated', val)
+      // console.log('item updated', val)
       this.status = 'shown'
       if (!val) {
         this.itemName = ''
@@ -134,7 +134,7 @@ export default Vue.extend({
       this.$emit('update-item')
     },
     nextItem(): void {
-      console.log('this.suggestPointer', this.suggestPointer)
+      // console.log('this.suggestPointer', this.suggestPointer)
       if (this.suggestPointer === null) this.suggestPointer = -1
       this.suggestPointer =
         this.suggestedItems.length > this.suggestPointer + 1
@@ -147,7 +147,7 @@ export default Vue.extend({
         this.suggestPointer > 0 ? this.suggestPointer - 1 : 0
     },
     async fetchItem(): Promise<void> {
-      console.log('startFetch', this.itemName)
+      // console.log('startFetch', this.itemName)
       this.status = 'loading'
 
       if (
@@ -205,7 +205,7 @@ export default Vue.extend({
       this.hideSuggesting = true
     },
     name(item: Item): string {
-      console.log('name', item)
+      // console.log('name', item)
       if (!item) return ''
       if (item.name?.ja) return item.name.ja
       if (item.path) return item.path

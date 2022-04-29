@@ -47,7 +47,7 @@ export default Vue.extend({
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
-          console.log('Size by Tags', qs.size)
+          // console.log('Size by Tags', qs.size)
           promises = qs.docs
             .filter((doc: any) => doc.id !== this.excludeId)
             .map(async (doc: any) => {
@@ -67,7 +67,7 @@ export default Vue.extend({
             })
         })
         .catch((e: any) => {
-          console.log('Error', e)
+          console.error('Error', e)
           // error({ statusCode: 404, message: e.message })
         })
     }
@@ -82,10 +82,10 @@ export default Vue.extend({
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
-          console.log('Brand New Posts Size', qs.size)
+          // console.log('Brand New Posts Size', qs.size)
           promises = qs.docs.map(async (doc: any) => {
             const post = doc.data()
-            console.log('Post', post)
+            // console.log('Post', post)
             if (
               post.id === this.excludeId ||
               post.status !== 'published' ||
@@ -102,7 +102,7 @@ export default Vue.extend({
           })
         })
         .catch((e: any) => {
-          console.log('Error', e)
+          console.error('Error', e)
           // error({ statusCode: 404, message: e.message })
         })
     }

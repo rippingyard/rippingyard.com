@@ -99,7 +99,7 @@ export default Vue.extend({
 
         const { error } = schemaComment.validate(params)
         if (!isEmpty(error)) {
-          console.log('Error', error?.details)
+          console.error('Error', error?.details)
           return (this as any).snackAlert('投稿に失敗しました')
         }
 

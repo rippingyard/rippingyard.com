@@ -73,7 +73,7 @@ export default Vue.extend({
       this.$set(this.errors, key, '')
     },
     async login({ email, password }: LoginParams): Promise<void> {
-      console.log('login', email, password)
+      // console.log('login', email, password)
 
       const params = {
         email,
@@ -87,7 +87,6 @@ export default Vue.extend({
       }
 
       const res = await this.$store.dispatch('auth/login', { email, password })
-      console.log('res', res)
 
       if (res.code) {
         switch (res.code) {

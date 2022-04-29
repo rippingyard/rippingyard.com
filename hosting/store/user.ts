@@ -71,7 +71,6 @@ export const actions: ActionInterface = {
     try {
       const me = (await myDoc.get()).data()
       const myFollows = me.follows || []
-      console.log('follows', myFollows)
       myFollows.push(yourDoc)
       await myDoc.set({ follows: uniqBy(myFollows, 'id') }, { merge: true })
 

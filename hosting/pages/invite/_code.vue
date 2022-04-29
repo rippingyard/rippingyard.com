@@ -3,7 +3,10 @@
     <Header />
     <h1 class="title">ようこそ！ripping yardへ！</h1>
     <div v-if="parent" class="information">
-      <p>あなたは、<strong>{{ parent.displayName }}さん</strong>からの招待で、今ここにやってきました。</p>
+      <p>
+        あなたは、<strong>{{ parent.displayName }}さん</strong
+        >からの招待で、今ここにやってきました。
+      </p>
     </div>
     <SignupForm :invited-by="parent.uid" />
   </main>
@@ -32,20 +35,18 @@ export default {
         parent = normalizeUser(users[0].uid, users[0])
         delete parent.followers
         delete parent.follows
-        console.log('Parent', parent)
       })
       .catch(e => {
         error({ statusCode: 404, message: e.message })
       })
 
     return {
-      parent
+      parent,
     }
-
   },
   data() {
     return {
-      parent: null
+      parent: null,
     }
   },
   computed: {
@@ -61,9 +62,7 @@ export default {
   head: () => {
     return {
       title: 'ようこそ！ripping yardへ',
-      meta: [
-        { hid: "robots", name: "robots", content: "noindex" },
-      ]
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }],
     }
   },
 }

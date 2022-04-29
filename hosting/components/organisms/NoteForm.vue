@@ -106,7 +106,7 @@ export default Vue.extend({
       this.item = null
     },
     updateItem(val: any): void {
-      console.log('updateItem', val)
+      // console.log('updateItem', val)
       this.item = !val ? null : val
     },
     async submit(): Promise<void> {
@@ -140,7 +140,7 @@ export default Vue.extend({
             const item = await this.saveItem(this.item)
             params.parent = item
           }
-          console.log('parent', params.parent)
+          // console.log('parent', params.parent)
         }
 
         //   if (this.post?.id) params.id = this.post.id
@@ -171,7 +171,7 @@ export default Vue.extend({
         const newPost = await this.savePost(params)
         status = 'succeeded'
 
-        console.log('NEWPOST!!!!', newPost)
+        // console.log('NEWPOST!!!!', newPost)
 
         this.clearForm()
         this.$router.push(permalink(newPost.id))

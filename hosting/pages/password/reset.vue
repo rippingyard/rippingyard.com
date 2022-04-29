@@ -44,7 +44,7 @@ export default Vue.extend({
     async reset(email: string): Promise<void> {
       const { error } = schemaRequireResetPassword.validate({ email })
       if (error) {
-        console.log('Error', error.details)
+        console.error('Error', error.details)
         return (this as any).snackAlert('メールアドレスを入力してください')
       }
 
