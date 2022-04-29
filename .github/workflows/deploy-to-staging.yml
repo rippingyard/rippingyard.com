@@ -40,7 +40,7 @@ jobs:
     - name: Init functions for develop
       run: cd functions && yarn install && yarn build
       env:
-        NODE_ENV: development
+        ENV: development
         BAUTH_USER: ${{ secrets.BAUTH_USER }}
         BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
     - name: Deploy to Develop
