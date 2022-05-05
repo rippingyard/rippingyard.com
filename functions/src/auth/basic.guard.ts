@@ -11,6 +11,6 @@ export class BasicAuthGuard extends AuthGuard('basic-auth') {
   canActivate(context: ExecutionContext) {
     const env = this.configService.get<string>('ENV');
     console.log('env', env);
-    return env === 'development' ? super.canActivate(context) : true;
+    return env === 'develop' ? super.canActivate(context) : true;
   }
 }
