@@ -83,8 +83,6 @@ export const actions: ActionInterface = {
 
       const newItem = { ...scheme, ...item }
 
-      console.log('newItem', newItem)
-
       await db.set(newItem)
 
       return this.$fire.firestore.doc(db.path)
@@ -95,7 +93,6 @@ export const actions: ActionInterface = {
     }
   },
   async delete({ rootState }, id): Promise<void> {
-    console.log('delete:', id)
 
     if (!rootState.auth.me) {
       throw new Error('権限がありません')

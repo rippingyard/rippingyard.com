@@ -4,8 +4,8 @@ export default function validate(schema: any, params: any) {
   const { value, error } = schema.validate(params, {
     abortEarly: false
   })
-  console.log('Errors', error)
-  console.log('Value', value)
+  // console.log('Errors', error)
+  // console.log('Value', value)
   const errors = parseErrors(error)
   return { value, error, errors }
 }
@@ -20,9 +20,9 @@ function parseErrors(error: any) {
 }
 
 function errorMessage(e: any) {
-  console.log('e', e)
+  console.error('e', e)
   let messages = []
-  switch(e.type) {
+  switch (e.type) {
     case 'string.empty':
       messages = [
         `${e.context.label}は必須項目です`,
@@ -58,7 +58,7 @@ function errorMessage(e: any) {
       ]
       break
     default:
-      messages = [ e.message ]
+      messages = [e.message]
       break
   }
   return sampleSize(messages, 1)[0]

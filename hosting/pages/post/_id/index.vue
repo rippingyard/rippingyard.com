@@ -96,7 +96,7 @@ export default Vue.extend({
     const r: DataType = {}
     const postId = params.id
     r.post = store.state.post.posts[postId]
-    console.log('Post: Stored', store.state.post.posts)
+    // console.log('Post: Stored', store.state.post.posts)
     if (r.post) {
       console.log('Post: Hit Cache', postId)
     } else {

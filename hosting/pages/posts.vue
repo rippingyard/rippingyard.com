@@ -22,7 +22,7 @@ type DataType = {
   lastDate: any
 }
 
-const limit = 25;
+const limit = 25
 
 export default {
   async asyncData({ $fire, store }: Context): Promise<DataType> {
@@ -76,25 +76,20 @@ export default {
         .orderBy('publishedAt', 'desc')
 
       if (startAt) {
-        q = q.startAfter(
-          Timestamp.fromDate(new Date(startAt))
-        )
+        q = q.startAfter(Timestamp.fromDate(new Date(startAt)))
       }
 
       const qs = await q.get()
-
-      console.log('qs.docs', qs.docs)
 
       for (const doc of qs.docs) {
         const post: any = doc.data()
         ;(this as any).$data.lastDate = post.publishedAt
         if (isPublic(post)) {
-          console.log('post', post)
           ;(this as any).posts.push(
             await normalize(doc.id, post, (this as any).$store)
           )
         } else {
-          console.log('unPublished post', post)
+          // console.log('unPublished post', post)
         }
       }
     },

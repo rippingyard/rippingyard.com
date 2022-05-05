@@ -28,7 +28,7 @@ export const actions: ActionInterface = {
         throw new Error('権限がありません')
       }
 
-      console.log('saving an activity', activity)
+      // console.log('saving an activity', activity)
 
       activity.updatedAt = dayjs().toDate()
 
@@ -51,7 +51,7 @@ export const actions: ActionInterface = {
       db = activity.id ? db.doc(activity.id) : db.doc()
       activity.id = db.id
 
-      console.log('saved activity', activity)
+      // console.log('saved activity', activity)
 
       await db.set(Object.assign(scheme, activity))
 

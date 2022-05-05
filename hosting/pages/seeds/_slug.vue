@@ -64,8 +64,6 @@ export default {
 
     if (!slug) this.redirect('/')
 
-    console.log(slug)
-
     const storage = this.$fire.storage
     const pathref = storage.ref('seeds/seeds.json')
 

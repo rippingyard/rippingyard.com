@@ -38,8 +38,6 @@ export const actions: ActionInterface = {
   async save({ rootState }, entity) {
     try {
 
-      console.log('Start to save entity', entity)
-
       // TODO: validation
       // TODO: auth処理
       if (!rootState.auth.me) {
@@ -66,14 +64,11 @@ export const actions: ActionInterface = {
 
       const newEntity = Object.assign(scheme, entity)
 
-      console.log('saved entity', entity)
-
       await db.set(newEntity)
 
     } catch (e) {}
   },
   async delete({ rootState }, id): Promise<void> {
-    console.log('delete:', id)
 
     if (!rootState.auth.me) {
       throw new Error('権限がありません')
@@ -93,11 +88,11 @@ export const actions: ActionInterface = {
     if (!rootState.auth.me) {
       throw new Error('権限がありません')
     }
-    
+
     const entities = await this.$fire.firestore.collection('entities').get()
 
     const promises: any[] = []
-    entities.forEach((doc:any) => {
+    entities.forEach((doc: any) => {
       promises.push(this.$fire.firestore.collection('entities').doc(doc.id).delete())
     })
 

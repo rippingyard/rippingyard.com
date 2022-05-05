@@ -155,7 +155,7 @@ export default {
       this.entities = val
     },
     updateItem(val) {
-      console.log('updated!', val)
+      // console.log('updated!', val)
       this.item = !val ? null : val
     },
     async save() {
@@ -174,16 +174,16 @@ export default {
         this.isSaving = true
 
         if (this.post?.id) params.id = this.post.id
-        console.log('val', schemaPost.validate(params))
+        // console.log('val', schemaPost.validate(params))
 
         const { error } = schemaPost.validate(params)
         if (!isEmpty(error)) {
-          console.log('Error', error.details)
+          console.error('Error', error.details)
           return this.snackAlert('投稿に失敗しました')
         }
 
         if (this.item) {
-          console.log('this.item', this.item)
+          // console.log('this.item', this.item)
           const q = await this.$fire.firestore
             .collection('items')
             .where('isDeleted', '==', false)
@@ -199,12 +199,12 @@ export default {
             const item = await this.saveItem(this.item)
             params.parent = item
           }
-          console.log('parent', params.parent)
+          // console.log('parent', params.parent)
         }
 
         if (this.entities) {
           const existanceChecks = this.entities.map(async e => {
-            console.log('Entity', e)
+            // console.log('Entity', e)
             return await this.$fire.firestore
               .doc(`entities/${encodeEntity(e)}`)
               .get()

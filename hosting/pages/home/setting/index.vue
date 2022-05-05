@@ -54,7 +54,6 @@ export default Vue.extend({
     this.me = await this.getUser(this.uid)
     this.displayName = this.$data.me.displayName || this.$data.me.uid
     this.profile = this.$data.me.profile || ''
-    console.log('Profile', this.profile)
     this.avatar = this.$data.me.avatar || ''
   },
   data() {
@@ -93,7 +92,6 @@ export default Vue.extend({
             .child(filename)
             .put(this.image)
           this.avatar = await result.ref.getDownloadURL()
-          console.log('File', result, this.avatar)
         }
 
         const params = {
@@ -102,10 +100,10 @@ export default Vue.extend({
           profile: this.profile,
           avatar: this.avatar,
         }
-        console.log('val', schemaUser.validate(params))
+
         const { value, error } = schemaUser.validate(params)
         if (!isEmpty(error)) {
-          console.log('Error', error?.details)
+          console.error('Error', error?.details)
           return alert(error?.details)
         }
         await this.saveUser({

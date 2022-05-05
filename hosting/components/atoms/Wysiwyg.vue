@@ -1,23 +1,23 @@
 <template>
   <div>
-    <Modal
-      v-if="showUploader"
-      :on-close="closeImageUploader"
-    >
+    <Modal v-if="showUploader" :on-close="closeImageUploader">
       <div class="inner">
         <div class="uploader">
           <div v-if="image" class="console">
-            <button class="button expanded" @click="uploadImage()">アップロード</button>
+            <button class="button expanded" @click="uploadImage()">
+              アップロード
+            </button>
           </div>
-          <ImageUploader
-            :on-change="updateImage"
-          />
+          <ImageUploader :on-change="updateImage" />
         </div>
       </div>
     </Modal>
     <div class="editor">
       <bubble-menu :editor="editor" />
-      <floating-menu :editor="editor" @showImageUploader="showImageUploader()" />
+      <floating-menu
+        :editor="editor"
+        @showImageUploader="showImageUploader()"
+      />
       <editor-content :editor="editor" />
     </div>
   </div>
@@ -63,10 +63,10 @@ export default Vue.extend({
     },
   },
   data(): {
-    editor: any,
-    image: any,
-    uploadedImage: string | null,
-    showUploader: boolean,
+    editor: any
+    image: any
+    uploadedImage: string | null
+    showUploader: boolean
   } {
     return {
       editor: null,
@@ -101,7 +101,7 @@ export default Vue.extend({
           openOnClick: false,
         }),
         Placeholder.configure({
-          placeholder: 'ここに本文を書いていきましょう'
+          placeholder: 'ここに本文を書いていきましょう',
         }),
         BubbleMenu.configure({
           shouldShow: ({ editor }) => {
@@ -132,21 +132,21 @@ export default Vue.extend({
         if (!ext) return
 
         const now = dayjs()
-        
+
         const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
         const result = await (this as any).$fire.storage
           .ref()
           .child(filename)
           .put(this.image)
         const url = await result.ref.getDownloadURL()
-        
+
         this.editor.chain().focus().setImage({ src: url }).run()
-        
+
         this.closeImageUploader()
       }
     },
     updateImage(file: any): void {
-      console.log('Image', file)
+      // console.log('Image', file)
       this.image = file
     },
     showImageUploader(): void {
@@ -155,7 +155,7 @@ export default Vue.extend({
     closeImageUploader(): void {
       this.showUploader = false
     },
-  }
+  },
 })
 </script>
 <style lang="scss">

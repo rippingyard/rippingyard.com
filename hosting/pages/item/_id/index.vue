@@ -58,7 +58,9 @@
       </div> -->
       <aside class="extra related">
         <div class="heading">
-          <h2><span class="border">「{{ getTitle }}」についての記事</span></h2>
+          <h2>
+            <span class="border">「{{ getTitle }}」についての記事</span>
+          </h2>
         </div>
         <PostSimpleList :posts="posts" />
       </aside>
@@ -103,7 +105,7 @@ export default Vue.extend({
     }
     const itemId = params.id
     r.item = store.state.item.items[itemId]
-    console.log('Item: Stored', store.state.item.items)
+    // console.log('Item: Stored', store.state.item.items)
     if (r.item) {
       console.log('Item: Hit Cache', itemId)
     } else {
@@ -132,24 +134,23 @@ export default Vue.extend({
     let promises: any[] = []
     if (r.item.id) {
       await $fire.firestore
-      .collection('posts')
-      .where('parent', '==', $fire.firestore.doc(`items/${r.item.id}`))
-      .limit(50)
-      .get()
-      .then(async (qs: any) => {
-        promises = qs.docs.map(async (doc: any) => {
-          const post = doc.data()
-          if (post.isDeleted === true) return
-          const normalizedPost = await normalizePost(doc.id, post, store)
-          return posts.push(normalizedPost)
+        .collection('posts')
+        .where('parent', '==', $fire.firestore.doc(`items/${r.item.id}`))
+        .limit(50)
+        .get()
+        .then(async (qs: any) => {
+          promises = qs.docs.map(async (doc: any) => {
+            const post = doc.data()
+            if (post.isDeleted === true) return
+            const normalizedPost = await normalizePost(doc.id, post, store)
+            return posts.push(normalizedPost)
+          })
+          await Promise.all(promises)
+          r.posts = orderBy(posts, ['createdAt'], ['desc'])
         })
-        await Promise.all(promises)
-        console.log('related posts:', posts)
-        r.posts = orderBy(posts, ['createdAt'], ['desc'])
-      })
-      .catch((e: any) => {
-        error({ statusCode: 404, message: e.message })
-      })
+        .catch((e: any) => {
+          error({ statusCode: 404, message: e.message })
+        })
     }
     return r
   },

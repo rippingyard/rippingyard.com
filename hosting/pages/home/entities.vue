@@ -46,7 +46,6 @@ export default {
         qs.forEach(doc => {
           const post = doc.data()
           if (post.isDeleted === true) return
-          console.log('owner', post.owner)
           return posts.push(normalize(doc.id, post, store))
         })
       })
@@ -76,8 +75,6 @@ export default {
       })
     },
     deleteP(id) {
-      console.log('postId:', id)
-
       this.deletedItems.push({
         id,
         status: 'deleted',

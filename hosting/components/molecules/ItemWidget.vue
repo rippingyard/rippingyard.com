@@ -76,7 +76,7 @@ export default Vue.extend({
       // eslint-disable-next-line camelcase
       if (!this.item.metadata?.video?.secure_url) return ''
       const bc = this.parseBCUrl(this.item.metadata.video.secure_url)
-      console.log('params', bc)
+      // console.log('params', bc)
       return `https://bandcamp.com/EmbeddedPlayer/album=${bc.album}/size=large/bgcol=ffffff/artwork=small/linkcol=0687f5/tracklist=false/transparent=true/`
     },
   },

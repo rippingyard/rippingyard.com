@@ -16,6 +16,5 @@ export const mutations = {
     } else {
       state.posts[index] = post
     }
-    console.log('global/posts', state.posts)
   },
 }

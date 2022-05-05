@@ -89,7 +89,6 @@ export default Vue.extend({
       .then((qs: any) => {
         qs.forEach((doc: any) => {
           const activity: Partial<Activity> = doc.data()
-          console.log('Activity', activity)
           r.activities.push(activity)
         })
       })
@@ -107,7 +106,6 @@ export default Vue.extend({
       .then((qs: any) => {
         qs.forEach((doc: any) => {
           const notification: Partial<Notification> = doc.data()
-          console.log('Notification', notification)
           r.notifications.push(notification)
         })
       })

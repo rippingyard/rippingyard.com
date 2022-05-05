@@ -70,7 +70,7 @@ export const actions: ActionInterface = {
     }
   },
   can({ state }: Store<any>, action: ActionType): boolean {
-    console.log('state.me', state.me)
+    // console.log('state.me', state.me)
     if (!state.me) return false
 
     switch (action) {
@@ -100,7 +100,6 @@ export const actions: ActionInterface = {
 
 export const getters = {
   isAuthenticated(state: AuthState) {
-    console.log('Me', state.me)
     return !!state.me
   },
 }
