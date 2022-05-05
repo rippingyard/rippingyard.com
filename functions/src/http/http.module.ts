@@ -3,11 +3,12 @@ import { HttpService } from './http.service';
 import { HttpController } from './http.controller';
 import { ConfigModule } from '@nestjs/config';
 import { BasicAuthStrategy } from '../auth/basic.strategy';
+import configuration from '../config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['env/local'],
+      load: [configuration],
     }),
     HttpModule,
   ],

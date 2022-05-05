@@ -49,6 +49,3 @@ jobs:
         args: deploy --only hosting,functions --project default
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        ENV: development
-        BAUTH_USER: ${{ secrets.BAUTH_USER }}
-        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
