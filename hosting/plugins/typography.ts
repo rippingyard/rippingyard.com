@@ -55,13 +55,14 @@ export const hasThumbnail = (str: string): boolean => {
   return !!getThumbnail(str)
 }
 
-export const getThumbnail = (str: string): string => {
+export const getThumbnail = (str: string, isOwn: boolean = false): string => {
   if (!str) return ''
 
   let image: string = ''
 
   image = extractFirstImage(str)
   if (image) return image;
+  if (isOwn) return '';
 
   const urls = extractUrls(str)
 
