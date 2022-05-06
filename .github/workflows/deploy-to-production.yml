@@ -35,10 +35,6 @@ jobs:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - name: Functions - Build for production
       run: cd functions && yarn install && yarn build
-      env:
-        ENV: production
-        BAUTH_USER: ${{ secrets.BAUTH_USER }}
-        BAUTH_PASSWORD: ${{ secrets.BAUTH_PASSWORD }}
     - name: Functions - Deploy to production
       uses: w9jds/firebase-action@master
       with:

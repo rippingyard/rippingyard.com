@@ -149,6 +149,9 @@ export default Vue.extend({
     thumbnail(): string {
       return this.post ? getThumbnail(this.post.contentOriginal) : ''
     },
+    ownThumbnail(): string {
+      return this.post ? getThumbnail(this.post.contentOriginal, true) : ''
+    },
     entities(): string[] {
       if (!this.post) return []
       const entities: string[] = []
@@ -192,7 +195,7 @@ export default Vue.extend({
       return `background-image:url(${user.avatar})`
     },
     openTweetForm(): void {
-      if (screen) {
+      if (window && screen) {
         const width = 560
         const height = 600
         const left = (screen.availWidth - width) / 2
@@ -248,17 +251,18 @@ export default Vue.extend({
           name: 'twitter:url',
           content: this.$data.post.sociallink,
         },
-        // TODO: 他サーバーにあるものをOGImageとして使うのはいかがなものか
-        // {
-        //   hid: 'og:image',
-        //   property: 'og:image',
-        //   content: this.thumbnail || 'https://www.rippingyard.com/img/ogimage.png',
-        // },
-        // {
-        //   hid: 'twitter:image',
-        //   name: 'twitter:image',
-        //   content: this.thumbnail || 'https://www.rippingyard.com/img/ogimage.png',
-        // },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content:
+            this.ownThumbnail || 'https://www.rippingyard.com/img/ogimage.png',
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            this.ownThumbnail || 'https://www.rippingyard.com/img/ogimage.png',
+        },
       ],
     }
   },
