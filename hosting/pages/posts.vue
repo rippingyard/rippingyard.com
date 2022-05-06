@@ -85,7 +85,7 @@ export default {
         const post: any = doc.data()
         ;(this as any).$data.lastDate = post.publishedAt
         if (isPublic(post)) {
-          ;(this as any).posts.push(
+          return (this as any).posts.push(
             await normalize(doc.id, post, (this as any).$store)
           )
         } else {
@@ -94,7 +94,7 @@ export default {
       }
     },
   },
-  head: (): any => {
+  head(): any {
     return {
       title: 'Posts',
     }

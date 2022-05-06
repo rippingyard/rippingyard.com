@@ -195,7 +195,7 @@ export default Vue.extend({
       return `background-image:url(${user.avatar})`
     },
     openTweetForm(): void {
-      if (screen) {
+      if (window && screen) {
         const width = 560
         const height = 600
         const left = (screen.availWidth - width) / 2

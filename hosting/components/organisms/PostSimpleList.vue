@@ -4,6 +4,14 @@
     :class="{ 'has-margin': hasMargin, 'is-small': isSmall, 'is-dark': isDark }"
   >
     <li v-for="post in posts" :key="post.id" class="item">
+      <div class="extra">
+        <template v-if="hasThumbnail(post.contentOriginal)">
+          <nuxt-link :to="post.permalink">
+            <IconImage :image="getThumbnail(post.contentOriginal)" />
+          </nuxt-link>
+        </template>
+        <UserTip v-else :user="post.owner" :is-dark="isDark" />
+      </div>
       <div class="body">
         <h3 class="title">
           <nuxt-link :to="post.permalink">
@@ -16,16 +24,13 @@
           <EntitySimpleList :entities="post.entities" />
         </div>
       </div>
-      <div class="user">
-        <UserTip :user="post.owner" :is-dark="isDark" />
-      </div>
     </li>
   </ul>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import { permalink as entityLink } from '~/services/entity'
-import { getTitle, getSummary } from '~/plugins/typography'
+import { getTitle, getSummary, getThumbnail } from '~/plugins/typography'
 import { Post } from '~/types/post'
 
 export default Vue.extend({
@@ -57,6 +62,12 @@ export default Vue.extend({
     getEntityLink(entity: string): string {
       return entityLink(entity)
     },
+    hasThumbnail(content: string): boolean {
+      return !!this.getThumbnail(content)
+    },
+    getThumbnail(content: string): string {
+      return getThumbnail(content)
+    },
   },
 })
 </script>
@@ -65,11 +76,6 @@ export default Vue.extend({
   > li {
     display: flex;
     border-bottom: 1px solid $gray-black;
-
-    @include until-desktop {
-      flex-direction: column;
-      border-bottom: none;
-    }
 
     .body {
       display: block;
@@ -90,9 +96,9 @@ export default Vue.extend({
         font-size: 0.9rem;
       }
     }
-    .user {
+    .extra {
       width: 180px;
-      padding: 20px 0;
+      padding: $gap - 5px 0;
     }
     .entities {
       padding-top: 10px;
@@ -100,6 +106,9 @@ export default Vue.extend({
 
     @include until-desktop {
       padding: 0 $gap / 2;
+      flex-direction: column-reverse;
+      border-bottom: none;
+
       .body {
         padding: $gap/2 0 0;
         width: 100%;
@@ -109,9 +118,9 @@ export default Vue.extend({
           padding-right: 0;
         }
       }
-      .user {
+      .extra {
         width: 100%;
-        padding: 0 0 $gap / 2;
+        padding: $gap/2 0;
       }
     }
   }
