@@ -1,7 +1,7 @@
 ﻿<template>
   <section class="block container">
     <Header />
-    <PostSimpleList :posts="posts" />
+    <PostSimpleList v-if="posts" :posts="posts" />
     <div class="console">
       <button class="button expanded centered" @click="loadMore()">
         もっと読む
@@ -11,9 +11,8 @@
 </template>
 
 <script lang="ts">
-import { Timestamp } from 'firebase/firestore'
+import Vue from 'vue'
 import { isPublic, normalize } from '~/services/post'
-import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { getTitle } from '~/plugins/typography'
 
@@ -22,50 +21,27 @@ type DataType = {
   lastDate: any
 }
 
-const limit = 25
+const limit = 5
 
-export default {
-  async asyncData({ $fire, store }: Context): Promise<DataType> {
-    const posts: Partial<Post>[] = []
-    let lastDate: any
-    const qs = await $fire.firestore
-      .collection('posts')
-      .where('isDeleted', '==', false)
-      .where('isPublic', '==', true)
-      .where('status', '==', 'published')
-      // .where('type', '==', 'article')
-      .limit(limit)
-      .orderBy('publishedAt', 'desc')
-      .get()
-
-    for (const doc of qs.docs) {
-      const post = doc.data()
-      lastDate = post.publishedAt
-      if (isPublic(post)) {
-        posts.push(await normalize(doc.id, post, store))
-      }
-    }
-    return {
-      posts,
-      lastDate,
-    }
-  },
+export default Vue.extend({
   data(): DataType {
     return {
       posts: [],
       lastDate: null,
     }
   },
+  async created(): Promise<void> {
+    await this.getPosts()
+  },
   methods: {
     title(post: Post): string {
       return getTitle(post)
     },
     async loadMore(): Promise<void> {
-      await this.getPosts(
-        (this as any).$data.posts[(this as any).posts.length - 1].publishedAt
-      )
+      await this.getPosts((this as any).lastDate)
     },
-    async getPosts(startAt: string): Promise<void> {
+    async getPosts(startAt: any = undefined): Promise<void> {
+      console.log('startAt', startAt)
       let q = (this as any).$fire.firestore
         .collection('posts')
         .where('isDeleted', '==', false)
@@ -75,23 +51,20 @@ export default {
         .limit(limit)
         .orderBy('publishedAt', 'desc')
 
-      if (startAt) {
-        q = q.startAfter(Timestamp.fromDate(new Date(startAt)))
-      }
+      if (startAt) q = q.startAfter(startAt)
 
       const qs = await q.get()
 
-      for (const doc of qs.docs) {
+      qs.forEach(async (doc: any) => {
         const post: any = doc.data()
-        ;(this as any).$data.lastDate = post.publishedAt
         if (isPublic(post)) {
+          console.log('post', post)
+          ;(this as any).$data.lastDate = post.publishedAt
           return (this as any).posts.push(
             await normalize(doc.id, post, (this as any).$store)
           )
-        } else {
-          // console.log('unPublished post', post)
         }
-      }
+      })
     },
   },
   head(): any {
@@ -99,7 +72,7 @@ export default {
       title: 'Posts',
     }
   },
-}
+})
 </script>
 <style lang="scss" scoped>
 .console {
