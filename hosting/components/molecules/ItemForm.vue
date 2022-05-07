@@ -11,7 +11,7 @@
       />
     </div>
     <div v-if="status === 'loading'" class="loading">
-      <LoadingIcon color="yellow" />
+      <IconLoading color="yellow" />
     </div>
     <div v-else-if="status !== 'hidden'" class="embed">
       <button class="close" @click="resetItem"></button>

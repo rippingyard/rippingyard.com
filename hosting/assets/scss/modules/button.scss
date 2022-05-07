@@ -20,6 +20,7 @@
 
   &.twitter {
     background-color: rgb(29, 155, 240);
+
     &:hover {
       background-color: rgba(29, 155, 240, 0.6);
     }
@@ -34,8 +35,13 @@
     width: 100%;
   }
 
+  &.is-oneline {
+    line-height: 1;
+  }
+
   &.no-border {
     border: none;
+
     &:hover {
       background-color: transparent;
       color: $gray-black;
@@ -45,6 +51,7 @@
   &.is-disabled {
     opacity: 0.35;
     cursor: not-allowed;
+
     &:hover {
       background-color: transparent;
     }

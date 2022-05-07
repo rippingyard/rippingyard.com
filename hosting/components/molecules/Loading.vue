@@ -2,7 +2,7 @@
   <transition>
     <section v-if="isLoading" class="loading">
       <p class="logo icon"><SvgLogo /></p>
-      <p class="logo"><LoadingIcon color="yellow" /></p>
+      <p class="logo"><IconLoading size="large" color="yellow" /></p>
     </section>
   </transition>
 </template>

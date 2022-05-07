@@ -1,11 +1,16 @@
 ﻿<template>
   <section class="block container">
     <Header />
-    <PostSimpleList v-if="posts" :posts="posts" />
-    <div class="console">
-      <button class="button expanded centered" @click="loadMore()">
-        もっと読む
-      </button>
+    <template v-if="!isLoading">
+      <PostSimpleList v-if="posts" :posts="posts" />
+      <div class="console">
+        <Button :on-click="loadMore" :is-loading="isLoadingMore">
+          もっと読む
+        </Button>
+      </div>
+    </template>
+    <div v-else class="loading">
+      <IconLoading size="large" color="black" />
     </div>
   </section>
 </template>
@@ -18,27 +23,34 @@ import { getTitle } from '~/plugins/typography'
 
 type DataType = {
   posts: Partial<Post>[]
+  isLoading: boolean
+  isLoadingMore: boolean
   lastDate: any
 }
 
-const limit = 5
+const limit = 25
 
 export default Vue.extend({
   data(): DataType {
     return {
       posts: [],
+      isLoading: true,
+      isLoadingMore: false,
       lastDate: null,
     }
   },
   async created(): Promise<void> {
     await this.getPosts()
+    this.isLoading = false
   },
   methods: {
     title(post: Post): string {
       return getTitle(post)
     },
     async loadMore(): Promise<void> {
+      this.isLoadingMore = true
       await this.getPosts((this as any).lastDate)
+      this.isLoadingMore = false
     },
     async getPosts(startAt: any = undefined): Promise<void> {
       console.log('startAt', startAt)
@@ -77,5 +89,11 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .console {
   padding: $gap 0;
+}
+.loading {
+  min-height: 320px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 </style>
