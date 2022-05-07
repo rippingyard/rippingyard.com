@@ -2,7 +2,7 @@
   <svg
     version="1.1"
     class="loadingIcon"
-    :class="color"
+    :class="[color, size]"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     x="0px"
@@ -29,12 +29,15 @@ export default Vue.extend({
       type: String,
       default: 'white',
     },
+    size: {
+      type: String,
+      default: 'medium',
+    },
   },
 })
 </script>
 <style lang="scss" scoped>
 .loadingIcon {
-  width: 80px;
   animation: rotate-transition 1s ease-in-out infinite;
   .loading__front {
     fill: none;
@@ -61,6 +64,15 @@ export default Vue.extend({
     .loading__back {
       stroke: $yellow;
     }
+  }
+  &.small {
+    width: 24px;
+  }
+  &.medium {
+    width: 56px;
+  }
+  &.large {
+    width: 80px;
   }
 }
 

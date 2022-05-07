@@ -1,7 +1,7 @@
 <template>
   <main>
     <div v-if="isLoading" class="block container loading">
-      <LoadingIcon color="yellow" />
+      <IconLoading color="yellow" />
     </div>
     <div v-else>
       <Header />

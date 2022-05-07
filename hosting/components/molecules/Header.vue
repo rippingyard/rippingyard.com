@@ -1,20 +1,24 @@
 <template>
   <div class="header">
-    <div class="brand">
+    <!-- <div class="brand">
       <nuxt-link to="/">
         <SvgLogo />
       </nuxt-link>
-    </div>
+    </div> -->
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import SvgLogo from '~/assets/img/logo.svg'
+// import SvgLogo from '~/assets/img/logo.svg'
 
 export default Vue.extend({
-  components: {
-    SvgLogo,
-  },
+  // components: {
+  //   SvgLogo,
+  // },
   props: {
     image: {
       type: String,
@@ -39,20 +43,20 @@ export default Vue.extend({
   background-size: cover;
   background-position: 50% 50%;
 
-  &::before {
-    content: '';
-    position: absolute;
-    width: 70%;
-    height: $navSize;
-    // background-color: $black;
-    bottom: -12px;
-    right: -12px;
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   width: 70%;
+  //   height: $navSize;
+  //   // background-color: $black;
+  //   bottom: -12px;
+  //   right: -12px;
 
-    background: radial-gradient(rgba($yellow, 0.6) 1px, transparent 1px),
-      radial-gradient(rgba($cyan, 0.6) 1px, transparent 1px), transparent;
-    background-size: 14px 14px, 14px 14px;
-    background-position: 2px 2px, 9px 9px, 2px 2px;
-  }
+  //   background: radial-gradient(rgba($yellow, 0.6) 1px, transparent 1px),
+  //     radial-gradient(rgba($cyan, 0.6) 1px, transparent 1px), transparent;
+  //   background-size: 14px 14px, 14px 14px;
+  //   background-position: 2px 2px, 9px 9px, 2px 2px;
+  // }
 
   &.is-wide {
     max-width: 100%;
@@ -77,6 +81,29 @@ export default Vue.extend({
     .brand {
       display: none;
     }
+  }
+}
+
+.box {
+  width: 6px;
+  height: 18px;
+  bottom: -9px;
+  position: absolute;
+  &:nth-of-type(1) {
+    right: 30px;
+    background-color: $yellow;
+  }
+  &:nth-of-type(2) {
+    right: 36px;
+    background-color: $blue;
+  }
+  &:nth-of-type(3) {
+    right: 42px;
+    background-color: $orange;
+  }
+  &:nth-of-type(4) {
+    right: 48px;
+    background-color: $green;
   }
 }
 </style>
