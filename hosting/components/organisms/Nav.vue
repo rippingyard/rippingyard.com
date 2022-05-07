@@ -246,7 +246,7 @@
         <NoteForm />
       </section>
     </div>
-    <div class="overlay"></div>
+    <div class="overlay" />
   </nav>
 </template>
 <script lang="ts">
@@ -260,6 +260,7 @@ type DataType = {
   showSearch: boolean
   isOpen: boolean
   canPostArticle: boolean
+  unsubscriber: () => void
 }
 
 type TabMode = 'dashboard' | 'notification' | 'article' | 'comment'
@@ -274,6 +275,7 @@ export default Vue.extend({
       showSearch: false,
       isOpen: false,
       canPostArticle: false,
+      unsubscriber: () => {},
     }
   },
   computed: {
@@ -289,10 +291,20 @@ export default Vue.extend({
       this.isOpen = false
     },
   },
-  async created() {
+  created() {
     if (process.client) {
-      this.canPostArticle = await this.can('postArticle')
+      this.unsubscriber = this.$store.subscribe(async mutation => {
+        switch (mutation.type) {
+          case 'auth/setMe':
+          case 'auth/removeMe':
+            this.canPostArticle = await this.can('postArticle')
+            break
+        }
+      })
     }
+  },
+  beforeDestroy() {
+    this.unsubscriber()
   },
   methods: {
     ...mapActions({
