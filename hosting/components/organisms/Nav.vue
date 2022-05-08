@@ -58,17 +58,17 @@
       <div class="foot">
         <client-only>
           <ul class="triggers">
-            <li v-if="showSearch" @click="onClickTab('search')">
-              <fa-icon icon="search" class="icon" /> SEARCH
+            <li @click="onClickTab('search')">
+              <fa-icon icon="search" class="icon" />
             </li>
-            <li v-else @click="onClickTab('dashboard')">
-              <fa-icon icon="list" class="icon" /> MENU
+            <li @click="onClickTab('dashboard')">
+              <fa-icon icon="list" class="icon" />
             </li>
             <li
               v-if="isAuthenticated && canPostArticle"
               @click="onClickTab('post')"
             >
-              <fa-icon icon="plus-circle" class="icon" /> POST
+              <fa-icon icon="plus-circle" class="icon" />
             </li>
           </ul>
           <ul class="triggers close">
@@ -98,7 +98,6 @@
           </span>
         </li>
         <li
-          v-if="showSearch"
           :class="{ active: isActiveTab('search') }"
           @click="onClickTab('search')"
         >
@@ -235,7 +234,7 @@
           :is-dark="true"
         />
       </section>
-      <section v-if="showSearch" v-show="activeTab === 'search'" class="inner">
+      <section v-show="activeTab === 'search'" class="inner">
         <Search />
       </section>
       <section
@@ -257,7 +256,6 @@ import SvgTextLogo from '~/assets/img/textLogo.svg'
 
 type DataType = {
   activeTab: TabMode
-  showSearch: boolean
   isOpen: boolean
   canPostArticle: boolean
   unsubscriber: () => void
@@ -272,7 +270,6 @@ export default Vue.extend({
   data(): DataType {
     return {
       activeTab: 'dashboard',
-      showSearch: false,
       isOpen: false,
       canPostArticle: false,
       unsubscriber: () => {},
@@ -586,10 +583,11 @@ export default Vue.extend({
       > li {
         // width: 50%;
         cursor: pointer;
+        line-height: 1;
         flex-grow: 1;
         text-align: center;
         font-size: 0.8rem;
-        padding: 8px 0;
+        padding: 10px 0;
         border-left: 1px solid $black;
         &:first-child {
           border: none;
@@ -631,7 +629,7 @@ export default Vue.extend({
       > .triggers {
         border-bottom: none;
         > li {
-          padding: 8px 0 10px;
+          padding: 10px 0 12px;
           &:hover {
             color: $yellow;
           }
