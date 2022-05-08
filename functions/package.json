@@ -67,6 +67,7 @@
     "rxjs": "^7.2.0",
     "sanitize-html": "^2.7.0",
     "url-parse": "^1.5.10",
+    "vue-instantsearch": "^4.3.3",
     "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {

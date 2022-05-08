@@ -58,7 +58,7 @@
     "@types/lodash": "^4.14.165",
     "@types/sanitize-html": "^1.27.0",
     "@types/url-parse": "^1.4.3",
-    "algoliasearch": "^4.8.5",
+    "algoliasearch": "^4.13.0",
     "axios": "^0.21.2",
     "client-compress": "^2.2.2",
     "core-js": "^3.6.5",
@@ -78,6 +78,7 @@
     "sanitize-html": "^2.3.0",
     "tippy.js": "^6.2.7",
     "url-parse": "^1.5.9",
+    "vue-instantsearch": "^4.3.3",
     "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.6.0"
   },
