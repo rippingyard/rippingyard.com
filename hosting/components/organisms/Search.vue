@@ -3,7 +3,7 @@
     :search-client="searchClient"
     :class-names="containerClassNames"
     index-name="posts"
-    stalled-search-delay="800"
+    :stalled-search-delay="800"
   >
     <NavHeader title="SEARCH" subtitle="検索" />
     <div class="input">
@@ -45,8 +45,26 @@ type DataType = {
 
 export default Vue.extend({
   data(): DataType {
+    const algoliaClient = algoliasearch(appId, apiKey)
+
     return {
-      searchClient: algoliasearch(appId, apiKey),
+      searchClient: {
+        ...algoliaClient,
+        search(requests: any) {
+          if (requests.every(({ params }: any) => !params.query)) {
+            return Promise.resolve({
+              results: requests.map(() => ({
+                hits: [],
+                nbHits: 0,
+                nbPages: 0,
+                page: 0,
+                processingTimeMS: 0,
+              })),
+            })
+          }
+          return algoliaClient.search(requests)
+        },
+      },
     }
   },
   computed: {
