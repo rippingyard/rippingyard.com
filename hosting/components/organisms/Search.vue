@@ -8,14 +8,23 @@
     <NavHeader title="SEARCH" subtitle="検索" />
     <div class="input">
       <ais-search-box>
-        <template v-slot="{ currentRefinement, refine }">
+        <template v-slot="{ refine }">
           <fa-icon icon="search" class="icon" />
           <input
+            v-model="query"
             type="text"
             placeholder="検索ワードを入力する"
-            :value="currentRefinement"
-            @input="refine($event.currentTarget.value)"
+            @keydown.enter="search(refine)"
+            @compositionstart="startComposing"
+            @compositionend="stopComposing"
           />
+          <button
+            v-if="query.length > 0"
+            class="submit"
+            @click="search(refine)"
+          >
+            SEARCH
+          </button>
         </template>
       </ais-search-box>
     </div>
@@ -40,7 +49,9 @@ const { appId, apiKey } = process.env.ALGOLIA_CONFIG as any
 Vue.use(InstantSearch)
 
 type DataType = {
+  query: string
   searchClient: SearchClient
+  isComposing: boolean
 }
 
 export default Vue.extend({
@@ -48,6 +59,7 @@ export default Vue.extend({
     const algoliaClient = algoliasearch(appId, apiKey)
 
     return {
+      query: '',
       searchClient: {
         ...algoliaClient,
         search(requests: any) {
@@ -65,6 +77,7 @@ export default Vue.extend({
           return algoliaClient.search(requests)
         },
       },
+      isComposing: false,
     }
   },
   computed: {
@@ -82,6 +95,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    search(refine: (query: string) => {}): void {
+      if (!this.isComposing) {
+        refine(this.query)
+      }
+    },
     permalink(item: any): string {
       return `/post/${item.objectID}`
     },
@@ -90,6 +108,12 @@ export default Vue.extend({
     },
     formatDate(time: number): string {
       return dayjs(time * 1000).format('YYYY-MM-DD HH:mm')
+    },
+    startComposing(): void {
+      this.isComposing = true
+    },
+    stopComposing(): void {
+      this.isComposing = false
     },
   },
 })
@@ -100,21 +124,33 @@ export default Vue.extend({
   height: 100%;
 
   .input {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border-bottom: 1px solid $black;
-    padding: 22px 18px;
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1;
-    > .icon {
-      margin-right: 14px;
-      font-size: 2.2rem;
-    }
-    > input {
-      border: none;
+    .ais-SearchBox {
+      display: flex;
+      align-items: center;
       width: 100%;
+      border-bottom: 1px solid $black;
+      padding: 22px 18px;
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      > .icon {
+        margin-right: 14px;
+        font-size: 2.2rem;
+      }
+      > input {
+        border: none;
+        width: 100%;
+      }
+      > .submit {
+        padding: 8px 14px;
+        background-color: $black;
+        color: $yellow;
+        border-radius: 100px;
+        font-size: 1.4rem;
+        &:hover {
+          background-color: $gray-black;
+        }
+      }
     }
   }
 
