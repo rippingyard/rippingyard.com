@@ -30,7 +30,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .header {
-  // z-index: 10000;
   position: relative;
   display: flex;
   align-items: center;
@@ -73,11 +72,7 @@ export default Vue.extend({
   @include until($desktop) {
     background: none;
     margin: 0;
-    height: $gap;
-    &::before {
-      display: none;
-      height: $navSize * 0.5;
-    }
+    height: 18px;
     .brand {
       display: none;
     }
@@ -104,6 +99,21 @@ export default Vue.extend({
   &:nth-of-type(4) {
     right: 48px;
     background-color: $green;
+  }
+  @include until($desktop) {
+    bottom: 0;
+    &:nth-of-type(1) {
+      right: 0;
+    }
+    &:nth-of-type(2) {
+      right: 6px;
+    }
+    &:nth-of-type(3) {
+      right: 12px;
+    }
+    &:nth-of-type(4) {
+      right: 18px;
+    }
   }
 }
 </style>
