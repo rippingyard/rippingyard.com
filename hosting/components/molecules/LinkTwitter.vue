@@ -49,51 +49,61 @@ export default Vue.extend({
       try {
         const provider = new _this.$fireModule.auth.TwitterAuthProvider()
 
-        const user = await this.getUser(this.$store.state.auth.me.id)
+        console.log('this.$store.state.auth.me', this.$store.state.auth.me)
+        const user = await this.getUser(this.$store.state.auth.me.uid)
+        if (!user) throw new Error('user not found')
 
         const currentUser = _this.$fire.auth.currentUser
 
-        currentUser
-          .linkWithPopup(provider)
-          .then(async (result: any) => {
-            const credential = result.credential
-            const accessToken = credential.accessToken
-            const accessSecret = credential.secret
-            // ...
-            console.log('credential', accessToken, accessSecret)
+        currentUser.linkWithPopup(provider).then(async (result: any) => {
+          const credential = result.credential
+          const accessToken = credential.accessToken
+          const accessSecret = credential.secret
+          // ...
+          console.log('credential', accessToken, accessSecret)
 
-            await this.saveUser({
-              user: {
-                ...user,
-                providers: {
-                  twitter: {
-                    accessToken,
-                    accessSecret,
-                  },
+          await this.saveUser({
+            user: {
+              ...user,
+              providers: {
+                twitter: {
+                  accessToken,
+                  accessSecret,
                 },
               },
-            })
+            },
+          })
 
-            this.isAuthenticatedByTwitter = true
-          })
-          .catch((e: any) => {
-            console.error(e)
-          })
+          this.isAuthenticatedByTwitter = true
+        })
       } catch (e) {
         console.error(e)
       }
     },
-    unlinkTwitter(): void {
+    async unlinkTwitter(): Promise<void> {
       const _this = this as any
-      _this.$fire.auth.currentUser
-        .unlink('twitter.com')
-        .then(() => {
-          console.log('unlink twitter')
-          this.isAuthenticatedByTwitter = false
+
+      try {
+        await _this.$fire.auth.currentUser.unlink('twitter.com')
+
+        const user = await this.getUser(this.$store.state.auth.me.uid)
+        if (!user) throw new Error('user not found')
+
+        console.log('unlink twitter')
+
+        await this.saveUser({
+          user: {
+            ...user,
+            providers: {
+              twitter: null,
+            },
+          },
         })
-        .catch((e: any) => {
-          console.error(e)
-        })
+
+        this.isAuthenticatedByTwitter = false
+      } catch (e) {
+        console.error(e)
+      }
     },
   },
 })
