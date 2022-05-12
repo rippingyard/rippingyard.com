@@ -4,7 +4,6 @@ import { Store, mapActions } from 'vuex'
 declare module 'vue/types/vue' {
   interface Vue {
     $isAuthenticated(store: Store<any>): boolean
-    $isAuthenticatedByTwitter($fire: any): boolean
     can: Function
   }
 }
