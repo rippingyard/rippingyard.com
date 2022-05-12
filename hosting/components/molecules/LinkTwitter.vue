@@ -49,7 +49,6 @@ export default Vue.extend({
       try {
         const provider = new _this.$fireModule.auth.TwitterAuthProvider()
 
-        console.log('this.$store.state.auth.me', this.$store.state.auth.me)
         const user = await this.getUser(this.$store.state.auth.me.uid)
         if (!user) throw new Error('user not found')
 
@@ -57,18 +56,14 @@ export default Vue.extend({
 
         currentUser.linkWithPopup(provider).then(async (result: any) => {
           const credential = result.credential
-          const accessToken = credential.accessToken
-          const accessSecret = credential.secret
-          // ...
-          console.log('credential', accessToken, accessSecret)
 
           await this.saveUser({
             user: {
               ...user,
               providers: {
                 twitter: {
-                  accessToken,
-                  accessSecret,
+                  accessToken: credential.accessToken,
+                  accessSecret: credential.secret,
                 },
               },
             },
@@ -110,12 +105,6 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .button {
-  // text-align: center;
-  // padding: 10px 0;
-  // border: 0;
-  // color: $white;
-  // font-weight: 800;
-  // font-size: 0.9rem;
   .icon {
     margin-right: 5px;
   }
