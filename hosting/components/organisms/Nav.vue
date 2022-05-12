@@ -300,6 +300,9 @@ export default Vue.extend({
       })
     }
   },
+  async mounted() {
+    this.canPostArticle = await this.can('postArticle')
+  },
   beforeDestroy() {
     this.unsubscriber()
   },

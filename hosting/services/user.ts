@@ -27,3 +27,5 @@ export function normalize(
     return {}
   }
 }
+
+export const isAuthenticatedByProvider = (u: any, provider: 'twitter.com') => !!u?.providerData.find((p: any) => p.providerId === provider)
