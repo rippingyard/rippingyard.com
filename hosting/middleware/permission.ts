@@ -13,10 +13,6 @@ Vue.prototype.$isAuthenticated = (store: Store<any>) => {
   return !store ? false : store.getters['auth/isAuthenticated']
 }
 
-Vue.prototype.$isAuthenticatedByTwitter = (store: Store<any>): boolean => {
-  return !store ? false : store.getters['auth/isAuthenticatedByTwitter']
-}
-
 Vue.mixin({
   methods: {
     ...mapActions({
