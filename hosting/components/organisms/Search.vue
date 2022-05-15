@@ -28,13 +28,16 @@
         </template>
       </ais-search-box>
     </div>
-    <ais-hits :class-names="resultClassNames">
+    <ais-hits :class-names="resultClassNames" :transform-items="filterItems">
       <nuxt-link slot="item" slot-scope="{ item }" :to="permalink(item)">
         <h2 class="title">{{ item.title }}</h2>
         <div class="content" v-html="summary(item.content)" />
         <p class="date">{{ formatDate(item.publishedAt) }}</p>
       </nuxt-link>
     </ais-hits>
+    <div v-if="isEmpty" class="empty">
+      <p class="result">検索結果はありません</p>
+    </div>
   </ais-instant-search>
 </template>
 <script lang="ts">
@@ -51,13 +54,13 @@ Vue.use(InstantSearch)
 type DataType = {
   query: string
   searchClient: SearchClient
+  isEmpty: boolean
   isComposing: boolean
 }
 
 export default Vue.extend({
   data(): DataType {
     const algoliaClient = algoliasearch(appId, apiKey)
-
     return {
       query: '',
       searchClient: {
@@ -77,6 +80,7 @@ export default Vue.extend({
           return algoliaClient.search(requests)
         },
       },
+      isEmpty: false,
       isComposing: false,
     }
   },
@@ -96,9 +100,11 @@ export default Vue.extend({
   },
   methods: {
     search(refine: (query: string) => {}): void {
-      if (!this.isComposing) {
-        refine(this.query)
-      }
+      if (!this.isComposing) refine(this.query)
+    },
+    filterItems(items: any[]) {
+      this.isEmpty = this.query !== '' && items.length === 0
+      return items
     },
     permalink(item: any): string {
       return `/post/${item.objectID}`
@@ -179,6 +185,28 @@ export default Vue.extend({
             background-color: $black;
             color: $yellow;
           }
+        }
+      }
+    }
+  }
+
+  .empty {
+    padding: 20px;
+    .result {
+      font-size: 1.2rem;
+    }
+  }
+
+  @include until-desktop {
+    .input {
+      .ais-SearchBox {
+        font-size: 1.4rem;
+        > .icon {
+          font-size: 2rem;
+        }
+        > .submit {
+          font-size: 1.1rem;
+          padding: 5px 10px;
         }
       }
     }
