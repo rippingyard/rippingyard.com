@@ -42,6 +42,6 @@ jobs:
     - name: Functions - Deploy to develop
       uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting,functions --project default
+        args: deploy --only hosting,functions,firestore:rules --project default
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
