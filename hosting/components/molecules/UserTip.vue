@@ -6,6 +6,9 @@
       class="avatar"
       :style="avatar"
     />
+    <div v-else class="initial">
+      <span>{{ initial }}</span>
+    </div>
     <h2 class="name">
       <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
       <nuxt-link :to="permalink" class="account">
@@ -43,6 +46,9 @@ export default Vue.extend({
     avatar() {
       return `background-image:url(${(this.user as Partial<User>).avatar})`
     },
+    initial() {
+      return this.user.displayName.charAt(0)
+    },
   },
 })
 </script>
@@ -66,15 +72,34 @@ export default Vue.extend({
     background-size: cover;
   }
 
+  .initial {
+    width: 60px;
+    height: 60px;
+    border-radius: 999999px;
+    display: flex;
+    margin: auto;
+    border: 2px solid $black;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    > span {
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+  }
+
   .name {
     font-size: 1rem;
     font-weight: 800;
     text-align: center;
+    margin-top: 5px;
     > a {
       display: block;
       &.account {
         color: $gray-black;
         font-size: 0.9rem;
+        line-height: 1;
       }
     }
   }

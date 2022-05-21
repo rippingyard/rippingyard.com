@@ -31,11 +31,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    // this.$nextTick(() => {
-    //   this.$nuxt.$loading.start()
-    //   // setTimeout(() => this.$nuxt.$loading.finish(), 500)
-    // })
-
     this.$data.unsubscribe = (this as any).$fire.firestore
       .collection('posts')
       .where('isDeleted', '==', false)

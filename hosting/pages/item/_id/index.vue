@@ -138,6 +138,7 @@ export default Vue.extend({
         .where('parent', '==', $fire.firestore.doc(`items/${r.item.id}`))
         .where('isDeleted', '==', false)
         .where('isPublic', '==', true)
+        .where('status', '==', 'published')
         .limit(50)
         .get()
         .then(async (qs: any) => {

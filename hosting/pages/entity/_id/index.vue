@@ -68,7 +68,9 @@ export default Vue.extend({
     const posts: Partial<Post>[] = []
     await $fire.firestore
       .collection('posts')
+      .where('isDeleted', '==', false)
       .where('isPublic', '==', true)
+      .where('status', '==', 'published')
       .where('entities', 'array-contains', decodeEntity(entityId))
       .limit(100)
       .orderBy('createdAt', 'desc')

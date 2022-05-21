@@ -1,11 +1,12 @@
 ﻿import { DocumentData } from '@firebase/firestore-types'
 import { Store } from 'vuex'
 import dayjs from 'dayjs'
+import { omit } from 'lodash'
 import { sanitize, renderWidgets } from '~/plugins/typography'
 import { Comment } from '~/types/comment'
 import { getDomain } from '~/plugins/util'
 
-const { decycle } = require('json-cyclic')
+// const { decycle } = require('json-cyclic')
 
 interface Params {
   withoutOwner?: boolean
@@ -29,9 +30,7 @@ export async function normalize(
       if (!cachedUser) {
         try {
           await comment.owner?.get().then((doc: any) => {
-            // owner = omit(doc.data(), ['follows', 'followers'])
-            owner = decycle(doc.data())
-            // console.log('Owner from firestore')
+            owner = omit(doc.data(), ['follows', 'followers', 'createdAt', 'updatedAt'])
             store.commit('user/setUser', owner)
           })
         } catch (e) {
@@ -43,7 +42,7 @@ export async function normalize(
       }
     }
 
-    return decycle({
+    return {
       ...comment,
       ...{
         id,
@@ -56,7 +55,7 @@ export async function normalize(
         owner,
 
         isDeleted: comment.isDeleted,
-        
+
         createdAt: comment.createdAt
           ? dayjs(comment.createdAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
@@ -64,7 +63,8 @@ export async function normalize(
           ? dayjs(comment.updatedAt.toDate()).format('YYYY-MM-DD HH:mm')
           : '',
       },
-    })
+    }
+    // return comment
   } catch (e) {
     return Promise.reject(e)
   }
