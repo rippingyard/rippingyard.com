@@ -1,6 +1,9 @@
 ﻿<template>
   <div class="container">
-    <ul class="comments">
+    <div v-if="isLoading" class="loading">
+      <IconLoading size="large" color="black" />
+    </div>
+    <ul v-else class="comments">
       <li v-for="comment in comments" :key="comment.id" class="comment">
         <div class="body">
           <div class="content wysiwyg" v-html="comment.content"></div>
@@ -16,6 +19,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import { normalize } from '~/services/comment'
+
+type DataType = {
+  comments: any[]
+  unsubscribe: any
+  isLoading: boolean
+}
+
 export default Vue.extend({
   props: {
     parentId: {
@@ -23,25 +33,22 @@ export default Vue.extend({
       default: undefined,
     },
   },
-  data(): {
-    comments: any[]
-    unsubscribe: any
-  } {
+  data(): DataType {
     return {
       comments: [],
       unsubscribe: () => {},
+      isLoading: true,
     }
   },
   async mounted(): Promise<void> {
-    let promises: any[] = []
     this.unsubscribe = await (this as any).$fire.firestore
       .collection('comments')
       .orderBy('createdAt', 'asc')
       .where('parent', '==', (this as any).$fire.firestore.doc(this.parentId))
+      .where('isDeleted', '==', false)
+      .where('status', '==', 'published')
       .onSnapshot((qs: any) => {
-        this.comments = []
-
-        promises = qs.docs.map(async (doc: any) => {
+        qs.forEach(async (doc: any) => {
           const comment = doc.data()
           if (
             comment.isDeleted ||
@@ -57,14 +64,13 @@ export default Vue.extend({
           )
           this.comments.push(normalizedComment)
         })
-
         qs.docChanges().forEach((change: any) => {
           if (change.type === 'added') {
             console.log('New Comment: ', change.doc.data())
           }
         })
+        this.isLoading = false
       })
-    await Promise.all(promises)
   },
   destroyed() {
     this.unsubscribe()
@@ -131,5 +137,11 @@ export default Vue.extend({
     width: 100%;
     padding-top: 0;
   }
+}
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0 60px;
 }
 </style>
