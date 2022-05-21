@@ -38,6 +38,7 @@ export default Vue.extend({
 
     this.$data.unsubscribe = (this as any).$fire.firestore
       .collection('posts')
+      .where('isDeleted', '==', false)
       .where('isPublic', '==', true)
       .where('status', '==', 'published')
       .where('type', 'in', ['note', 'article'])

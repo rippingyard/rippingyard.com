@@ -53,6 +53,7 @@ export default Vue.extend({
     await db
       .limit(1000)
       .orderBy('createdAt', 'desc')
+      .where('isDeleted', '==', false)
       .get()
       .then((qs: any) => {
         promises = qs.docs.map(async (doc: any) => {

@@ -95,6 +95,7 @@ export default Vue.extend({
   async asyncData({ $fire, params, error, store }: Context) {
     const r: DataType = {}
     const postId = params.id
+    const notFoundMessage = 'ページが見つかりません'
     r.post = store.state.post.posts[postId]
     // console.log('Post: Stored', store.state.post.posts)
     if (r.post) {
@@ -113,11 +114,17 @@ export default Vue.extend({
             r.post.isDeleted === true ||
             r.post.status !== 'published'
           ) {
-            throw new Error('ページが見つかりません')
+            throw new Error(notFoundMessage)
           }
         })
         .catch((e: any) => {
-          error({ statusCode: 404, message: e.message })
+          error({
+            statusCode: 404,
+            message:
+              process.env.NODE_ENV === 'production'
+                ? notFoundMessage
+                : e.message,
+          })
         })
     }
     return r

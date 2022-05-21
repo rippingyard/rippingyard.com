@@ -17,7 +17,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { isPublic, normalize } from '~/services/post'
+// import { isPublic, normalize } from '~/services/post'
+import { normalize } from '~/services/post'
 import { Post } from '~/types/post'
 import { getTitle } from '~/plugins/typography'
 
@@ -59,7 +60,6 @@ export default Vue.extend({
         .where('isDeleted', '==', false)
         .where('isPublic', '==', true)
         .where('status', '==', 'published')
-        // .where('type', 'in', ['article', 'note'])
         .limit(limit)
         .orderBy('publishedAt', 'desc')
 
@@ -69,13 +69,13 @@ export default Vue.extend({
 
       qs.forEach(async (doc: any) => {
         const post: any = doc.data()
-        if (isPublic(post)) {
-          console.log('post', post)
-          ;(this as any).$data.lastDate = post.publishedAt
-          return (this as any).posts.push(
-            await normalize(doc.id, post, (this as any).$store)
-          )
-        }
+        // if (isPublic(post)) {
+        console.log('post', post)
+        ;(this as any).$data.lastDate = post.publishedAt
+        return (this as any).posts.push(
+          await normalize(doc.id, post, (this as any).$store)
+        )
+        // }
       })
     },
   },

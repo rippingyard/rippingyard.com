@@ -1,20 +1,28 @@
 rules_version = '2';
 
+function printDebug() {
+  return debug(request) || debug(resource) || true;
+}
+
 function isAuthenticated() {
   return request.auth != null;
 }
 
-// function printRequest() {
-//   return debug(request) || true;
-// }
+function isMine() {
+  return get(resource.data.owner).data.uid == request.auth.uid
+}
 
-// function isMine(userID) {
-//   return request.auth.uid == userId;
-// }
+function isPublic() {
+	return isNotDeleted() && resource.data.isPublic == true
+}
 
-// function isPublished() {
-// 	return resource.data.status == 'published'
-// }
+function isNotDeleted() {
+	return resource.data.isDeleted != true
+}
+
+function isPublicOrMine() {
+	return isMine() || isPublic()
+}
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -23,7 +31,7 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
     match /posts/{postId} {
-      allow read;
+      allow read: if isPublicOrMine();
       allow create: if isAuthenticated();
       allow update, delete: if isAuthenticated();
     }
@@ -54,6 +62,10 @@ service cloud.firestore {
       match /targets/{document=**} {
         allow read;
       }
+    }
+    match /{document=**} {
+      allow read: if false
+      allow write: if false
     }
   }
 }

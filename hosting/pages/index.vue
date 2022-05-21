@@ -46,6 +46,7 @@ export default Vue.extend({
     const articles: Partial<Post>[] = []
     const qs = await $fire.firestore
       .collection('posts')
+      .where('isDeleted', '==', false)
       .where('isPublic', '==', true)
       .where('status', '==', 'published')
       .where('type', '==', 'article')
