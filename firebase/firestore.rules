@@ -13,21 +13,21 @@ function isMine() {
 }
 
 function isPublic() {
-	return isNotDeleted() && resource.data.isPublic == true
+  return isNotDeleted() && resource.data.isPublic == true
 }
 
 function isNotDeleted() {
-	return resource.data.isDeleted != true
+  return resource.data.isDeleted != true
 }
 
 function isPublicOrMine() {
-	return isMine() || isPublic()
+  return isMine() || isPublic()
 }
 
 service cloud.firestore {
   match /databases/{database}/documents {
-  	match /timelines/{document=**} {
-    	allow read;
+    match /timelines/{document=**} {
+      allow read;
       allow write: if isAuthenticated();
     }
     match /posts/{postId} {
@@ -41,23 +41,23 @@ service cloud.firestore {
       allow update, delete: if isAuthenticated();
     }
     match /users/{userId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /entities/{entity} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /comments/{commentId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /activities/{document=**} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /notifications/{notificationId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
       match /targets/{document=**} {
         allow read;
