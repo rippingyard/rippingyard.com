@@ -1,29 +1,37 @@
 rules_version = '2';
 
+function printDebug() {
+  return debug(request) || debug(resource) || true;
+}
+
 function isAuthenticated() {
   return request.auth != null;
 }
 
-// function printRequest() {
-//   return debug(request) || true;
-// }
+function isMine() {
+  return get(resource.data.owner).data.uid == request.auth.uid
+}
 
-// function isMine(userID) {
-//   return request.auth.uid == userId;
-// }
+function isPublic() {
+  return isNotDeleted() && resource.data.isPublic == true
+}
 
-// function isPublished() {
-// 	return resource.data.status == 'published'
-// }
+function isNotDeleted() {
+  return resource.data.isDeleted != true
+}
+
+function isPublicOrMine() {
+  return isMine() || isPublic()
+}
 
 service cloud.firestore {
   match /databases/{database}/documents {
-  	match /timelines/{document=**} {
-    	allow read;
+    match /timelines/{document=**} {
+      allow read;
       allow write: if isAuthenticated();
     }
     match /posts/{postId} {
-      allow read;
+      allow read: if isPublicOrMine();
       allow create: if isAuthenticated();
       allow update, delete: if isAuthenticated();
     }
@@ -33,27 +41,31 @@ service cloud.firestore {
       allow update, delete: if isAuthenticated();
     }
     match /users/{userId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /entities/{entity} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /comments/{commentId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /activities/{document=**} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
     }
     match /notifications/{notificationId} {
-    	allow read;
+      allow read;
       allow write: if isAuthenticated();
       match /targets/{document=**} {
         allow read;
       }
+    }
+    match /{document=**} {
+      allow read: if false
+      allow write: if false
     }
   }
 }
