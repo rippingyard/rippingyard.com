@@ -7,7 +7,7 @@
       :style="avatar"
     />
     <div v-else class="initial">
-      <span>{{ initial }}</span>
+      <nuxt-link :to="permalink">{{ initial }}</nuxt-link>
     </div>
     <h2 class="name">
       <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
@@ -82,10 +82,15 @@ export default Vue.extend({
     align-items: center;
     justify-content: center;
     line-height: 1;
-    > span {
+    cursor: pointer;
+    > a {
       font-size: 1.4rem;
       font-weight: 800;
       text-transform: uppercase;
+    }
+    &:hover {
+      color: $blue;
+      border-color: $blue;
     }
   }
 
