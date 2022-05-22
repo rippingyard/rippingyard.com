@@ -36,14 +36,7 @@
       <div class="block sub sticky">
         <div class="block">
           <div v-if="post.owner" class="owner">
-            <nuxt-link
-              v-if="post.owner.avatar"
-              :to="userlink(post.owner)"
-              class="avatar"
-              :style="avatar(post.owner)"
-            />
-            <p class="name">{{ post.owner.displayName }}</p>
-            <p class="account">@{{ post.owner.userName }}</p>
+            <UserTip :user="post.owner" />
           </div>
           <div class="social">
             <button class="button twitter is-wide" @click="openTweetForm">

@@ -90,6 +90,7 @@ export default Vue.extend({
       .where('owner', '==', $fire.firestore.doc(`users/${r.user.uid}`))
       .where('isDeleted', '!=', true)
       .where('isPublic', '==', true)
+      .where('status', '==', 'published')
       .limit(100)
       .orderBy('isDeleted', 'desc')
       .orderBy('publishedAt', 'desc')

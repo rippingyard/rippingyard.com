@@ -24,12 +24,8 @@ export default Vue.extend({
       10
     ) as string[]
 
-    // console.log(
-    //   'Selected Tags',
-    //   selectedTags.map((e: string) => decodeEntity(e))
-    // )
-
     let promises: any[] = []
+    const limit = 15
     const posts: Partial<Post>[] = []
 
     if (selectedTags.length > 0) {
@@ -37,12 +33,13 @@ export default Vue.extend({
         .collection('posts')
         .where('isPublic', '==', true)
         .where('isDeleted', '!=', true)
+        .where('status', '==', 'published')
         .where(
           'entities',
           'array-contains-any',
           selectedTags.map((e: string) => decodeEntity(e))
         )
-        .limit(10)
+        .limit(limit)
         .orderBy('isDeleted', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
@@ -51,19 +48,9 @@ export default Vue.extend({
           promises = qs.docs
             .filter((doc: any) => doc.id !== this.excludeId)
             .map(async (doc: any) => {
-              const post = doc.data()
-              if (
-                post.status !== 'published' ||
-                !post.isPublic ||
-                post.isDeleted === true
+              return posts.push(
+                await normalizePost(doc.id, doc.data(), this.$store)
               )
-                return
-              const normalizedPost = await normalizePost(
-                doc.id,
-                post,
-                this.$store
-              )
-              return posts.push(normalizedPost)
             })
         })
         .catch((e: any) => {
@@ -77,28 +64,17 @@ export default Vue.extend({
         .collection('posts')
         .where('isPublic', '==', true)
         .where('isDeleted', '!=', true)
-        .limit(20)
+        .where('status', '==', 'published')
+        .limit(limit)
         .orderBy('isDeleted', 'desc')
         .orderBy('publishedAt', 'desc')
         .get()
         .then((qs: any) => {
           // console.log('Brand New Posts Size', qs.size)
           promises = qs.docs.map(async (doc: any) => {
-            const post = doc.data()
-            // console.log('Post', post)
-            if (
-              post.id === this.excludeId ||
-              post.status !== 'published' ||
-              !post.isPublic ||
-              post.isDeleted === true
+            return posts.push(
+              await normalizePost(doc.id, doc.data(), this.$store)
             )
-              return
-            const normalizedPost = await normalizePost(
-              doc.id,
-              post,
-              this.$store
-            )
-            return posts.push(normalizedPost)
           })
         })
         .catch((e: any) => {
@@ -107,11 +83,13 @@ export default Vue.extend({
         })
     }
 
+    console.log('promises', promises)
+
     if (promises.length < 1) return
 
     await Promise.all(promises)
 
-    this.$data.posts = _.sampleSize(posts, 8) as any[]
+    this.$data.posts = _.sampleSize(posts, 10) as any[]
   },
   data() {
     return {
