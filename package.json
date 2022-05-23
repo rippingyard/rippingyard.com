@@ -11,6 +11,8 @@
     "lint": "cd hosting && yarn lint",
     "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
     "functions:watch": "./functions/node_modules/.bin/tsc --watch",
-    "deploy": "firebase deploy --only hosting,functions --project default"
+    "index:pull": "firebase use default && firebase firestore:indexes > firebase/firestore.indexes.json",
+    "index:push": "firebase deploy --only firestore:indexes --project production",
+    "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"
   }
 }
