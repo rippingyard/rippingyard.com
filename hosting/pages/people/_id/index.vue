@@ -38,7 +38,6 @@
     </div>
   </article>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
 import { orderBy, omit } from 'lodash'
