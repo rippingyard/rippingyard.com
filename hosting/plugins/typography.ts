@@ -238,8 +238,6 @@ export function sanitize(content: string) {
 export const decodeEntities = (str: string) => {
   if (!str) return str
 
-  // console.log('Before:', str)
-
   const entities = [
     ['amp', '&'],
     ['apos', "'"],

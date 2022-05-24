@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Header :image="thumbnail" />
+    <Header />
     <div class="heading">
       <h1>{{ getTitle }}</h1>
     </div>
@@ -61,6 +61,7 @@
         <RelatedArticles :tags="entities" :exclude-id="post.id" />
       </aside>
     </div>
+    <Links :links="links" />
   </main>
 </template>
 <script lang="ts">
@@ -70,7 +71,7 @@ import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
 import { User } from '~/types/user'
-import { normalize, docPath } from '~/services/post'
+import { normalize, permalink, docPath } from '~/services/post'
 import {
   getTitle,
   getSocialTitle,
@@ -152,6 +153,9 @@ export default Vue.extend({
     ownThumbnail(): string {
       return this.post ? getThumbnail(this.post.contentOriginal, true) : ''
     },
+    permalink(): string {
+      return this.post?.id ? permalink(this.post.id) : '/'
+    },
     entities(): string[] {
       if (!this.post) return []
       const entities: string[] = []
@@ -159,6 +163,22 @@ export default Vue.extend({
       if (this.post.parent?.entities)
         entities.push(...this.post.parent?.entities)
       return entities
+    },
+    links(): any[] {
+      return [
+        {
+          label: 'TOP',
+          to: '/',
+        },
+        {
+          label: 'POSTS',
+          to: '/posts',
+        },
+        {
+          label: this.getTitle,
+          to: this.permalink,
+        },
+      ]
     },
   },
   mounted(): void {
