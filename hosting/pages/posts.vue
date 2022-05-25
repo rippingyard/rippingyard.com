@@ -17,7 +17,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-// import { isPublic, normalize } from '~/services/post'
 import { normalize } from '~/services/post'
 import { Post } from '~/types/post'
 import { getTitle } from '~/plugins/typography'
@@ -69,13 +68,11 @@ export default Vue.extend({
 
       qs.forEach(async (doc: any) => {
         const post: any = doc.data()
-        // if (isPublic(post)) {
         console.log('post', post)
         ;(this as any).$data.lastDate = post.publishedAt
         return (this as any).posts.push(
           await normalize(doc.id, post, (this as any).$store)
         )
-        // }
       })
     },
   },
@@ -89,6 +86,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .console {
   padding: $gap 0;
+  @include until($desktop) {
+    margin: 0 $gap / 2 0;
+  }
 }
 .loading {
   min-height: 320px;

@@ -147,5 +147,8 @@ export default Vue.extend({
 }
 .console {
   padding: $gap 0 0;
+  @include until($desktop) {
+    margin: 0 $gap / 2 0;
+  }
 }
 </style>

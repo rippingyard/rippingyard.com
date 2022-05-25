@@ -16,6 +16,10 @@ function isPublic() {
   return isNotDeleted() && resource.data.status == 'published' && resource.data.isPublic == true
 }
 
+function isPublished() {
+  return isNotDeleted() && resource.data.status == 'published'
+}
+
 function isNotDeleted() {
   return resource.data.isDeleted != true
 }
@@ -49,7 +53,7 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
     match /comments/{commentId} {
-      allow read;
+      allow read: if isPublished();
       allow write: if isAuthenticated();
     }
     match /activities/{document=**} {

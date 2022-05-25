@@ -68,6 +68,13 @@ ul {
       margin-right: 5px;
       font-size: 0.8rem;
     }
+    @include until-desktop {
+      a {
+        border: none;
+        padding: 0;
+        color: $gray-black;
+      }
+    }
   }
 
   &.is-simple {

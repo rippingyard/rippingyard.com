@@ -4,7 +4,7 @@
     :class="{ 'has-margin': hasMargin, 'is-small': isSmall, 'is-dark': isDark }"
   >
     <li v-for="post in posts" :key="post.id" class="item">
-      <div class="extra">
+      <div class="extra pconly">
         <template v-if="hasThumbnail(post.contentOriginal)">
           <nuxt-link :to="post.permalink">
             <IconImage :image="getThumbnail(post.contentOriginal)" />
@@ -19,9 +19,19 @@
           </nuxt-link>
         </h3>
         <p class="date">{{ post.publishedAt }}</p>
+        <nuxt-link
+          v-if="hasThumbnail(post.contentOriginal)"
+          :to="post.permalink"
+          class="image sponly"
+        >
+          <IconImage :image="getThumbnail(post.contentOriginal)" />
+        </nuxt-link>
         <p class="summary">{{ getSummary(post.content) }}</p>
         <div v-if="post.entities && post.entities.length > 0" class="entities">
           <EntitySimpleList :entities="post.entities" />
+        </div>
+        <div class="author sponly">
+          <UserTip :user="post.owner" :is-dark="isDark" />
         </div>
       </div>
     </li>
@@ -106,6 +116,7 @@ export default Vue.extend({
 
     @include until-desktop {
       padding: 0 $gap / 2;
+      margin-bottom: $gap;
       flex-direction: column-reverse;
       border-bottom: none;
 
@@ -116,6 +127,14 @@ export default Vue.extend({
           font-size: 1.4rem;
           line-height: 1.3;
           padding-right: 0;
+        }
+        .date {
+          font-size: 0.9rem;
+          color: $gray-black;
+          margin-bottom: 10px;
+        }
+        .image {
+          margin-bottom: 12px;
         }
       }
       .extra {
