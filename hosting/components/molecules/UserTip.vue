@@ -112,11 +112,24 @@ export default Vue.extend({
   @include until-desktop {
     flex-direction: row;
     padding: $gap / 2 0 0;
+    .avatar {
+      width: 30px;
+      height: 30px;
+      margin: 4px 0 0 0;
+    }
     .name {
-      padding: 8px 0 $gap / 2 $gap / 2;
+      padding: 0 0 0 10px;
       width: calc(100% - 50px);
       text-align: left;
       line-height: 1.2;
+    }
+    .initial {
+      width: 30px;
+      height: 30px;
+      margin: 4px 0 0 0;
+      > a {
+        font-size: 0.9rem;
+      }
     }
   }
 

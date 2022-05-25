@@ -34,7 +34,7 @@ export default Vue.extend({
     flex-direction: row;
     padding: $gap / 2 0 0;
     width: 100%;
-    height: 90px;
+    height: 50vw;
     border-radius: 0;
     border: none;
     margin: 0;

@@ -1,9 +1,8 @@
-
 .ProseMirror,
 .wysiwyg {
   outline: none;
   line-height: 1.8;
-  
+
   a {
     text-decoration: underline;
     color: $blue;
@@ -42,6 +41,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 3rem;
+
     @include until($desktop) {
       font-size: 1.8rem;
     }
@@ -52,6 +52,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 2.2rem;
+
     @include until($desktop) {
       font-size: 1.4rem;
     }
@@ -62,6 +63,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 1.8rem;
+
     @include until($desktop) {
       font-size: 1.3rem;
     }
@@ -72,6 +74,7 @@
     line-height: 1.4;
     font-weight: 800;
     padding-top: 1.4rem;
+
     @include until($desktop) {
       font-size: 1.2rem;
     }
@@ -81,6 +84,7 @@
     font-size: 1.15rem;
     line-height: 1.4;
     padding-top: 1rem;
+
     @include until($desktop) {
       font-size: 1.1rem;
     }
@@ -90,6 +94,7 @@
     font-size: 1.1rem;
     line-height: 1.4;
     padding-top: 0.8rem;
+
     @include until($desktop) {
       font-size: 1.05rem;
     }
@@ -104,7 +109,8 @@
     margin: 0 auto 25px;
     max-width: 100%;
     height: auto;
-    & + .caption {
+
+    &+.caption {
       margin-top: -15px;
     }
   }
@@ -121,6 +127,7 @@
     list-style-type: disc;
     padding-left: 18px;
     list-style-position: inside;
+
     li {
       list-style: disc;
     }
@@ -130,6 +137,7 @@
     list-style-type: decimal;
     padding-left: 22px;
     list-style-position: inside;
+
     li {
       list-style: decimal;
     }
@@ -156,8 +164,9 @@
     padding: 25px;
     font-family: serif;
 
-    > p {
+    >p {
       padding-bottom: 20px;
+
       &:last-of-type {
         padding-bottom: 0;
       }
@@ -170,7 +179,7 @@
     width: 100%;
     padding-top: 56.25%;
 
-    > iframe {
+    >iframe {
       position: absolute;
       top: 0;
       right: 0;
@@ -181,6 +190,7 @@
 
   &.is-article {
     @include until($desktop) {
+
       p,
       h1,
       h2,
@@ -201,12 +211,22 @@
         list-style-type: disc;
         padding-left: 18px;
       }
-    
+
       ol {
         list-style-type: decimal;
         padding-left: 22px;
       }
-  
+
+      blockquote {
+        margin-left: $gap / 2;
+        margin-right: $gap / 2;
+
+        >p {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+
       .widget-youtube {
         margin-left: ($gap / 2) * -1;
         margin-right: ($gap / 2) * -1;
