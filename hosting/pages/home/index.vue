@@ -178,6 +178,7 @@ export default Vue.extend({
   }
   .button {
     text-decoration: none;
+    color: $black;
   }
 }
 </style>

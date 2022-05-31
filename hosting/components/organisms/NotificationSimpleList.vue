@@ -1,12 +1,13 @@
 ﻿<template>
   <div class="wrapper">
     <ul v-if="notifications.length > 0" class="main">
-      <li
-        v-for="notification in notifications"
-        :key="notification.id"
-      >
+      <li v-for="notification in notifications" :key="notification.id">
         <nuxt-link :to="`/${notification.to}`" target="_blank">
-          <div class="image" :style="avatar(notification.image)"></div>
+          <div
+            v-if="notification.image"
+            class="image"
+            :style="avatar(notification.image)"
+          />
           <div class="content">
             <p v-html="notification.message" />
           </div>
@@ -36,7 +37,10 @@ export default Vue.extend({
     avatar(avatar: string) {
       return `background-image:url(${avatar})`
     },
-  }
+    initial(displayName: string) {
+      return displayName.charAt(0)
+    },
+  },
 })
 </script>
 <style lang="scss" scoped>
@@ -55,6 +59,11 @@ export default Vue.extend({
       position: absolute;
       top: 0;
       left: 0;
+    }
+    .initial {
+      width: 40px;
+      height: 40px;
+      margin: 4px 0 0 0;
     }
     .title {
       font-size: 0.8rem;
