@@ -30,9 +30,11 @@
             <p class="date">
               <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
             </p>
-            <p v-if="isMine" class="link">
-              <nuxt-link :to="editlink">編集する</nuxt-link>
-            </p>
+            <client-only>
+              <p v-if="isMine" class="link">
+                <nuxt-link :to="editlink">編集する</nuxt-link>
+              </p>
+            </client-only>
           </div>
         </article>
       </div>
