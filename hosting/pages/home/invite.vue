@@ -1,42 +1,49 @@
 <template>
-  <section class="columns">
-    <div class="column c20">
-      <ManageNav />
-    </div>
-    <div class="column c80">
-      <ManageHeading label="招待" />
-      <div class="block container">
-        <div class="box wysiwyg">
-          <h2>友だちを招待する</h2>
-          <p>招待URLを使って、友だちをripping yardに招待しましょう</p>
-          <InviteUrl />
-        </div>
+  <main class="page">
+    <ManageHeading label="招待" />
+    <div class="form">
+      <div class="box wysiwyg">
+        <h2>友だちを招待する</h2>
+        <p>招待URLを使って、友だちをripping yardに招待しましょう</p>
+        <InviteUrl />
       </div>
     </div>
-  </section>
+  </main>
 </template>
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+type DataType = {
+  me: any
+}
+
+export default Vue.extend({
   // layout: 'manage',
-  fetch() {
+  fetch(): void {
     this.me = this.$store.state.auth.me
   },
-  data() {
+  data(): DataType {
     return {
       me: null,
     }
   },
   middleware: ['auth'],
-  mounted() {},
-  head: () => {
+  head: (): any => {
     return {
       title: '招待',
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
+.page {
+  margin-top: $gap;
+  border: 1px solid $gray-black;
+}
+.form {
+  padding: 10px 60px 60px;
+}
 .heading {
   padding: 30px;
   h1 {
