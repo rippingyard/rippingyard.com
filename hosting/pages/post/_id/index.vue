@@ -30,6 +30,9 @@
             <p class="date">
               <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
             </p>
+            <p v-if="isMine" class="link">
+              <nuxt-link :to="editlink">編集する</nuxt-link>
+            </p>
           </div>
         </article>
       </div>
@@ -71,7 +74,7 @@ import { Context } from '~/types/context'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
 import { User } from '~/types/user'
-import { normalize, permalink, docPath } from '~/services/post'
+import { normalize, permalink, docPath, editlink } from '~/services/post'
 import {
   getTitle,
   getSocialTitle,
@@ -130,6 +133,11 @@ export default Vue.extend({
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
     }),
+    isMine(): boolean {
+      if (!this.$store.state.auth?.me?.uid) return false
+      if (!this.post?.owner) return false
+      return this.$store.state.auth.me.uid === this.post?.owner.uid
+    },
     getTitle(): string {
       return this.post ? getTitle(this.post) : ''
     },
@@ -155,6 +163,9 @@ export default Vue.extend({
     },
     permalink(): string {
       return this.post?.id ? permalink(this.post.id) : '/'
+    },
+    editlink(): string {
+      return this.post?.id ? editlink(this.post) : '/'
     },
     entities(): string[] {
       if (!this.post) return []
