@@ -1,20 +1,22 @@
 <template>
   <nuxt-link :to="post.permalink">
-    <h1 v-if="hasTitle || hasParentTitle" class="title">
-      {{ title }}
-    </h1>
-    <div class="item">
-      <ItemCard v-if="post.parent" :item="post.parent" />
-    </div>
-    <div class="wysiwyg">
-      <div v-if="thumbnail" class="image">
-        <img :src="thumbnail" />
+    <div class="inner">
+      <h1 v-if="hasTitle || hasParentTitle" class="title">
+        {{ title }}
+      </h1>
+      <div class="item">
+        <ItemCard v-if="post.parent" :item="post.parent" />
       </div>
-      <div class="summary" v-html="summary"></div>
+      <div class="wysiwyg">
+        <div v-if="thumbnail" class="image">
+          <img :src="thumbnail" />
+        </div>
+        <div class="summary" v-html="summary"></div>
+      </div>
+      <p class="footer">
+        <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+      </p>
     </div>
-    <p class="footer">
-      <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
-    </p>
   </nuxt-link>
 </template>
 <script lang="ts">
@@ -118,22 +120,30 @@ export default Vue.extend({
 a {
   text-decoration: none;
   display: block;
-  // transition: all 100ms 0s ease-out;
+  position: relative;
+  border-radius: 16px;
+  background-color: $gray;
+  transition: background-color 500ms 0s ease-out;
   &:hover {
-    // background-color: $orange;
-    color: $orange;
-    // img {
-    //   mix-blend-mode: screen;
-    // }
+    color: $white;
+    background-color: $orange;
     .footer {
-      color: $orange;
+      color: $white;
       &::before {
-        background-color: $orange;
+        background-color: $white;
       }
+    }
+    > .inner {
+      mix-blend-mode: screen;
     }
   }
   // &.noTitle {
   //   font-size: 1.4rem;
   // }
+  > .inner {
+    position: relative;
+    z-index: 10;
+    padding: 25px;
+  }
 }
 </style>

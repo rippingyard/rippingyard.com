@@ -104,15 +104,13 @@ export default Vue.extend({
   }
 }
 .masonry {
+  margin-bottom: $gap / 2;
   @include until-desktop {
     margin-left: $gap / 2;
     margin-right: $gap / 2;
   }
   & > li {
-    margin-bottom: $gap;
-    @include until-desktop {
-      margin-bottom: $gap / 2;
-    }
+    margin-bottom: $gap / 2;
     > a {
       display: block;
       position: relative;
@@ -129,8 +127,6 @@ export default Vue.extend({
         bottom: 30px;
       }
       @include mobile {
-        margin-bottom: $gap / 2;
-
         /deep/ h1 {
           padding-bottom: $gap / 2;
         }
