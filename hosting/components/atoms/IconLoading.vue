@@ -58,6 +58,9 @@ export default Vue.extend({
     .loading__back {
       stroke: $black;
     }
+    .loading__back {
+      stroke-opacity: 0.2;
+    }
   }
   &.yellow {
     .loading__front,

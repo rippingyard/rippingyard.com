@@ -1,16 +1,10 @@
 .masonry {
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: space-between;
-  grid-column-gap: $gap;
+  grid-column-gap: $gap / 2;
   column-count: 2;
 
   &>li,
   &>dd,
   &>div {
-    // width: calc(32% - (#{$gap} / 3));
-    // width: calc(50% - (#{$gap} / 2));
-    overflow: hidden;
     page-break-inside: avoid;
     break-inside: avoid;
 
@@ -20,7 +14,6 @@
   }
 
   @include until-desktop {
-
     column-count: 1;
 
     &>li,
