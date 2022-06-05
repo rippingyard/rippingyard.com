@@ -1,6 +1,8 @@
 <template>
-  <div class="menu">
-    <h2><span class="clickable" @click="toggle">MENU</span></h2>
+  <div class="menu" :class="{ 'is-open': isOpen }">
+    <h2>
+      <span class="trigger clickable" @click="toggle"> MENU </span>
+    </h2>
     <div v-show="isOpen" class="extra">
       <ul class="links">
         <li>
@@ -53,11 +55,6 @@
           </nuxt-link>
         </li>
       </ul>
-      <!-- <hr class="sep" />
-    <ul class="links sub">
-      <li><nuxt-link to="/terms">利用規約</nuxt-link></li>
-      <li><nuxt-link to="/privacy">プライバシーポリシー</nuxt-link></li>
-    </ul> -->
     </div>
   </div>
 </template>
@@ -78,23 +75,22 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .menu {
-  display: none;
+  // display: none;
   position: fixed;
   z-index: 100;
   top: 0;
   right: $navMargin;
   margin-bottom: $navMargin;
   // background-color: $gray;
-  h2 {
+  .trigger {
+    border-bottom: 1px solid $black;
+    border-left: 1px solid $black;
+    border-right: 1px solid $black;
     font-size: 0.8rem;
     font-weight: 800;
-    span {
-      // border-bottom: 2px solid $black;
-      background-color: $gray;
-      padding: 10px 20px;
-      // color: $white;
-      display: inline-block;
-    }
+    background-color: $gray;
+    padding: 10px 20px;
+    display: inline-block;
   }
   h3 {
     font-size: 0.8rem;
@@ -106,7 +102,7 @@ export default Vue.extend({
     li {
       font-size: 0.95rem;
       font-weight: 800;
-      display: inline-block;
+      // display: inline-block;
       a,
       span {
         padding: 10px 20px;
@@ -116,8 +112,7 @@ export default Vue.extend({
           transition: all 100ms 0s ease;
         }
         &:hover {
-          background-color: $yellow;
-          color: $white;
+          color: $yellow;
           .icon {
             margin-right: 8px;
           }
@@ -126,8 +121,7 @@ export default Vue.extend({
           opacity: 0.4;
           &:hover {
             cursor: default;
-            background-color: transparent;
-            color: $black;
+            color: $white;
             .icon {
               margin-right: 12px;
             }
@@ -158,11 +152,20 @@ export default Vue.extend({
     position: absolute;
     right: 0;
     background-color: $yellow;
-    min-width: 300px;
-    // width: 100%;
+    min-width: 200px;
   }
   .clickable {
     cursor: pointer;
+  }
+  &.is-open {
+    .trigger {
+      background-color: $black;
+      color: $white;
+    }
+    .extra {
+      background-color: $black;
+      color: $white;
+    }
   }
 }
 </style>

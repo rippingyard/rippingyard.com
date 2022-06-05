@@ -23,24 +23,18 @@
           <client-only>
             <li v-if="isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
-              <ul>
+              <ul class="sublinks">
                 <li>
-                  <nuxt-link to="/home/posts">
-                    YOUR POSTS<small>投稿一覧</small>
-                  </nuxt-link>
+                  <nuxt-link to="/home/posts">投稿一覧</nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/home/post/create">
-                    POST AN ARTICLE<small>新規投稿</small>
-                  </nuxt-link>
+                  <nuxt-link to="/home/post/create">新規投稿</nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/home/setting">
-                    SETTING<small>設定変更</small>
-                  </nuxt-link>
+                  <nuxt-link to="/home/setting">設定変更</nuxt-link>
                 </li>
                 <li>
-                  <span @click="logout">LOGOUT<small>ログアウト</small></span>
+                  <span @click="logout">ログアウト</span>
                 </li>
               </ul>
             </li>
@@ -452,19 +446,6 @@ export default Vue.extend({
             font-weight: 400;
           }
         }
-        > ul {
-          margin-top: $gap / 2;
-          margin-left: 2px;
-          display: none;
-          // padding-left: 15px;
-          li {
-            font-size: 1.4rem;
-            small {
-              padding-left: 0;
-              font-size: 0.8rem;
-            }
-          }
-        }
       }
     }
   }
@@ -528,7 +509,8 @@ export default Vue.extend({
     flex-direction: column;
     justify-content: center;
     .links {
-      li {
+      > li {
+        position: relative;
         font-size: 2rem;
         font-weight: 800;
         color: $black;
@@ -552,17 +534,34 @@ export default Vue.extend({
             font-weight: 400;
           }
         }
-        > ul {
-          margin-top: $gap / 2;
-          margin-left: 2px;
+        > .sublinks {
+          margin: 0;
           display: none;
-          // padding-left: 15px;
+          position: absolute;
+          text-align: left;
+          width: 120px;
+          top: -40px;
+          right: -120px;
+          border: 1px solid $black;
+          background-color: $white;
           li {
-            font-size: 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin: 0;
             small {
               padding-left: 0;
-              font-size: 0.8rem;
+              font-size: 0.6rem;
             }
+            > a,
+            > span {
+              display: block;
+              padding: 10px;
+            }
+          }
+        }
+        &:hover {
+          > .sublinks {
+            display: block;
           }
         }
       }
