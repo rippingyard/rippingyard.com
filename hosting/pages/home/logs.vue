@@ -1,9 +1,7 @@
 ﻿<template>
-  <section class="columns is-bordered">
-    <div class="column c20">
-      <ManageNav />
-    </div>
-    <div v-if="!isEmpty" class="column c80">
+  <main>
+    <ManageNav />
+    <div v-if="!isEmpty" class="page">
       <PostTable :data="posts" :check="toggleCheck" />
       <div class="console">
         <button
@@ -15,12 +13,12 @@
         </button>
       </div>
     </div>
-    <div v-else class="column c80">
+    <div v-else>
       <div class="empty">
         <h2>ログがありません</h2>
       </div>
     </div>
-  </section>
+  </main>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -136,8 +134,13 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
+.page {
+  margin-top: $gap;
+  border: 1px solid $black;
+}
 .console {
   padding: 20px;
+  margin: 0;
 }
 .empty {
   border-top: 1px solid $black;
