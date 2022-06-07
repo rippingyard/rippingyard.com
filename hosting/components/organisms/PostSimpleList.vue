@@ -5,9 +5,9 @@
   >
     <li v-for="post in posts" :key="post.id" class="item">
       <div class="extra pconly">
-        <template v-if="hasThumbnail(post.contentOriginal)">
+        <template v-if="hasThumbnail(post)">
           <nuxt-link :to="post.permalink">
-            <IconImage :image="getThumbnail(post.contentOriginal)" />
+            <IconImage :image="thumbnail(post)" />
           </nuxt-link>
         </template>
         <UserTip v-else :user="post.owner" :is-dark="isDark" />
@@ -20,11 +20,11 @@
         </h3>
         <p class="date">{{ post.publishedAt }}</p>
         <nuxt-link
-          v-if="hasThumbnail(post.contentOriginal)"
+          v-if="hasThumbnail(post)"
           :to="post.permalink"
           class="image sponly"
         >
-          <IconImage :image="getThumbnail(post.contentOriginal)" />
+          <IconImage :image="thumbnail(post)" />
         </nuxt-link>
         <p class="summary">{{ getSummary(post.content) }}</p>
         <div v-if="post.entities && post.entities.length > 0" class="entities">
@@ -40,8 +40,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { permalink as entityLink } from '~/services/entity'
-import { getTitle, getSummary, getThumbnail } from '~/plugins/typography'
+import { getTitle, getSummary } from '~/plugins/typography'
 import { Post } from '~/types/post'
+import { getThumbnail, hasThumbnail } from '~/services/post'
 
 export default Vue.extend({
   props: {
@@ -72,11 +73,11 @@ export default Vue.extend({
     getEntityLink(entity: string): string {
       return entityLink(entity)
     },
-    hasThumbnail(content: string): boolean {
-      return !!this.getThumbnail(content)
+    hasThumbnail(post: Post): boolean {
+      return hasThumbnail(post)
     },
-    getThumbnail(content: string): string {
-      return getThumbnail(content)
+    thumbnail(post: Post): string {
+      return getThumbnail(post)
     },
   },
 })

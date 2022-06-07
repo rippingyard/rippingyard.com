@@ -88,7 +88,7 @@ import {
   getSocialTitle,
   getSummary,
   removeTitle,
-  getThumbnail,
+  getThumbnailFromText,
   getI18nName,
 } from '~/plugins/typography'
 
@@ -186,7 +186,7 @@ export default Vue.extend({
       return docPath(this.$data.item.id)
     },
     thumbnail(): string {
-      return getThumbnail(this.$data.item.contentOriginal)
+      return getThumbnailFromText(this.$data.item.contentOriginal)
     },
     createdAt(): string {
       if (!this.item) return ''

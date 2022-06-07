@@ -51,11 +51,11 @@ export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' |
   return nameObject[lang] || ''
 }
 
-export const hasThumbnail = (str: string): boolean => {
-  return !!getThumbnail(str)
+export const hasThumbnailFromText = (str: string): boolean => {
+  return !!getThumbnailFromText(str)
 }
 
-export const getThumbnail = (str: string, isOwn: boolean = false): string => {
+export const getThumbnailFromText = (str: string, isOwn: boolean = false): string => {
   if (!str) return ''
 
   let image: string = ''

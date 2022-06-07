@@ -4,13 +4,13 @@
       <h1 v-if="hasTitle || hasParentTitle" class="title">
         {{ title }}
       </h1>
+      <div v-if="thumbnail" class="image">
+        <img :src="thumbnail" />
+      </div>
       <div class="item">
-        <ItemCard v-if="post.parent" :item="post.parent" />
+        <ItemCard v-if="post.parent" :item="post.parent" :show-image="false" />
       </div>
       <div class="wysiwyg">
-        <div v-if="thumbnail" class="image">
-          <img :src="thumbnail" />
-        </div>
         <div class="summary" v-html="summary"></div>
       </div>
       <p class="footer">
@@ -21,13 +21,8 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import {
-  hasTitle,
-  getTitle,
-  getSummary,
-  getThumbnail,
-  hasThumbnail,
-} from '~/plugins/typography'
+import { hasTitle, getTitle, getSummary } from '~/plugins/typography'
+import { getThumbnail, hasThumbnail } from '~/services/post'
 
 export default Vue.extend({
   props: {
@@ -44,7 +39,7 @@ export default Vue.extend({
       return this.post.parent
     },
     hasThumbnail(): boolean {
-      return hasThumbnail(this.post.contentOriginal)
+      return hasThumbnail(this.post)
     },
     title(): string {
       if (this.hasTitle) return getTitle(this.post.content)
@@ -62,7 +57,7 @@ export default Vue.extend({
       )
     },
     thumbnail(): string {
-      return getThumbnail(this.post.contentOriginal)
+      return getThumbnail(this.post)
     },
   },
 })

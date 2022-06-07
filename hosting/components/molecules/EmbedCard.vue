@@ -1,7 +1,7 @@
 ﻿<template>
   <section v-if="content">
     <a v-if="content.url" :href="content.url" class="embed" target="_blank">
-      <p v-if="content.image" class="img">
+      <p v-if="showImage && content.image" class="img">
         <img :src="content.image" />
       </p>
       <div class="content">
@@ -40,6 +40,10 @@ export default Vue.extend({
     entities: {
       type: Array,
       default: () => [],
+    },
+    showImage: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {

@@ -126,7 +126,7 @@ export default Vue.extend({
     //   return removeTitle(this.$data.entity.content)
     // },
     // thumbnail() {
-    //   return getThumbnail(this.$data.entity.contentOriginal)
+    //   return getThumbnailFromText(this.$data.entity.contentOriginal)
     // },
   },
   methods: {
