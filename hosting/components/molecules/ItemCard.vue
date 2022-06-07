@@ -4,6 +4,7 @@
       v-if="isBookmark"
       :content="item.metadata"
       :entities="item.entities || []"
+      :show-image="showImage"
     />
     <div v-else class="inner">
       <ul v-if="editable && !item.id" class="types is-selectable">
@@ -31,7 +32,9 @@
           {{ category.label }}
         </li>
       </ul>
-      <h2 class="name"><nuxt-link :to="permalink">{{ name }}</nuxt-link></h2>
+      <h2 class="name">
+        <nuxt-link :to="permalink">{{ name }}</nuxt-link>
+      </h2>
     </div>
     <ul v-if="editable && !item.id" class="categories is-selectable">
       <li
@@ -72,6 +75,10 @@ export default Vue.extend({
     editable: {
       type: Boolean,
       default: false,
+    },
+    showImage: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {

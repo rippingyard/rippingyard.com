@@ -2,10 +2,9 @@ import { DocumentData } from '@firebase/firestore-types'
 import { Store } from 'vuex'
 import { omit } from 'lodash'
 import dayjs from 'dayjs'
-import { sanitize, renderWidgets } from '~/plugins/typography'
+import { sanitize, renderWidgets, getThumbnailFromText } from '~/plugins/typography'
 import { Post } from '~/types/post'
 import { Item } from '~/types/item'
-// import { normalize as normalizeItem } from '~/services/item'
 import { getDomain } from '~/plugins/util'
 
 const { decycle } = require('json-cyclic')
@@ -164,4 +163,17 @@ export function getStatusLabel(status: string, isPublic: boolean = true): string
     default:
       return status
   }
+}
+
+export function hasThumbnail(post: Post): boolean {
+  return !!getThumbnail(post);
+}
+
+export function getThumbnail(post: Post): string {
+  const thumbnailFromText = getThumbnailFromText(post?.contentOriginal);
+  if (thumbnailFromText) return thumbnailFromText;
+
+  if (post?.parent?.thumbnailImage) return post.parent.thumbnailImage;
+
+  return '';
 }

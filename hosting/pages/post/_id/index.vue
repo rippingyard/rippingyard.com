@@ -82,7 +82,7 @@ import {
   getSocialTitle,
   getSummary,
   removeTitle,
-  getThumbnail,
+  getThumbnailFromText,
   getI18nName,
 } from '~/plugins/typography'
 
@@ -158,10 +158,12 @@ export default Vue.extend({
       return this.post ? docPath(this.post.id) : ''
     },
     thumbnail(): string {
-      return this.post ? getThumbnail(this.post.contentOriginal) : ''
+      return this.post ? getThumbnailFromText(this.post.contentOriginal) : ''
     },
     ownThumbnail(): string {
-      return this.post ? getThumbnail(this.post.contentOriginal, true) : ''
+      return this.post
+        ? getThumbnailFromText(this.post.contentOriginal, true)
+        : ''
     },
     permalink(): string {
       return this.post?.id ? permalink(this.post.id) : '/'

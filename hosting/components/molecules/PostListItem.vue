@@ -28,7 +28,8 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { getTitle, getSummary, getThumbnail } from '~/plugins/typography'
+import { getTitle, getSummary } from '~/plugins/typography'
+import { getThumbnail } from '~/services/post'
 
 export default Vue.extend({
   props: {
@@ -45,7 +46,7 @@ export default Vue.extend({
       return getSummary(this.post.content, 120)
     },
     thumbnail() {
-      return getThumbnail(this.post.contentOriginal)
+      return getThumbnail(this.post)
     },
   },
 })
