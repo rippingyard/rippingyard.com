@@ -31,6 +31,7 @@ jobs:
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_DEV }}
         ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_DEV }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+        FCM_VAPID_KEY: ${{ secrets.FCM_VAPID_KEY_DEV }}
     - name: Functions - Set firebase env to Develop
       uses: w9jds/firebase-action@master
       with:

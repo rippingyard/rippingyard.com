@@ -14,6 +14,9 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
+    "typeRoots": [
+      "types"
+    ],
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
@@ -28,6 +31,7 @@
       "@types/node",
       "@types/jest",
       "@nuxt/types",
+      "@nuxtjs/sentry",
       "@nuxtjs/firebase"
     ]
   },

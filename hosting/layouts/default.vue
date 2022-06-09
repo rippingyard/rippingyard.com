@@ -19,7 +19,7 @@ import { normalize, isPublic } from '~/services/post'
 type DataType = {
   posts: Post[]
   isLoading: boolean
-  unsubscribeHandler: any
+  unsubscriber: any
 }
 
 export default Vue.extend({
@@ -27,11 +27,21 @@ export default Vue.extend({
     return {
       posts: [],
       isLoading: true,
-      unsubscribeHandler: null,
+      unsubscriber: null,
     }
   },
-  mounted() {
-    this.$data.unsubscribe = (this as any).$fire.firestore
+  async mounted(): Promise<void> {
+    console.log('process.env.FCM_VAPID_KEY', process.env.FCM_VAPID_KEY)
+    try {
+      const token = await (this as any).$fire.messaging.getToken({
+        vapidKey: process.env.FCM_VAPID_KEY,
+      })
+      console.log('token', token)
+    } catch (e) {
+      console.error(e)
+    }
+
+    this.unsubscriber = (this as any).$fire.firestore
       .collection('posts')
       .where('isDeleted', '==', false)
       .where('isPublic', '==', true)
@@ -68,8 +78,8 @@ export default Vue.extend({
         },
       })
   },
-  beforeDestroy() {
-    this.$data.unsubscribe()
+  beforeDestroy(): void {
+    this.unsubscriber()
   },
 })
 </script>

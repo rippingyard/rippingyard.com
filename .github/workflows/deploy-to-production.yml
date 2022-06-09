@@ -27,6 +27,7 @@ jobs:
         FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
         ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
         GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+        FCM_VAPID_KEY: ${{ secrets.FCM_VAPID_KEY_PRD }}
     - name: Functions - Set firebase env to Production
       uses: w9jds/firebase-action@master
       with:

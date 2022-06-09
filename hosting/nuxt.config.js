@@ -18,6 +18,7 @@ export default {
     NODE_ENV: process.env.NODE_ENV,
     FIRE_ENV: process.env.FIRE_ENV,
     ALGOLIA_CONFIG: algoliaEnv || require('./env.json').ALGOLIA_CONFIG,
+    FCM_VAPID_KEY: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -206,6 +207,7 @@ export default {
                 emulatorHost: 'localhost',
               }
               : true,
+          messaging: true,
         },
         // onFirebaseHosting: true,
       },
