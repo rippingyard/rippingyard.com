@@ -6,9 +6,19 @@ importScripts("https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/6.3.4/firebase-messaging.js");
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
-firebase.initializeApp(process.env.FIREBASE_CONFIG);
+firebase.initializeApp({
+  "apiKey": "AIzaSyAHgPMZvD4z6nJqxAyidWO5hO26XvJhhfk",
+  "authDomain": "rippingyard-dev.firebaseapp.com",
+  "databaseURL": "https://rippingyard-dev.firebaseio.com",
+  "projectId": "rippingyard-dev",
+  "storageBucket": "rippingyard-dev.appspot.com",
+  "messagingSenderId": "105888186327",
+  "appId": "1:105888186327:web:9841ea77e8f39e86",
+  "measurementId": "G-EP8FX1M3Q8"
+});
 
-// Retrieve an instance of Firebase Messaging so that it can handle background messages.
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
