@@ -37,6 +37,10 @@ export default Vue.extend({
         vapidKey: process.env.FCM_VAPID_KEY,
       })
       console.log('token', token)
+      ;(this as any).$fire.messaging.onMessage((payload: any) => {
+        console.log('Message received. ', payload)
+        // ...
+      })
     } catch (e) {
       console.error(e)
     }
