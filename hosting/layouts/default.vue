@@ -13,6 +13,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import { mapActions } from 'vuex'
 import { Post } from '~/types/post'
 import { normalize, isPublic } from '~/services/post'
 
@@ -33,14 +34,25 @@ export default Vue.extend({
   async mounted(): Promise<void> {
     console.log('process.env.FCM_VAPID_KEY', process.env.FCM_VAPID_KEY)
     try {
-      const token = await (this as any).$fire.messaging.getToken({
-        vapidKey: process.env.FCM_VAPID_KEY,
-      })
+      // 通知の受信許可をリクエストする
+      console.log(
+        '$fire',
+        (this as any).$fire,
+        (this as any).$fireModule.messaging()
+      )
+
+      // 現在の登録トークンの取得
+      const token = await (this as any).$fire.messaging.getToken()
       console.log('token', token)
-      ;(this as any).$fire.messaging.onMessage((payload: any) => {
-        console.log('Message received. ', payload)
-        // ...
-      })
+
+      if (token) {
+        await this.saveSecret({
+          vendor: 'fcm',
+          payload: {
+            token,
+          },
+        })
+      }
     } catch (e) {
       console.error(e)
     }
@@ -84,6 +96,11 @@ export default Vue.extend({
   },
   beforeDestroy(): void {
     this.unsubscriber()
+  },
+  methods: {
+    ...mapActions({
+      saveSecret: 'secret/save',
+    }),
   },
 })
 </script>

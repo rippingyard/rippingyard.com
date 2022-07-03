@@ -207,7 +207,16 @@ export default {
                 emulatorHost: 'localhost',
               }
               : true,
-          messaging: true,
+          messaging: {
+            createServiceWorker: true,
+            actions: [
+              {
+                action: 'randomName',
+                url: 'randomUrl'
+              }
+            ],
+            fcmPublicVapidKey: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY
+          },
         },
         // onFirebaseHosting: true,
       },

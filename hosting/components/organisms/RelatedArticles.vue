@@ -83,8 +83,6 @@ export default Vue.extend({
         })
     }
 
-    console.log('promises', promises)
-
     if (promises.length < 1) return
 
     await Promise.all(promises)
