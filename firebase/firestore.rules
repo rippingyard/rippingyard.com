@@ -8,7 +8,7 @@ function isAuthenticated() {
   return request.auth != null;
 }
 
-function isMine(user = resource.data.owner) {
+function isMine() {
   return get(resource.data.owner).data.uid == request.auth.uid
 }
 
@@ -68,9 +68,9 @@ service cloud.firestore {
       }
     }
     match /secrets/{secretId} {
-      allow read: if isMine(resource.data.user);
+      allow read: if isMine();
       allow create: if isAuthenticated();
-      allow update, delete: if isMine(resource.data.user);
+      allow update, delete: if isAuthenticated();
     }
     match /{document=**} {
       allow read: if false

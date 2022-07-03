@@ -12,7 +12,7 @@ interface ActionInterface {
   $fire?: any
 }
 
-export const scheme: Omit<Secret, 'id' | 'user' | 'vendor' | 'payload'> = {
+export const scheme: Omit<Secret, 'id' | 'owner' | 'vendor' | 'payload'> = {
   createdAt: Timestamp.now(),
   updatedAt: Timestamp.now(),
 }
@@ -31,7 +31,7 @@ export const actions: ActionInterface = {
       }
 
       const userId = rootState.auth.me.uid
-      secret.user = await this.$fire.firestore
+      secret.owner = await this.$fire.firestore
         .collection('users')
         .doc(userId)
 
