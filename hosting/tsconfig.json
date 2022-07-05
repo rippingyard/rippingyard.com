@@ -6,7 +6,9 @@
     "lib": [
       "ESNext",
       "ESNext.AsyncIterable",
-      "DOM"
+      "DOM",
+      "WebWorker",
+      "WebWorker.ImportScripts"
     ],
     "esModuleInterop": true,
     "allowJs": true,

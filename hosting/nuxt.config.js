@@ -208,7 +208,7 @@ export default {
               }
               : true,
           messaging: {
-            createServiceWorker: true,
+            createServiceWorker: false,
             actions: [
               {
                 action: 'randomName',
