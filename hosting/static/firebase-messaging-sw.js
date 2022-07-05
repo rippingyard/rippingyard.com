@@ -30,5 +30,15 @@ self.addEventListener('notificationclick', function (e) {
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+  // Customize notification here
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification?.body || '',
+    // icon: '/firebase-logo.png'
+  };
+
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
 });
 
