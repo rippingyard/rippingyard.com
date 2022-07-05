@@ -38,8 +38,7 @@ messaging.onBackgroundMessage((payload) => {
     // icon: '/firebase-logo.png'
   };
 
-  console.log('title', notificationTitle);
-  console.log('option', notificationOptions);
+  console.log('self.registration.showNotification', self.registration.showNotification);
 
   self.registration.showNotification(notificationTitle,
     notificationOptions);
