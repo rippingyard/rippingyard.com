@@ -28,7 +28,7 @@ self.addEventListener('notificationclick', function (e) {
   }
 })
 
-messaging.onBackgroundMessage((payload) => {
+messaging.onBackgroundMessage(async (payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
 
   // Customize notification here
@@ -40,7 +40,14 @@ messaging.onBackgroundMessage((payload) => {
 
   console.log('self.registration.showNotification', self.registration.showNotification);
 
-  self.registration.showNotification(notificationTitle,
+  await self.registration.showNotification(notificationTitle,
     notificationOptions);
 });
 
+self.addEventListener('push', (e) => {
+  console.log('e', e);
+  console.log('self', self.serviceWorker.state);
+  e.waitUntil(
+    self.registration.showNotification('title')
+  );
+});
