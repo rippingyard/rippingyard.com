@@ -26,6 +26,7 @@
       </div>
       <AdsenseHomeMiddle />
       <LinkTwitter />
+      <NotificationTrigger />
       <div class="heading">
         <h1>ripping yardでできること</h1>
       </div>

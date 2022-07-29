@@ -31,32 +31,7 @@ export default Vue.extend({
       unsubscriber: null,
     }
   },
-  async mounted(): Promise<void> {
-    console.log('process.env.FCM_VAPID_KEY', process.env.FCM_VAPID_KEY)
-    try {
-      // 通知の受信許可をリクエストする
-      console.log(
-        '$fire',
-        (this as any).$fire,
-        (this as any).$fireModule.messaging()
-      )
-
-      // 現在の登録トークンの取得
-      const token = await (this as any).$fire.messaging.getToken()
-      console.log('token', token)
-
-      if (token) {
-        await this.saveSecret({
-          vendor: 'fcm',
-          payload: {
-            token,
-          },
-        })
-      }
-    } catch (e) {
-      console.error(e)
-    }
-
+  mounted(): void {
     this.unsubscriber = (this as any).$fire.firestore
       .collection('posts')
       .where('isDeleted', '==', false)

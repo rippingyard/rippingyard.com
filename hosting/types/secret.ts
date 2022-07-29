@@ -3,7 +3,7 @@ import { Timestamp } from '@firebase/firestore-types'
 
 export type Secret = {
   id: string
-  vendor: 'fcm'
+  vendor: 'fcm' | 'twitter'
   owner: DocumentData
   payload: any
   createdAt: Timestamp

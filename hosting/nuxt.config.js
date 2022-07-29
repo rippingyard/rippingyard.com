@@ -1,3 +1,4 @@
+import fs from 'fs'
 import axios from 'axios'
 
 let fbconfigEnv = process.env.FIREBASE_CONFIG
@@ -208,13 +209,14 @@ export default {
               }
               : true,
           messaging: {
-            createServiceWorker: false,
-            actions: [
-              {
-                action: 'randomName',
-                url: 'randomUrl'
-              }
-            ],
+            createServiceWorker: true,
+            // actions: [
+            //   {
+            //     action: 'randomName',
+            //     url: 'randomUrl'
+            //   }
+            // ],
+            inject: fs.readFileSync('./fcm.js', 'utf8'),
             fcmPublicVapidKey: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY
           },
         },

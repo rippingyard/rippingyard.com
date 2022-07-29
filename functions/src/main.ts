@@ -4,6 +4,7 @@ import { initHttp } from './http';
 import { initFetchUrl } from './api/fetchUrl';
 import { syncPost } from './worker/syncPost';
 import { notify } from './worker/notify';
+import { scanSecret } from './worker/scanSecret';
 
 admin.initializeApp(functions.config().firebase);
 const firestore = admin.firestore();
@@ -41,4 +42,11 @@ export const onActivityCreate = functions.firestore
   .document('/activities/{activityId}')
   .onCreate(async (snapshot, context) => {
     await notify(snapshot, context, firestore);
+  });
+
+// onSecretCreate
+export const onSecretCreate = functions.firestore
+  .document('/secrets/{secretId}')
+  .onCreate(async (snapshot, context) => {
+    await scanSecret(snapshot, context, firestore);
   });

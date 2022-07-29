@@ -69,8 +69,8 @@ service cloud.firestore {
     }
     match /secrets/{secretId} {
       allow read: if isMine();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated();
+      allow create: if isMine();
+      allow update, delete: if isMine();
     }
     match /{document=**} {
       allow read: if false

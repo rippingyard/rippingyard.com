@@ -25,6 +25,10 @@ export const actions: ActionInterface = {
   async save({ rootState }, secret): Promise<Secret> {
     try {
       // TODO: validation
+      if (!('vendor' in secret)) {
+        throw new Error('ベンダーを指定してください')
+      }
+
       // TODO: auth処理
       if (!rootState.auth.me) {
         throw new Error('権限がありません')
@@ -38,9 +42,8 @@ export const actions: ActionInterface = {
       secret.createdAt = secret.createdAt || Timestamp.now()
       secret.updatedAt = Timestamp.now()
 
-      const id = secret.id || `${userId}-${secret.vendor}`
-      const db = this.$fire.firestore.collection('secrets').doc(id)
-      secret.id = db.id
+      let db = this.$fire.firestore.collection('secrets')
+      db = secret.id ? db.doc(secret.id) : db.doc()
 
       const newSecret = Object.assign(scheme, secret)
 
