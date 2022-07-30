@@ -17,20 +17,26 @@ export const scanSecret = async (
   const secrets = await firestore
     .collection('secrets')
     .where('owner', '==', newSecret.owner)
-    .where('vendor', '==', newSecret.vendor)
+    .where('vendor', '==', vendor)
     .get();
 
-  for (const secret of secrets) {
-    switch (vendor) {
-      case 'fcm': {
-        if (
-          secret?.id !== newSecretId &&
-          secret?.payload?.token === newSecret?.payload?.token
-        ) {
-          await firestore.collection('secrets').doc(secret.id).delete();
+  secrets.forEach(async (doc) => {
+    try {
+      const secret = doc.data();
+      console.log('secret', doc.id, secret);
+      switch (vendor) {
+        case 'fcm': {
+          if (
+            doc.id !== newSecretId &&
+            secret?.payload?.token === newSecret?.payload?.token
+          ) {
+            await firestore.collection('secrets').doc(doc.id).delete();
+          }
+          break;
         }
-        break;
       }
+    } catch (e) {
+      console.error(e);
     }
-  }
+  });
 };
