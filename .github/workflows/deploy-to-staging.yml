@@ -22,8 +22,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Hosting - Install dependencies
       run: cd hosting && yarn install
-    - name: Hosting - Test
-      run: cd hosting && yarn test
     - name: Hosting - Generate html files for develop
       run: yarn run build
       env:
