@@ -38,9 +38,11 @@
     ]
   },
   "exclude": [
+    "*.config.js",
     "node_modules",
     ".nuxt",
     "dist",
     "firebase-messaging-sw.js",
+    "fcm.js"
   ]
 }
