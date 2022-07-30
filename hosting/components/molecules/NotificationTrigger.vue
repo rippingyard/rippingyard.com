@@ -8,33 +8,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapActions } from 'vuex'
-import { isAuthenticatedByProvider } from '~/services/user'
 export default Vue.extend({
-  data() {
-    return {
-      isAuthenticatedByTwitter: false,
-      unsubscribe: () => {},
-    }
-  },
-  mounted() {
-    this.unsubscribe = (this as any).$fire.auth.onAuthStateChanged(
-      (user: any) => {
-        if (user) {
-          this.isAuthenticatedByTwitter = isAuthenticatedByProvider(
-            user,
-            'twitter.com'
-          )
-        }
-      }
-    )
-  },
-  beforeDestroy() {
-    this.unsubscribe()
-  },
   methods: {
     ...mapActions({
-      // getUser: 'user/getOne',
-      // saveUser: 'user/save',
       saveSecret: 'secret/save',
     }),
     async turnOn(): Promise<void> {

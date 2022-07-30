@@ -18,7 +18,7 @@ type DataType = {
 }
 
 export default Vue.extend({
-  // layout: 'manage',
+  middleware: ['auth'],
   fetch(): void {
     this.me = this.$store.state.auth.me
   },
@@ -27,7 +27,6 @@ export default Vue.extend({
       me: null,
     }
   },
-  middleware: ['auth'],
   head: (): any => {
     return {
       title: '招待',
@@ -35,7 +34,6 @@ export default Vue.extend({
   },
 })
 </script>
-
 <style lang="scss" scoped>
 .page {
   margin-top: $gap;

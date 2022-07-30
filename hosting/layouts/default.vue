@@ -13,7 +13,6 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import { mapActions } from 'vuex'
 import { Post } from '~/types/post'
 import { normalize, isPublic } from '~/services/post'
 
@@ -71,11 +70,6 @@ export default Vue.extend({
   },
   beforeDestroy(): void {
     this.unsubscriber()
-  },
-  methods: {
-    ...mapActions({
-      saveSecret: 'secret/save',
-    }),
   },
 })
 </script>
