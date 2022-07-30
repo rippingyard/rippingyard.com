@@ -1,0 +1,26 @@
+﻿name: Test in Staging
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches: [ main ]
+    tags-ignore: [ dependencies ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+    - name: Checkout from ${{ github.head_ref }}
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Hosting - Install dependencies
+      run: cd hosting && yarn install
+    - name: Hosting - Test
+      run: cd hosting && yarn test
