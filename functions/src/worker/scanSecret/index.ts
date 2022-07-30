@@ -16,8 +16,8 @@ export const scanSecret = async (
   // 自分のsecretsを取得
   const secrets = await firestore
     .collection('secrets')
-    .where('owner', newSecret.owner)
-    .where('vendor', newSecret.vendor)
+    .where('owner', '==', newSecret.owner)
+    .where('vendor', '==', newSecret.vendor)
     .get();
 
   for (const secret of secrets) {

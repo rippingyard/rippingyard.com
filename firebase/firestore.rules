@@ -12,6 +12,10 @@ function isMine() {
   return get(resource.data.owner).data.uid == request.auth.uid
 }
 
+function isPostingMine() {
+  return get(request.resource.data.owner).data.uid == request.auth.uid
+}
+
 function isPublic() {
   return isNotDeleted() && resource.data.status == 'published' && resource.data.isPublic == true
 }
@@ -69,8 +73,8 @@ service cloud.firestore {
     }
     match /secrets/{secretId} {
       allow read: if isMine();
-      allow create: if isMine();
-      allow update, delete: if isMine();
+      allow create: if isPostingMine();
+      allow update, delete: if isPostingMine();
     }
     match /{document=**} {
       allow read: if false
