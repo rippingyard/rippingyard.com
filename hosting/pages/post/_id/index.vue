@@ -91,7 +91,7 @@ type DataType = {
 }
 
 export default Vue.extend({
-  async asyncData({ $fire, params, error, store }: Context) {
+  async asyncData({ $fire, params, error, store }: Context): Promise<DataType> {
     const r: DataType = {}
     const postId = params.id
     const notFoundMessage = 'ページが見つかりません'

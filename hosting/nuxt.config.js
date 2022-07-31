@@ -1,3 +1,4 @@
+import fs from 'fs'
 import axios from 'axios'
 
 let fbconfigEnv = process.env.FIREBASE_CONFIG
@@ -18,6 +19,7 @@ export default {
     NODE_ENV: process.env.NODE_ENV,
     FIRE_ENV: process.env.FIRE_ENV,
     ALGOLIA_CONFIG: algoliaEnv || require('./env.json').ALGOLIA_CONFIG,
+    FCM_VAPID_KEY: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY,
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -206,6 +208,17 @@ export default {
                 emulatorHost: 'localhost',
               }
               : true,
+          messaging: {
+            createServiceWorker: true,
+            // actions: [
+            //   {
+            //     action: 'randomName',
+            //     url: 'randomUrl'
+            //   }
+            // ],
+            inject: fs.readFileSync('./fcm.js', 'utf8'),
+            fcmPublicVapidKey: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY
+          },
         },
         // onFirebaseHosting: true,
       },

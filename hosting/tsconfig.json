@@ -6,7 +6,9 @@
     "lib": [
       "ESNext",
       "ESNext.AsyncIterable",
-      "DOM"
+      "DOM",
+      "WebWorker",
+      "WebWorker.ImportScripts"
     ],
     "esModuleInterop": true,
     "allowJs": true,
@@ -14,6 +16,9 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
+    "typeRoots": [
+      "types"
+    ],
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
@@ -28,12 +33,16 @@
       "@types/node",
       "@types/jest",
       "@nuxt/types",
+      "@nuxtjs/sentry",
       "@nuxtjs/firebase"
     ]
   },
   "exclude": [
+    "*.config.js",
     "node_modules",
     ".nuxt",
-    "dist"
+    "dist",
+    "firebase-messaging-sw.js",
+    "fcm.js"
   ]
 }

@@ -14,7 +14,7 @@ const page = require('~/pages/home/index')
 //   },
 // }
 
-describe('/home', (): void => {
+describe('/home/index', (): void => {
   test('Vueのインスタンスである', (): void => {
     const wrapper = mount(page)
     expect(wrapper.vm).toBeTruthy()

@@ -19,7 +19,7 @@ import { normalize, isPublic } from '~/services/post'
 type DataType = {
   posts: Post[]
   isLoading: boolean
-  unsubscribeHandler: any
+  unsubscriber: any
 }
 
 export default Vue.extend({
@@ -27,11 +27,11 @@ export default Vue.extend({
     return {
       posts: [],
       isLoading: true,
-      unsubscribeHandler: null,
+      unsubscriber: null,
     }
   },
-  mounted() {
-    this.$data.unsubscribe = (this as any).$fire.firestore
+  mounted(): void {
+    this.unsubscriber = (this as any).$fire.firestore
       .collection('posts')
       .where('isDeleted', '==', false)
       .where('isPublic', '==', true)
@@ -68,8 +68,8 @@ export default Vue.extend({
         },
       })
   },
-  beforeDestroy() {
-    this.$data.unsubscribe()
+  beforeDestroy(): void {
+    this.unsubscriber()
   },
 })
 </script>
