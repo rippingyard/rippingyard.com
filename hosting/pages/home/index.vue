@@ -25,8 +25,6 @@
         </div>
       </div>
       <AdsenseHomeMiddle />
-      <LinkTwitter />
-      <NotificationTrigger />
       <div class="heading">
         <h1>ripping yardでできること</h1>
       </div>
@@ -59,6 +57,16 @@
           友だちの招待はその第一歩。話のわかる友だちと、共通の話題を積み重ねていきましょう。
         </p>
         <span class="button is-disabled">友だちを招待</span>
+      </div>
+      <div class="box wysiwyg">
+        <h2>Twitterと連携</h2>
+        <p>Twitterと連携できますが、実際にはまだ何も出来ません。</p>
+        <LinkTwitter />
+      </div>
+      <div class="box wysiwyg">
+        <h2>通知機能</h2>
+        <p>通知機能をONにします。実際の通知はまだ行われません。</p>
+        <NotificationTrigger />
       </div>
     </div>
   </main>
