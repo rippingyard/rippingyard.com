@@ -41,7 +41,9 @@ export default Vue.extend({
   methods: {
     ...mapActions({
       getUser: 'user/getOne',
-      saveUser: 'user/save',
+      getMySecrets: 'secret/getMine',
+      saveSecret: 'secret/save',
+      deleteSecret: 'secret/delete',
     }),
     async linkTwitter(): Promise<void> {
       const _this = this as any
@@ -57,15 +59,11 @@ export default Vue.extend({
         currentUser.linkWithPopup(provider).then(async (result: any) => {
           const credential = result.credential
 
-          await this.saveUser({
-            user: {
-              ...user,
-              providers: {
-                twitter: {
-                  accessToken: credential.accessToken,
-                  accessSecret: credential.secret,
-                },
-              },
+          await this.saveSecret({
+            vendor: 'twitter',
+            payload: {
+              accessToken: credential.accessToken,
+              accessSecret: credential.secret,
             },
           })
 
@@ -84,16 +82,15 @@ export default Vue.extend({
         const user = await this.getUser(this.$store.state.auth.me.uid)
         if (!user) throw new Error('user not found')
 
-        console.log('unlink twitter')
+        const secrets = await this.getMySecrets('twitter')
 
-        await this.saveUser({
-          user: {
-            ...user,
-            providers: {
-              twitter: null,
-            },
-          },
-        })
+        console.log('unlink twitter', secrets)
+
+        if (secrets.length === 0) return
+
+        for (const secret of secrets) {
+          await this.deleteSecret(secret.id)
+        }
 
         this.isAuthenticatedByTwitter = false
       } catch (e) {

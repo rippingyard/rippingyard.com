@@ -4,6 +4,10 @@ import { ActionContext } from 'vuex'
 import { Secret } from '~/types/secret'
 
 interface ActionInterface {
+  getMine: (
+    { rootState }: ActionContext<any, any>,
+    vendor?: string,
+  ) => Promise<Secret[]>
   save: (
     { rootState }: ActionContext<any, any>,
     secret: Secret
@@ -22,6 +26,32 @@ export const state = () => ({
 })
 
 export const actions: ActionInterface = {
+  async getMine({ rootState }, vendor): Promise<Secret[]> {
+    const secrets: Secret[] = []
+
+    if (!rootState.auth.me) {
+      throw new Error('権限がありません')
+    }
+
+    const userId = rootState.auth.me.uid
+    const owner = await this.$fire.firestore
+      .collection('users')
+      .doc(userId)
+
+    let db = this.$fire.firestore.collection('secrets').where('owner', '==', owner)
+
+    if (vendor) db = db.where('vendor', '==', vendor)
+
+    const qs = await db.get();
+
+    if (qs.empty) return secrets
+
+    qs.forEach((doc: any) => {
+      secrets.push(doc)
+    })
+
+    return secrets
+  },
   async save({ rootState }, secret): Promise<Secret> {
     try {
       // TODO: validation

@@ -34,6 +34,15 @@ export const scanSecret = async (
           }
           break;
         }
+        case 'twitter': {
+          if (
+            doc.id !== newSecretId &&
+            secret?.payload?.accessToken === newSecret?.payload?.accessToken
+          ) {
+            await firestore.collection('secrets').doc(doc.id).delete();
+          }
+          break;
+        }
       }
     } catch (e) {
       console.error(e);
