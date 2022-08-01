@@ -84,6 +84,10 @@ export default Vue.extend({
   @include mobile {
     width: calc(100% + 32px);
     margin-left: -16px;
+    > img {
+      display: block;
+      margin: auto;
+    }
   }
 }
 .item {
@@ -139,6 +143,9 @@ a {
     position: relative;
     z-index: 10;
     padding: 25px;
+    @include mobile {
+      padding: 16px;
+    }
   }
 }
 </style>

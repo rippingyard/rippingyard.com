@@ -106,8 +106,8 @@ export default Vue.extend({
 .masonry {
   margin-bottom: $gap / 2;
   @include until-desktop {
-    margin-left: $gap / 2;
-    margin-right: $gap / 2;
+    margin-left: $gap / 3;
+    margin-right: $gap / 3;
   }
   & > li {
     margin-bottom: $gap / 2;
