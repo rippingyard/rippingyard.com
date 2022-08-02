@@ -395,6 +395,12 @@ export default {
     // dir: 'dist/client',
   },
 
+  render: {
+    static: {
+      maxAge: 31536000
+    }
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     analyze: true,
