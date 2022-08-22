@@ -18,7 +18,9 @@
         :editor="editor"
         @showImageUploader="showImageUploader()"
       />
-      <editor-content :editor="editor" />
+      <div>
+        <editor-content :editor="editor" />
+      </div>
     </div>
   </div>
 </template>
@@ -27,11 +29,21 @@ import Vue from 'vue'
 import dayjs from 'dayjs'
 
 import { Editor, EditorContent } from '@tiptap/vue-2'
-import StarterKit from '@tiptap/starter-kit'
+// import StarterKit from '@tiptap/starter-kit'
 
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import Heading from '@tiptap/extension-heading'
+import Bold from '@tiptap/extension-bold'
+import Blockquote from '@tiptap/extension-blockquote'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
+import CodeBlock from '@tiptap/extension-code-block'
+import HardBreak from '@tiptap/extension-hard-break'
+import Italic from '@tiptap/extension-italic'
+import Strike from '@tiptap/extension-strike'
 import Subscript from '@tiptap/extension-subscript'
 import Highlight from '@tiptap/extension-highlight'
 import TextStyle from '@tiptap/extension-text-style'
@@ -45,6 +57,7 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Gapcursor from '@tiptap/extension-gapcursor'
 
 import Caption from '~/plugins/editor/Caption'
+// import Item from '~/plugins/editor/Item'
 
 import { getExt } from '~/plugins/file'
 
@@ -85,10 +98,19 @@ export default Vue.extend({
     this.editor = new Editor({
       content: this.value,
       extensions: [
-        StarterKit,
         Document,
         Paragraph,
         Text,
+        HardBreak,
+        Heading,
+        Bold,
+        Strike,
+        Italic,
+        Blockquote,
+        ListItem,
+        BulletList,
+        OrderedList,
+        CodeBlock,
         Caption,
         Highlight,
         Subscript,
@@ -116,6 +138,7 @@ export default Vue.extend({
         }),
         Dropcursor,
         Gapcursor,
+        // Item,
       ],
       onUpdate: () => {
         this.$emit('input', this.editor.getHTML())
@@ -123,7 +146,7 @@ export default Vue.extend({
     })
   },
   beforeDestroy() {
-    this.editor.destroy()
+    this.editor?.destroy()
   },
   methods: {
     async uploadImage() {
