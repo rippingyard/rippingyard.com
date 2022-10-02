@@ -14,5 +14,8 @@
     "index:pull": "firebase use default && firebase firestore:indexes > firebase/firestore.indexes.json",
     "index:push": "firebase deploy --only firestore:indexes --project production",
     "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"
+  },
+  "devDependencies": {
+    "@types/prosemirror-model": "^1.16.2"
   }
 }

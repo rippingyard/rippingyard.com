@@ -2832,6 +2832,15 @@
     "@tiptap/extension-strike" "^2.0.0-beta.27"
     "@tiptap/extension-text" "^2.0.0-beta.15"
 
+"@tiptap/suggestion@^2.0.0-beta.97":
+  version "2.0.0-beta.97"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.0.0-beta.97.tgz#2e3dc20deebc2c37c5d39c848e61e9c837e7188a"
+  integrity sha512-3NWG+HE7v2w97Ek6z1tUosoZKpCDH+oAtIG9XoNkK1PmlaVV/H4d6HT9uPX+Y6SeN7fSAqlcXFUGLXcDi9d+Zw==
+  dependencies:
+    prosemirror-model "1.18.1"
+    prosemirror-state "1.4.1"
+    prosemirror-view "1.26.2"
+
 "@tiptap/vue-2@^2.0.0-beta.77":
   version "2.0.0-beta.77"
   resolved "https://registry.yarnpkg.com/@tiptap/vue-2/-/vue-2-2.0.0-beta.77.tgz#d5e7b414bba45d0892e39513dc50387d629b95ca"
@@ -11148,19 +11157,19 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.1.5:
     prosemirror-state "^1.0.0"
     w3c-keyname "^2.2.0"
 
-prosemirror-model@1.18.1:
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.18.1.tgz#1d5d6b6de7b983ee67a479dc607165fdef3935bd"
-  integrity sha512-IxSVBKAEMjD7s3n8cgtwMlxAXZrC7Mlag7zYsAKDndAqnDScvSmp/UdnRTV/B33lTCVU3CCm7dyAn/rVVD0mcw==
-  dependencies:
-    orderedmap "^2.0.0"
-
-prosemirror-model@^1.0.0, prosemirror-model@^1.16.0, prosemirror-model@^1.16.1:
+prosemirror-model@1.16.1, prosemirror-model@1.18.1, prosemirror-model@^1.0.0, prosemirror-model@^1.16.0, prosemirror-model@^1.16.1:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.16.1.tgz#fb388270bc9609b66298d6a7e15d0cc1d6c61253"
   integrity sha512-r1/w0HDU40TtkXp0DyKBnFPYwd8FSlUSJmGCGFv4DeynfeSlyQF2FD0RQbVEMOe6P3PpUSXM6LZBV7W/YNZ4mA==
   dependencies:
     orderedmap "^1.1.0"
+
+prosemirror-model@^1.18.1:
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.18.1.tgz#1d5d6b6de7b983ee67a479dc607165fdef3935bd"
+  integrity sha512-IxSVBKAEMjD7s3n8cgtwMlxAXZrC7Mlag7zYsAKDndAqnDScvSmp/UdnRTV/B33lTCVU3CCm7dyAn/rVVD0mcw==
+  dependencies:
+    orderedmap "^2.0.0"
 
 prosemirror-schema-list@1.2.0:
   version "1.2.0"

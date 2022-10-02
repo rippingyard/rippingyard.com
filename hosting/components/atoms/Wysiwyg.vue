@@ -57,7 +57,8 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Gapcursor from '@tiptap/extension-gapcursor'
 
 import Caption from '~/plugins/editor/Caption'
-// import Item from '~/plugins/editor/Item'
+import Item from '~/plugins/editor/Item'
+import ItemSuggestion from '~/plugins/suggestions/item'
 
 import { getExt } from '~/plugins/file'
 
@@ -138,7 +139,12 @@ export default Vue.extend({
         }),
         Dropcursor,
         Gapcursor,
-        // Item,
+        Item.configure({
+          HTMLAttributes: {
+            class: 'mention',
+          },
+          suggestion: ItemSuggestion,
+        }),
       ],
       onUpdate: () => {
         this.$emit('input', this.editor.getHTML())

@@ -41,7 +41,7 @@ export const Caption = Node.create<CaptionOptions>({
     return [
       {
         tag: 'div',
-        getAttrs: (element: HTMLElement) => element.className === 'caption' ? {} : false,
+        // getAttrs: (element: HTMLElement) => element.className === 'caption' ? {} : false,
       }
     ]
   },
