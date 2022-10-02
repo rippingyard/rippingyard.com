@@ -15,7 +15,5 @@
     "index:push": "firebase deploy --only firestore:indexes --project production",
     "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"
   },
-  "devDependencies": {
-    "@types/prosemirror-model": "^1.16.2"
-  }
+  "devDependencies": {}
 }
