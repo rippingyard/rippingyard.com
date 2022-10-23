@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="block container">
+  <div class="frame">
     <article>
       <Header />
       <Content v-html="mainContent" />

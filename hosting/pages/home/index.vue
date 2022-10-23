@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="frame">
     <ManageNav />
     <div class="block container">
       <div class="information">

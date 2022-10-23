@@ -2,9 +2,14 @@
   position: relative;
   box-sizing: border-box;
   margin: 0;
+  padding-top: $gap;
   padding-left: calc(50vw - #{$mainSize / 2});
   padding-right: calc(50vw - #{($mainSize / 2) + $navSize + $navMargin});
   max-width: 100%;
+
+  &.no-header {
+    padding-top: 0;
+  }
 
   &.is-simple {
     padding: 0;

@@ -1,42 +1,44 @@
 ﻿<template>
-  <article class="block container is-wide">
-    <div class="block container">
-      <Header />
-      <ul class="tabs">
-        <li
-          :class="{ active: isActiveTab('posts') }"
-          @click="activateTab('posts')"
-        >
-          記事
-        </li>
-        <li
-          :class="{ active: isActiveTab('profile') }"
-          @click="activateTab('profile')"
-        >
-          プロフィール
-        </li>
-      </ul>
-      <div class="contents">
-        <div v-if="isActiveTab('posts')" class="content">
-          <ul class="list">
-            <li v-for="post in posts" :key="post.id">
-              <PostListItem :post="post" />
-            </li>
-          </ul>
-        </div>
-        <div v-if="isActiveTab('profile')" class="content">
-          <div class="block">
-            <h1>プロフィール</h1>
-            <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
+  <main class="frame">
+    <article class="block container is-wide">
+      <div class="block container">
+        <Header />
+        <ul class="tabs">
+          <li
+            :class="{ active: isActiveTab('posts') }"
+            @click="activateTab('posts')"
+          >
+            記事
+          </li>
+          <li
+            :class="{ active: isActiveTab('profile') }"
+            @click="activateTab('profile')"
+          >
+            プロフィール
+          </li>
+        </ul>
+        <div class="contents">
+          <div v-if="isActiveTab('posts')" class="content">
+            <ul class="list">
+              <li v-for="post in posts" :key="post.id">
+                <PostListItem :post="post" />
+              </li>
+            </ul>
           </div>
-          <div v-if="createdate" class="block">
-            <h1>登録日</h1>
-            <p>{{ createdate }}</p>
+          <div v-if="isActiveTab('profile')" class="content">
+            <div class="block">
+              <h1>プロフィール</h1>
+              <div class="wysiwyg" v-html="filterContent(user.profile)"></div>
+            </div>
+            <div v-if="createdate" class="block">
+              <h1>登録日</h1>
+              <p>{{ createdate }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </article>
+    </article>
+  </main>
 </template>
 <script lang="ts">
 import Vue from 'vue'

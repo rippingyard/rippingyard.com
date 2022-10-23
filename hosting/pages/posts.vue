@@ -1,5 +1,5 @@
 ﻿<template>
-  <section class="block container">
+  <main class="frame">
     <Header />
     <template v-if="!isLoading">
       <PostSimpleList v-if="posts" :posts="posts" />
@@ -12,7 +12,7 @@
     <div v-else class="loading">
       <IconLoading size="large" color="black" />
     </div>
-  </section>
+  </main>
 </template>
 
 <script lang="ts">

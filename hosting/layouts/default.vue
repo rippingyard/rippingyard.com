@@ -1,11 +1,9 @@
 <template>
   <div class="wrapper">
     <Nav />
-    <HeaderMobile />
-    <div class="frame">
-      <Nuxt />
-      <Footer />
-    </div>
+    <Header />
+    <Nuxt />
+    <Footer />
     <ActivityModal />
     <Loading :is-loading="isLoading" />
     <Snack />

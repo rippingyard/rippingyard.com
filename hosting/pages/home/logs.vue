@@ -1,5 +1,5 @@
 ﻿<template>
-  <main>
+  <main class="frame">
     <ManageNav />
     <div v-if="!isEmpty" class="page">
       <PostTable :data="posts" :check="toggleCheck" />

@@ -1,5 +1,5 @@
 ﻿<template>
-  <article class="block container">
+  <article class="frame">
     <Header :post="entity" />
     <div class="heading">
       <h1>{{ decodeEntity(entity.id) }}</h1>

@@ -241,7 +241,10 @@ export default {
     // https://fontawesome.com/icons?d=gallery&m=free
     icons: {
       solid: [
+        'faAngleDown',
+        'faAngleLeft',
         'faAngleRight',
+        'faAngleUp',
         'faBell',
         'faBold',
         'faClock',

@@ -1,14 +1,6 @@
 ﻿<template>
   <div class="card" :class="{ 'is-dark': isDark }">
-    <nuxt-link
-      v-if="user.avatar"
-      :to="permalink"
-      class="avatar"
-      :style="avatar"
-    />
-    <div v-else class="initial">
-      <nuxt-link :to="permalink">{{ initial }}</nuxt-link>
-    </div>
+    <Avatar :to="permalink" :user="user" size="small" />
     <h2 class="name">
       <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
       <nuxt-link :to="permalink" class="account">
@@ -70,28 +62,6 @@ export default Vue.extend({
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
-  }
-
-  .initial {
-    width: 60px;
-    height: 60px;
-    border-radius: 999999px;
-    display: flex;
-    margin: auto;
-    border: 2px solid $black;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    cursor: pointer;
-    > a {
-      font-size: 1.4rem;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-    &:hover {
-      color: $blue;
-      border-color: $blue;
-    }
   }
 
   .name {

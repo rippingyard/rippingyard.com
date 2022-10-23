@@ -1,12 +1,7 @@
 ﻿<template>
   <div class="card">
     <div class="card-inner">
-      <nuxt-link
-        v-if="user.avatar"
-        :to="permalink"
-        class="avatar"
-        :style="avatar"
-      />
+      <Avatar :to="permalink" :user="user" />
       <h2 class="name">
         <nuxt-link :to="permalink">{{ user.displayName }}</nuxt-link>
       </h2>
@@ -55,16 +50,10 @@ export default Vue.extend({
   }
 
   .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 999999px;
     position: absolute;
     top: 10px;
     right: 10px;
     border: 2px solid $yellow;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
   }
 
   .name {

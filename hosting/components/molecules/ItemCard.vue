@@ -134,7 +134,7 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .card {
-  border: 1px solid $gray-black;
+  border: 1px solid $black;
   // background: $black;
   // padding: $gap / 2;
 
@@ -190,13 +190,13 @@ export default Vue.extend({
             cursor: default;
           }
           &:hover {
-            background-color: $gray;
+            background-color: $black;
           }
           &.selected {
             background-color: $black;
             color: $yellow;
             &.unset {
-              color: $gray-black;
+              color: $black;
             }
           }
         }
@@ -233,7 +233,7 @@ export default Vue.extend({
           color: $yellow;
           opacity: 1;
           &.unset {
-            color: $gray-black;
+            color: $black;
           }
         }
       }

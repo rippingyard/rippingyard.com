@@ -1,13 +1,15 @@
 ﻿<template>
-  <section class="block container">
-    <Header />
-    <ItemList :items="items" />
-    <div class="console">
-      <button class="button expanded centered" @click="loadMore()">
-        もっと読む
-      </button>
-    </div>
-  </section>
+  <main class="frame">
+    <section class="block container">
+      <Header />
+      <ItemList :items="items" />
+      <div class="console">
+        <button class="button expanded centered" @click="loadMore()">
+          もっと読む
+        </button>
+      </div>
+    </section>
+  </main>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="frame">
     <ManageNav />
     <div v-if="!isEmpty" class="page">
       <PostTable :data="posts" :check="toggleCheck" />
@@ -24,7 +24,6 @@
     </div>
   </main>
 </template>
-
 <script lang="ts">
 import Vue from 'vue'
 import _ from 'lodash'
