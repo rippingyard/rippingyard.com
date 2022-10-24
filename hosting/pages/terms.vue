@@ -1,12 +1,14 @@
 ﻿<template>
-  <article class="block container">
-    <Header />
-    <div class="heading">
-      <h1>{{ title }}</h1>
-      <LastUpdate date="2021年5月14日" />
-    </div>
-    <Terms />
-  </article>
+  <main class="frame">
+    <article class="block container">
+      <Header />
+      <div class="heading">
+        <h1>{{ title }}</h1>
+        <LastUpdate date="2021年5月14日" />
+      </div>
+      <Terms />
+    </article>
+  </main>
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -15,7 +17,7 @@ export default Vue.extend({
     title: {
       type: String,
       default: '利用規約',
-    }
+    },
   },
   head() {
     return {

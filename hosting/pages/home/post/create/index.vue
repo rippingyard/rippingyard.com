@@ -1,5 +1,5 @@
 <template>
-  <main class="page">
+  <main class="frame page">
     <ManageHeading label="新規投稿" />
     <div class="form">
       <PostForm />

@@ -1,5 +1,5 @@
 <template>
-  <main class="page">
+  <main class="frame page">
     <ManageHeading label="記事編集" />
     <div class="form">
       <PostForm :post="post" submit-label="記事更新" />

@@ -1,5 +1,5 @@
 ﻿<template>
-  <main>
+  <main class="frame">
     <Header :image="thumbnail" />
     <div class="heading">
       <h2>{{ getTypeLabel() }}</h2>

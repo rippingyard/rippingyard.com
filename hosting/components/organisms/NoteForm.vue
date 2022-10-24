@@ -115,7 +115,7 @@ export default Vue.extend({
 
       const params: Partial<Post> = {
         content: this.content,
-        type: 'note',
+        type: 'log',
         entities: this.entities,
         status: this.status,
         publishedAt: Timestamp.fromDate(this.date),

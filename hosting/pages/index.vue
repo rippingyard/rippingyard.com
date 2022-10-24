@@ -4,24 +4,22 @@
       <IconLoading color="yellow" />
     </div>
     <div v-else>
-      <Header />
-      <ul class="masonry">
-        <li v-for="post in firstPosts" :key="post.id">
-          <PostItem :post="post" />
-        </li>
-      </ul>
-      <AdsenseTopMiddle />
-      <ul class="masonry">
-        <li v-for="post in endPosts" :key="post.id">
-          <PostItem :post="post" />
-        </li>
-      </ul>
-      <AdsenseTopBottom />
-      <PostSimpleList :posts="articles" />
-      <div class="console">
-        <nuxt-link to="/posts" class="button expanded centered">
-          すべての記事を読む
-        </nuxt-link>
+      <Billboard :posts="articles" />
+      <div class="frame no-header">
+        <LogList />
+        <AdsenseTopMiddle />
+        <ul class="masonry">
+          <li v-for="post in endPosts" :key="post.id">
+            <PostItem :post="post" />
+          </li>
+        </ul>
+        <AdsenseTopBottom />
+        <PostSimpleList :posts="articles" />
+        <div class="console">
+          <nuxt-link to="/posts" class="button expanded centered">
+            すべての記事を読む
+          </nuxt-link>
+        </div>
       </div>
     </div>
   </main>
@@ -43,7 +41,7 @@ type DataType = {
 
 export default Vue.extend({
   async asyncData({ $fire, store }: Context) {
-    const articles: Partial<Post>[] = []
+    const articles: Post[] = []
     const qs = await $fire.firestore
       .collection('posts')
       .where('isDeleted', '==', false)
@@ -133,6 +131,9 @@ export default Vue.extend({
       }
     }
   }
+}
+.logs {
+  padding-left: $gap / 2;
 }
 .loading {
   width: 100%;

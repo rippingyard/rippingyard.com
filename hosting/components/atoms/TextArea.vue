@@ -8,7 +8,7 @@
 import Vue from 'vue'
 
 import { Editor, EditorContent } from '@tiptap/vue-2'
-import StarterKit from '@tiptap/starter-kit'
+// import StarterKit from '@tiptap/starter-kit'
 
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -47,7 +47,7 @@ export default Vue.extend({
     this.editor = new Editor({
       content: this.value,
       extensions: [
-        StarterKit,
+        // StarterKit,
         Document,
         Paragraph,
         Text,

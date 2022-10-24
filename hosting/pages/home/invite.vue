@@ -1,5 +1,5 @@
 <template>
-  <main class="page">
+  <main class="frame page">
     <ManageHeading label="招待" />
     <div class="form">
       <div class="box wysiwyg">

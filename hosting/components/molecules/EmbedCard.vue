@@ -84,7 +84,8 @@ export default Vue.extend({
     font-size: 0.8rem;
     line-height: 1;
     max-height: 1em;
-    color: $gray-black;
+    color: $black;
+    text-decoration: underline;
     word-break: keep-all;
     text-overflow: ellipsis;
     overflow: hidden;

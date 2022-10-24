@@ -1,25 +1,27 @@
 <template>
-  <section class="columns is-bordered">
-    <div class="column c20">
-      <ManageNav />
-    </div>
-    <div class="column c80">
-      <EntityTable :data="posts">
-        <template slot-scope="props">
-          <TableColumn field="content" label="タイトル">
-            <strong>
-              <nuxt-link :to="props.row.permalink" target="_blank">
-                {{ getTitle(props.row.content) }}
-              </nuxt-link>
-            </strong>
-          </TableColumn>
-          <TableColumn field="content" label="公開日">
-            <small>{{ props.row.publishedAt }}</small>
-          </TableColumn>
-        </template>
-      </EntityTable>
-    </div>
-  </section>
+  <div class="frame">
+    <section class="columns is-bordered">
+      <div class="column c20">
+        <ManageNav />
+      </div>
+      <div class="column c80">
+        <EntityTable :data="posts">
+          <template slot-scope="props">
+            <TableColumn field="content" label="タイトル">
+              <strong>
+                <nuxt-link :to="props.row.permalink" target="_blank">
+                  {{ getTitle(props.row.content) }}
+                </nuxt-link>
+              </strong>
+            </TableColumn>
+            <TableColumn field="content" label="公開日">
+              <small>{{ props.row.publishedAt }}</small>
+            </TableColumn>
+          </template>
+        </EntityTable>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
