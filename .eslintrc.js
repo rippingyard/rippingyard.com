@@ -8,7 +8,7 @@
   extends: [
     '@nuxtjs/eslint-config-typescript',
     'prettier',
-    'prettier/vue',
+    // 'prettier/vue',
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
   ],
@@ -17,5 +17,7 @@
     'no-console': 'off',
     'vue/no-v-html': 'off',
     'prettier/prettier': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/first-attribute-linebreak': 'off',
   },
 }

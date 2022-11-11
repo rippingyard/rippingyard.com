@@ -1,42 +1,72 @@
 ﻿<template>
-  <form class="form" :class="[{ widget: isWidget }, theme]" @submit.prevent="login(email, password)">
+  <form class="form" :class="[{ widget: props.isWidget }, props.theme]" @submit.prevent="login(email, password)">
     <BlocksForm label="メールアドレス">
-      <FormsEmail v-model="email" placeholder="メールアドレスを入力" />
-      <p>{{ email }}</p>
-      <!-- <p v-if="errors.email" class="error" @click="removeError('email')">
+      <FormsEmail v-model="email" placeholder="メールアドレスを入力" @click="removeError('email')" />
+      <p v-if="errors.get('email')" class="error">
         {{ errors.email }}
-      </p> -->
+      </p>
+      <ul v-if="errors.get('email').length > 0" class="error" @click="removeError('email')">
+        <li v-for="(error, i) of errors.get('email')" :key="`login-error-email-${i}`">
+          {{ error }}
+        </li>
+      </ul>
     </BlocksForm>
     <BlocksForm label="パスワード">
-      <FormsPassword v-model="password" placeholder="パスワードを入力" />
-      {{ password }}
-      <!-- <p v-if="errors.password" class="error" @click="removeError('password')">
-        {{ errors.password }}
-      </p> -->
+      <FormsPassword v-model="password" placeholder="パスワードを入力" @click="removeError('password')" />
+      <ul v-if="errors.get('password').length > 0" class="error">
+        <li v-for=" (error, i) of errors.get('password')" :key="`login-error-password-${i}`">
+          {{ error }}
+        </li>
+      </ul>
     </BlocksForm>
     <BlocksForm>
       <AtomsButton>ログイン</AtomsButton>
     </BlocksForm>
-    <!-- <div class="buttons">
-      <button class="button" :class="[reverse]">ログイン</button>
-    </div> -->
+    <ul v-for="key of errors.keys()" :key="`login-error-group-${key}`">
+      <li v-for="(error, i) of errors.get(key)" :key="`login-error-${key}-${i}`">
+        {{ error }}
+      </li>
+    </ul>
   </form>
 </template>
 <script lang="ts" setup>
 import { useLogin } from '~/composables/firebase/useLogin';
+import { authValidator } from '~/schemas/auth';
+import { useValidationError } from '~/composables/validation/useValidationError';
 
-const { isWidget, theme } = defineProps<{
+const props = defineProps<{
   isWidget?: boolean;
   theme?: string;
 }>();
 
+const errorMap = new Map();
+
+errorMap.set('email', []);
+errorMap.set('password', []);
+
 const email = ref('');
 const password = ref('');
+const errors = ref<any>(errorMap);
 
 const login = async (email: string, password: string) => {
-  const result = await useLogin(email, password);
-  console.log('result', result);
+
+  if (!authValidator({ email, password })) {
+    errors.value = useValidationError(authValidator.errors, ['email', 'password']);
+    console.log(errors.value);
+    return;
+  }
+
+  try {
+    await useLogin(email, password);
+  } catch (e) {
+    console.error(e);
+  }
+
 };
+
+const removeError = (key: string) => {
+  errors.value.set(key, []);
+}
 
 </script>
 <script lang="ts">

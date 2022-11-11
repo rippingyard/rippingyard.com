@@ -1,11 +1,11 @@
 ﻿<template>
   <div class="field">
-    <label v-if="label" v-html="label" />
+    <label v-if="props.label" v-html="label" />
     <slot />
   </div>
 </template>
 <script lang="ts" setup>
-const { label } = defineProps<{
+const props = defineProps<{
   label?: string
 }>()
 </script>

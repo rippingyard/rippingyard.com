@@ -1,8 +1,6 @@
 ﻿module.exports = {
   plugins: ['stylelint-scss'],
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
-  // add your custom config here
-  // https://stylelint.io/user-guide/configuration
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier', 'stylelint-config-recommended-vue'],
   rules: {
     'at-rule-no-unknown': null,
     'declaration-empty-line-before': null,

@@ -1,14 +1,11 @@
 ﻿<template>
-  <input :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" type="text"
-    :placeholder="placeholder" class="input" />
+  <input type="text" class="input" :value="props.modelValue" :placeholder="props.placeholder"
+    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" />
 </template>
 <script lang="ts" setup>
 defineEmits(['update:modelValue'])
 
-const {
-  placeholder,
-  modelValue
-} = defineProps<{
+const props = defineProps<{
   placeholder?: string
   modelValue: string
 }>();

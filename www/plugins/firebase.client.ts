@@ -10,6 +10,8 @@ const config = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string,
 };
 
-const firebase = initializeApp(config);
+const fb = initializeApp(config);
 
-export default firebase;
+export default defineNuxtPlugin(() => {
+  useState('fb', () => fb)
+});

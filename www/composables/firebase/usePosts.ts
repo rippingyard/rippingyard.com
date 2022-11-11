@@ -2,7 +2,7 @@
   getFirestore,
   collection,
   query,
-  where,
+  // where,
   getDocs,
 } from 'firebase/firestore';
 

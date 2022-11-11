@@ -1,11 +1,11 @@
-﻿import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import firebase from '~/composables/firebase/init'
+﻿import { FirebaseApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 export const useLogin = async (email: string, password: string) => {
   console.log('email', email);
   console.log('password', password);
 
-  const auth = getAuth(firebase);
+  const auth = getAuth(useState<FirebaseApp>('fb').value);
 
   return await signInWithEmailAndPassword(auth, email, password);
 }
