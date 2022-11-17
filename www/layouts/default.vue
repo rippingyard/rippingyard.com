@@ -1,8 +1,6 @@
 ﻿<template>
   <div class="wrapper">
-    <p v-if="auth.isAuthenticated">認証済み</p>
-    <p v-else>未認証</p>
-    <!-- <Nav /> -->
+    <OrganismsNav />
     <slot />
     <!-- <Footer /> -->
     <!-- <ActivityModal /> -->
@@ -11,10 +9,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useAuth } from '~/composables/firebase/useAuth';
-// const isLoading = ref<boolean>(false);
-
-const auth = useAuth();
 
 </script>
 <style lang="scss">

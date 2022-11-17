@@ -8,8 +8,12 @@ main {
   position: relative;
   box-sizing: border-box;
 
-  // TODO
-  width: 500px;
+  max-width: $mainSize;
   margin: auto;
+
+  @include until($desktop) {
+    max-width: $mainSize;
+    margin: auto;
+  }
 }
 </style>

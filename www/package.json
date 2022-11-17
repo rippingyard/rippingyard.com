@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.2.1",
+    "@types/dompurify": "^2.4.0",
+    "@types/qs": "^6.9.7",
     "@vueuse/firebase": "^9.4.0",
     "@vueuse/nuxt": "^9.4.0",
     "nuxt": "3.0.0-rc.12",
@@ -34,6 +36,8 @@
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
     "destyle.css": "^4.0.0",
-    "firebase": "^9.13.0"
+    "dompurify": "^2.4.1",
+    "firebase": "^9.13.0",
+    "qs": "^6.11.0"
   }
 }

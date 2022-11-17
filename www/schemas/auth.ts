@@ -1,5 +1,6 @@
-﻿import { JTDSchemaType } from 'ajv/dist/jtd';
+﻿import { ErrorObject, JTDSchemaType } from 'ajv/dist/jtd';
 import { useValidator } from '~/composables/validation/useValidator';
+import { useValidationError } from '~/composables/validation/useValidationError';
 
 const ajv = useValidator(['email', 'password']);
 
@@ -24,7 +25,8 @@ const schema: JTDSchemaType<Auth> = {
       type: 'string',
       metadata: {
         format: 'password',
-        minLength: 6,
+        isNotEmpty: true,
+        // minLength: 6,
       },
     },
   },
@@ -34,3 +36,7 @@ const schema: JTDSchemaType<Auth> = {
 }
 
 export const authValidator = ajv.compile(schema);
+
+export const authValidationErrors = (errors: ErrorObject[] = []) => {
+  return useValidationError(errors, ['email', 'password']);
+}

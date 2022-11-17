@@ -2,9 +2,6 @@
   "name": "rippingyard.com",
   "version": "1.0.0",
   "private": true,
-  "engines": {
-    "node": "16"
-  },
   "scripts": {
     "dev": "PORT=3333 FIRE_ENV=local nuxt-ts",
     "dev:stg": "PORT=3333 nuxt-ts",

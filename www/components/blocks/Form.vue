@@ -2,11 +2,17 @@
   <div class="field">
     <label v-if="props.label" v-html="label" />
     <slot />
+    <ul v-if="props.errors && props.errors.length > 0" class="error">
+      <li v-for="(error, i) of props.errors" :key="`login-error-${i}`">
+        {{ error }}
+      </li>
+    </ul>
   </div>
 </template>
 <script lang="ts" setup>
 const props = defineProps<{
-  label?: string
+  label?: string,
+  errors?: string[],
 }>()
 </script>
 <style lang="scss" scoped>

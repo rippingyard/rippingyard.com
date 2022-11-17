@@ -1,8 +1,23 @@
 ﻿<template>
-  <button class="button">
+  <button class="button" :class="classes">
     <slot />
   </button>
 </template>
+<script lang="ts" setup>
+
+const props = defineProps<{
+  expanded?: boolean;
+  centered?: boolean;
+}>();
+
+console.log('props', props)
+
+const classes = {
+  expanded: props.expanded,
+  centered: props.centered,
+};
+
+</script>
 <style scoped lang="scss">
 .button {
   padding: 10px 18px;

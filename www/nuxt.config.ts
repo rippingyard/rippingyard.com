@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@vueuse/nuxt',
+    // '@tanstack/vue-query',
     // '@vueuse/firebase',
   ],
   buildModules: [
@@ -112,6 +113,9 @@ export default defineNuxtConfig({
     },
   },
   css: ['destyle.css'],
+  build: {
+    transpile: ['vue-query', 'vue-demi'],
+  },
   vite: {
     css: {
       preprocessorOptions: {

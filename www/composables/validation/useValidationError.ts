@@ -1,20 +1,47 @@
-﻿import { ErrorObject } from "ajv";
+﻿import { ErrorObject } from "ajv/dist/jtd";
 
-export const useValidationError = (errors: ErrorObject[] | null | undefined, keys: string[]) => {
+type ErrorsMap = Map<string, string[]>;
+type ErrorsType = ErrorObject[] | null | undefined;
 
-  const newErrors = new Map();
+export const useValidationError = (errors: ErrorsType, defaultKeys: string[]) => {
 
-  if (!errors || keys.length === 0) return newErrors;
+  const newErrors: ErrorsMap = new Map<string, string[]>();
+  const keys = [...defaultKeys, '_total'];
+
+  if (keys.length === 0) throw new Error('No Keys');
 
   for (const key of keys) {
     newErrors.set(key, []);
   }
 
+  if (!errors) return returnErrorObject(newErrors, keys);
+
   for (const error of errors) {
     const key = keys.find(k => `/${k}` === error.instancePath)
-    const messages = newErrors.get(key);
-    newErrors.set(key, [...messages, error.message]);
+    if (key) {
+      const messages = newErrors.get(key) || [];
+      newErrors.set(key, [...messages, error.message as string]);
+
+      const totalMessages = newErrors.get('_total') || [];
+      newErrors.set('_total', [...totalMessages, error.message as string]);
+    }
   }
 
-  return newErrors;
+  return returnErrorObject(newErrors, keys);
+}
+
+const returnErrorObject = (errors: ErrorsMap, keys: string[] = []) => {
+
+  const validationErrors: Record<string, string[]> = {};
+
+  for (const key of keys) {
+    validationErrors[key] = errors.get(key) || [];
+  }
+
+  return {
+    validationErrors,
+    getValidationErrors: (key: string) => errors.get(key) || [],
+    setValidationErrors: (key: string, value: string[]) => errors.set(key, value),
+    useValidationError: (errors: ErrorsType) => useValidationError(errors, keys),
+  }
 }
