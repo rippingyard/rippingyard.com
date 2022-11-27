@@ -1,5 +1,6 @@
-﻿import { Post, OriginalPost } from '~/schemas/post';
-import { getThumbnailFromText, getTitle } from '~/utils/typography';
+﻿import dayjs from 'dayjs';
+import { Post, OriginalPost } from '~/schemas/post';
+import { getThumbnailFromText, getTitle, hasThumbnailFromText, removeTitle } from '~/utils/typography';
 
 export const useNormalizePost = (originalPost: OriginalPost): Post => {
 
@@ -7,10 +8,15 @@ export const useNormalizePost = (originalPost: OriginalPost): Post => {
     ...originalPost,
     title: getTitle(originalPost),
     contentOriginal: originalPost.content,
+    contentBody: contentBody(originalPost),
+    hasThumbnail: hasThumbnail(originalPost),
     thumbnail: thumbnail(originalPost),
     permalink: permalink(originalPost),
     editlink: editlink(originalPost),
     sociallink: '/',
+    createdDate: dayjs(originalPost.createdAt.toDate()),
+    updatedDate: dayjs(originalPost.updatedAt.toDate()),
+    publishedDate: dayjs(originalPost.publishedAt.toDate()),
   }
 
   return post;
@@ -23,7 +29,13 @@ const editlink = (post: Partial<Post>): string => {
   return `/home/${postType}/edit/${post.id}`
 }
 
-export function thumbnail(post: OriginalPost): string {
+const contentBody = (post: Partial<Post>): string => {
+  return post?.content ? removeTitle(post.content) : '';
+}
+
+const hasThumbnail = (post: OriginalPost): boolean => hasThumbnailFromText(post.content);
+
+export const thumbnail = (post: OriginalPost): string => {
   const thumbnailFromText = getThumbnailFromText(post?.content);
   if (thumbnailFromText) return thumbnailFromText;
 
@@ -31,3 +43,4 @@ export function thumbnail(post: OriginalPost): string {
 
   return '';
 }
+

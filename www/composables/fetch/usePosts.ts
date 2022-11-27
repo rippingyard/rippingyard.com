@@ -1,4 +1,4 @@
-﻿import { QueryParams, useCachedQuery } from './useCachedQuery';
+﻿import { QueryParams, useCachedDocs } from '../firestore/useCachedDocs';
 import { OriginalPost } from '~/schemas/post';
 
 export const usePosts = (args: Omit<QueryParams, 'collection'>) => {
@@ -14,7 +14,7 @@ export const usePosts = (args: Omit<QueryParams, 'collection'>) => {
 
   // Query
   onMounted(() => {
-    result.value = useCachedQuery<OriginalPost>({
+    result.value = useCachedDocs<OriginalPost>({
       ...args,
       collection: 'posts',
       where: [

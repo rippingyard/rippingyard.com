@@ -1,21 +1,18 @@
 ﻿<template>
-  <BlocksMain>
-    <p v-if="auth.isAuthenticated">認証済み</p>
-    <p v-else>未認証</p>
-    <AtomsTitle>Login</AtomsTitle>
-    <OrganismsLoginForm />
+  <BlockMain>
+    <BlockHeading>
+      <AtomTitle>LOGIN<small>ログイン</small></AtomTitle>
+    </BlockHeading>
+    <OrganismLoginForm />
     <div class="footer">
       <p>
         パスワードを忘れた場合は
         <nuxt-link to="/password/reset">こちら</nuxt-link>
       </p>
     </div>
-  </BlocksMain>
+  </BlockMain>
 </template>
 <script lang="ts" setup>
-import { useAuth } from '~/composables/firebase/useAuth';
-
-const auth = useAuth();
 
 // import Vue from 'vue'
 // import { mapGetters } from 'vuex'

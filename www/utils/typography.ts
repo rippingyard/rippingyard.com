@@ -1,7 +1,5 @@
 ﻿// import _ from 'lodash'
-// import urlParse from 'url-parse'
-// import queryString from 'query-string'
-import { parse } from 'qs';
+// import { parse } from 'qs';
 import DOMPurify from 'dompurify';
 import { OriginalPost, Post } from '~/schemas/post';
 
@@ -52,9 +50,9 @@ export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' |
   return nameObject[lang] || ''
 }
 
-// export const hasThumbnailFromText = (str: string): boolean => {
-//   return !!getThumbnailFromText(str)
-// }
+export const hasThumbnailFromText = (str: string): boolean => {
+  return !!getThumbnailFromText(str)
+}
 
 export const getThumbnailFromText = (str: string, isOwn: boolean = false): string => {
   if (!str) return ''
@@ -70,17 +68,16 @@ export const getThumbnailFromText = (str: string, isOwn: boolean = false): strin
   if (!urls) return ''
 
   for (const url of urls) {
-    const urlInfo = parse(url);
-    if (!urlInfo.query) continue;
-    const queries = parse(urlInfo.query.toString())
+    const urlInfo = new URL(url);
+    // if (!urlInfo.search) continue;
 
     switch (urlInfo.hostname) {
       case 'youtube.com':
       case 'jp.youtube.com':
       case 'www.youtube.com':
-        if (queries.v) {
+        if (urlInfo.searchParams.has('v')) {
           // console.log('youtubeId', queries.v)
-          image = `https://i.ytimg.com/vi/${queries.v}/hqdefault.jpg`
+          image = `https://i.ytimg.com/vi/${urlInfo.searchParams.get('v')}/hqdefault.jpg`
         }
         break
     }
@@ -101,10 +98,10 @@ export const getSummary = (str: string, length = 140) => {
   return str.substr(0, length) + tail
 }
 
-// export const getTokens = (str: string) => {
-//   str = removeHtmlTags(str)
-//   return str ? str.match(/.{3}/g) : []
-// }
+export const getTokens = (str: string) => {
+  str = removeHtmlTags(str);
+  return str ? str.match(/.{3}/g) : [];
+}
 
 export const getLength = (str: string) => {
   return !str ? 0 : removeHtmlTags(str).length
@@ -163,85 +160,88 @@ export function extractUrls(content: string): string[] {
   return filteredUrls.sort()
 }
 
-// export function renderWidgets(content: string) {
-//   if (!content) return ''
+export const renderWidgets = (content: string) => {
+  if (!content) return ''
 
-//   // const contentPlain = stripTags(content)
-//   const urls = extractUrls(content)
-//   if (!urls) return content
+  // const contentPlain = stripTags(content)
+  const urls = extractUrls(content)
+  if (!urls) return content
 
-//   content = content.replace(/"http/g, '"[http]')
+  content = content.replace(/"http/g, '"[http]')
 
-//   urls.reverse()
+  urls.reverse()
 
-//   let urlInfo: urlParse
-//   let queries = null
-//   let html = ''
+  let urlInfo: URL;
+  let html = ''
 
-//   urls.forEach(url => {
-//     html = url
-//     urlInfo = urlParse(url)
-//     queries = queryString.parse(urlInfo.query.toString())
+  urls.forEach(url => {
+    html = url;
+    urlInfo = new URL(url);
+    console.log('parsed url', urlInfo);
 
-//     switch (urlInfo.hostname) {
-//       case 'youtube.com':
-//       case 'jp.youtube.com':
-//       case 'www.youtube.com':
-//         if (queries.v) {
-//           // console.log('youtubeId', queries.v)
-//           html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${queries.v}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
-//         }
-//         break
+    switch (urlInfo.hostname) {
+      case 'youtube.com':
+      case 'jp.youtube.com':
+      case 'www.youtube.com':
+        if (urlInfo.searchParams.has('v')) {
+          console.log('youtubeId', urlInfo.searchParams.get('v'));
+          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get('v')}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`
+        }
+        break
 
-//       default:
-//         html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
-//         break
-//     }
+      default:
+        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
+        break
+    }
 
-//     content = content.replace(url, html)
-//   })
+    content = content.replace(url, html)
+  })
 
-//   content = content.replace(/"\[http\]/g, '"http')
+  content = content.replace(/"\[http\]/g, '"http')
 
-//   return content
-// }
+  return content
+}
 
-// export function sanitize(content: string) {
-//   return !content
-//     ? ''
-//     : sanitizeHtml(content, {
-//       allowedTags: [
-//         'h1',
-//         'h2',
-//         'h3',
-//         'h4',
-//         'h5',
-//         'h6',
-//         'p',
-//         'div',
-//         'strong',
-//         'b',
-//         'i',
-//         'em',
-//         'a',
-//         'img',
-//         'blockquote',
-//         'pre',
-//         'code',
-//         'mark',
-//         'hr',
-//         'ul',
-//         'ol',
-//         'li',
-//         'br',
-//       ],
-//       allowedAttributes: {
-//         div: ['class'],
-//         a: ['href', 'name', 'target'],
-//         img: ['src', 'alt', 'title'],
-//       },
-//     })
-// }
+export function sanitize(content: string) {
+  return !content
+    ? ''
+    : DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: [
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'p',
+        'div',
+        'strong',
+        'b',
+        'i',
+        'em',
+        'a',
+        'img',
+        'blockquote',
+        'pre',
+        'code',
+        'mark',
+        'hr',
+        'ul',
+        'ol',
+        'li',
+        'br',
+      ],
+      ALLOWED_ATTR: [
+        'class',
+        'href',
+        'name',
+        'target',
+        'src',
+        'alt',
+        'title'
+      ],
+    })
+}
 
 export const decodeEntities = (str: string) => {
   if (!str) return str

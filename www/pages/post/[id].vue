@@ -1,30 +1,18 @@
 ﻿<template>
-  <BlocksMain>
-    <div class="container">
-      <div v-if="result.isLoading" class="loading">
-        <IconsLoading />
-      </div>
-      <span v-else-if="result.isError">Error: {{ result.error.message }}</span>
-      <ul v-else>
-        <li v-for="post in result.data" :key="post.id">
-          <BlocksWysiwyg :content="post.content" />
-          <p>{{ post.type }}</p>
-        </li>
-      </ul>
+  <BlockMain :is-cliff="true">
+    <div v-if="result.isLoading" class="loading">
+      <IconLoading />
     </div>
-  </BlocksMain>
+    <span v-else-if="result.isError">Error: {{ result.error.message }}</span>
+    <ArticlePost v-else :post="result.data" />
+  </BlockMain>
 </template>
 <script lang="ts" setup>
-import { usePosts } from '~/composables/firestore/usePosts'
+import { usePost } from '~~/composables/fetch/usePost'
 
 const route = useRoute();
 
-const result = usePosts({
-  where: [
-    { key: 'id', val: route.params.id as string }
-  ],
-  limit: 1,
-});
+const result = usePost(route.params.id as string);
 </script>
 <style lang="scss" scoped>
 .container {

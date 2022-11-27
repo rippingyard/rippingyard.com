@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="item">
+  <div v-if="post" class="item">
     <div class="inner">
       <div class="content column c80">
         <h1 class="title">
@@ -22,7 +22,7 @@
       <EntitySimpleList :entities="post.entities" />
     </div> -->
     <p class="footer">
-      <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
+      <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
     </p>
   </div>
 </template>
@@ -31,7 +31,7 @@ import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post } from '~/schemas/post';
 import { getSummary } from '~/utils/typography';
 
-const post = ref<any>({});
+const post = ref<Post>();
 const props = defineProps<{
   post: Post;
 }>();
@@ -40,7 +40,7 @@ onMounted(() => {
   post.value = useNormalizePost(props.post);
 });
 
-const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
+const summary = computed(() => post.value && post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 
 </script>
 <style lang="scss" scoped>

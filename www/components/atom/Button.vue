@@ -10,8 +10,6 @@ const props = defineProps<{
   centered?: boolean;
 }>();
 
-console.log('props', props)
-
 const classes = {
   expanded: props.expanded,
   centered: props.centered,

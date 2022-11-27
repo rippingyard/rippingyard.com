@@ -5,18 +5,19 @@
         {{ error }}
       </li>
     </ul>
-    <BlocksForm label="メールアドレス" :errors="errors.email">
-      <FormsEmail v-model="email" placeholder="メールアドレスを入力" @click="removeError('email')" />
-    </BlocksForm>
-    <BlocksForm label="パスワード" :errors="errors.password">
-      <FormsPassword v-model="password" placeholder="パスワードを入力" @click="removeError('password')" />
-    </BlocksForm>
-    <BlocksForm>
-      <AtomsButton>ログイン</AtomsButton>
-    </BlocksForm>
+    <BlockForm label="メールアドレス" :errors="errors.email">
+      <FormEmail v-model="email" placeholder="メールアドレスを入力" @click="removeError('email')" />
+    </BlockForm>
+    <BlockForm label="パスワード" :errors="errors.password">
+      <FormPassword v-model="password" placeholder="パスワードを入力" @click="removeError('password')" />
+    </BlockForm>
+    <BlockForm>
+      <AtomButton>ログイン</AtomButton>
+    </BlockForm>
   </form>
 </template>
 <script lang="ts" setup>
+import { inject } from 'vue';
 import { useLogin } from '~/composables/firebase/useLogin';
 import { authValidationErrors } from '~/schemas/auth';
 
@@ -26,6 +27,7 @@ const props = defineProps<{
 }>();
 
 const { validationErrors } = authValidationErrors();
+const { openToast } = inject<any>('toast');
 
 const email = ref('');
 const password = ref('');
@@ -33,19 +35,24 @@ const errors = ref(validationErrors);
 
 const login = async (email: string, password: string) => {
   const res = await useLogin({ email, password });
-  if (res?.errors) errors.value = res?.errors.value;
+  if (res?.errors) {
+    errors.value = res?.errors.value;
+  } else {
+    openToast('ログインしました');
+  }
 };
 
 const removeError = (key: string) => {
-  if (errors.value._total.length === 0) return;
-  console.log('validationErrors', validationErrors);
+  // if (errors.value._total.length === 0) return;
+  // console.log('validationErrors', validationErrors);
   setTimeout(() => {
-    errors.value = validationErrors;
+    const newErrors = errors.value;
+    newErrors._total = [];
+    if (key) newErrors[key] = [];
+    errors.value = newErrors;
   }, 1200);
 }
 
-</script>
-<script lang="ts">
 //   computed: {
 //     reverse() {
 //       return this.theme === 'dark' ? 'light' : 'dark'

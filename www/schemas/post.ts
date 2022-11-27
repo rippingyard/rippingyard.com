@@ -1,4 +1,5 @@
-﻿import { DocumentData, Timestamp } from '@firebase/firestore-types';
+﻿import { Dayjs } from 'dayjs';
+import { DocumentData, Timestamp } from '@firebase/firestore-types';
 import { User } from '~/schemas/user';
 
 export type OriginalPost = {
@@ -27,8 +28,13 @@ export type OriginalPost = {
 export type Post = OriginalPost & {
   title: string
   contentOriginal: string
+  contentBody: string
   thumbnail: string
+  hasThumbnail: boolean
   permalink: string
   editlink: string
   sociallink?: string
+  createdDate: Dayjs
+  updatedDate: Dayjs
+  publishedDate: Dayjs
 }

@@ -24,7 +24,7 @@ export type QueryParams = {
   };
 };
 
-export const getCachedQuery = async <T>(args: QueryParams): Promise<T[]> => {
+export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
   const { fb } = useFirebase();
   const data: T[] = [];
 
@@ -52,8 +52,8 @@ export const getCachedQuery = async <T>(args: QueryParams): Promise<T[]> => {
   return data;
 }
 
-export const useCachedQuery = <T>(args: QueryParams) => {
-  return useQuery({ queryKey: cacheKey(args), queryFn: () => getCachedQuery<T>(args) });
+export const useCachedDocs = <T>(args: QueryParams) => {
+  return useQuery({ queryKey: cacheKey(args), queryFn: () => getCachedDocs<T>(args) });
 }
 
 const cacheKey = (args: QueryParams): any[] => {

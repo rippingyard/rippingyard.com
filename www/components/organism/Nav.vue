@@ -3,23 +3,23 @@
     <div class="inner">
       <div class="logo" @mouseenter="onHoverLogo()" @mouseleave="onHoverLogo(false)">
         <span @click="toggleNav()">
-          <IconsLogoType />
+          <IconLogoType />
         </span>
-        <IconsLines :is-black="isHoverLogo" />
+        <IconLines :is-black="isHoverLogo" />
       </div>
       <div v-show="!isOpen" class="body">
-        <!-- <ul class="links">
+        <ul class="links">
           <li>
             <nuxt-link to="/">TOP<small>トップ</small></nuxt-link>
           </li>
           <li>
             <nuxt-link to="/posts/">POSTS<small>記事一覧</small></nuxt-link>
           </li>
-          <li>
+          <!--<li>
             <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
-          </li>
+          </li>-->
           <client-only>
-            <li v-if="isAuthenticated">
+            <li v-if="auth.isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
               <ul class="sublinks">
                 <li>
@@ -36,13 +36,11 @@
                 </li>
               </ul>
             </li>
-          </client-only>
-          <client-only>
-            <li v-if="!isAuthenticated">
+            <li v-else>
               <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
             </li>
           </client-only>
-        </ul>-->
+        </ul>
       </div>
       <div v-show="isOpen" class="body">
         <div class="close" @click="closeNav" />
@@ -51,10 +49,10 @@
         <client-only>
           <ul class="triggers">
             <li @click="onClickTab('search')">
-              <fa-icon icon="search" class="icon" />
+              <IconSearch />
             </li>
             <li @click="onClickTab('dashboard')">
-              <fa-icon icon="list" class="icon" />
+              <IconList />
             </li>
             <!-- <li v-if="isAuthenticated && canPostArticle" @click="onClickTab('post')">
               <fa-icon icon="plus-circle" class="icon" />
@@ -71,19 +69,19 @@
         <li :class="{ active: isActiveTab('dashboard') }" @click="onClickTab('dashboard')">
           <span class="pconly">ダッシュボード<small>Dashboard</small></span>
           <span class="sponly">
-            <fa-icon icon="tachometer-alt" class="icon" />
+            <IconGauge />
           </span>
         </li>
         <li :class="{ active: isActiveTab('notification') }" @click="onClickTab('notification')">
           <span class="pconly">新着記事<small>Latest</small></span>
           <span class="sponly">
-            <fa-icon icon="bell" class="icon" />
+            <IconBell />
           </span>
         </li>
         <li :class="{ active: isActiveTab('search') }" @click="onClickTab('search')">
           <span class="pconly">検索<small>Search</small></span>
           <span class="sponly">
-            <fa-icon icon="search" class="icon" />
+            <IconSearch />
           </span>
         </li>
         <!--<client-only>
@@ -219,6 +217,14 @@
   </nav>
 </template>
 <script lang="ts" setup>
+import { inject } from 'vue';
+import { useAuth } from '~/composables/firebase/useAuth';
+import { useLogout } from '~/composables/firebase/useLogout';
+
+const auth = useAuth();
+
+const { openToast } = inject<any>('toast');
+
 // import { Post } from '~/types/post'
 
 // type DataType = {
@@ -234,8 +240,6 @@ const isHoverLogo = ref(false);
 
 //   data(): DataType {
 //     return {
-//       activeTab: 'dashboard',
-//       isOpen: false,
 //       canPostArticle: false,
 //       unsubscriber: () => {},
 //     }
@@ -281,7 +285,7 @@ const closeNav = (): void => {
   isOpen.value = false
 };
 const onClickTab = (tab: TabMode): void => {
-  openNav()
+  openNav();
   activeTab.value = tab;
 };
 const onHoverLogo = (isHover = true): void => {
@@ -290,11 +294,11 @@ const onHoverLogo = (isHover = true): void => {
 const isActiveTab = (tab: TabMode): boolean => {
   return activeTab.value === tab
 };
-// const logout = (): void => {
-//   this.signout()
-//   this.snack('ログアウトしました')
-//   this.$router.push('/')
-// };
+const logout = async (): Promise<void> => {
+  await useLogout()
+  openToast('ログアウトしました');
+  // this.$router.push('/')
+};
 </script>
 <style lang="scss" scoped>
 .nav {
@@ -401,6 +405,8 @@ const isActiveTab = (tab: TabMode): boolean => {
 
         a,
         span {
+          display: block;
+
           >.icon {
             margin-right: 10px;
           }
@@ -489,6 +495,8 @@ const isActiveTab = (tab: TabMode): boolean => {
 
         a,
         span {
+          display: block;
+
           &:hover {
             cursor: pointer;
             color: $orange;

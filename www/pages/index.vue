@@ -1,7 +1,7 @@
 ﻿<template>
-  <BlocksMain>
-    <OrganismsPostList />
-  </BlocksMain>
+  <BlockMain>
+    <OrganismPostList />
+  </BlockMain>
 </template>
 <script lang="ts" setup>
 </script>
