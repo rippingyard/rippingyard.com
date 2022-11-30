@@ -10,8 +10,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const bgImage = computed(() => `background-image:url(${props.image})`);
-
-console.log('thumbnail', props.image, bgImage);
 </script>
 <style lang="scss" scoped>
 .image {
@@ -27,7 +25,7 @@ console.log('thumbnail', props.image, bgImage);
 
   @include until-desktop {
     flex-direction: row;
-    padding: $gap / 2 0 0;
+    padding: $gap * 0.5 0 0;
     width: 100%;
     height: 50vw;
     border-radius: 0;

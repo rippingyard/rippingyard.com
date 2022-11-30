@@ -23,18 +23,6 @@ export const useLogin = async (args: Auth): Promise<any> => {
 
     return await signInWithEmailAndPassword(auth, email, password);
 
-    //     const { user } = res
-    //     const userRef = await this.$fire.firestore
-    //       .collection('users')
-    //       .doc(user.uid)
-
-    //     // TODO: isDeletedの時はエラー
-    //     // TODO: isBannedの時はエラー
-
-    //     userRef.get().then((doc: { data: () => void }) => {
-    //       commit('setMe', doc.data())
-    //     })
-
   } catch (e: any) {
     console.error('login error', e)
 

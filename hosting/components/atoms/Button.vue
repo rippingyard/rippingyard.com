@@ -22,7 +22,7 @@ export default Vue.extend({
     },
     isLoading: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
 })

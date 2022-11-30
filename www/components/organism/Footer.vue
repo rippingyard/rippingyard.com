@@ -42,7 +42,7 @@ footer {
 
 // .block.container {
 //   @include mobile {
-//     padding: 50px ($gap / 2) 120px;
+//     padding: 50px ($gap * 0.5) 120px;
 //   }
 // }
 

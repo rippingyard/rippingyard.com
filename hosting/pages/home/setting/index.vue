@@ -1,5 +1,5 @@
 <template>
-  <main class="page">
+  <main class="frame page">
     <ManageHeading label="ユーザー設定" />
     <div class="form">
       <div class="columns">

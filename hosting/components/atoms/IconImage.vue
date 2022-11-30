@@ -25,7 +25,7 @@ export default Vue.extend({
   border-radius: 999999px;
   display: block;
   margin: auto;
-  border: 1px solid $gray-black;
+  // border: 1px solid $gray-black;
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -36,7 +36,7 @@ export default Vue.extend({
     width: 100%;
     height: 50vw;
     border-radius: 0;
-    border: none;
+    // border: none;
     margin: 0;
   }
 }

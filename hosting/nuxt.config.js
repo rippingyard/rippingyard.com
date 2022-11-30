@@ -1,4 +1,4 @@
-import fs from 'fs'
+// import fs from 'fs'
 import axios from 'axios'
 
 let fbconfigEnv = process.env.FIREBASE_CONFIG
@@ -208,17 +208,17 @@ export default {
                 emulatorHost: 'localhost',
               }
               : true,
-          messaging: {
-            createServiceWorker: true,
-            // actions: [
-            //   {
-            //     action: 'randomName',
-            //     url: 'randomUrl'
-            //   }
-            // ],
-            inject: fs.readFileSync('./fcm.js', 'utf8'),
-            fcmPublicVapidKey: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY
-          },
+          // messaging: {
+          //   createServiceWorker: true,
+          //   // actions: [
+          //   //   {
+          //   //     action: 'randomName',
+          //   //     url: 'randomUrl'
+          //   //   }
+          //   // ],
+          //   inject: fs.readFileSync('./fcm.js', 'utf8'),
+          //   fcmPublicVapidKey: process.env.FCM_VAPID_KEY || require('./env.json').FCM_VAPID_KEY
+          // },
         },
         // onFirebaseHosting: true,
       },
@@ -241,7 +241,10 @@ export default {
     // https://fontawesome.com/icons?d=gallery&m=free
     icons: {
       solid: [
+        'faAngleDown',
+        'faAngleLeft',
         'faAngleRight',
+        'faAngleUp',
         'faBell',
         'faBold',
         'faClock',

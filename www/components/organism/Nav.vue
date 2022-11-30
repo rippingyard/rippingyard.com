@@ -8,6 +8,15 @@
         <IconLines :is-black="isHoverLogo" />
       </div>
       <div v-show="!isOpen" class="body">
+        <!-- TEST -->
+        <!-- <p v-if="me.isLoading">
+          自分ローディング中
+        </p>
+        <p v-else>
+          {{ me.data.displayName }}
+        </p> -->
+        <p>->{{ isAuthenticated }}</p>
+        <p v-if="isAuthenticated">u: {{ user?.displayName }}</p>
         <ul class="links">
           <li>
             <nuxt-link to="/">TOP<small>トップ</small></nuxt-link>
@@ -19,7 +28,7 @@
             <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
           </li>-->
           <client-only>
-            <li v-if="auth.isAuthenticated">
+            <li v-if="isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
               <ul class="sublinks">
                 <li>
@@ -220,8 +229,10 @@
 import { inject } from 'vue';
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
+// import { useMe } from '~~/composables/fetch/useMe';
 
-const auth = useAuth();
+const { isAuthenticated, user } = useAuth();
+// const me = useMe();
 
 const { openToast } = inject<any>('toast');
 

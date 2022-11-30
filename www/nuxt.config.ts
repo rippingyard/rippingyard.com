@@ -14,7 +14,6 @@ export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
     // '@tanstack/vue-query',
-    // '@vueuse/firebase',
   ],
   buildModules: [
     '@nuxtjs/style-resources',

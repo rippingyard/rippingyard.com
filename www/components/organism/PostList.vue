@@ -1,17 +1,18 @@
 ﻿<template>
   <div class="container">
-    <BlockLoading v-if="result.isLoading" />
-    <BlockError v-else-if="result.isError" :error="result.error" />
-    <ul v-else>
-      <li v-for="post in result.data" :key="post.id">
-        <component :is="props.component || ItemPost" :post="post" />
-      </li>
-    </ul>
+    <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+      <ul>
+        <li v-for="post in data as OriginalPost[]" :key="post.id">
+          <component :is="props.component || ItemPost" :post="post" />
+        </li>
+      </ul>
+    </BlockLoading>
   </div>
 </template>
 <script lang="ts" setup>
 import ItemPost from '~~/components/item/Post.vue';
 import { usePosts } from '~~/composables/fetch/usePosts';
+import { OriginalPost } from '~~/schemas/post';
 
 type Props = {
   component?: typeof ItemPost;
@@ -19,13 +20,14 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const result = usePosts({
+const { isLoading, isError, data, error } = usePosts({
   where: [
     { key: 'type', val: 'article' },
   ],
   limit: 9,
   orderBy: { key: 'publishedAt' },
 });
+
 </script>
 <style lang="scss" scoped>
 .container {

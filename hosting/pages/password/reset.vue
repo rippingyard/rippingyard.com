@@ -1,6 +1,5 @@
 ﻿<template>
-  <main class="block container">
-    <Header />
+  <main class="frame">
     <h1 class="title">パスワードをリセットする</h1>
     <section class="instruction">
       <p>

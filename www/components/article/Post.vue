@@ -63,19 +63,24 @@
 </template>
 <script lang="ts" setup>
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
-import { Post } from '~/schemas/post';
+import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
 
 const post = ref<Post>();
 const content = ref<string>('');
 const props = defineProps<{
-  post: Post;
+  post: OriginalPost;
 }>();
 
 onMounted(() => {
+  // console.log('props.post', props.post);
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
+});
+
+watch(props.post, () => {
+  console.log('props.post', props.post);
 });
 
 const title = computed(() => post.value && post.value.content ? getTitle(post.value.content) : '');

@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="post.permalink">
+  <nuxt-link :to="post.permalink" :class="className">
     <div class="inner">
       <h1 v-if="hasTitle || hasParentTitle" class="title">
         {{ title }}
@@ -11,7 +11,7 @@
         <ItemCard v-if="post.parent" :item="post.parent" :show-image="false" />
       </div>
       <div class="wysiwyg">
-        <div class="summary" v-html="summary"></div>
+        <div class="summary" v-html="summary" />
       </div>
       <p class="footer">
         <fa-icon icon="clock" class="icon" />{{ post.publishedAt }}
@@ -22,6 +22,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { hasTitle, getTitle, getSummary } from '~/plugins/typography'
+import { numberByString } from '~/plugins/util'
 import { getThumbnail, hasThumbnail } from '~/services/post'
 
 export default Vue.extend({
@@ -58,6 +59,9 @@ export default Vue.extend({
     },
     thumbnail(): string {
       return getThumbnail(this.post)
+    },
+    className(): string {
+      return `bgcolor-${numberByString(this.post.id) % 4}`
     },
   },
 })
@@ -120,12 +124,15 @@ a {
   text-decoration: none;
   display: block;
   position: relative;
-  border-radius: 16px;
-  background-color: $gray;
+  // border: 1px solid $gray;
+  // border-radius: 16px;
+  // background-color: $gray;
   transition: background-color 500ms 0s ease-out;
+
   &:hover {
     color: $white;
     background-color: $orange;
+    border-color: $red;
     .footer {
       color: $white;
       &::before {

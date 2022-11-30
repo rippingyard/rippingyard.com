@@ -1,18 +1,16 @@
 ﻿<template>
   <BlockMain :is-cliff="true">
-    <div v-if="result.isLoading" class="loading">
-      <IconLoading />
-    </div>
-    <span v-else-if="result.isError">Error: {{ result.error.message }}</span>
-    <ArticlePost v-else :post="result.data" />
+    <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+      <ArticlePost v-if="data" :post="data" />
+    </BlockLoading>
   </BlockMain>
 </template>
 <script lang="ts" setup>
-import { usePost } from '~~/composables/fetch/usePost'
+import { usePost } from '~~/composables/fetch/usePost';
 
 const route = useRoute();
 
-const result = usePost(route.params.id as string);
+const { isLoading, isError, error, data } = usePost(route.params.id as string);
 </script>
 <style lang="scss" scoped>
 .container {

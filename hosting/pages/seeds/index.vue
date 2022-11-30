@@ -1,6 +1,5 @@
 ﻿<template>
-  <section class="block container">
-    <Header />
+  <section class="frame">
     <ul>
       <li v-for="seed in seeds" :key="seed.id">
         <nuxt-link :to="permalink(seed)">

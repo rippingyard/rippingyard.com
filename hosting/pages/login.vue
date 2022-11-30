@@ -1,5 +1,5 @@
 <template>
-  <main class="block container">
+  <main class="frame">
     <Header />
     <h1 class="title">Login</h1>
     <LoginForm />

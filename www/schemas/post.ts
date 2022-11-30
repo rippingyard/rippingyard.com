@@ -31,6 +31,7 @@ export type Post = OriginalPost & {
   contentBody: string
   thumbnail: string
   hasThumbnail: boolean
+  autoCode: number
   permalink: string
   editlink: string
   sociallink?: string

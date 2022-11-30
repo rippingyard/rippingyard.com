@@ -8,7 +8,8 @@
   getDoc,
   DocumentData,
 } from 'firebase/firestore';
-import { useQuery } from "@tanstack/vue-query";
+import { isServer, useQuery } from '@tanstack/vue-query';
+import { useCacheKey } from './useCacheKey';
 import { useFirebase } from '~/composables/firebase/useFirebase';
 
 export type QueryParams = {
@@ -36,15 +37,6 @@ export const getCachedDoc = async <T>(args: QueryParams): Promise<T> => {
 
   const q = doc(db, collection, id);
 
-  // if (args?.where) {
-  //   for (const w of args.where) {
-  //     q = query(q, where(w.key, w?.op || '==', w.val))
-  //   }
-  // }
-
-  // if (args?.limit) q = query(q, limit(args.limit));
-  // if (args?.orderBy) q = query(q, orderBy(args.orderBy.key, args.orderBy.order || 'desc'));
-
   const docSnapshot = await getDoc<DocumentData>(q);
 
   if (docSnapshot.exists()) {
@@ -55,9 +47,13 @@ export const getCachedDoc = async <T>(args: QueryParams): Promise<T> => {
 }
 
 export const useCachedDoc = <T>(args: QueryParams) => {
-  return useQuery({ queryKey: cacheKey(args), queryFn: () => getCachedDoc<T>(args) });
-}
 
-const cacheKey = (args: QueryParams): any[] => {
-  return [args];
+  if (isServer) return {
+    isLoading: ref(true),
+    isError: ref(false),
+    error: ref(''),
+    data: ref<T>(),
+  };
+
+  return useQuery({ queryKey: useCacheKey<QueryParams>(args), queryFn: () => getCachedDoc<T>(args) });
 }

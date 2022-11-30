@@ -1,6 +1,5 @@
 <template>
-  <main>
-    <Header />
+  <main class="frame">
     <div class="heading">
       <h1>{{ getTitle }}</h1>
     </div>

@@ -1,22 +1,17 @@
-﻿import { getAuth, onAuthStateChanged } from 'firebase/auth';
+﻿import { getAuth } from 'firebase/auth';
 import { useAuth as useFirebaseAuth } from '@vueuse/firebase/useAuth';
-import { FirebaseApp } from 'firebase/app';
+import { useFirebase } from './useFirebase';
 
-export const useAuth = () => {
-  const result = ref<any>({
-    isAuthenticated: false,
-    user: undefined,
-  });
+export const useAuth = (): ReturnType<typeof useFirebaseAuth> => {
+  const { fb } = useFirebase();
 
-  onMounted(() => {
-    const auth = getAuth(useState<FirebaseApp>('fb').value);
-    result.value = useFirebaseAuth(auth);
+  if (!fb) return {
+    isAuthenticated: computed(() => false),
+    user: ref(null),
+  };
 
-    onAuthStateChanged(auth, user => {
-      result.value = useFirebaseAuth(auth);
-      console.log('onAuthStateChanged', result.value, user)
-    });
-  })
+  const auth = getAuth(fb);
 
-  return result;
+  return useFirebaseAuth(auth);
+
 }

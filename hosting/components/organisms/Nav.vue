@@ -331,17 +331,17 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .nav {
   position: fixed;
-  top: $navMargin;
+  top: $navMargin - 20px;
   left: calc(50vw - #{($mainSize / 2) + $navSize + $navMargin});
   width: $navSize;
-  height: calc(100vh - #{$navMargin * 1.5});
+  height: calc(100vh - #{$navMargin});
   z-index: 9999;
 
   > .inner {
     display: flex;
     flex-direction: column;
     width: $navSize;
-    height: calc(100vh - #{$navMargin * 1.5});
+    height: calc(100vh - #{$navMargin});
     box-sizing: content-box;
     position: relative;
     z-index: 10;
@@ -351,7 +351,7 @@ export default Vue.extend({
     display: none;
     position: absolute;
     left: $navSize + ($navMargin / 2);
-    top: $navMargin / -2;
+    top: 0;
     z-index: 20;
     // width: 100%;
     width: $mainSize + $navMargin + (($navSize + $navMargin) * 2) - $navSize -
@@ -455,6 +455,7 @@ export default Vue.extend({
     flex-shrink: 0;
     width: $navSize;
     height: $navSize;
+    background-color: $white;
     .box {
       width: 5px;
       height: 7px;
@@ -618,6 +619,7 @@ export default Vue.extend({
     width: calc(100% - #{$navMargin * 2});
 
     .logo {
+      background-color: $yellow;
       .box {
         background-color: $black;
       }
@@ -692,14 +694,24 @@ export default Vue.extend({
 
     .foot {
       position: absolute;
-      width: calc(100vw - #{$navMargin / 2});
-      bottom: $navMargin / 4;
-      left: $navMargin / 4;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      // bottom: $navMargin / 4;
+      // left: $navMargin / 4;
       .triggers {
-        background-color: $yellow;
+        background-color: $white;
         height: $navMargin;
         display: flex;
         align-items: center;
+        border: none;
+        border-top: 1px solid $black;
+        > li {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
 

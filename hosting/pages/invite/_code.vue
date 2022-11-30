@@ -1,5 +1,5 @@
 ﻿<template>
-  <main class="block container">
+  <main class="frame">
     <Header />
     <h1 class="title">ようこそ！ripping yardへ！</h1>
     <div v-if="parent" class="information">

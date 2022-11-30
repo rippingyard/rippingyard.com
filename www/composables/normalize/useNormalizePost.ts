@@ -1,15 +1,16 @@
 ﻿import dayjs from 'dayjs';
 import { Post, OriginalPost } from '~/schemas/post';
 import { getThumbnailFromText, getTitle, hasThumbnailFromText, removeTitle } from '~/utils/typography';
+import { numberByString } from '~~/utils';
 
 export const useNormalizePost = (originalPost: OriginalPost): Post => {
-
-  const post: Post = {
+  return {
     ...originalPost,
     title: getTitle(originalPost),
     contentOriginal: originalPost.content,
     contentBody: contentBody(originalPost),
     hasThumbnail: hasThumbnail(originalPost),
+    autoCode: numberByString(originalPost.id),
     thumbnail: thumbnail(originalPost),
     permalink: permalink(originalPost),
     editlink: editlink(originalPost),
@@ -17,9 +18,7 @@ export const useNormalizePost = (originalPost: OriginalPost): Post => {
     createdDate: dayjs(originalPost.createdAt.toDate()),
     updatedDate: dayjs(originalPost.updatedAt.toDate()),
     publishedDate: dayjs(originalPost.publishedAt.toDate()),
-  }
-
-  return post;
+  };
 }
 
 const permalink = (post: Partial<Post>): string => `/post/${post.id}`;

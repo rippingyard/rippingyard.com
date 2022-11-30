@@ -1,5 +1,5 @@
 ﻿<template>
-  <div>
+  <div class="frame">
     <div class="header">
       <div class="brand">
         <SvgLogo />
