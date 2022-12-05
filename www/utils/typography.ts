@@ -35,7 +35,7 @@ export const getTitle = (str: string | Post | OriginalPost, length: number = 32,
     const htags = getHtags(str.content)
     if (htags && htags[0] !== '') return decodeEntities(htags[0])
     if (str.parent) {
-      if (str.parent.name.ja) return str.parent.name.ja
+      if (str.parent?.name?.ja) return str.parent.name.ja
     }
     return alt || getSummary(str.content, length)
   }

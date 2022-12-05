@@ -7,37 +7,6 @@
     <BlockToast />
   </div>
 </template>
-<script setup lang="ts">
-import { provide } from 'vue';
-
-const toast = ref<{
-  isOpen: boolean,
-  type: 'info' | 'danger',
-  message: string,
-}>({
-  isOpen: false,
-  type: 'info',
-  message: '',
-});
-
-const openToast = (message: string, isDanger = false) => {
-  toast.value = {
-    isOpen: true,
-    type: isDanger ? 'danger' : 'info',
-    message,
-  }
-}
-
-const closeToast = () => {
-  toast.value.isOpen = false;
-}
-
-provide('toast', {
-  toast,
-  openToast,
-  closeToast,
-});
-</script>
 <style lang="scss">
 html,
 body {

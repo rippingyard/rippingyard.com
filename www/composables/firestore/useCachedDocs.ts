@@ -9,21 +9,30 @@
 } from 'firebase/firestore';
 import { isServer, useQuery } from "@tanstack/vue-query";
 import { useCacheKey } from './useCacheKey';
+import { useDefaultValue } from './useDefaultValue';
 import { useFirebase } from '~/composables/firebase/useFirebase';
+
+type WhereOp = '==' | 'in';
+type WhereValue = string | number | boolean | string[];
+type OrderType = 'desc' | 'asc';
 
 export type QueryParams = {
   collection: string;
   where?: {
-    key: string,
-    op?: '==',
-    val: string | number | boolean,
+    key: string;
+    op?: WhereOp;
+    val: WhereValue;
   }[];
   limit?: number;
   orderBy?: {
     key: string;
-    order?: 'desc' | 'asc';
+    order?: OrderType;
   };
 };
+
+export const defaultOp = (val: WhereValue): WhereOp => {
+  return Array.isArray(val) ? 'in' : '==';
+}
 
 export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
   const { fb } = useFirebase();
@@ -37,7 +46,7 @@ export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
 
   if (args?.where) {
     for (const w of args.where) {
-      q = query(q, where(w.key, w?.op || '==', w.val))
+      q = query(q, where(w.key, w?.op || defaultOp(w.val), w.val))
     }
   }
 
@@ -55,12 +64,7 @@ export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
 
 export const useCachedDocs = <T>(args: QueryParams) => {
 
-  if (isServer) return {
-    isLoading: ref(true),
-    isError: ref(false),
-    error: ref(''),
-    data: ref<T[]>([]),
-  };
+  if (isServer) return useDefaultValue<T[]>();
 
   return useQuery({ queryKey: useCacheKey<QueryParams>(args), queryFn: () => getCachedDocs<T>(args) });
 }

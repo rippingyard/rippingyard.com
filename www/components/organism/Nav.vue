@@ -8,15 +8,6 @@
         <IconLines :is-black="isHoverLogo" />
       </div>
       <div v-show="!isOpen" class="body">
-        <!-- TEST -->
-        <!-- <p v-if="me.isLoading">
-          自分ローディング中
-        </p>
-        <p v-else>
-          {{ me.data.displayName }}
-        </p> -->
-        <p>->{{ isAuthenticated }}</p>
-        <p v-if="isAuthenticated">u: {{ user?.displayName }}</p>
         <ul class="links">
           <li>
             <nuxt-link to="/">TOP<small>トップ</small></nuxt-link>
@@ -226,17 +217,15 @@
   </nav>
 </template>
 <script lang="ts" setup>
-import { inject } from 'vue';
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
-// import { useMe } from '~~/composables/fetch/useMe';
+import { useMe } from '~~/composables/fetch/useMe';
 
-const { isAuthenticated, user } = useAuth();
-// const me = useMe();
+const { isAuthenticated } = useAuth();
+const { me } = useMe();
+console.log('me on Nav', me);
 
-const { openToast } = inject<any>('toast');
-
-// import { Post } from '~/types/post'
+const { $openToast: openToast } = useNuxtApp();
 
 // type DataType = {
 //   canPostArticle: boolean
@@ -259,26 +248,6 @@ const isHoverLogo = ref(false);
 //     posts(): Post[] {
 //       return this.$store.state.global.posts
 //     },
-//     isAuthenticated(): boolean {
-//       return this.$isAuthenticated(this.$store)
-//     },
-//   },
-//   watch: {
-//     $route(): void {
-//       this.isOpen = false
-//     },
-//   },
-//   created() {
-//     if (process.client) {
-//       this.unsubscriber = this.$store.subscribe(async mutation => {
-//         switch (mutation.type) {
-//           case 'auth/setMe':
-//           case 'auth/removeMe':
-//             this.canPostArticle = await this.can('postArticle')
-//             break
-//         }
-//       })
-//     }
 //   },
 //   async mounted() {
 //     this.canPostArticle = await this.can('postArticle')

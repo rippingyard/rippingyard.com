@@ -17,7 +17,8 @@ export function createToken(length: number = 8) {
   return token
 }
 
-export function numberByString(str: string): number {
+export const numberByString = (str: string): number => {
+  if (!str) return 0;
   let number = 0;
   for (let i = 0; i < str.length; i++) {
     number += str.charCodeAt(i);

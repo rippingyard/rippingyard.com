@@ -4,9 +4,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { inject } from 'vue';
 
-const { toast, closeToast } = inject<any>('toast');
+const { $toast: toast, $closeToast: closeToast } = useNuxtApp();
 
 const close = () => closeToast();
 </script>

@@ -17,7 +17,7 @@
   </form>
 </template>
 <script lang="ts" setup>
-import { inject } from 'vue';
+// import { inject } from 'vue';
 import { useLogin } from '~/composables/firebase/useLogin';
 import { authValidationErrors } from '~/schemas/auth';
 
@@ -27,7 +27,7 @@ const props = defineProps<{
 }>();
 
 const { validationErrors } = authValidationErrors();
-const { openToast } = inject<any>('toast');
+const { $openToast: openToast } = useNuxtApp();
 
 const email = ref('');
 const password = ref('');

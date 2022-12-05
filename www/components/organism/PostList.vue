@@ -22,9 +22,9 @@ const props = defineProps<Props>();
 
 const { isLoading, isError, data, error } = usePosts({
   where: [
-    { key: 'type', val: 'article' },
+    { key: 'type', val: ['note', 'article'] },
   ],
-  limit: 9,
+  limit: 100,
   orderBy: { key: 'publishedAt' },
 });
 
