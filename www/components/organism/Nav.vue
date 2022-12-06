@@ -52,7 +52,7 @@
               <IconSearch />
             </li>
             <li @click="onClickTab('dashboard')">
-              <IconList />
+              <IconGauge />
             </li>
             <!-- <li v-if="isAuthenticated && canPostArticle" @click="onClickTab('post')">
               <fa-icon icon="plus-circle" class="icon" />
@@ -97,103 +97,9 @@
           </li>
         </client-only> -->
       </ul>
+      <OrganismDashboard v-if="activeTab === 'dashboard'" />
       <!--
-        <client-only>
-        <section v-if="activeTab === 'dashboard'" class="inner">
-          <NavHeader
-            title="A SMARTER WAY<br />TO RECORD OUR LIVES"
-            subtitle="生命を記録する冴えたやり方 - リッピングヤード"
-          />
-          <div v-if="isAuthenticated">
-            <div class="columns">
-              <div class="column links">
-                <ul>
-                  <li>
-                    <nuxt-link to="/">
-                      <fa-icon icon="angle-right" class="icon" />トップ
-                    </nuxt-link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <nuxt-link to="/posts/">
-                      <fa-icon icon="angle-right" class="icon" />記事一覧
-                    </nuxt-link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <nuxt-link to="/terms/">
-                      <fa-icon icon="angle-right" class="icon" />利用規約
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/privacy/">
-                      <fa-icon
-                        icon="angle-right"
-                        class="icon"
-                      />プライバシーポリシー
-                    </nuxt-link>
-                  </li>
-                </ul>
-              </div>
-              <div class="column links">
-                <ul>
-                  <li>
-                    <nuxt-link to="/home/">
-                      <fa-icon icon="angle-right" class="icon" />ホーム
-                    </nuxt-link>
-                  </li>
-                </ul>
-                <h3>POST</h3>
-                <ul>
-                  <li>
-                    <nuxt-link to="/home/posts/">
-                      <fa-icon icon="angle-right" class="icon" />投稿記事一覧
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/home/post/create/">
-                      <fa-icon icon="angle-right" class="icon" />新規投稿
-                    </nuxt-link>
-                  </li>
-                  <li v-if="true !== true">
-                    <nuxt-link to="/home/logs/">
-                      <fa-icon icon="angle-right" class="icon" />ライフログ一覧
-                    </nuxt-link>
-                  </li>
-                  <li v-if="true !== true">
-                    <nuxt-link to="/home/comments/">
-                      <fa-icon icon="angle-right" class="icon" />コメント一覧
-                    </nuxt-link>
-                  </li>
-                </ul>
-                <h3>MISC</h3>
-                <ul>
-                  <li>
-                    <nuxt-link to="/home/setting/">
-                      <fa-icon icon="angle-right" class="icon" />ユーザー設定
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/home/invite/">
-                      <fa-icon icon="angle-right" class="icon" />招待
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <span @click="logout">
-                      <fa-icon icon="angle-right" class="icon" />ログアウト
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div v-else class="login bg-dotted">
-            <LoginForm :is-widget="true" />
-          </div>
-        </section>
-      </client-only>
+        
       <section v-show="activeTab === 'notification'" class="inner">
         <PostSimpleList
           :posts="posts"
@@ -224,8 +130,6 @@ import { useMe } from '~~/composables/fetch/useMe';
 const { isAuthenticated } = useAuth();
 const { me } = useMe();
 console.log('me on Nav', me);
-
-const { $openToast: openToast } = useNuxtApp();
 
 // type DataType = {
 //   canPostArticle: boolean
@@ -274,11 +178,8 @@ const onHoverLogo = (isHover = true): void => {
 const isActiveTab = (tab: TabMode): boolean => {
   return activeTab.value === tab
 };
-const logout = async (): Promise<void> => {
-  await useLogout()
-  openToast('ログアウトしました');
-  // this.$router.push('/')
-};
+
+const logout = async () => await useLogout();
 </script>
 <style lang="scss" scoped>
 .nav {
