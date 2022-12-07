@@ -16,6 +16,8 @@ export const useValidationError = (errors: ErrorsType, defaultKeys: string[]) =>
 
   if (!errors) return returnErrorObject(newErrors, keys);
 
+  console.log('validationErrors', errors);
+
   for (const error of errors) {
     const key = keys.find(k => `/${k}` === error.instancePath)
     if (key) {

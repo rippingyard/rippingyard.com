@@ -1,10 +1,5 @@
 ﻿<template>
   <form class="form" :class="[{ widget: props.isWidget }, props.theme]" @submit.prevent="login(email, password)">
-    <ul v-if="errors._total && errors._total.length > 0" class="error">
-      <li v-for="(error, i) of errors._total" :key="`login-error-${i}`">
-        {{ error }}
-      </li>
-    </ul>
     <BlockForm label="メールアドレス" :errors="errors.email">
       <FormEmail v-model="email" placeholder="メールアドレスを入力" @click="removeError('email')" />
     </BlockForm>
@@ -37,6 +32,9 @@ const login = async (email: string, password: string) => {
   const res = await useLogin({ email, password });
   if (res?.errors) {
     errors.value = res?.errors.value;
+    openToast('ログインに失敗しました', {
+      isDanger: true,
+    });
   } else {
     openToast('ログインしました');
   }

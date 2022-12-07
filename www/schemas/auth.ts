@@ -1,4 +1,5 @@
-﻿import { ErrorObject, JTDSchemaType } from 'ajv/dist/jtd';
+﻿// import { ErrorObject, JTDSchemaType } from 'ajv/dist/jtd';
+import { ErrorObject, JSONSchemaType } from 'ajv';
 import { useValidator } from '~/composables/validation/useValidator';
 import { useValidationError } from '~/composables/validation/useValidationError';
 
@@ -9,33 +10,31 @@ export type Auth = {
   password: string;
 }
 
-const schema: JTDSchemaType<Auth> = {
+const schema: JSONSchemaType<Auth> = {
+  type: 'object',
   properties: {
     email: {
       type: 'string',
-      metadata: {
-        format: 'email',
-        isNotEmpty: true,
-        // errorMessage: {
-        //   isNotEmpty: 'おかしな値だ',
-        // }
-      },
+      format: 'email',
+      isNotEmpty: true,
     },
     password: {
       type: 'string',
-      metadata: {
-        format: 'password',
-        isNotEmpty: true,
-        // minLength: 6,
-      },
+      isNotEmpty: true,
+      // minLength: 6,
     },
   },
-  // optionalProperties: {
-  //   bar: {type: "string"}
-  // }
+  required: ['email', 'password'],
+  // additionalProperties: false,
+  errorMessage: {
+    properties: {
+      email: 'E-Mailが入力されていません',
+      password: 'パスワードが入力されていません',
+    },
+  },
 }
 
-export const authValidator = ajv.compile(schema);
+export const authValidator = ajv.compile<Auth>(schema);
 
 export const authValidationErrors = (errors: ErrorObject[] = []) => {
   return useValidationError(errors, ['email', 'password']);
