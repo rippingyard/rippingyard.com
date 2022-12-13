@@ -54,9 +54,9 @@
             <li @click="onClickTab('dashboard')">
               <IconGauge />
             </li>
-            <!-- <li v-if="isAuthenticated && canPostArticle" @click="onClickTab('post')">
-              <fa-icon icon="plus-circle" class="icon" />
-            </li> -->
+            <li v-if="isAuthenticated && canCreateArticle" @click="onClickTab('post')">
+              <IconPen />
+            </li>
           </ul>
           <ul class="triggers close">
             <li @click="closeNav" />
@@ -84,20 +84,15 @@
             <IconSearch />
           </span>
         </li>
-        <!--<client-only>
-          <li
-            v-if="isAuthenticated && canPostArticle"
-            :class="{ active: isActiveTab('post') }"
-            @click="onClickTab('post')"
-          >
-            <span class="pconly">新規投稿<small>Post</small></span>
-            <span class="sponly">
-              <fa-icon icon="plus-circle" class="icon" />
-            </span>
-          </li>
-        </client-only> -->
+        <li v-if="canCreateArticle" :class="{ active: isActiveTab('post') }" @click="onClickTab('post')">
+          <span class="pconly">新規投稿<small>Post</small></span>
+          <span class="sponly">
+            <IconPen />
+          </span>
+        </li>
       </ul>
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
+      <OrganismPostForm v-if="activeTab === 'post'" />
       <!--
         
       <section v-show="activeTab === 'notification'" class="inner">
@@ -112,7 +107,7 @@
         <Search />
       </section>
       <section
-        v-if="canPostArticle"
+        v-if="canCreateArticle"
         v-show="activeTab === 'post'"
         class="inner"
       >
@@ -125,40 +120,20 @@
 <script lang="ts" setup>
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
-import { useMe } from '~~/composables/fetch/useMe';
+import IconGauge from '~~/components/icon/Gauge.vue';
+import IconSearch from '~~/components/icon/Search.vue';
+import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';
+
+type TabMode = 'dashboard' | 'search' | 'notification' | 'post' | 'comment';
 
 const { isAuthenticated } = useAuth();
-const { me } = useMe();
-console.log('me on Nav', me);
-
-// type DataType = {
-//   canPostArticle: boolean
-//   unsubscriber: () => void
-// }
-
-type TabMode = 'dashboard' | 'search' | 'notification' | 'article' | 'comment';
+// const { me } = useMe();
+const { canCreateArticle } = useCanCreateArticle();
 
 const isOpen = ref(false);
 const activeTab = ref<TabMode>('dashboard');
 const isHoverLogo = ref(false);
 
-//   data(): DataType {
-//     return {
-//       canPostArticle: false,
-//       unsubscriber: () => {},
-//     }
-//   },
-//   computed: {
-//     posts(): Post[] {
-//       return this.$store.state.global.posts
-//     },
-//   },
-//   async mounted() {
-//     this.canPostArticle = await this.can('postArticle')
-//   },
-//   beforeDestroy() {
-//     this.unsubscriber()
-//   },
 const toggleNav = (): void => {
   isOpen.value = !isOpen.value
 };
@@ -175,9 +150,7 @@ const onClickTab = (tab: TabMode): void => {
 const onHoverLogo = (isHover = true): void => {
   isHoverLogo.value = isHover;
 }
-const isActiveTab = (tab: TabMode): boolean => {
-  return activeTab.value === tab
-};
+const isActiveTab = (tab: TabMode) => activeTab.value === tab;
 
 const logout = async () => await useLogout();
 </script>
@@ -256,11 +229,11 @@ const logout = async () => await useLogout();
       overflow-y: auto;
     }
 
-    .login {
-      padding: 20px;
-      border-bottom: 1px solid $black;
-      border-right: 1px solid $black;
-    }
+    // .login {
+    //   padding: 20px;
+    //   border-bottom: 1px solid $black;
+    //   border-right: 1px solid $black;
+    // }
 
     .links {
       min-width: 320px;

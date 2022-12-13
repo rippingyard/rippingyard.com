@@ -1,6 +1,7 @@
 ﻿import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, DocumentData, getDoc, getFirestore } from 'firebase/firestore';
+import { User } from '~~/schemas/user';
 
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
@@ -14,13 +15,13 @@ const config = {
 
 export default defineNuxtPlugin(() => {
 
-  const me = ref();
+  const me = ref<User | undefined>();
   const fb = initializeApp(config);
   const auth = getAuth(fb);
 
   onAuthStateChanged(auth, async () => {
     if (!auth?.currentUser) {
-      me.value = ref();
+      me.value = undefined;
       return;
     }
 
@@ -28,7 +29,7 @@ export default defineNuxtPlugin(() => {
     const db = getFirestore(fb);
     const q = doc(db, 'users', auth?.currentUser?.uid);
     const snapshot = await getDoc<DocumentData>(q);
-    me.value = snapshot.data();
+    me.value = snapshot.data() as User;
   });
 
   return {

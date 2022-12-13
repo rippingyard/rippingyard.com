@@ -7,10 +7,25 @@
 </template>
 <script lang="ts" setup>
 import { usePost } from '~~/composables/fetch/usePost';
+import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 
 const route = useRoute();
+const { $openToast: openToast } = useNuxtApp();
 
 const { isLoading, isError, error, data } = usePost(route.params.id as string);
+
+const checkPermission = () => {
+  if (isLoading.value) return;
+  const { canReadPost } = useCanReadPost(data.value);
+  if (!canReadPost.value) {
+    openToast('この記事は非公開です');
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  }
+}
+
+if (!isLoading.value) checkPermission();
+watch(isLoading, () => checkPermission());
+
 </script>
 <style lang="scss" scoped>
 .container {

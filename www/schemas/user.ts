@@ -5,7 +5,9 @@
   code?: string
   profile?: string
   avatar?: string
-  role: 'mayor' | 'resident' | 'stranger'
+  role: 'load' | 'mayor' | 'resident' | 'stranger'
+  isBanned: boolean;
+  isDeleted: boolean;
   createdAt: string | Date
   updatedAt: string | Date
 }

@@ -12,7 +12,6 @@
   </form>
 </template>
 <script lang="ts" setup>
-// import { inject } from 'vue';
 import { useLogin } from '~/composables/firebase/useLogin';
 import { authValidationErrors } from '~/schemas/auth';
 
@@ -41,8 +40,6 @@ const login = async (email: string, password: string) => {
 };
 
 const removeError = (key: string) => {
-  // if (errors.value._total.length === 0) return;
-  // console.log('validationErrors', validationErrors);
   setTimeout(() => {
     const newErrors = errors.value;
     newErrors._total = [];
@@ -50,12 +47,6 @@ const removeError = (key: string) => {
     errors.value = newErrors;
   }, 1200);
 }
-
-//   computed: {
-//     reverse() {
-//       return this.theme === 'dark' ? 'light' : 'dark'
-//     },
-//   },
 </script>
 <style lang="scss" scoped>
 .form {

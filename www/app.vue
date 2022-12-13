@@ -1,7 +1,9 @@
 ﻿<template>
   <div class="wrapper">
     <OrganismNav />
-    <slot />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
     <OrganismFooter />
     <!-- <Loading :is-loading="isLoading" /> -->
     <BlockToast />

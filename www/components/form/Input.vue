@@ -3,7 +3,7 @@
     @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" />
 </template>
 <script lang="ts" setup>
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const props = defineProps<{
   placeholder?: string

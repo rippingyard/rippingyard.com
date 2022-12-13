@@ -17,7 +17,7 @@ const props = defineProps<Props>();
 .manifest {
   // background-color: $black;
   border-bottom: 1px solid $black;
-  padding: $navMargin * 0.75 $navMargin / 2;
+  padding: $navMargin * 0.75 $navMargin * 0.5;
   display: flex;
   flex-direction: column;
   justify-content: center;
