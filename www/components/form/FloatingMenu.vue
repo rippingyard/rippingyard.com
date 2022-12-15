@@ -18,12 +18,9 @@
       @click="props.editor.chain().focus().toggleHeading({ level: 2 }).run()">
       3
     </button>
-    <!-- <button
-      :class="{ 'is-active': props.editor.isActive('image') }"
-      @click="uploadImage()"
-    >
-      <fa-icon icon="image" />
-    </button> -->
+    <button :class="{ 'is-active': props.editor.isActive('image') }" @click="$emit('showImageUploader')">
+      <IconImage />
+    </button>
     <!-- <button
       @click="props.editor.chain().focus().setCaption().run()"
     >
@@ -31,39 +28,30 @@
     </button> -->
     <button :class="{ 'is-active': props.editor.isActive('bulletList') }"
       @click="props.editor.chain().focus().toggleBulletList().run()">
-      <fa-icon icon="list" />
+      <IconList />
     </button>
     <button :class="{ 'is-active': props.editor.isActive('orderedList') }"
       @click="props.editor.chain().focus().toggleOrderedList().run()">
-      <fa-icon icon="list-ol" />
+      <IconListOl />
     </button>
     <button @click="props.editor.chain().focus().setHorizontalRule().run()">
-      <fa-icon icon="ruler-horizontal" />
+      <IconHorizontalLine />
     </button>
     <button :class="{ 'is-active': props.editor.isActive('blockquote') }"
       @click="props.editor.chain().focus().toggleBlockquote().run()">
-      <fa-icon icon="quote-right" />
+      <IconQuoteRight />
     </button>
     <button :class="{ 'is-active': props.editor.isActive('codeBlock') }"
       @click="props.editor.chain().focus().toggleCodeBlock().run()">
-      <fa-icon icon="code" />
+      <IconCode />
     </button>
   </floating-menu>
 </template>
 <script lang="ts" setup>
 import { Editor, FloatingMenu } from '@tiptap/vue-3';
-
 const props = defineProps<{
   editor: Editor;
 }>();
-
-
-//   methods: {
-//     uploadImage() {
-//       this.$emit('showImageUploader')
-//     },
-//   }
-// })
 </script>
 <style lang="scss" scoped>
 .floatingmenu {

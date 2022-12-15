@@ -47,8 +47,9 @@ const setLink = () => {
 <style lang="scss" scoped>
 .bubblemenu {
   background: $white;
-  border: 1px solid $gray-black;
-  border-radius: 5px;
+  filter: drop-shadow(0px 3px 8px $black-transparent-40 );
+  // border: 1px solid $gray-black;
+  border-radius: 2px;
   padding: .3rem .4rem;
 
   button {
@@ -58,7 +59,7 @@ const setLink = () => {
     background: transparent;
     border: 0;
     color: $black;
-    padding: 4px 6px;
+    padding: 8px 12px;
     border-radius: 3px;
     cursor: pointer;
 

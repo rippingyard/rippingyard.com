@@ -1,17 +1,17 @@
 ﻿<template>
   <div v-if="editor">
-    <!-- <Modal v-if="showUploader" :on-close="closeImageUploader">
+    <BlockModal v-if="showUploader" :on-close="closeImageUploader">
       <div class="inner">
         <div class="uploader">
           <div v-if="image" class="console">
-            <button class="button expanded" @click="uploadImage()">
+            <AtomButton class="button expanded" @click="uploadImage()">
               アップロード
-            </button>
+            </AtomButton>
           </div>
-          <ImageUploader :on-change="updateImage" />
+          <FormImageUploader :on-change="updateImage" />
         </div>
       </div>
-    </Modal> -->
+    </BlockModal>
     <div class="editor">
       <FormBubbleMenu :editor="editor" />
       <FormFloatingMenu :editor="editor" @showImageUploader="showImageUploader()" />
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import { StarterKit } from '@tiptap/starter-kit';
-// import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
 // import CodeBlock from '@tiptap/extension-code-block'
 // import HardBreak from '@tiptap/extension-hard-break'
@@ -32,7 +32,7 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { Highlight } from '@tiptap/extension-highlight';
 // import TextStyle from '@tiptap/extension-text-style'
 import { Link } from '@tiptap/extension-link';
-// import Image from '@tiptap/extension-image'
+import { Image } from '@tiptap/extension-image';
 import { BubbleMenu } from '@tiptap/extension-bubble-menu';
 import { FloatingMenu } from '@tiptap/extension-floating-menu';
 // import Placeholder from '@tiptap/extension-placeholder'
@@ -40,7 +40,7 @@ import { FloatingMenu } from '@tiptap/extension-floating-menu';
 // import Caption from '~/plugins/editor/Caption'
 // import Item from '~/plugins/editor/Item'
 // import ItemSuggestion from '~/plugins/suggestions/item'
-// import { getExt } from '~/plugins/file';
+import { getExt } from '~/utils/file';
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -50,6 +50,7 @@ const props = defineProps<{
 }>();
 
 const editor = ref<Editor>();
+const image = ref<File>();
 const showUploader = ref(false);
 
 onMounted(() => {
@@ -61,9 +62,9 @@ onMounted(() => {
       Highlight,
       // Subscript,
       // TextStyle,
-      // Image.configure({
-      //   inline: false,
-      // }),
+      Image.configure({
+        inline: false,
+      }),
       Link.configure({
         openOnClick: false,
       }),
@@ -98,17 +99,11 @@ onMounted(() => {
 onUnmounted(() => editor.value?.destroy());
 
 
-// export default Vue.extend({
 //   data(): {
-//     image: any
 //     uploadedImage: string | null
-//     showUploader: boolean
 //   } {
 //     return {
-//       editor: null,
-//       image: null,
 //       uploadedImage: null,
-//       showUploader: false,
 //     }
 //   },
 //   watch: {
@@ -117,38 +112,37 @@ onUnmounted(() => editor.value?.destroy());
 //       this.editor.commands.setContent(this.value, false)
 //     },
 //   },
-//   methods: {
-//     async uploadImage() {
-//       if (this.image) {
-//         const ext = getExt(this.image)
-//         if (!ext) return
 
-//         const now = dayjs()
+const uploadImage = async () => {
+  if (!editor.value) return;
+  if (image.value) {
+    const ext = getExt(image.value);
+    if (!ext) return;
 
-//         const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
-//         const result = await (this as any).$fire.storage
-//           .ref()
-//           .child(filename)
-//           .put(this.image)
-//         const url = await result.ref.getDownloadURL()
+    const now = dayjs()
 
-//         this.editor.chain().focus().setImage({ src: url }).run()
+    const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
+    const result = await (this as any).$fire.storage
+      .ref()
+      .child(filename)
+      .put(image.value)
+    const url = await result.ref.getDownloadURL();
 
-//         this.closeImageUploader()
-//       }
-//     },
-//     updateImage(file: any): void {
-//       // console.log('Image', file)
-//       this.image = file
-//     },
+    editor.value.chain().focus().setImage({ src: url }).run();
+
+    closeImageUploader();
+  }
+};
+const updateImage = (file: File): void => {
+  image.value = file;
+};
+
 const showImageUploader = (): void => {
-  showUploader.value = true
-}
-//     closeImageUploader(): void {
-//       this.showUploader = false
-//     },
-//   },
-// })
+  showUploader.value = true;
+};
+const closeImageUploader = (): void => {
+  showUploader.value = false;
+};
 </script>
 <style lang="scss">
 .editor {

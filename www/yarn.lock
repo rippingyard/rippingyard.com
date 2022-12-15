@@ -1314,6 +1314,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.0.0-beta.207.tgz#7f1a39cea9c77409f466267feee83acf25585109"
   integrity sha512-FEUIUiN+4nKV8GB0B/l0qlUvQvLBsl0XqZzWjmqWMj+TtXt53fVODZzNxIY35sdq7RlBZzyT1dV41NyLvzyPSw==
 
+"@tiptap/extension-image@^2.0.0-beta.207":
+  version "2.0.0-beta.207"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.0.0-beta.207.tgz#22d4d3f41f9bdcc5c219ce233e5184b85951eab2"
+  integrity sha512-fAr9A2z0VQGfLZuBR0yZpvizkQggmJE8rGH4UUgVzMCBiXpiKqLID0dT+bKQU5K1rQmP1CHpn+t0NcbZ37735g==
+
 "@tiptap/extension-italic@^2.0.0-beta.207":
   version "2.0.0-beta.207"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-italic/-/extension-italic-2.0.0-beta.207.tgz#a84fef9a31859ab99051f914dde0dc59da9d7d2c"

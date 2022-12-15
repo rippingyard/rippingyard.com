@@ -236,3 +236,7 @@
   }
 
 }
+
+[contenteditable]:focus {
+  outline: none;
+}
