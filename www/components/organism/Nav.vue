@@ -72,8 +72,8 @@
             <IconGauge />
           </span>
         </li>
-        <li :class="{ active: isActiveTab('notification') }" @click="onClickTab('notification')">
-          <span class="pconly">新着記事<small>Latest</small></span>
+        <li :class="{ active: isActiveTab('posts') }" @click="onClickTab('posts')">
+          <span class="pconly">あなたの記事<small>Posts</small></span>
           <span class="sponly">
             <IconBell />
           </span>
@@ -92,10 +92,11 @@
         </li>
       </ul>
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
-      <OrganismPostForm v-if="activeTab === 'post'" />
+      <OrganismPostForm v-show="activeTab === 'post'" />
+      <OrganismPostList v-if="activeTab === 'posts'" :component="ItemPostSimple" :is-mine="true" />
       <!--
         
-      <section v-show="activeTab === 'notification'" class="inner">
+      <section v-show="activeTab === 'posts'" class="inner">
         <PostSimpleList
           :posts="posts"
           :is-small="true"
@@ -120,11 +121,12 @@
 <script lang="ts" setup>
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
+import ItemPostSimple from '~/components/item/PostSimple.vue';
 import IconGauge from '~~/components/icon/Gauge.vue';
 import IconSearch from '~~/components/icon/Search.vue';
 import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';
 
-type TabMode = 'dashboard' | 'search' | 'notification' | 'post' | 'comment';
+type TabMode = 'dashboard' | 'search' | 'posts' | 'post' | 'comment';
 
 const { isAuthenticated } = useAuth();
 // const { me } = useMe();

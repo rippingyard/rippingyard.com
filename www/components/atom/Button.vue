@@ -1,6 +1,9 @@
 ﻿<template>
   <button class="button" :class="classes">
-    <slot />
+    <slot v-if="!props.isLoading" />
+    <span v-else>
+      <IconLoading class="icon" color="yellow" />
+    </span>
   </button>
 </template>
 <script lang="ts" setup>
@@ -8,11 +11,13 @@
 const props = defineProps<{
   expanded?: boolean;
   centered?: boolean;
+  isLoading?: boolean;
 }>();
 
 const classes = {
   expanded: props.expanded,
   centered: props.centered,
+  disabled: props.isLoading,
 };
 
 </script>
@@ -67,13 +72,14 @@ const classes = {
     }
   }
 
-  &.is-disabled {
+  &.loading {
+    background-color: $black-transparent-60;
+    cursor: not-allowed;
+  }
+
+  &.disabled {
     opacity: 0.35;
     cursor: not-allowed;
-
-    &:hover {
-      background-color: transparent;
-    }
   }
 }
 

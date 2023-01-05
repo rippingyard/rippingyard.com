@@ -14,6 +14,7 @@
   ],
   plugins: ['prettier'],
   rules: {
+    "no-new": 0,
     'no-console': 'off',
     'vue/no-v-html': 'off',
     'prettier/prettier': 'off',

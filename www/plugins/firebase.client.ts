@@ -1,6 +1,6 @@
 ﻿import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { doc, DocumentData, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, DocumentData, DocumentReference, getDoc, getFirestore } from 'firebase/firestore';
 import { User } from '~~/schemas/user';
 
 const config = {
@@ -16,6 +16,7 @@ const config = {
 export default defineNuxtPlugin(() => {
 
   const me = ref<User | undefined>();
+  const myRef = ref<DocumentReference>();
   const fb = initializeApp(config);
   const auth = getAuth(fb);
 
@@ -28,6 +29,7 @@ export default defineNuxtPlugin(() => {
     console.log('onAuthStateChanged', auth?.currentUser?.uid);
     const db = getFirestore(fb);
     const q = doc(db, 'users', auth?.currentUser?.uid);
+    myRef.value = q;
     const snapshot = await getDoc<DocumentData>(q);
     me.value = snapshot.data() as User;
   });
@@ -36,6 +38,7 @@ export default defineNuxtPlugin(() => {
     provide: {
       fb,
       me,
+      myRef,
     }
   }
 });

@@ -1,9 +1,9 @@
 ﻿<template>
   <section class="modal">
-    <div class="overlay" @click="() => props.onClose()"></div>
+    <div class="overlay" @click="() => props.onClose()" />
     <div class="inner">
       <button class="close" @click="() => props.onClose()">
-        <fa-icon :icon="['far', 'times-circle']" class="icon" />
+        <IconClose />
       </button>
       <div class="frame">
         <slot />
@@ -35,13 +35,15 @@ const props = withDefaults(
   z-index: 20000;
 
   .inner {
-    position: relative;
-    max-width: $mainSize + 120px;
     background-color: $white;
-    // padding: $gap * 2;
     z-index: 100;
-    // border-radius: 10px;
-    margin: auto;
+    max-width: $mainSize + $navMargin + (($navSize + $navMargin) * 2);
+    width: 100%;
+    height: calc(100% - #{$navMargin});
+    position: fixed;
+    top: $navMargin * 0.5;
+    left: calc(50vw - #{($mainSize * 0.5) + $navSize + ($navMargin * 1.5)});
+    overflow: hidden;
   }
 
   .frame {

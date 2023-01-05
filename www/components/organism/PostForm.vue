@@ -12,7 +12,8 @@
       <div class="footer bg-dotted">
         <div class="footer-main">
           <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
-          <AtomButton :class="{ 'is-disabled': isOver || isEmpty }" class="button" @click="submit()">
+          <AtomButton :class="{ 'disabled': isOver || isEmpty }" class="button" :is-loading="isSaving"
+            @click="submit()">
             投稿する
           </AtomButton>
         </div>
@@ -27,18 +28,30 @@
   </div>
 </template>
 <script lang="ts" setup>
-// import { Timestamp } from 'firebase/firestore'
-// import { Post } from '~/types/post'
+import { Timestamp } from 'firebase/firestore'
+import { Post, PostStatus } from '~/schemas/post';
 // import { Item } from '~/types/item'
 // import { permalink } from '~/services/post'
 import { useAuth } from '~/composables/firebase/useAuth';
+import { useSavePost } from '~/composables/save/useSavePost';
 import { getLength } from '~~/utils/typography';
 
 type Props = {
-  limit: number;
+  limit?: number;
 }
 
+// type DataType = {
+//   date: Date
+//   item: Item | null
+//   resetCount: number
+//   isPublic: boolean
+//   isOpen: boolean
+//   isSaving: boolean
+//   cleaningItem: number
+// }
+
 const { isAuthenticated } = useAuth();
+const savePostObject = useSavePost();
 
 const props = withDefaults(
   defineProps<Props>(),
@@ -48,104 +61,97 @@ const props = withDefaults(
 );
 
 const content = ref('');
+const entities = ref<string[]>([]);
+const status = ref<PostStatus>('published');
+const isPublic = ref(true);
 const date = ref(new Date);
+const isSaving = ref(false);
 
 const contentLength = computed<number>(() => getLength(content.value));
 const isOver = computed<boolean>(() => contentLength.value > props.limit);
 const isEmpty = computed<boolean>(() => contentLength.value === 0);
 
-const submit = () => {
+watch(date, () => {
+  console.log('date updated!', date.value);
+});
+
+const submit = async () => {
   console.log('submit!', content);
+  if (!savePostObject) return;
 
-  // let status = 'failed'
-  // if (this.isSaving) return
+  const { mutate: savePost } = savePostObject;
 
-  // const params: Partial<Post> = {
-  //   content: this.content,
-  //   type: 'log',
-  //   entities: this.entities,
-  //   status: this.status,
-  //   publishedAt: Timestamp.fromDate(this.date),
-  //   isPublic: this.isPublic,
-  // }
+  // let status = 'failed';
+  if (isSaving.value) return;
 
-  // try {
-  //   this.isSaving = true
+  const params: Partial<Post> = {
+    content: content.value,
+    type: 'log',
+    entities: entities.value,
+    status: status.value,
+    publishedAt: Timestamp.fromDate(date.value),
+    isPublic: isPublic.value,
+  }
 
-  //   if (this.item) {
-  //     const q = await(this as any).$fire.firestore
-  //       .collection('items')
-  //       .where('isDeleted', '==', false)
-  //       .where('path', '==', this.item.path)
-  //       .where('type', '==', this.item.type)
-  //       .limit(1)
-  //       .get()
+  try {
+    isSaving.value = true;
 
-  //     if (!q.empty) {
-  //       params.parent = q.docs[0].ref
-  //     } else {
-  //       const item = await this.saveItem(this.item)
-  //       params.parent = item
-  //     }
-  //     // console.log('parent', params.parent)
-  //   }
+    //   if (this.item) {
+    //     const q = await(this as any).$fire.firestore
+    //       .collection('items')
+    //       .where('isDeleted', '==', false)
+    //       .where('path', '==', this.item.path)
+    //       .where('type', '==', this.item.type)
+    //       .limit(1)
+    //       .get()
 
-  //   //   if (this.post?.id) params.id = this.post.id
-  //   //   console.log('val', schemaPost.validate(params))
+    //     if (!q.empty) {
+    //       params.parent = q.docs[0].ref
+    //     } else {
+    //       const item = await this.saveItem(this.item)
+    //       params.parent = item
+    //     }
+    //     // console.log('parent', params.parent)
+    //   }
 
-  //   //   const { error } = schemaPost.validate(params)
-  //   //   if (!isEmpty(error)) {
-  //   //     console.log('Error', error.details)
-  //   //     return this.snackAlert('投稿に失敗しました')
-  //   //   }
+    //   //   if (this.post?.id) params.id = this.post.id
+    //   //   console.log('val', schemaPost.validate(params))
 
-  //   //   if (this.entities) {
-  //   //     const existanceChecks = this.entities.map(async e => {
-  //   //       console.log('Entity', e)
-  //   //       return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
-  //   //     })
-  //   //     const existances = await Promise.all(existanceChecks)
+    //   //   const { error } = schemaPost.validate(params)
+    //   //   if (!isEmpty(error)) {
+    //   //     console.log('Error', error.details)
+    //   //     return this.snackAlert('投稿に失敗しました')
+    //   //   }
 
-  //   //     const promises = existances.filter(e => !e.exists).map(async e => {
-  //   //       return await this.saveEntity({
-  //   //         id: e.id,
-  //   //       })
-  //   //     })
+    //   //   if (this.entities) {
+    //   //     const existanceChecks = this.entities.map(async e => {
+    //   //       console.log('Entity', e)
+    //   //       return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
+    //   //     })
+    //   //     const existances = await Promise.all(existanceChecks)
 
-  //   //     if (promises) await Promise.all(promises)
-  //   //   }
+    //   //     const promises = existances.filter(e => !e.exists).map(async e => {
+    //   //       return await this.saveEntity({
+    //   //         id: e.id,
+    //   //       })
+    //   //     })
 
-  //   const newPost = await this.savePost(params)
-  //   status = 'succeeded'
+    //   //     if (promises) await Promise.all(promises)
+    //   //   }
 
-  //   // console.log('NEWPOST!!!!', newPost)
+    const newPost = await savePost(params);
+    //   status = 'succeeded'
 
-  //   this.clearForm()
-  //   this.$router.push(permalink(newPost.id))
-  // } catch (e) {
-  //   console.error(e)
-  // }
+    console.log('NEWPOST!!!!', newPost);
 
-  // await this.saveActivity({
-  //   type: 'item:create',
-  //   status,
-  //   payload: params,
-  // })
+    //   this.clearForm()
+    //   this.$router.push(permalink(newPost.id))
+  } catch (e) {
+    console.error(e)
+  }
 
-  // this.isSaving = false
+  isSaving.value = false;
 };
-
-// type DataType = {
-//   date: Date
-//   item: Item | null
-//   entities: string[]
-//   resetCount: number
-//   status: 'published' | 'draft'
-//   isPublic: boolean
-//   isOpen: boolean
-//   isSaving: boolean
-//   cleaningItem: number
-// }
 
 // export default Vue.extend({
 //   data(): DataType {
@@ -155,8 +161,6 @@ const submit = () => {
 //       entities: [],
 //       resetCount: 0,
 //       item: null,
-//       status: 'published',
-//       isPublic: true,
 //       isOpen: false,
 //       isSaving: false,
 //       cleaningItem: new Date().getTime(),

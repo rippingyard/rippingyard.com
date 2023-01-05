@@ -1,9 +1,10 @@
 ﻿export const useMe = () => {
 
-  const { $me: me } = useNuxtApp();
+  const { $me: me, $myRef: myRef } = useNuxtApp();
 
   return {
-    me
+    me,
+    myRef,
   }
 
 };

@@ -11,21 +11,40 @@
 </template>
 <script lang="ts" setup>
 import ItemPost from '~~/components/item/Post.vue';
+import { useMe } from '~~/composables/fetch/useMe';
 import { usePosts } from '~~/composables/fetch/usePosts';
+import { WhereParams } from '~~/composables/firestore/useCachedDocs';
 import { OriginalPost } from '~~/schemas/post';
 
 type Props = {
   component?: typeof ItemPost;
+  isMine?: boolean;
 }
 
 const props = defineProps<Props>();
 
+const where: WhereParams = [
+  { key: 'type', val: ['log', 'note', 'article'] },
+];
+
+if (props.isMine) {
+  const { myRef } = useMe();
+  if (myRef.value) {
+    where.push({
+      key: 'owner',
+      val: myRef.value,
+    });
+  }
+}
+
 const { isLoading, isError, data, error } = usePosts({
-  where: [
-    { key: 'type', val: ['note', 'article'] },
-  ],
+  where,
   limit: 100,
   orderBy: { key: 'publishedAt' },
+});
+
+watch(data, (newData) => {
+  console.log('watch posts', newData);
 });
 
 </script>

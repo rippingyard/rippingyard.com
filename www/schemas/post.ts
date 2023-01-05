@@ -1,6 +1,9 @@
 ﻿import { Dayjs } from 'dayjs';
 import { DocumentData, Timestamp } from '@firebase/firestore-types';
+import { DocumentReference } from 'firebase/firestore';
 import { User } from '~/schemas/user';
+
+export type PostStatus = 'published' | 'draft';
 
 export type OriginalPost = {
   id: string
@@ -11,7 +14,7 @@ export type OriginalPost = {
   publishedAt: Timestamp
   updatedAt: Timestamp
   type: 'article' | 'note' | 'log'
-  owner?: User | DocumentData | null
+  owner?: DocumentReference<User>
   parent?: DocumentData
   isPublic: boolean
   isDeleted: boolean
@@ -21,12 +24,13 @@ export type OriginalPost = {
     bookmark: number
     pageview: number
   }
-  items: DocumentData[]
-  status: 'published' | 'draft'
+  items: DocumentData[];
+  status: PostStatus;
 }
 
 export type Post = OriginalPost & {
   title: string
+  owner?: DocumentData | User
   contentOriginal: string
   contentBody: string
   thumbnail: string

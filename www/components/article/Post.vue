@@ -24,6 +24,9 @@
         <p class="date">
           <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
         </p>
+        <p>
+          {{ owner?.displayName }}
+        </p>
         <!-- <client-only>
               <p v-if="isMine" class="link">
                 <nuxt-link :to="editlink">編集する</nuxt-link>
@@ -62,25 +65,34 @@
   </main>
 </template>
 <script lang="ts" setup>
+import { getDoc } from 'firebase/firestore';
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
+import { User } from '~~/schemas/user';
 
 const post = ref<Post>();
 const content = ref<string>('');
+const owner = ref<User>();
 const props = defineProps<{
   post: OriginalPost;
 }>();
 
-onMounted(() => {
-  // console.log('props.post', props.post);
+onMounted(async () => {
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
-});
 
-watch(props.post, () => {
-  console.log('props.post', props.post);
+  if (props.post.owner) {
+    const user = await getDoc(props.post.owner);
+    owner.value = user.data();
+    // console.log('props.post', props.post);
+    // console.log('props.post.owner', await props.post.owner);
+    console.log('user', user.data());
+    // console.log('props.post.owner', (props.post.owner as DocumentData).get());
+    console.log('owner.value', owner.value);
+  }
+
 });
 
 const title = computed(() => post.value && post.value.content ? getTitle(post.value.content) : '');

@@ -1,46 +1,38 @@
 ﻿<template>
   <div class="datepicker">
-    <client-only>
-      <datepicker calendar-class="calender" :format="`yyyy-MM-dd`" :value="props.modelValue" :language="ja"
-        @input="update" />
-    </client-only>
+    <Datepicker v-model="date" calendar-class="calender" :format="`yyyy-MM-dd hh:mm`" locale="ja" :format-locale="ja"
+      :hide-input-icon="true" select-text="決定" cancel-text="閉じる" @update:modelValue="update">
+      <template #dp-input="{ value }">
+        {{ value }}
+      </template>
+      <template #clear-icon="{}" />
+    </Datepicker>
   </div>
 </template>
 <script lang="ts" setup>
-import { ja } from 'vuejs-datepicker/dist/locale';
+import Datepicker from '@vuepic/vue-datepicker';
+import { ja } from 'date-fns/locale';
 
 const props = defineProps<{
   modelValue: Date,
 }>();
 
-const emits = defineEmits(['input']);
+const date = ref(props.modelValue || new Date);
+
+const emits = defineEmits(['update:modelValue']);
 
 // const today = computed(() => new Date());
-const update = (val: any) => emits('input', val);
+const update = (val: any) => {
+  console.log('update!', val);
+  emits('update:modelValue', val);
+};
 </script>
 <style lang="scss" scoped>
-:deep(.vdp-datepicker) {
-  .vdp-datepicker__calendar {
-    bottom: 30px;
-    left: -125px;
-    border: 2px solid $black;
+:deep(.dp__input_wrap) {
+  cursor: pointer;
+}
 
-    .cell {
-      &.selected {
-        background-color: $black;
-        color: $white;
-      }
-
-      &:not(.blank):not(.disabled) {
-
-        &.day:hover,
-        &.month:hover,
-        &.year:hover {
-          border: 1px solid $orange;
-          color: $orange;
-        }
-      }
-    }
-  }
+:deep(.dp__inner_nav) {
+  border-radius: 0;
 }
 </style>

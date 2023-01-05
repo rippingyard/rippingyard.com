@@ -16,15 +16,23 @@ const { isLoading, isError, error, data } = usePost(route.params.id as string);
 
 const checkPermission = () => {
   if (isLoading.value) return;
-  const { canReadPost } = useCanReadPost(data.value);
-  if (!canReadPost.value) {
-    openToast('この記事は非公開です');
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+
+  if (!data.value) {
+    notFound();
+    return;
   }
+
+  const { canReadPost } = useCanReadPost(data.value);
+  if (!canReadPost.value) notFound();
 }
 
 if (!isLoading.value) checkPermission();
 watch(isLoading, () => checkPermission());
+
+const notFound = () => {
+  openToast('この記事は非公開です');
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
 
 </script>
 <style lang="scss" scoped>

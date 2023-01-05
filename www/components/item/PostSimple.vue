@@ -48,138 +48,134 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
 </script>
 <style lang="scss" scoped>
 .item {
-  padding: $gap;
+  display: flex;
+  border-bottom: 1px solid $black-transparent-30;
+
+  .body {
+    display: block;
+    width: calc(100% - 180px);
+    padding: $gap - 5px 0 $gap 0;
+
+    .title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: $black-transparent-30;
+    }
+
+    .summary {
+      padding-top: 6px;
+      font-size: 0.9rem;
+    }
+  }
+
+  .extra {
+    width: 180px;
+    padding: $gap - 5px 0;
+  }
+
+  .entities {
+    padding-top: 10px;
+  }
 
   @include until-desktop {
-    padding: $gap * 0.5;
+    padding: 0 $gap * 0.5;
+    margin-bottom: $gap;
+    flex-direction: column-reverse;
+    border-bottom: none;
+
+    .body {
+      padding: $gap * 0.5 0 0;
+      width: 100%;
+
+      .title {
+        font-size: 1.4rem;
+        line-height: 1.3;
+        padding-right: 0;
+      }
+
+      .date {
+        font-size: 0.9rem;
+        color: $gray-black;
+        margin-bottom: 10px;
+      }
+
+      .image {
+        margin-bottom: 12px;
+      }
+    }
+
+    .extra {
+      width: 100%;
+      padding: $gap * 0.5 0;
+    }
   }
 }
 
-
-.body {
-  display: block;
-  width: calc(100% - 180px);
-  padding: $gap - 5px 0 $gap 0;
-
-  .title {
-    font-size: 1.9rem;
-    font-weight: 800;
-    line-height: 1.4;
+.has-margin {
+  >li {
+    padding-left: $gap;
+    padding-right: $gap;
   }
 
-  .date {
-    font-size: 0.9rem;
-    color: $gray-black;
-  }
-
-  .summary {
-    padding-top: 6px;
-    font-size: 0.9rem;
+  &.is-small {
+    >li {
+      padding: 0 $gap * 0.5;
+    }
   }
 }
 
-.extra {
-  width: 180px;
-  padding: $gap - 5px 0;
+.is-small {
+  >li {
+    .body {
+      padding: $gap * 0.5 0;
+    }
+
+    .title {
+      font-size: 1.4rem;
+    }
+
+    .summary {
+      font-size: 0.8rem;
+    }
+
+    .date {
+      font-size: 0.8rem;
+    }
+
+    @include until-desktop {
+      padding: 0 $gap * 0.5;
+
+      .body {
+        padding: $gap * 0.5 0 0;
+        width: 100%;
+
+        .title {
+          font-size: 1.4rem;
+          line-height: 1.3;
+          padding-right: 0;
+        }
+      }
+
+      .user {
+        width: 100%;
+        padding: 0 0 $gap * 0.5;
+      }
+    }
+  }
 }
 
-.entities {
-  padding-top: 10px;
+.is-dark {
+  >li {
+    border-bottom: 1px solid $black;
+
+    .date {
+      color: $black;
+    }
+  }
 }
-
-// @include until-desktop {
-//   padding: 0 $gap * 0.5;
-//   margin-bottom: $gap;
-//   flex-direction: column-reverse;
-//   border-bottom: none;
-
-//   .body {
-//     padding: $gap/2 0 0;
-//     width: 100%;
-
-//     .title {
-//       font-size: 1.4rem;
-//       line-height: 1.3;
-//       padding-right: 0;
-//     }
-
-//     .date {
-//       font-size: 0.9rem;
-//       color: $gray-black;
-//       margin-bottom: 10px;
-//     }
-
-//     .image {
-//       margin-bottom: 12px;
-//     }
-//   }
-
-//   .extra {
-//     width: 100%;
-//     padding: $gap/2 0;
-//   }
-// }
-
-// &.has-margin {
-//   >li {
-//     padding-left: $gap;
-//     padding-right: $gap;
-//   }
-
-//   &.is-small {
-//     >li {
-//       padding: 0 $gap * 0.5;
-//     }
-//   }
-// }
-
-// &.is-small {
-//   >li {
-//     .body {
-//       padding: $gap * 0.5 0;
-//     }
-
-//     .title {
-//       font-size: 1.4rem;
-//     }
-
-//     .summary {
-//       font-size: 0.8rem;
-//     }
-
-//     .date {
-//       font-size: 0.8rem;
-//     }
-
-//     @include until-desktop {
-//       padding: 0 $gap * 0.5;
-
-//       .body {
-//         padding: $gap * 0.5 0 0;
-//         width: 100%;
-
-//         .title {
-//           font-size: 1.4rem;
-//           line-height: 1.3;
-//           padding-right: 0;
-//         }
-//       }
-
-//       .user {
-//         width: 100%;
-//         padding: 0 0 $gap * 0.5;
-//       }
-//     }
-//   }
-// }
-
-// &.is-dark {
-//   >li {
-//     border-bottom: 1px solid $black;
-
-//     .date {
-//       color: $black;
-//     }
-//   }
-// }
 </style>

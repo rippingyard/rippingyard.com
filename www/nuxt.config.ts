@@ -113,7 +113,11 @@ export default defineNuxtConfig({
   },
   css: ['destyle.css'],
   build: {
-    transpile: ['vue-query', 'vue-demi'],
+    transpile: [
+      'vue-query',
+      'vue-demi',
+      '@vuepic/vue-datepicker'
+    ],
   },
   vite: {
     css: {

@@ -50,17 +50,21 @@ const setLink = () => {
   filter: drop-shadow(0px 3px 8px $black-transparent-40 );
   // border: 1px solid $gray-black;
   border-radius: 2px;
-  padding: .3rem .4rem;
+  // padding: .3rem .4rem;
+  display: flex;
 
   button {
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
+    // display: -webkit-inline-box;
+    // display: -ms-inline-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: 0;
     color: $black;
-    padding: 8px 12px;
-    border-radius: 3px;
+    padding: 12px 8px;
+    // border-radius: 3px;
+    min-width: 40px;
     cursor: pointer;
 
     &:last-child {
@@ -68,7 +72,7 @@ const setLink = () => {
     }
 
     &:hover {
-      background-color: $yellow;
+      background-color: $gray;
     }
 
     &.is-active {
