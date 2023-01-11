@@ -13,6 +13,16 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@vueuse/nuxt',
+    [
+      '@nuxtjs/google-adsense',
+      {
+        id: process.env.VITE_GA_ADSENSE_ID,
+        test: process.env.NODE_ENV !== 'production',
+        // pageLevelAds: true,
+        // analyticsUacct: import.meta.env.GA_TRACKING_ID,
+        // analyticsDomainName: domain
+      },
+    ],
     // '@tanstack/vue-query',
   ],
   buildModules: [

@@ -1,5 +1,6 @@
 ﻿// import _ from 'lodash'
 // import { parse } from 'qs';
+import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import { OriginalPost, Post } from '~/schemas/post';
 
@@ -37,7 +38,7 @@ export const getTitle = (str: string | Post | OriginalPost, length: number = 32,
     if (str.parent) {
       if (str.parent?.name?.ja) return str.parent.name.ja
     }
-    return alt || getSummary(str.content, length)
+    return alt || dayjs(str.publishedAt.toDate()).format('YYYY/M/D');
   }
 }
 

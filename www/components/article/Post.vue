@@ -8,7 +8,7 @@
             <ItemCard :item="post.parent" />
           </div> -->
       <BlockWysiwyg :content="content" />
-      <!-- <AdsensePostBottom /> -->
+      <AdPostBottom />
       <!-- <div v-if="post.parent" class="parent">
             <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
           </div> -->
@@ -74,7 +74,7 @@ import { User } from '~~/schemas/user';
 
 const post = ref<Post>();
 const content = ref<string>('');
-const owner = ref<User>();
+const ownerRef = ref<User>();
 const props = defineProps<{
   post: OriginalPost;
 }>();
@@ -85,18 +85,13 @@ onMounted(async () => {
 
   if (props.post.owner) {
     const user = await getDoc(props.post.owner);
-    owner.value = user.data();
-    // console.log('props.post', props.post);
-    // console.log('props.post.owner', await props.post.owner);
-    console.log('user', user.data());
-    // console.log('props.post.owner', (props.post.owner as DocumentData).get());
-    console.log('owner.value', owner.value);
+    ownerRef.value = user.data();
   }
-
 });
 
-const title = computed(() => post.value && post.value.content ? getTitle(post.value.content) : '');
+const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
 // const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
+const owner = computed(() => ownerRef.value || null);
 
 </script>
 <style lang="scss" scoped>
