@@ -3,21 +3,21 @@
     <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
       <ul>
         <li v-for="post in data as OriginalPost[]" :key="post.id">
-          <component :is="props.component || ItemPost" :post="post" />
+          <component :is="props.component || CardPost" :post="post" />
         </li>
       </ul>
     </BlockLoading>
   </div>
 </template>
 <script lang="ts" setup>
-import ItemPost from '~~/components/item/Post.vue';
+import CardPost from '~~/components/card/Post.vue';
 import { useMe } from '~~/composables/fetch/useMe';
 import { usePosts } from '~~/composables/fetch/usePosts';
 import { WhereParams } from '~~/composables/firestore/useCachedDocs';
 import { OriginalPost } from '~~/schemas/post';
 
 type Props = {
-  component?: typeof ItemPost;
+  component?: typeof CardPost;
   isMine?: boolean;
 }
 

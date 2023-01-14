@@ -3,9 +3,9 @@
     <BlockHeading>
       <AtomTitle>POSTS<small>記事一覧</small></AtomTitle>
     </BlockHeading>
-    <OrganismPostList :component="ItemPostSimple" />
+    <OrganismPostList :component="CardPostSimple" />
   </BlockMain>
 </template>
 <script lang="ts" setup>
-import ItemPostSimple from '~/components/item/PostSimple.vue';
+import CardPostSimple from '~/components/card/PostSimple.vue';
 </script>

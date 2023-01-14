@@ -1,9 +1,12 @@
 ﻿<template>
-  <BlockMain :is-cliff="true">
-    <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
-      <ArticlePost v-if="data" :post="data" />
-    </BlockLoading>
-  </BlockMain>
+  <div>
+    <BlockMain :is-cliff="true">
+      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+        <ArticlePost v-if="data" :post="data" />
+      </BlockLoading>
+    </BlockMain>
+    <OrganismBillboard />
+  </div>
 </template>
 <script lang="ts" setup>
 import { usePost } from '~~/composables/fetch/usePost';

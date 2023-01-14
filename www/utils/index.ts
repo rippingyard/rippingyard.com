@@ -25,3 +25,7 @@ export const numberByString = (str: string): number => {
   }
   return number;
 }
+
+export const isUrl = (string: string): boolean => {
+  return /^http(s)?:\/\//.test(string)
+}

@@ -1,16 +1,16 @@
 ﻿import { QueryParams, useCachedDocs } from '../firestore/useCachedDocs';
-import { OriginalPost } from '~/schemas/post';
+import { OriginalItem } from '~/schemas/item';
 
-export const usePosts = (args: Omit<QueryParams, 'collection'> = {}) => {
+export const useItems = (args: Omit<QueryParams, 'collection'> = {}) => {
 
   const { where = [] } = args;
 
-  return useCachedDocs<OriginalPost>({
+  return useCachedDocs<OriginalItem>({
     ...args,
-    collection: 'posts',
+    collection: 'items',
     where: [
       { key: 'isDeleted', val: false },
-      { key: 'isPublic', val: true },
+      // { key: 'isPublic', val: true },
       { key: 'status', val: 'published' },
       ...where,
     ],

@@ -3,6 +3,7 @@
     <client-only>
       <div v-show="isAuthenticated" class="item bg-dotted">
         <div class="inner">
+          <FormItem />
           <!-- <ItemForm :item="item" color="yellow" @update-item="updateItem" /> -->
         </div>
       </div>

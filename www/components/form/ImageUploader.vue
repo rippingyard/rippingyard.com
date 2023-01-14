@@ -45,8 +45,8 @@ type Props = {
   editor: Editor;
   show: boolean;
   onClose: () => void;
-  onChange: (file: string) => void;
-  defaultImage: string;
+  onChange?: (file: string) => void;
+  defaultImage?: string;
 }
 
 const props = withDefaults(

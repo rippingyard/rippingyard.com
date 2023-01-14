@@ -86,10 +86,10 @@ export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
     });
   });
 
-  onUnmounted(() => {
-    console.log('unsubscribe snapshot')
-    unsubscribe();
-  });
+  // onUnmounted(() => {
+  //   console.log('unsubscribe snapshot')
+  //   unsubscribe();
+  // });
 
   await getDocs(q);// TODO: これは要らないはず
 

@@ -1,7 +1,8 @@
 ﻿<template>
-  <BlockMain>
-    <OrganismPostList />
-  </BlockMain>
+  <div>
+    <OrganismBillboard />
+    <BlockMain>
+      <OrganismPostList />
+    </BlockMain>
+  </div>
 </template>
-<script lang="ts" setup>
-</script>

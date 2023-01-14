@@ -139,10 +139,6 @@ export function extractImages(content: string) {
   return images
 }
 
-export function isUrl(string: string): boolean {
-  return /^http(s)?:\/\//.test(string)
-}
-
 export function extractUrls(content: string): string[] {
   if (!content) return []
 

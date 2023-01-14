@@ -19,7 +19,7 @@
             <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
           </li>-->
           <client-only>
-            <li v-if="isAuthenticated">
+            <!-- <li v-if="isAuthenticated">
               <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
               <ul class="sublinks">
                 <li>
@@ -35,8 +35,8 @@
                   <span @click="logout">ログアウト</span>
                 </li>
               </ul>
-            </li>
-            <li v-else>
+            </li> -->
+            <li v-if="!isAuthenticated">
               <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
             </li>
           </client-only>
@@ -93,7 +93,7 @@
       </ul>
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
       <OrganismPostForm v-show="activeTab === 'post'" />
-      <OrganismPostList v-if="activeTab === 'posts'" :component="ItemPostSimple" :is-mine="true" />
+      <OrganismPostList v-if="activeTab === 'posts'" :component="CardPostSimple" :is-mine="true" />
       <!--
         
       <section v-show="activeTab === 'posts'" class="inner">
@@ -121,7 +121,7 @@
 <script lang="ts" setup>
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
-import ItemPostSimple from '~/components/item/PostSimple.vue';
+import CardPostSimple from '~/components/card/PostSimple.vue';
 import IconGauge from '~~/components/icon/Gauge.vue';
 import IconSearch from '~~/components/icon/Search.vue';
 import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';

@@ -18,8 +18,7 @@
       <h2>エンティティの管理</h2>
       <p>
         エンティティとは、「もの」や「出来事」など、名前のついたすべての事象のことです。<br />
-        ripping
-        yardでは、エンティティを使って、つながりや言及を行うことができます。<br />
+        ripping yardでは、エンティティを使って、つながりや言及を行うことができます。<br />
         レビューや体験の整理などに役立ててください。
       </p>
       <span class="button is-disabled">エンティティ投稿</span>
@@ -36,12 +35,12 @@
     <div class="box wysiwyg">
       <h2>Twitterと連携</h2>
       <p>Twitterと連携できますが、実際にはまだ何も出来ません。</p>
-      <LinkTwitter />
+      <!-- <LinkTwitter /> -->
     </div>
     <div class="box wysiwyg">
       <h2>通知機能</h2>
       <p>通知機能をONにします。実際の通知はまだ行われません。</p>
-      <NotificationTrigger />
+      <!-- <NotificationTrigger /> -->
     </div>
   </div>
 </template>

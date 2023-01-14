@@ -5,21 +5,21 @@
     </BlockHeading>
     <article class="post">
       <!-- <div v-if="post.parent" class="parent">
-            <ItemCard :item="post.parent" />
-          </div> -->
+        <ItemCard :item="post.parent" />
+      </div> -->
       <BlockWysiwyg :content="content" />
       <AdPostBottom />
       <!-- <div v-if="post.parent" class="parent">
-            <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
-          </div> -->
+        <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
+      </div> -->
       <!-- <div v-if="post.owner" class="owner">
-            <UserCard :user="post.owner" />
-          </div> -->
-      <!-- <CommentList :parent-id="parentId" />
-          <CommentForm :parent-id="parentId" :is-public="post.isPublic" /> -->
+        <UserCard :user="post.owner" />
+      </div> -->
+      <!-- <CommentList :parent-id="parentId" /> -->
+      <!-- <CommentForm :parent-id="parentId" :is-public="post.isPublic" /> -->
       <!-- <div v-if="post.entities" class="entities">
-            <EntitySimpleList :entities="post.entities" />
-          </div> -->
+        <EntitySimpleList :entities="post.entities" />
+      </div> -->
       <div class="footer">
         <p class="date">
           <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
@@ -28,24 +28,24 @@
           {{ owner?.displayName }}
         </p>
         <!-- <client-only>
-              <p v-if="isMine" class="link">
-                <nuxt-link :to="editlink">編集する</nuxt-link>
-              </p>
-            </client-only> -->
+          <p v-if="isMine" class="link">
+            <nuxt-link :to="editlink">編集する</nuxt-link>
+          </p>
+        </client-only> -->
       </div>
     </article>
     <!-- <div class="block sub sticky">
-        <div class="block">
-          <div v-if="post.owner" class="owner">
-            <UserTip :user="post.owner" />
-          </div>
-          <div class="social">
-            <button class="button twitter is-wide" @click="openTweetForm">
-              <fa-icon :icon="['fab', 'twitter']" class="icon" />ツイートする
-            </button>
-          </div>
+      <div class="block">
+        <div v-if="post.owner" class="owner">
+          <UserTip :user="post.owner" />
         </div>
-      </div> -->
+        <div class="social">
+          <button class="button twitter is-wide" @click="openTweetForm">
+            <fa-icon :icon="['fab', 'twitter']" class="icon" />ツイートする
+          </button>
+        </div>
+      </div>
+    </div> -->
     <!-- <div class="block">
       <div v-if="post.items.length > 0" class="items">
         <ul>
@@ -80,11 +80,14 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
+  console.log('props.post', props.post);
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
+  // console.log('post.value', post.value);
 
   if (props.post.owner) {
     const user = await getDoc(props.post.owner);
+    console.log('user', user.data());
     ownerRef.value = user.data();
   }
 });
