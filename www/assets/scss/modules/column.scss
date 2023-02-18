@@ -1,4 +1,8 @@
 ﻿.column {
+  width: 50%;
+  flex-grow: 0;
+  flex-shrink: 1;
+
   &.c10 {
     width: 10%;
   }

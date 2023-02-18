@@ -23,7 +23,6 @@ export default defineNuxtConfig({
         // analyticsDomainName: domain
       },
     ],
-    // '@tanstack/vue-query',
   ],
   buildModules: [
     '@nuxtjs/style-resources',

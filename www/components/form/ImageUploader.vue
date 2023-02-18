@@ -1,31 +1,45 @@
 ﻿<template>
   <BlockModal v-if="show" :on-close="props.onClose">
-    <div class="inner">
-      <div class="uploader">
-        <div v-if="image" class="console">
-          <AtomButton class="button expanded" @click="uploadImage()">
-            アップロード
-          </AtomButton>
-        </div>
-        <div v-show="image" class="dropzone">
-          <div class="dz-preview">
-            <div class="dz-image">
-              <img :src="image" />
+    <div class="uploader">
+      <div class="inner">
+        <div v-show="image" class="preview columns">
+          <div class="image column c60">
+            <img :src="image" />
+            <div class="close">
               <AtomButton class="button" @click="removeImage">
                 <IconCloseCircle />
               </AtomButton>
             </div>
           </div>
-        </div>
-        <div v-show="!image">
-          <!-- <Dropzone id="dz" ref="dz" :options="options" :destroy-dropzone="true" /> -->
-          <div ref="dropZoneRef">
-            ここにファイルを<br />Drop files here
-            <p v-if="isOverDropZone">
-              isOverDropZone
-            </p>
-            <p v-else>NO!</p>
+          <div class="data column c40">
+            <div class="console">
+              <AtomButton class="button expanded centered" @click="uploadImage()">
+                <IconUpload />
+                アップロード
+              </AtomButton>
+            </div>
+            <div>
+              <p>ファイルサイズ：{{ file?.size }}</p>
+              <p>ファイルタイプ：{{ file?.type }}</p>
+              <p>ファイル名：{{ file?.name }}</p>
+            </div>
           </div>
+        </div>
+        <div v-show="!image" class="drop" :class="{ 'is-over': isOverDropZone }">
+          <div ref="dzRef" class="zone">
+            <div class="inner" @click="() => openFileDialog()">
+              <p class="uploadicon">
+                <IconUpload />
+              </p>
+              <p v-if="!isOverDropZone" class="caption">
+                画像ファイルをドロップしてください
+              </p>
+              <p v-else class="caption">
+                画像ファイルをアップロードできます
+              </p>
+            </div>
+          </div>
+          <IconClose @click="props.onClose" class="trigger-close" />
         </div>
         <!-- <FormImageUploader :on-change="updateImage" /> -->
       </div>
@@ -35,11 +49,13 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs';
 import { Editor } from '@tiptap/vue-3';
-import { useDropZone } from '@vueuse/core';
+import { useDropZone, useFileDialog } from '@vueuse/core';
 import { resizeImage } from '~~/utils/image';
 import { getExt } from '~/utils/file';
 
-const dropZoneRef = ref<HTMLDivElement>();
+const dzRef = ref<HTMLDivElement>();
+
+const { files, open: openFileDialog } = useFileDialog();
 
 type Props = {
   editor: Editor;
@@ -59,12 +75,14 @@ const props = withDefaults(
 console.log(props);
 
 const image = ref('');
+const file = ref<File>();
 
 const onDrop = async (files: File[] | null) => {
   if (!files) return;
 
   const originalFile = files[0];
-  console.log('originalFile', originalFile);
+  file.value = originalFile;
+  console.log('originalFile', file.value);
 
   const resizedImage = await resizeImage(originalFile, {
     width: 1800,
@@ -84,8 +102,10 @@ const onDrop = async (files: File[] | null) => {
 
 const uploadImage = async () => {
   if (!props.editor) return;
+  console.log('image.value', image.value);
   if (image.value) {
     const ext = getExt(image.value);
+    console.log('ext', ext);
     if (!ext) return;
 
     const now = dayjs()
@@ -103,7 +123,7 @@ const uploadImage = async () => {
   }
 };
 
-const { isOverDropZone } = useDropZone(dropZoneRef, onDrop);
+const { isOverDropZone } = useDropZone(dzRef, onDrop);
 
 // const options = ref({
 //   url: '.',
@@ -171,3 +191,120 @@ const removeImage = () => {
   image.value = '';
 };
 </script>
+<style lang="scss" scoped>
+.uploader {
+  padding: 15px;
+  height: 100%;
+
+  >.inner {
+    padding: 10px;
+    height: 100%;
+    border: 1px solid $gray-black;
+  }
+
+  .drop {
+    height: inherit;
+    width: 100%;
+    color: $gray-black;
+
+    &.is-over {
+      background: $yellow;
+      color: $black;
+    }
+
+    .zone {
+      width: 100%;
+      height: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      >.inner {
+        position: relative;
+
+        >.uploadicon {
+          width: 80px;
+          margin: auto;
+          margin-bottom: 20px;
+
+          >.icon {
+            width: 80px;
+            height: 80px;
+            display: block;
+          }
+        }
+
+        >.caption {
+          min-width: 240px;
+          font-size: 0.9rem;
+          text-align: center;
+        }
+      }
+    }
+
+    .trigger-close {
+      position: absolute;
+      top: 35px;
+      left: 35px;
+      cursor: pointer;
+
+      &:hover {
+        color: $yellow;
+      }
+    }
+  }
+
+  .preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    >.image {
+      // width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: $gray-black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      >.close {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        align-items: center;
+        justify-content: center;
+        background-color: $white-transparent-60;
+        display: none;
+      }
+
+      &:hover {
+        >.close {
+          display: flex;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    >.data {
+      padding-left: 10px;
+      position: relative;
+      overflow: hidden;
+
+      >.console {
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 10px);
+      }
+    }
+  }
+}
+</style>

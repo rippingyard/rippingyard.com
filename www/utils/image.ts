@@ -31,7 +31,7 @@ export const resizeImage = (
           resolve(reader.result as string);
         }
 
-        // console.log('blob', blob, blob.type);
+        console.log('blob', blob, blob.type);
         // resolve(new File([blob], blob.name, {
         //   type: blob.type,
         // }));
