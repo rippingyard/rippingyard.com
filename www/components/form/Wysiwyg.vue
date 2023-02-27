@@ -1,10 +1,10 @@
 ﻿<template>
-  <div v-if="editor">
+  <div v-if="editor" @click="editor && editor.commands.focus()" class="wrapper">
     <FormImageUploader :editor="editor" :show="showUploader" :on-close="closeImageUploader" />
     <div class="editor">
       <FormBubbleMenu :editor="editor" />
       <FormFloatingMenu :editor="editor" @showImageUploader="showImageUploader()" />
-      <div class="inner" @click="editor && editor.commands.focus()">
+      <div class="inner">
         <editor-content :editor="editor" />
       </div>
     </div>
@@ -112,14 +112,18 @@ const closeImageUploader = (): void => {
 </script>
 <style lang="scss" scoped>
 .editor {
-  min-height: 320px;
+  min-height: 25vh;
   position: relative;
 
   >.inner {
     width: 100%;
     height: 100%;
-    cursor: text;
   }
+}
+
+.wrapper {
+  height: 100%;
+  cursor: text;
 }
 
 .expanded {

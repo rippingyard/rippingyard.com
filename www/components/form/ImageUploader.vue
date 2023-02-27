@@ -2,9 +2,9 @@
   <BlockModal v-if="show" :on-close="props.onClose">
     <div class="uploader">
       <div class="inner">
-        <div v-show="image" class="preview columns">
+        <div v-show="file?.url" class="preview columns">
           <div class="image column c60">
-            <img :src="image" />
+            <img :src="file?.url" />
             <div class="close">
               <AtomButton class="button" @click="removeImage">
                 <IconCloseCircle />
@@ -19,13 +19,13 @@
               </AtomButton>
             </div>
             <div>
-              <p>ファイルサイズ：{{ file?.size }}</p>
-              <p>ファイルタイプ：{{ file?.type }}</p>
-              <p>ファイル名：{{ file?.name }}</p>
+              <p>ファイルサイズ：{{ file?.file.size }}</p>
+              <p>ファイルタイプ：{{ file?.file.type }}</p>
+              <p>ファイル名：{{ file?.file.name }}</p>
             </div>
           </div>
         </div>
-        <div v-show="!image" class="drop" :class="{ 'is-over': isOverDropZone }">
+        <div v-show="!file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
           <div ref="dzRef" class="zone">
             <div class="inner" @click="() => openFileDialog()">
               <p class="uploadicon">
@@ -48,14 +48,12 @@
 </template>
 <script lang="ts" setup>
 import dayjs from 'dayjs';
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from 'firebase/storage';
 import { Editor } from '@tiptap/vue-3';
 import { useDropZone, useFileDialog } from '@vueuse/core';
-import { resizeImage } from '~~/utils/image';
+import { ResizedImage, resizeImage } from '~~/utils/image';
 import { getExt } from '~/utils/file';
-
-const dzRef = ref<HTMLDivElement>();
-
-const { files, open: openFileDialog } = useFileDialog();
+import { useFirebase } from '~~/composables/firebase/useFirebase';
 
 type Props = {
   editor: Editor;
@@ -72,124 +70,55 @@ const props = withDefaults(
     defaultImage: '',
   }
 );
-console.log(props);
 
-const image = ref('');
-const file = ref<File>();
+const { fb } = useFirebase();
+const storage = getStorage(fb);
+const dzRef = ref<HTMLDivElement>();
+const file = ref<ResizedImage>();
+
+const { files, open: openFileDialog } = useFileDialog();
 
 const onDrop = async (files: File[] | null) => {
   if (!files) return;
 
   const originalFile = files[0];
-  file.value = originalFile;
-  console.log('originalFile', file.value);
 
   const resizedImage = await resizeImage(originalFile, {
     width: 1800,
     height: 1800,
   });
 
-  console.log('resizedImage', resizedImage);
-
   if (!resizedImage) return;
 
-  image.value = resizedImage;
-
-  // return typeof props.onChange === 'function'
-  //   ? props.onChange(image as string)
-  //   : null;
+  file.value = resizedImage;
 }
-
-const uploadImage = async () => {
-  if (!props.editor) return;
-  console.log('image.value', image.value);
-  if (image.value) {
-    const ext = getExt(image.value);
-    console.log('ext', ext);
-    if (!ext) return;
-
-    const now = dayjs()
-
-    const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
-    const result = await (this as any).$fire.storage
-      .ref()
-      .child(filename)
-      .put(image.value)
-    const url = await result.ref.getDownloadURL();
-
-    props.editor.chain().focus().setImage({ src: url }).run();
-
-    props.onClose();
-  }
-};
 
 const { isOverDropZone } = useDropZone(dzRef, onDrop);
 
-// const options = ref({
-//   url: '.',
-//   autoQueue: false,
-//   autoProcessQueue: false,
-//   uploadMultiple: false,
-//   maxFiles: 1,
-//   acceptedFiles: 'image/*',
-//   addRemoveLinks: true,
-//   thumbnailWidth: 800,
-//   thumbnailHeight: 800,
-//   thumbnailMethod: 'contain',
-//   resizeWidth: 200,
-//   resizeHeight: 200,
-//   resizeQuality: 1,
-//   resizeMethod: 'contain',
-//   // createImageThumbnails: false,
-//   dictDefaultMessage: '画像をアップロードしてください',
-//   // dictFallbackMessage: '',
-//   // dictFallbackText: '',
-//   // dictFileTooBig: '',
-//   dictInvalidFileType: '画像以外のアップロードは許可されていません',
-//   // dictResponseError: '',
-//   // dictCancelUpload: '',
-//   // dictUploadCanceled: '',
-//   // dictCancelUploadConfirmation: '',
-//   dictRemoveFile: '画像を削除する',
-//   // dictRemoveFile: '<fa-icon icon="bold" />',
-//   // dictRemoveFileConfirmation: '',
-//   dictMaxFilesExceeded:
-//     '{{maxFiles}}つ以上の画像はアップロード出来ません',
-// })
+const uploadImage = async () => {
+  if (!props.editor || !file.value) return;
+  console.log('file.value', file.value);
 
-// const Dropzone = require('nuxt-dropzone')
+  const ext = getExt(file.value.file);
+  if (!ext) return;
 
-// export default Vue.extend({
-//   components: {
-//     Dropzone,
-//   },
-//   data() {
-//     return {
-//       dz: null,
-//       image: '',
-//       options: {
+  const now = dayjs();
 
-//       },
-//     }
-//   },
-//   watch: {
-//     defaultImage(val: string) {
-//       this.image = val
-//     },
-//   },
-//   mounted(): void {
-//     const dz: any = this.$refs.dz
-//     this.image = this.defaultImage
-//     if (dz.dropzone) {
-//       dz.dropzone.on(
-//         'addedfile',
+  const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
+  const uploadHandler = storageRef(storage, filename)
 
-//       )
-//     }
-//   },
-const removeImage = () => {
-  image.value = '';
+  await uploadBytes(uploadHandler, file.value.file);
+  const url = await getDownloadURL(uploadHandler);
+
+  props.editor.chain().focus().setImage({ src: url }).run();
+
+  props.onClose();
 };
+
+const removeImage = () => {
+  file.value = undefined;
+};
+
 </script>
 <style lang="scss" scoped>
 .uploader {

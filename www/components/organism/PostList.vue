@@ -18,13 +18,16 @@ import { OriginalPost } from '~~/schemas/post';
 
 type Props = {
   component?: typeof CardPost;
+  types?: string[];
+  limit?: number;
   isMine?: boolean;
 }
 
 const props = defineProps<Props>();
+const types = computed(() => props.types || ['log', 'note', 'article']);
 
 const where: WhereParams = [
-  { key: 'type', val: ['log', 'note', 'article'] },
+  { key: 'type', val: types.value },
 ];
 
 if (props.isMine) {
@@ -39,7 +42,7 @@ if (props.isMine) {
 
 const { isLoading, isError, data, error } = usePosts({
   where,
-  limit: 100,
+  limit: props.limit || 100,
   orderBy: { key: 'publishedAt' },
 });
 

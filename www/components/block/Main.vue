@@ -7,11 +7,17 @@
 
 const props = defineProps<{
   isCliff?: boolean;
+  horizontalSize?: 'normal' | 'large';
 }>();
 
-const classes = {
-  'is-cliff': props.isCliff || false,
-};
+console.log('props', props);
+
+const classes = [
+  {
+    'is-cliff': props.isCliff || false,
+  },
+  props.horizontalSize || 'normal',
+];
 
 </script>
 <style lang="scss" scoped>
@@ -21,6 +27,11 @@ main {
 
   max-width: $mainSize;
   margin: $gap auto;
+
+  &.large {
+    max-width: $mainSize + (($gap + $navSize) * 2);
+    padding-left: $navSize + $gap;
+  }
 
   &.is-cliff {
     margin-top: 0;

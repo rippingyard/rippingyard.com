@@ -16,26 +16,26 @@
             <nuxt-link to="/posts/">POSTS<small>記事一覧</small></nuxt-link>
           </li>
           <!--<li>
-            <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
-          </li>-->
+                <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
+              </li>-->
           <client-only>
             <!-- <li v-if="isAuthenticated">
-              <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
-              <ul class="sublinks">
-                <li>
-                  <nuxt-link to="/home/posts">投稿一覧</nuxt-link>
-                </li>
-                <li>
-                  <nuxt-link to="/home/post/create">新規投稿</nuxt-link>
-                </li>
-                <li>
-                  <nuxt-link to="/home/setting">設定変更</nuxt-link>
-                </li>
-                <li>
-                  <span @click="logout">ログアウト</span>
-                </li>
-              </ul>
-            </li> -->
+                  <nuxt-link to="/home/">HOME<small>ホーム</small></nuxt-link>
+                  <ul class="sublinks">
+                    <li>
+                      <nuxt-link to="/home/posts">投稿一覧</nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/home/post/create">新規投稿</nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/home/setting">設定変更</nuxt-link>
+                    </li>
+                    <li>
+                      <span @click="logout">ログアウト</span>
+                    </li>
+                  </ul>
+                </li> -->
             <li v-if="!isAuthenticated">
               <nuxt-link to="/login/">LOGIN<small>ログイン</small></nuxt-link>
             </li>
@@ -92,28 +92,28 @@
         </li>
       </ul>
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
-      <OrganismPostForm v-show="activeTab === 'post'" />
-      <OrganismPostList v-if="activeTab === 'posts'" :component="CardPostSimple" :is-mine="true" />
+      <OrganismPostForm v-show="activeTab === 'post'" :is-footer-dotted="true" :is-widget="true" :show-item="true" />
+      <OrganismNavPostList v-if="activeTab === 'posts'" />
       <!--
-        
-      <section v-show="activeTab === 'posts'" class="inner">
-        <PostSimpleList
-          :posts="posts"
-          :is-small="true"
-          :has-margin="true"
-          :is-dark="true"
-        />
-      </section>
-      <section v-show="activeTab === 'search'" class="inner">
-        <Search />
-      </section>
-      <section
-        v-if="canCreateArticle"
-        v-show="activeTab === 'post'"
-        class="inner"
-      >
-        <NoteForm />
-      </section>-->
+            
+          <section v-show="activeTab === 'posts'" class="inner">
+            <PostSimpleList
+              :posts="posts"
+              :is-small="true"
+              :has-margin="true"
+              :is-dark="true"
+            />
+          </section>
+          <section v-show="activeTab === 'search'" class="inner">
+            <Search />
+          </section>
+          <section
+            v-if="canCreateArticle"
+            v-show="activeTab === 'post'"
+            class="inner"
+          >
+            <NoteForm />
+          </section>-->
     </div>
     <div class="overlay" />
   </nav>
@@ -121,7 +121,6 @@
 <script lang="ts" setup>
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
-import CardPostSimple from '~/components/card/PostSimple.vue';
 import IconGauge from '~~/components/icon/Gauge.vue';
 import IconSearch from '~~/components/icon/Search.vue';
 import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';

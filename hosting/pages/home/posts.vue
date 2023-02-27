@@ -4,11 +4,7 @@
     <div v-if="!isEmpty" class="page">
       <PostTable :data="posts" :check="toggleCheck" />
       <div class="console">
-        <button
-          class="button"
-          :class="{ 'is-disabled': !isChecked }"
-          @click="deletePosts()"
-        >
+        <button class="button" :class="{ 'is-disabled': !isChecked }" @click="deletePosts()">
           削除
         </button>
       </div>
@@ -144,20 +140,25 @@ export default Vue.extend({
   margin-top: $gap;
   border: 1px solid $black;
 }
+
 .console {
   padding: 20px;
 }
+
 .empty {
   border-top: 1px solid $black;
   padding: $gap * 3 $gap;
   text-align: center;
-  > h2 {
+
+  >h2 {
     font-size: 3rem;
     font-weight: 800;
   }
-  > p {
+
+  >p {
     font-size: 1.4rem;
-    > a {
+
+    >a {
       color: $blue;
     }
   }
