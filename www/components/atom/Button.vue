@@ -2,7 +2,7 @@
   <button class="button" :class="classes">
     <slot v-if="!props.isLoading" />
     <span v-else>
-      <IconLoading class="icon" color="yellow" />
+      <IconLoading class="icon" color="black" />
     </span>
   </button>
 </template>
@@ -11,6 +11,7 @@
 const props = defineProps<{
   expanded?: boolean;
   centered?: boolean;
+  noBorder?: boolean;
   isLoading?: boolean;
 }>();
 
@@ -18,6 +19,7 @@ const classes = {
   expanded: props.expanded,
   centered: props.centered,
   disabled: props.isLoading,
+  'no-border': props.noBorder,
 };
 
 </script>

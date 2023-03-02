@@ -6,23 +6,26 @@
           <div class="image column c60">
             <img :src="file?.url" />
             <div class="close">
-              <AtomButton class="button" @click="removeImage">
-                <IconCloseCircle />
+              <AtomButton class="button" :no-border="true" @click="removeImage">
+                <IconClose />
               </AtomButton>
             </div>
           </div>
           <div class="data column c40">
             <div class="console">
-              <AtomButton class="button expanded centered" @click="uploadImage()">
+              <AtomButton class="button expanded centered" :is-loading="isUploading" @click="uploadImage()">
                 <IconUpload />
                 アップロード
               </AtomButton>
             </div>
-            <div>
-              <p>ファイルサイズ：{{ file?.file.size }}</p>
-              <p>ファイルタイプ：{{ file?.file.type }}</p>
-              <p>ファイル名：{{ file?.file.name }}</p>
-            </div>
+            <dl class="filedata">
+              <dt>ファイルサイズ：</dt>
+              <dd>{{ file?.file.size }}</dd>
+              <dt>ファイルタイプ：</dt>
+              <dd>{{ file?.file.type }}</dd>
+              <dt>ファイル名：</dt>
+              <dd>{{ file?.file.name }}</dd>
+            </dl>
           </div>
         </div>
         <div v-show="!file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
@@ -31,17 +34,11 @@
               <p class="uploadicon">
                 <IconUpload />
               </p>
-              <p v-if="!isOverDropZone" class="caption">
-                画像ファイルをドロップしてください
-              </p>
-              <p v-else class="caption">
-                画像ファイルをアップロードできます
-              </p>
+              <p class="caption">{{ dropCaption }}</p>
             </div>
           </div>
           <IconClose @click="props.onClose" class="trigger-close" />
         </div>
-        <!-- <FormImageUploader :on-change="updateImage" /> -->
       </div>
     </div>
   </BlockModal>
@@ -75,22 +72,38 @@ const { fb } = useFirebase();
 const storage = getStorage(fb);
 const dzRef = ref<HTMLDivElement>();
 const file = ref<ResizedImage>();
+const isResizing = ref(false);
+const isUploading = ref(false);
 
-const { files, open: openFileDialog } = useFileDialog();
+const { files, open: openFileDialog } = useFileDialog({
+  multiple: false,
+});
+
+const dropCaption = computed(() => {
+  if (isOverDropZone.value) return '画像ファイルをアップロードできます';
+  if (isResizing.value) return '画像をリサイズしています';
+  return '画像ファイルをドロップしてください';
+});
 
 const onDrop = async (files: File[] | null) => {
   if (!files) return;
 
-  const originalFile = files[0];
+  try {
+    isResizing.value = true;
+    const originalFile = files[0];
 
-  const resizedImage = await resizeImage(originalFile, {
-    width: 1800,
-    height: 1800,
-  });
+    const resizedImage = await resizeImage(originalFile, {
+      width: 1800,
+      height: 1800,
+    });
 
-  if (!resizedImage) return;
+    if (!resizedImage) return;
 
-  file.value = resizedImage;
+    file.value = resizedImage;
+  } catch (e) {
+    console.error(e);
+  }
+  isResizing.value = false;
 }
 
 const { isOverDropZone } = useDropZone(dzRef, onDrop);
@@ -102,18 +115,30 @@ const uploadImage = async () => {
   const ext = getExt(file.value.file);
   if (!ext) return;
 
-  const now = dayjs();
+  try {
+    isUploading.value = true;
+    const now = dayjs();
 
-  const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`
-  const uploadHandler = storageRef(storage, filename)
+    const filename = `posts/${now.format('YYYY/MM')}/${now.unix()}.${ext}`;
+    const uploadHandler = storageRef(storage, filename);
 
-  await uploadBytes(uploadHandler, file.value.file);
-  const url = await getDownloadURL(uploadHandler);
+    await uploadBytes(uploadHandler, file.value.file);
+    const url = await getDownloadURL(uploadHandler);
 
-  props.editor.chain().focus().setImage({ src: url }).run();
+    props.editor.chain().focus().setImage({ src: url }).run();
+    file.value = undefined;
+  } catch (e) {
+    console.error(e);
+  }
 
   props.onClose();
+  isUploading.value = false;
 };
+
+watch(files, () => {
+  if (!files.value) return;
+  onDrop([files.value[0]]);
+});
 
 const removeImage = () => {
   file.value = undefined;
@@ -155,6 +180,7 @@ const removeImage = () => {
           width: 80px;
           margin: auto;
           margin-bottom: 20px;
+          cursor: pointer;
 
           >.icon {
             width: 80px;
@@ -216,7 +242,7 @@ const removeImage = () => {
 
       &:hover {
         >.close {
-          display: flex;
+          display: block;
           width: 100%;
           height: 100%;
         }
@@ -227,6 +253,17 @@ const removeImage = () => {
       padding-left: 10px;
       position: relative;
       overflow: hidden;
+
+      >.filedata {
+        >dt {
+          font-size: 0.7rem;
+        }
+
+        >dd {
+          margin-bottom: 5px;
+          overflow: hidden;
+        }
+      }
 
       >.console {
         position: absolute;
