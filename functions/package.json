@@ -32,7 +32,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.6",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",
-    "@nestjs/core": "^8.0.0",
+    "@nestjs/core": "^9.0.5",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nuxt/ufo": "^0.5.4",
