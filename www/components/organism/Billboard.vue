@@ -2,7 +2,7 @@
   <BlockLoading :is-loading="postsRef.isLoading.value" :is-error="postsRef.isError.value">
     <section class="billboard" :class="className">
       <div class="frame no-header">
-        <div class="content">
+        <div class="content" :class="{ 'full': !thumbnail }">
           <div class="content-inner">
             <h1 class="title">
               <nuxt-link :to="permalink">
@@ -45,7 +45,7 @@ import { numberByString } from '~/utils';
 const index = ref(0);
 const postsRef = usePosts({
   where: [
-    { key: 'type', val: ['note', 'article'] },
+    { key: 'type', val: ['article'] },
   ],
 });
 const posts = computed<OriginalPost[]>(() => postsRef.data.value || []);
@@ -81,7 +81,7 @@ const summary = computed<string>(() => {
   if (!post.value) return '';
   return getSummary(
     post.value.content,
-    !hasTitle(post.value.content) && !hasParentTitle.value ? 240 : 160
+    !thumbnail.value ? 480 : 180
   )
 });
 const thumbnail = computed((): string => post.value ? getThumbnailFromText(post.value.content) : '');
@@ -103,7 +103,7 @@ onMounted(() => {
   display: flex;
   position: relative;
   align-items: center;
-  padding-top: $navMargin;
+  // padding-top: $navMargin;
   min-height: 100vh;
   width: 100%;
   margin-bottom: $gap * 0.5;
@@ -123,6 +123,10 @@ onMounted(() => {
     display: flex;
     align-items: center;
 
+    &.full {
+      width: 100%;
+    }
+
     .title {
       font-size: 2.2rem;
       line-height: 1.4;
@@ -138,16 +142,22 @@ onMounted(() => {
   .image {
     width: 440px;
     max-width: 100%;
+    max-height: calc(90vh - $gap);
     padding: $gap * 0.5 0;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    >a {
+      display: block;
+      height: 100%;
+    }
+
     img {
       max-width: 100%;
       height: auto;
       width: auto;
-      max-height: 100vh;
+      max-height: 100%;
     }
   }
 

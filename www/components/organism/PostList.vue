@@ -2,18 +2,19 @@
   <div class="container">
     <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
       <ul>
-        <li v-for="post in data as OriginalPost[]" :key="post.id">
+        <li v-for="post, i in posts" :key="i">
           <component :is="props.component || CardPost" :post="post" />
         </li>
       </ul>
+      <AtomButton @click="e => more()">もっと読む</AtomButton>
     </BlockLoading>
   </div>
 </template>
 <script lang="ts" setup>
 import CardPost from '~~/components/card/Post.vue';
 import { useMe } from '~~/composables/fetch/useMe';
-import { usePosts } from '~~/composables/fetch/usePosts';
-import { WhereParams } from '~~/composables/firestore/useCachedDocs';
+import { useInfinitePosts, usePosts } from '~~/composables/fetch/usePosts';
+import { QueryParams, WhereParams } from '~~/composables/firestore/useCachedDocs';
 import { OriginalPost } from '~~/schemas/post';
 
 type Props = {
@@ -24,6 +25,7 @@ type Props = {
 }
 
 const props = defineProps<Props>();
+const posts = ref<OriginalPost[]>();
 const types = computed(() => props.types || ['log', 'note', 'article']);
 
 const where: WhereParams = [
@@ -40,15 +42,25 @@ if (props.isMine) {
   }
 }
 
-const { isLoading, isError, data, error } = usePosts({
+const condition: Omit<QueryParams, 'collection'> = {
   where,
   limit: props.limit || 100,
   orderBy: { key: 'publishedAt' },
-});
+};
+
+const { isLoading, isError, data, error, fetchNextPage } = useInfinitePosts(condition);
 
 watch(data, (newData) => {
-  console.log('watch posts', newData);
+  if (!newData) return;
+  console.log('newData', newData);
+  const newPosts = newData as any;
+  posts.value = !newPosts.pages ? newPosts : newPosts.pages.flat();
 });
+
+const more = () => {
+  console.log('load more!');
+  fetchNextPage();
+}
 
 </script>
 <style lang="scss" scoped>

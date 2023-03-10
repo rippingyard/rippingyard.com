@@ -10,7 +10,7 @@
   DocumentData,
   onSnapshot,
 } from 'firebase/firestore';
-import { isServer, useQuery } from "@tanstack/vue-query";
+import { GetNextPageParamFunction, isServer, useInfiniteQuery, useQuery } from "@tanstack/vue-query";
 import { useCacheKey } from './useCacheKey';
 import { useDefaultValue } from './useDefaultValue';
 import { useFirebase } from '~/composables/firebase/useFirebase';
@@ -31,6 +31,7 @@ export type QueryParams = {
   collection: string;
   where?: WhereParams;
   limit?: number;
+  startAfter?: string | number;
   orderBy?: {
     key: string;
     order?: OrderType;
@@ -103,4 +104,20 @@ export const useCachedDocs = <T>(args: QueryParams) => {
   const queryKey = useCacheKey<QueryParams>(args);
 
   return useQuery({ queryKey, queryFn: () => getCachedDocs<T>(args) });
+}
+
+export const useCachedInfiniteDocs = <T>(
+  args: QueryParams,
+  getNextPageParam: GetNextPageParamFunction<T[]>
+) => {
+
+  if (isServer) return useDefaultValue<T[]>();
+
+  const queryKey = useCacheKey<QueryParams>(args);
+
+  return useInfiniteQuery({
+    queryKey,
+    queryFn: () => getCachedDocs<T>(args),
+    getNextPageParam,
+  });
 }

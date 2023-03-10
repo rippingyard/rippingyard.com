@@ -4,5 +4,6 @@
     isError: ref(false),
     error: ref(''),
     data: ref<T>(),
+    fetchNextPage: () => undefined,
   }
 }

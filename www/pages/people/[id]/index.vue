@@ -1,0 +1,69 @@
+﻿<template>
+  <div>
+    <BlockMain>
+      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+        <OrganismUser v-if="user" :user="user" />
+      </BlockLoading>
+    </BlockMain>
+    <OrganismBillboard />
+  </div>
+</template>
+<script lang="ts" setup>
+import { useTitle } from '@vueuse/core';
+import { useUsers } from '~~/composables/fetch/useUsers';
+import { useCanTouchUser } from '~~/composables/permission/useCanTouchUser';
+
+const route = useRoute();
+const { $openToast: openToast } = useNuxtApp();
+
+const { isLoading, isError, error, data } = useUsers({
+  where: [
+    { key: 'userName', val: route.params.id },
+  ],
+});
+
+const user = computed(() => {
+  if (isLoading.value || !data.value) return null;
+  return data.value[0];
+});
+
+const checkPermission = () => {
+  if (isLoading.value) return;
+
+  if (!user.value) {
+    notFound();
+    return;
+  }
+
+  const { canTouchUser } = useCanTouchUser(user.value);
+  if (!canTouchUser.value) {
+    notFound();
+    return;
+  }
+
+  useTitle(user.value.displayName);
+}
+
+if (!isLoading.value) checkPermission();
+watch(isLoading, () => checkPermission());
+
+const notFound = () => {
+  openToast('このユーザーは非公開です');
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
+</script>
+<style lang="scss" scoped>
+.container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.loading {
+
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+</style>

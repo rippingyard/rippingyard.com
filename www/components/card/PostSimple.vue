@@ -1,13 +1,5 @@
 ﻿<template>
-  <div v-if="post" class="item">
-    <div class="extra pconly">
-      <template v-if="post.hasThumbnail">
-        <nuxt-link :to="post.permalink">
-          <AtomThumbnail :image="post.thumbnail" />
-        </nuxt-link>
-      </template>
-      <!-- <UserTip v-else :user="post.owner" :is-dark="isDark" /> -->
-    </div>
+  <div v-if="post" class="item" :class="{ 'has-image': post.hasThumbnail }">
     <div class="body">
       <h3 class="title">
         <nuxt-link :to="post.permalink">
@@ -25,6 +17,12 @@
       <!-- <div class="author sponly">
         <UserTip :user="post.owner" :is-dark="isDark" />
       </div> -->
+    </div>
+    <div class="extra pconly" v-if="post.hasThumbnail">
+      <nuxt-link :to="post.permalink">
+        <AtomThumbnail :image="post.thumbnail" />
+      </nuxt-link>
+      <!-- <UserTip v-else :user="post.owner" :is-dark="isDark" /> -->
     </div>
   </div>
 </template>
@@ -48,12 +46,11 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
 </script>
 <style lang="scss" scoped>
 .item {
-  display: flex;
   border-bottom: 1px solid $black-transparent-30;
 
   .body {
     display: block;
-    width: calc(100% - 180px);
+    width: 100%;
     padding: $gap - 5px 0 $gap 0;
 
     .title {
@@ -80,6 +77,15 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
 
   .entities {
     padding-top: 10px;
+  }
+
+  &.has-image {
+    display: flex;
+    align-items: center;
+
+    .body {
+      width: calc(100% - 180px);
+    }
   }
 
   @include until-desktop {

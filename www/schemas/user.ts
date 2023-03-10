@@ -1,4 +1,6 @@
-﻿export type User = {
+﻿import { Timestamp } from "firebase/firestore"
+
+export type User = {
   uid: string
   displayName: string
   userName: string
@@ -8,8 +10,8 @@
   role: 'load' | 'mayor' | 'resident' | 'stranger'
   isBanned: boolean;
   isDeleted: boolean;
-  createdAt: string | Date
-  updatedAt: string | Date
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 }
 
 export type UserState = {

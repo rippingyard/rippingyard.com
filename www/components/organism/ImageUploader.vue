@@ -1,46 +1,61 @@
 ﻿<template>
-  <div class="uploader">
-    <div class="inner">
-      <div v-show="file?.url" class="preview">
-        <div class="image">
-          <img :src="file?.url" />
-          <div class="close">
-            <AtomButton class="button" :no-border="true" @click="removeImage">
-              <IconClose />
-            </AtomButton>
+  <BlockModal v-if="show" :on-close="props.onClose">
+    <div class="uploader">
+      <div class="inner">
+        <div v-show="file?.url" class="preview columns">
+          <div class="image column c60">
+            <img :src="file?.url" />
+            <div class="close">
+              <AtomButton class="button" :no-border="true" @click="removeImage">
+                <IconClose />
+              </AtomButton>
+            </div>
+          </div>
+          <div class="data column c40">
+            <div class="console">
+              <AtomButton class="button expanded centered" :is-loading="isUploading" @click="uploadImage()">
+                <IconUpload />
+                アップロード
+              </AtomButton>
+            </div>
+            <dl class="filedata">
+              <dt>ファイルサイズ：</dt>
+              <dd>{{ file?.file.size }}</dd>
+              <dt>ファイルタイプ：</dt>
+              <dd>{{ file?.file.type }}</dd>
+              <dt>ファイル名：</dt>
+              <dd>{{ file?.file.name }}</dd>
+            </dl>
           </div>
         </div>
-        <div class="data">
-          <div class="console">
-            <AtomButton class="button expanded centered" :is-loading="isUploading" @click="uploadImage()">
-              <IconUpload />
-              アップロード
-            </AtomButton>
+        <div v-show="!file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
+          <div ref="dzRef" class="zone">
+            <div class="inner" @click="() => openFileDialog()">
+              <p class="uploadicon">
+                <IconUpload />
+              </p>
+              <p class="caption">{{ dropCaption }}</p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div v-show="!file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
-        <div ref="dzRef" class="zone">
-          <div class="inner" @click="() => openFileDialog()">
-            <p class="uploadicon">
-              <IconUpload />
-            </p>
-            <p class="caption">{{ dropCaption }}</p>
-          </div>
+          <IconClose @click="props.onClose" class="trigger-close" />
         </div>
       </div>
     </div>
-  </div>
+  </BlockModal>
 </template>
 <script lang="ts" setup>
 import dayjs from 'dayjs';
 import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from 'firebase/storage';
+import { Editor } from '@tiptap/vue-3';
 import { useDropZone, useFileDialog } from '@vueuse/core';
 import { ResizedImage, resizeImage } from '~~/utils/image';
 import { getExt } from '~/utils/file';
 import { useFirebase } from '~~/composables/firebase/useFirebase';
 
 type Props = {
+  editor: Editor;
+  show: boolean;
+  onClose: () => void;
   onChange?: (file: string) => void;
   defaultImage?: string;
 }
@@ -94,7 +109,8 @@ const onDrop = async (files: File[] | null) => {
 const { isOverDropZone } = useDropZone(dzRef, onDrop);
 
 const uploadImage = async () => {
-  if (!file.value) return;
+  if (!props.editor || !file.value) return;
+  console.log('file.value', file.value);
 
   const ext = getExt(file.value.file);
   if (!ext) return;
@@ -109,11 +125,13 @@ const uploadImage = async () => {
     await uploadBytes(uploadHandler, file.value.file);
     const url = await getDownloadURL(uploadHandler);
 
+    props.editor.chain().focus().setImage({ src: url }).run();
     file.value = undefined;
   } catch (e) {
     console.error(e);
   }
 
+  props.onClose();
   isUploading.value = false;
 };
 
@@ -194,7 +212,7 @@ const removeImage = () => {
   .preview {
     width: 100%;
     height: 100%;
-    // display: flex;
+    display: flex;
 
     >.image {
       // width: 100%;
@@ -245,6 +263,12 @@ const removeImage = () => {
           margin-bottom: 5px;
           overflow: hidden;
         }
+      }
+
+      >.console {
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 10px);
       }
     }
   }

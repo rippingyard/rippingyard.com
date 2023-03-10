@@ -15,6 +15,9 @@
           <li>
             <nuxt-link to="/posts/">POSTS<small>記事一覧</small></nuxt-link>
           </li>
+          <li v-if="isAuthenticated">
+            <nuxt-link to="/profile/">PROFILE<small>プロフィール</small></nuxt-link>
+          </li>
           <!--<li>
                 <nuxt-link to="/items/">ITEMS<small>アイテム一覧</small></nuxt-link>
               </li>-->
@@ -72,7 +75,7 @@
             <IconGauge />
           </span>
         </li>
-        <li :class="{ active: isActiveTab('posts') }" @click="onClickTab('posts')">
+        <li v-if="isAuthenticated" :class="{ active: isActiveTab('posts') }" @click="onClickTab('posts')">
           <span class="pconly">あなたの記事<small>Posts</small></span>
           <span class="sponly">
             <IconBell />

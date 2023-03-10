@@ -16,5 +16,6 @@ const props = defineProps<{
   border-bottom: 1px solid $black;
   font-size: 1.1rem;
   padding: 5px 0;
+  outline: none;
 }
 </style>

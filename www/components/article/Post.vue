@@ -20,19 +20,21 @@
       <!-- <div v-if="post.entities" class="entities">
         <EntitySimpleList :entities="post.entities" />
       </div> -->
-      <div class="footer">
-        <p class="date">
+      <ul class="footer">
+        <li class="date">
           <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
-        </p>
-        <p>
-          {{ owner?.displayName }}
-        </p>
+        </li>
+        <li v-if="owner">
+          <nuxt-link :to="`/people/${owner?.userName}`">
+            <IconUser />{{ owner?.displayName }}
+          </nuxt-link>
+        </li>
         <!-- <client-only>
           <p v-if="isMine" class="link">
             <nuxt-link :to="editlink">編集する</nuxt-link>
           </p>
         </client-only> -->
-      </div>
+      </ul>
     </article>
     <!-- <div class="block sub sticky">
       <div class="block">
@@ -160,11 +162,21 @@ const owner = computed(() => ownerRef.value || null);
 }
 
 .footer {
-  padding-top: 80px;
+  padding-top: $gap * 2;
   font-size: 0.9rem;
   color: $gray-black;
   font-weight: 800;
   position: relative;
+  margin-bottom: $gap;
+
+  >li {
+    margin-right: $gap;
+    display: inline-block;
+
+    .icon {
+      margin-right: 5px;
+    }
+  }
 
   &::before {
     content: '';

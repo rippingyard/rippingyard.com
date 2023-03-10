@@ -1,16 +1,16 @@
 ﻿<template>
   <div v-if="post" class="item">
-    <div class="inner">
-      <div class="content column c80">
-        <h1 class="title">
-          <nuxt-link :to="post.permalink">
-            {{ post.title }}
-          </nuxt-link>
-        </h1>
+    <h1 class="title">
+      <nuxt-link :to="post.permalink">
+        {{ post.title }}
+      </nuxt-link>
+    </h1>
+    <div class="inner" :class="{ columns: post.thumbnail }">
+      <div class="content" :class="{ column: post.thumbnail, c80: post.thumbnail }">
         <!-- <div v-if="post.parent" class="parent">
           <ItemCard :item="post.parent" />
-        </div>-->
-        <div class="summary" v-html="summary"></div>
+        </div> -->
+        <div class="summary" v-html="summary" />
       </div>
       <div v-if="post.thumbnail" class="image column c20">
         <nuxt-link :to="post.permalink">
@@ -45,10 +45,11 @@ const summary = computed(() => post.value && post.value.contentOriginal ? getSum
 </script>
 <style lang="scss" scoped>
 .item {
-  padding: $gap;
+  // padding: $gap;
+  margin-bottom: $gap;
 
   @include until-desktop {
-    padding: $gap * 0.5;
+    // padding: $gap * 0.5;
   }
 }
 

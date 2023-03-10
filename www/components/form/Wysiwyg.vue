@@ -1,6 +1,6 @@
 ﻿<template>
   <div v-if="editor" @click="editor && editor.commands.focus()" class="wrapper">
-    <FormImageUploader :editor="editor" :show="showUploader" :on-close="closeImageUploader" />
+    <OrganismImageUploader :editor="editor" :show="showUploader" :on-close="closeImageUploader" />
     <div class="editor">
       <FormBubbleMenu :editor="editor" />
       <FormFloatingMenu :editor="editor" @showImageUploader="showImageUploader()" />
