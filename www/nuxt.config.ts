@@ -23,6 +23,12 @@ export default defineNuxtConfig({
         // analyticsDomainName: domain
       },
     ],
+    [
+      '@funken-studio/sitemap-nuxt-3',
+      {
+        generateOnBuild: true
+      }
+    ],
   ],
   buildModules: [
     '@nuxtjs/style-resources',
