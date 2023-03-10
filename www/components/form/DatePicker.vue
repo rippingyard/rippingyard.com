@@ -1,12 +1,14 @@
 ﻿<template>
   <div class="datepicker">
-    <Datepicker v-model="date" calendar-class="calender" :format="`yyyy-MM-dd hh:mm`" locale="ja" :format-locale="ja"
-      :hide-input-icon="true" select-text="決定" cancel-text="閉じる" @update:modelValue="update">
-      <template #dp-input="{ value }">
-        {{ value }}
-      </template>
-      <template #clear-icon="{}" />
-    </Datepicker>
+    <client-only>
+      <Datepicker v-model="date" calendar-class="calender" :format="`yyyy-MM-dd hh:mm`" locale="ja" :format-locale="ja"
+        :hide-input-icon="true" select-text="決定" cancel-text="閉じる" @update:modelValue="update">
+        <template #dp-input="{ value }">
+          {{ value }}
+        </template>
+        <template #clear-icon="{}" />
+      </Datepicker>
+    </client-only>
   </div>
 </template>
 <script lang="ts" setup>
