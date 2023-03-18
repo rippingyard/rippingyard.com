@@ -9,15 +9,17 @@
   DocumentReference,
   DocumentData,
   onSnapshot,
+  OrderByDirection,
+  startAfter,
 } from 'firebase/firestore';
-import { GetNextPageParamFunction, isServer, useInfiniteQuery, useQuery } from "@tanstack/vue-query";
+import { isServer, QueryFunctionContext, useInfiniteQuery, useQuery } from "@tanstack/vue-query";
 import { useCacheKey } from './useCacheKey';
 import { useDefaultValue } from './useDefaultValue';
 import { useFirebase } from '~/composables/firebase/useFirebase';
+import { maxBy, minBy } from '~~/utils/array';
 
 type WhereOp = '==' | 'in';
 type WhereValue = string | number | boolean | string[] | DocumentReference<DocumentData>;
-type OrderType = 'desc' | 'asc';
 
 type WhereParam = {
   key: string;
@@ -34,7 +36,7 @@ export type QueryParams = {
   startAfter?: string | number;
   orderBy?: {
     key: string;
-    order?: OrderType;
+    order?: OrderByDirection;
   };
 };
 
@@ -42,7 +44,7 @@ export const defaultOp = (val: WhereValue): WhereOp => {
   return Array.isArray(val) ? 'in' : '==';
 }
 
-export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
+export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunctionContext<any[], any>): Promise<T[]> => {
   const { fb } = useFirebase();
   const data: T[] = [];
   const ids: string[] = [];
@@ -60,7 +62,14 @@ export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
   }
 
   if (args?.limit) q = query(q, limit(args.limit));
-  if (args?.orderBy) q = query(q, orderBy(args.orderBy.key, args.orderBy.order || 'desc'));
+
+  if (args?.orderBy) {
+    const order = args.orderBy.order || 'desc';
+    q = query(q, orderBy(args.orderBy.key, order));
+    if (pageParam?.pageParam) {
+      q = query(q, startAfter(pageParam.pageParam[args.orderBy.key]));
+    }
+  }
 
   const unsubscribe = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach(change => {
@@ -69,7 +78,7 @@ export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
       const index = ids.findIndex(id => id === doc.id);
       switch (type) {
         case 'added':
-          // console.log('New article:', doc);
+          // console.log('New article:', doc.data());
           if (index > -1) break;
           data.push(doc.data() as T);
           ids.push(doc.id);
@@ -107,17 +116,27 @@ export const useCachedDocs = <T>(args: QueryParams) => {
 }
 
 export const useCachedInfiniteDocs = <T>(
-  args: QueryParams,
-  getNextPageParam: GetNextPageParamFunction<T[]>
+  args: QueryParams
 ) => {
+
+  const { orderBy } = args;
 
   if (isServer) return useDefaultValue<T[]>();
 
   const queryKey = useCacheKey<QueryParams>(args);
 
+  const orderKey = orderBy?.key || 'createdAt';
+  const order = orderBy?.order || 'desc';
+
   return useInfiniteQuery({
     queryKey,
-    queryFn: () => getCachedDocs<T>(args),
-    getNextPageParam,
+    queryFn: (pageParam) => getCachedDocs<T>(args, pageParam),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.length === 0) return;
+      const lastPost = order === 'desc' ?
+        minBy(lastPage as { [key: string]: any }[], orderKey) :
+        maxBy(lastPage as { [key: string]: any }[], orderKey);
+      return lastPost;
+    },
   });
 }

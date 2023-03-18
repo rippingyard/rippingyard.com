@@ -1,5 +1,6 @@
 ﻿import { QueryParams, useCachedDocs, useCachedInfiniteDocs } from '../firestore/useCachedDocs';
 import { OriginalPost } from '~/schemas/post';
+import { maxBy, minBy } from '~~/utils/array';
 
 export const usePosts = (args: Omit<QueryParams, 'collection'> = {}) => {
 
@@ -22,6 +23,13 @@ export const useInfinitePosts = (args: Omit<QueryParams, 'collection'> = {}) => 
 
   const { where = [] } = args;
 
+  if (!args.orderBy) {
+    args.orderBy = {
+      key: 'publishedAt',
+      order: 'desc',
+    }
+  }
+
   return useCachedInfiniteDocs<OriginalPost>({
     ...args,
     collection: 'posts',
@@ -31,8 +39,6 @@ export const useInfinitePosts = (args: Omit<QueryParams, 'collection'> = {}) => 
       { key: 'status', val: 'published' },
       ...where,
     ],
-  }, (lastPage, pages) => {
-    console.log('lastPage', lastPage, pages);
   });
 
 };

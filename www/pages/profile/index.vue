@@ -20,9 +20,6 @@
         <div class="box wysiwyg">
           <h2>プロフィール</h2>
           <FormTextArea v-model="profile" placeholder="プロフィールを入力" @click="removeError('profile')" />
-          <!-- <div class="textarea">
-          <TextArea v-model="profile" :default="profile" />
-        </div> -->
         </div>
         <div class="box wysiwyg">
           <AtomButton class="button" @click="submit">設定変更</AtomButton>
@@ -36,17 +33,23 @@
 // import { getExt } from '~/plugins/file'
 // import { schemaUser } from '~/plugins/validators/user'
 
-const { $me: me } = useNuxtApp();
+import { useMe } from '~~/composables/fetch/useMe';
+import { User } from '~~/schemas/user';
 
-console.log('me', me);
+const { me } = useMe();
 
 const displayName = ref('');
 const profile = ref('');
 
-watchEffect(() => {
-  displayName.value = me.value?.displayName || '';
-  profile.value = me.value?.profile || '';
-});
+onMounted(() => setDefault(me.value));
+watch(me, () => setDefault(me.value));
+
+const setDefault = (me?: User) => {
+  if (!me) return;
+  displayName.value = me?.displayName || '';
+  console.log('me!!!', me?.profile);
+  profile.value = me?.profile || '';
+}
 
 // export default Vue.extend({
 //   // layout: 'manage',

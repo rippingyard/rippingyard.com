@@ -6,11 +6,12 @@
           <component :is="props.component || CardPost" :post="post" />
         </li>
       </ul>
-      <AtomButton @click="e => more()">もっと読む</AtomButton>
+      <AtomButton v-if="!hideMore && hasNextPage" @click="more()">もっと読む</AtomButton>
     </BlockLoading>
   </div>
 </template>
 <script lang="ts" setup>
+import { OrderByDirection } from '@firebase/firestore';
 import CardPost from '~~/components/card/Post.vue';
 import { useMe } from '~~/composables/fetch/useMe';
 import { useInfinitePosts, usePosts } from '~~/composables/fetch/usePosts';
@@ -21,12 +22,17 @@ type Props = {
   component?: typeof CardPost;
   types?: string[];
   limit?: number;
+  orderBy?: string;
+  order?: OrderByDirection;
   isMine?: boolean;
+  hideMore?: boolean;
 }
 
 const props = defineProps<Props>();
 const posts = ref<OriginalPost[]>();
 const types = computed(() => props.types || ['log', 'note', 'article']);
+
+const hideMore = computed(() => props.hideMore || false);
 
 const where: WhereParams = [
   { key: 'type', val: types.value },
@@ -45,20 +51,17 @@ if (props.isMine) {
 const condition: Omit<QueryParams, 'collection'> = {
   where,
   limit: props.limit || 100,
-  orderBy: { key: 'publishedAt' },
 };
 
-const { isLoading, isError, data, error, fetchNextPage } = useInfinitePosts(condition);
+const { isLoading, isError, data, error, hasNextPage, fetchNextPage } = useInfinitePosts(condition);
 
 watch(data, (newData) => {
   if (!newData) return;
-  console.log('newData', newData);
   const newPosts = newData as any;
   posts.value = !newPosts.pages ? newPosts : newPosts.pages.flat();
 });
 
 const more = () => {
-  console.log('load more!');
   fetchNextPage();
 }
 
