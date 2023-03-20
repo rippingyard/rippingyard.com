@@ -47,6 +47,8 @@ const postsRef = usePosts({
   where: [
     { key: 'type', val: ['article'] },
   ],
+  limit: 25,
+  orderBy: { key: 'publishedAt', order: 'desc' }
 });
 const posts = computed<OriginalPost[]>(() => postsRef.data.value || []);
 const post = computed<OriginalPost | undefined>(() => {

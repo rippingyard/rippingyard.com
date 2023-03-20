@@ -1,6 +1,5 @@
 ﻿import { QueryParams, useCachedDocs, useCachedInfiniteDocs } from '../firestore/useCachedDocs';
 import { OriginalPost } from '~/schemas/post';
-import { maxBy, minBy } from '~~/utils/array';
 
 export const usePosts = (args: Omit<QueryParams, 'collection'> = {}) => {
 
