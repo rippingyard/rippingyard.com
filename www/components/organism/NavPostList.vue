@@ -1,9 +1,10 @@
 ﻿<template>
   <div>
     <ul class="triggers bg-dotted">
-      <li v-for="type in types" :key="`nav-post-item-${type.key}`" @click="setType(type.key)">{{ type.label }}</li>
+      <li v-for="type, i in types" :key="`nav-post-item-${i}-${type.key}`" @click="setType(type.key)">{{ type.label }}
+      </li>
     </ul>
-    <OrganismPostList :component="CardPostRow" :is-mine="true" :limit="1000" />
+    <OrganismPostList :component="CardPostRow" :is-mine="true" :limit="50" />
   </div>
 </template>
 <script lang="ts" setup>

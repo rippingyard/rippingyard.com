@@ -6,7 +6,9 @@
           <component :is="props.component || CardPost" :post="post" />
         </li>
       </ul>
-      <AtomButton v-if="!hideMore && hasNextPage" @click="more()">もっと読む</AtomButton>
+      <div v-if="!hideMore" class="console">
+        <AtomButton v-if="hasNextPage" ref="target" expanded centered @click="more()">もっと読む</AtomButton>
+      </div>
     </BlockLoading>
   </div>
 </template>
@@ -14,9 +16,10 @@
 import { OrderByDirection } from '@firebase/firestore';
 import CardPost from '~~/components/card/Post.vue';
 import { useMe } from '~~/composables/fetch/useMe';
-import { useInfinitePosts, usePosts } from '~~/composables/fetch/usePosts';
+import { useInfinitePosts } from '~~/composables/fetch/usePosts';
 import { QueryParams, WhereParams } from '~~/composables/firestore/useCachedDocs';
 import { OriginalPost } from '~~/schemas/post';
+import { useElementVisibility } from '@vueuse/core'
 
 type Props = {
   component?: typeof CardPost;
@@ -31,6 +34,9 @@ type Props = {
 const props = defineProps<Props>();
 const posts = ref<OriginalPost[]>();
 const types = computed(() => props.types || ['log', 'note', 'article']);
+
+const target = ref(null)
+const targetIsVisible = useElementVisibility(target)
 
 const hideMore = computed(() => props.hideMore || false);
 
@@ -61,6 +67,11 @@ watch(data, (newData) => {
   posts.value = !newPosts.pages ? newPosts : newPosts.pages.flat();
 });
 
+watch(targetIsVisible, (value) => {
+  if (!value || !hasNextPage) return;
+  more();
+})
+
 const more = () => {
   fetchNextPage();
 }
@@ -70,5 +81,10 @@ const more = () => {
 .container {
   width: 100%;
   min-height: 100vh;
+}
+
+.console {
+  width: 100%;
+  padding-top: $gap;
 }
 </style>
