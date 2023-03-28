@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     strict: true
   },
   ssr: true,
+  telemetry: false,
   dirs: [
     {
       "path": "~/components/atoms",
@@ -22,12 +23,6 @@ export default defineNuxtConfig({
         // analyticsUacct: import.meta.env.GA_TRACKING_ID,
         // analyticsDomainName: domain
       },
-    ],
-    [
-      '@funken-studio/sitemap-nuxt-3',
-      {
-        generateOnBuild: true
-      }
     ],
   ],
   buildModules: [
@@ -143,4 +138,14 @@ export default defineNuxtConfig({
       },
     },
   },
+  // sitemap: {
+  //   hostname: process.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app/' : 'https://www.rippingyard.com/',
+  //   cacheTime: 1,
+  //   routes,
+  //   defaults: {
+  //     changefreq: 'daily',
+  //     priority: 1,
+  //     lastmod: new Date().toISOString(),
+  //   },
+  // },
 })
