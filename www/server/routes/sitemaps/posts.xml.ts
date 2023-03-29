@@ -5,19 +5,13 @@ export default defineEventHandler(async (event) => {
 
   console.log('import.meta.env.VITE_GCLOUD_PROJECT', import.meta.env.VITE_GCLOUD_PROJECT);
 
-  const routes: Routes = [
-    {
-      path: 'posts',
-      // lastmod: dayjs('2020-07-09 07:00'),
-      // priority: '1.00',
-    },
-  ];
+  const routes: Routes = [];
 
   const thisYear = parseInt(dayjs().format('YYYY'));
 
   console.log('thisYear', thisYear);
 
-  for (let i = 2012; i <= thisYear; i++) {
+  for (let i = 2020; i <= thisYear; i++) {
     routes.push({
       path: `sitemaps/posts/${i}.xml`,
       // lastmod: dayjs('2020-07-09 07:00'),

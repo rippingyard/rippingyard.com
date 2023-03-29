@@ -4,13 +4,13 @@ import { Routes, buildSitemapIndex } from '../../utils/sitemap';
 export default defineEventHandler(async (event) => {
   const routes: Routes = [
     {
-      path: 'sitemaps/posts',
+      path: 'sitemaps/posts.xml',
       lastmod: dayjs('2020-07-09 07:00'),
       // priority: '1.00',
       isIndex: true,
     },
     {
-      path: 'sitemaps/statics',
+      path: 'sitemaps/statics.xml',
       lastmod: dayjs('2020-07-09 07:00'),
       // priority: '1.00',
       isIndex: true,

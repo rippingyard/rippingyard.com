@@ -52,4 +52,4 @@ const buildNodes = (routes: Routes) => {
   return nodes;
 }
 
-const getLoc = (path: string) => `${import.meta.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app/' : 'https://www.rippingyard.com/'}${path}`
+const getLoc = (path: string) => `${import.meta.env.NODE_ENV !== 'production' ? 'https://rippingyard-com.vercel.app/' : 'https://www.rippingyard.com/'}${path}`
