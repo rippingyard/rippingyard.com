@@ -1,16 +1,16 @@
 ﻿<template>
-  <div class="container">
-    <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
-      <ul>
-        <li v-for="post, i in posts" :key="i">
-          <component :is="props.component || CardPost" :post="post" />
-        </li>
-      </ul>
-      <div v-if="!hideMore" class="console">
-        <AtomButton v-if="hasNextPage" ref="target" expanded centered @click="more()">もっと読む</AtomButton>
-      </div>
-    </BlockLoading>
-  </div>
+  <!-- <div class="container"> -->
+  <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+    <ul>
+      <li v-for="post, i in posts" :key="i">
+        <component :is="props.component || CardPost" :post="post" />
+      </li>
+    </ul>
+    <div v-if="!hideMore" class="console">
+      <AtomButton v-if="hasNextPage" ref="target" expanded centered @click="more()">もっと読む</AtomButton>
+    </div>
+  </BlockLoading>
+  <!-- </div> -->
 </template>
 <script lang="ts" setup>
 import { OrderByDirection } from '@firebase/firestore';
@@ -78,10 +78,10 @@ const more = () => {
 
 </script>
 <style lang="scss" scoped>
-.container {
-  width: 100%;
-  min-height: 100vh;
-}
+// .container {
+//   width: 100%;
+//   min-height: 100vh;
+// }
 
 .console {
   width: 100%;

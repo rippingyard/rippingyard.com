@@ -1,15 +1,20 @@
 ﻿<template>
   <BlockMain>
-    <!-- <Header /> -->
-    <div class="heading">
+    <BlockHeading>
       <h1>{{ title }}</h1>
       <BlockLastUpdate date="2021年5月14日" />
-    </div>
+    </BlockHeading>
     <StaticTerms />
   </BlockMain>
 </template>
 <script lang="ts" setup>
+import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
+
 const title = ref('利用規約');
+
+useHtmlHeader({
+  title: () => title.value,
+});
 
 //   head() {
 //     return {

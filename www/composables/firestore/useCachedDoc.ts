@@ -9,7 +9,7 @@ import { useDefaultValue } from './useDefaultValue';
 import { useDocReference } from './useDocReference';
 
 export type QueryParams = {
-  collection: string;
+  collection?: string;
   id?: string;
   ref?: DocumentReference;
 };

@@ -13,6 +13,12 @@
   </BlockMain>
 </template>
 <script lang="ts" setup>
+import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
+
+
+useHtmlHeader({
+  title: () => 'ログイン',
+});
 
 // import Vue from 'vue'
 // import { mapGetters } from 'vuex'

@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="wysiwyg">
+  <div class="wysiwyg is-article">
     <blockquote>
       <p>本利用規約は、WEBサービス「<a href="https://www.rippingyard.com/" target="_blank">ripping
           yard</a>」のユーザーに適用される、サービス利用にあたっての契約です。本サービスをご利用いただく際に、あなたにお願いしたいことについて書かれています。</p>

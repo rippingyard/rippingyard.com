@@ -593,7 +593,8 @@ const logout = async () => await useLogout();
           display: none;
 
           >li {
-            padding: 8px 0;
+            // padding: 8px 0;
+            height: 100%;
           }
 
           &.close {

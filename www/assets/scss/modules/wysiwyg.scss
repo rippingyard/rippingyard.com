@@ -198,8 +198,8 @@
       h4,
       h5,
       h6,
-      // ul,
-      // ol,
+      ul,
+      ol,
       div,
       blockquote,
       pre {
@@ -209,12 +209,16 @@
 
       ul {
         list-style-type: disc;
-        padding-left: 18px;
+        // padding-left: 18px;
       }
 
       ol {
         list-style-type: decimal;
-        padding-left: 22px;
+        // padding-left: 22px;
+      }
+
+      li {
+        list-style-position: inside;
       }
 
       blockquote {

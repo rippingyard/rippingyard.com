@@ -8,4 +8,9 @@
 </template>
 <script lang="ts" setup>
 import CardPostSimple from '~/components/card/PostSimple.vue';
+import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
+
+useHtmlHeader({
+  title: () => 'Posts - 記事一覧',
+});
 </script>

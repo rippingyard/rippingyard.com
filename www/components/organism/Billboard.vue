@@ -195,17 +195,20 @@ onMounted(() => {
   }
 
   @include until($desktop) {
-    min-height: calc(100vh - #{$navMargin});
+    display: block;
+    min-height: initial;
 
     .frame {
-      flex-direction: column-reverse;
+      display: block;
+      // flex-direction: column-reverse;
       padding: 0 $gap * 0.5;
+      overflow: initial;
     }
 
     .content {
       width: 100%;
       font-size: 0.8rem;
-      padding-top: 0;
+      padding-top: 20px;
 
       .title {
         font-size: 1.4rem;
@@ -215,12 +218,29 @@ onMounted(() => {
     }
 
     .image {
-      padding-top: 10px;
+      // padding-top: 10px;
+      padding: 0;
+      width: 100%;
+      max-height: initial;
+
+      >a {
+        display: block;
+        // max-width: 100%;
+        // max-height: 100%;
+      }
     }
 
     .nav {
-      top: 0;
+      // top: 0;
       right: 0;
+      width: 100%;
+      // height: 100%;
+      justify-content: space-between;
+
+      >li {
+        // height: 100%;
+        width: 30px;
+      }
     }
   }
 }

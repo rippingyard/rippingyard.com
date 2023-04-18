@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
 import { usePost } from '~~/composables/fetch/usePost';
-import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
+import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
 
 const route = useRoute();
 const { $openToast: openToast } = useNuxtApp();
@@ -26,8 +26,8 @@ const checkPermission = () => {
     return;
   }
 
-  const { canReadPost } = useCanReadPost(data.value);
-  if (!canReadPost.value) notFound();
+  const { canEditPost } = useCanEditPost(data.value);
+  if (!canEditPost.value) notEditable();
 }
 
 if (!isLoading.value) checkPermission();
@@ -36,6 +36,11 @@ watch(isLoading, () => checkPermission());
 const notFound = () => {
   openToast('この記事は非公開です');
   throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
+
+const notEditable = () => {
+  openToast('この記事を編集する権限がありません');
+  throw createError({ statusCode: 403, statusMessage: 'Page Not Editable' });
 }
 
 </script>

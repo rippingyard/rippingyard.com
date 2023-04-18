@@ -2,7 +2,7 @@
   <div>
     <BlockMain :is-cliff="true">
       <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
-        <BlockWysiwyg :content="content" />
+        <BlockWysiwyg :content="content" :is-article="true" />
         <AdPostBottom />
         <div class="footer">
           <p class="date">

@@ -28,7 +28,7 @@ const links = {
   ],
   sub: [
     { label: 'ログイン', to: '/login' },
-    { label: '利用規約', to: '/login' },
+    { label: '利用規約', to: '/terms' },
     { label: 'プライバシーポリシー', to: '/privacy' },
   ]
 }
@@ -38,6 +38,10 @@ const links = {
 footer {
   padding: 120px 0 0;
   text-align: left;
+
+  @include until($desktop) {
+    padding: 120px 15px 80px;
+  }
 }
 
 // .block.container {

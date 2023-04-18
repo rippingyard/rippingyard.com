@@ -119,6 +119,15 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
       width: 100%;
       padding: $gap * 0.5 0;
     }
+
+    &.has-image {
+      display: flex;
+      align-items: center;
+
+      .body {
+        width: 100%;
+      }
+    }
   }
 }
 

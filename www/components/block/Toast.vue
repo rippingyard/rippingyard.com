@@ -31,5 +31,9 @@ const close = () => closeToast();
   &.isDanger {
     background: $orange;
   }
+
+  @include until($desktop) {
+    max-width: 100%;
+  }
 }
 </style>

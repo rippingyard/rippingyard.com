@@ -3,6 +3,7 @@ import { Post, OriginalPost } from '~/schemas/post';
 import { getThumbnailFromText, getTitle, hasThumbnailFromText, removeTitle } from '~/utils/typography';
 import { numberByString } from '~~/utils';
 import { usePostLink } from '../link/usePostLink';
+import { usePostEditLink } from '../link/usePostEditLink';
 
 export const useNormalizePost = (originalPost: OriginalPost): Post => {
   return {
@@ -24,10 +25,7 @@ export const useNormalizePost = (originalPost: OriginalPost): Post => {
 
 const permalink = (post: Partial<Post>): string => usePostLink(post);
 
-const editlink = (post: Partial<Post>): string => {
-  const postType = post.type === 'log' ? 'log' : 'post'
-  return `/home/${postType}/edit/${post.id}`
-}
+const editlink = (post: Partial<Post>): string => usePostEditLink(post);
 
 const contentBody = (post: Partial<Post>): string => {
   return post?.content ? removeTitle(post.content) : '';

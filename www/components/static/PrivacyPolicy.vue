@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="wysiwyg">
+  <div class="wysiwyg is-article">
     <blockquote>
       <p>本サービスでは運営のために、あなたの個人情報を扱います。このプライバシーポリシーには、本サービスがあなたの個人情報をどのように扱い、それを何に利用するのかなどについて書かれています。</p>
     </blockquote>

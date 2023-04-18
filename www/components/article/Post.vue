@@ -7,7 +7,7 @@
       <!-- <div v-if="post.parent" class="parent">
         <ItemCard :item="post.parent" />
       </div> -->
-      <BlockWysiwyg :content="content" />
+      <BlockWysiwyg :content="content" :is-article="true" />
       <AdPostBottom />
       <!-- <div v-if="post.parent" class="parent">
         <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
@@ -29,11 +29,11 @@
             <IconUser />{{ owner?.displayName }}
           </nuxt-link>
         </li>
-        <!-- <client-only>
-          <p v-if="isMine" class="link">
-            <nuxt-link :to="editlink">編集する</nuxt-link>
+        <client-only>
+          <p v-if="canEdit" class="link">
+            <nuxt-link :to="post.editlink">編集する</nuxt-link>
           </p>
-        </client-only> -->
+        </client-only>
       </ul>
     </article>
     <!-- <div class="block sub sticky">
@@ -71,7 +71,10 @@ import { getDoc } from 'firebase/firestore';
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
+import { useMe } from '~~/composables/fetch/useMe';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
+import { getCachedDoc } from '~~/composables/firestore/useCachedDoc';
+import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
 import { User } from '~~/schemas/user';
 
 const post = ref<Post>();
@@ -80,23 +83,26 @@ const ownerRef = ref<User>();
 const props = defineProps<{
   post: OriginalPost;
 }>();
+const canEdit = ref(false);
 
 onMounted(async () => {
   console.log('props.post', props.post);
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
-  // console.log('post.value', post.value);
 
   if (props.post.owner) {
-    const user = await getDoc(props.post.owner);
-    console.log('user', user.data());
-    ownerRef.value = user.data();
+    const user = await getCachedDoc<User>({ ref: props.post.owner });
+    ownerRef.value = user;
   }
+
+  const { canEditPost } = useCanEditPost(post.value);
+  canEdit.value = canEditPost.value;
 });
 
 const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
 // const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 const owner = computed(() => ownerRef.value || null);
+// const isMine = computed(() => owner.value?.uid === me.value?.uid);
 
 </script>
 <style lang="scss" scoped>

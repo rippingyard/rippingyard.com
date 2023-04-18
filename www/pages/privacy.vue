@@ -9,7 +9,13 @@
   </BlockMain>
 </template>
 <script lang="ts" setup>
+import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
+
 const title = ref('プライバシーポリシー');
+
+useHtmlHeader({
+  title: () => title.value,
+});
 // import Vue from 'vue'
 // export default Vue.extend({
 //   props: {

@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
-      title: 'ripping yard',
+      title: 'ripping yard - 速くて小さな寄る辺なきメディア',
       // titleTemplate: titleChunk => {
       //   return titleChunk && titleChunk !== 'ripping yard'
       //     ? `${titleChunk} - ripping yard`
