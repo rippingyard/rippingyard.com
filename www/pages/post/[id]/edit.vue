@@ -40,7 +40,7 @@ const notFound = () => {
 
 const notEditable = () => {
   openToast('この記事を編集する権限がありません');
-  throw createError({ statusCode: 403, statusMessage: 'Page Not Editable' });
+  navigateTo('/');
 }
 
 </script>

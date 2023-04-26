@@ -49,7 +49,7 @@ const summary = computed(() => post.value && post.value.contentOriginal ? getSum
   margin-bottom: $gap;
 
   @include until-desktop {
-    // padding: $gap * 0.5;
+    padding: 0 $gap * 0.5;
   }
 }
 

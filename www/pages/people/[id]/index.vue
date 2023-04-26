@@ -12,6 +12,7 @@
 import { useTitle } from '@vueuse/core';
 import { useUsers } from '~~/composables/fetch/useUsers';
 import { useCanTouchUser } from '~~/composables/permission/useCanTouchUser';
+import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 
 const route = useRoute();
 const { $openToast: openToast } = useNuxtApp();
@@ -40,9 +41,11 @@ const checkPermission = () => {
     notFound();
     return;
   }
-
-  useTitle(user.value.displayName);
 }
+
+useHtmlHeader({
+  title: () => user?.value?.displayName || '',
+});
 
 if (!isLoading.value) checkPermission();
 watch(isLoading, () => checkPermission());

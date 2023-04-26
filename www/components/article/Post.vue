@@ -67,11 +67,10 @@
   </main>
 </template>
 <script lang="ts" setup>
-import { getDoc } from 'firebase/firestore';
+import { isClient } from '@vueuse/shared';
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
-import { useMe } from '~~/composables/fetch/useMe';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
 import { getCachedDoc } from '~~/composables/firestore/useCachedDoc';
 import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
@@ -90,19 +89,22 @@ onMounted(async () => {
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
 
-  if (props.post.owner) {
-    const user = await getCachedDoc<User>({ ref: props.post.owner });
-    ownerRef.value = user;
+  if (isClient) {
+    const { canEditPost } = useCanEditPost(post.value);
+    canEdit.value = canEditPost.value;
   }
 
-  const { canEditPost } = useCanEditPost(post.value);
-  canEdit.value = canEditPost.value;
+  console.log('props.post.owner', !!props.post.owner, props.post.owner);
+  if (props.post.owner) {
+    const user = await getCachedDoc<User>({ ref: props.post.owner });
+    console.log('user by props.post.owner', user)
+    ownerRef.value = user;
+  }
 });
 
 const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
 // const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 const owner = computed(() => ownerRef.value || null);
-// const isMine = computed(() => owner.value?.uid === me.value?.uid);
 
 </script>
 <style lang="scss" scoped>

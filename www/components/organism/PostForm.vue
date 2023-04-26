@@ -38,10 +38,16 @@
               {{ contentLength }} / {{ limit }}
             </div>
           </div>
+          <div class="side-block">
+            <label>記事タイプ</label>
+            <div :class="{ 'is-over': isOver }" class="counter">
+              {{ post.type }}
+            </div>
+          </div>
         </div>
         <div class="side-foot">
           <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
-          <AtomButton :class="{ 'disabled': isOver || isEmpty }" class="button" :is-loading="isSaving" :centered="true"
+          <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
             :expanded="true" @click="submit()">
             {{ submitLabel }}
           </AtomButton>
@@ -104,9 +110,26 @@ const isPublic = ref(true);
 const date = ref(new Date);
 const isSaving = ref(false);
 
+const post = computed<Partial<OriginalPost>>(() => {
+  return {
+    ...defaultPost.value,
+    ...{
+      content: content.value,
+      // type: 'log',
+      entities: entities.value,
+      status: status.value,
+      publishedAt: Timestamp.fromDate(date.value),
+      isPublic: isPublic.value,
+    },
+  }
+})
+const defaultPost = computed<Partial<OriginalPost>>(() => props?.post || {
+  type: 'article',
+});
 const contentLength = computed<number>(() => getLength(content.value || ''));
 const isOver = computed<boolean>(() => contentLength.value > props.limit);
 const isEmpty = computed<boolean>(() => contentLength.value === 0);
+const isReadyToSave = computed(() => !isOver && !isEmpty);
 
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
@@ -115,7 +138,6 @@ onMounted(() => {
     content.value = '';
     return;
   }
-  console.log('props.post.content', props.post.content)
   content.value = props.post.content;
 });
 
@@ -132,14 +154,7 @@ const submit = async () => {
   // let status = 'failed';
   if (isSaving.value) return;
 
-  const params: Partial<OriginalPost> = {
-    content: content.value,
-    type: 'log',
-    entities: entities.value,
-    status: status.value,
-    publishedAt: Timestamp.fromDate(date.value),
-    isPublic: isPublic.value,
-  }
+  const params: Partial<OriginalPost> = post.value;
 
   if (props.post?.id) params.id = props.post.id;
 
@@ -277,6 +292,10 @@ const submit = async () => {
     top: 0;
     right: 0;
     // flex-shrink: 0;
+
+    @include mobile {
+      display: none;
+    }
 
     >.inner {
       position: sticky;

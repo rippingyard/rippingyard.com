@@ -41,6 +41,11 @@ main {
   @include until($desktop) {
     max-width: $mainSize;
     margin: auto;
+
+    &.large {
+      max-width: $mainSize;
+      padding-left: 0;
+    }
   }
 }
 </style>

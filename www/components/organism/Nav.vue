@@ -1,5 +1,5 @@
 ﻿<template>
-  <nav class="nav" :class="{ isOpen }">
+  <nav ref="el" class="nav" :class="{ isOpen, toTop: toTop || isOpen }">
     <div class="inner">
       <div class="logo" @mouseenter="onHoverLogo()" @mouseleave="onHoverLogo(false)">
         <span @click="toggleNav()">
@@ -119,24 +119,28 @@
           </section>-->
     </div>
     <div class="overlay" />
+    <div class="backdrop" @click="closeNav()" />
   </nav>
 </template>
 <script lang="ts" setup>
+import { useWindowScroll } from '@vueuse/core';
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
 import IconGauge from '~~/components/icon/Gauge.vue';
 import IconSearch from '~~/components/icon/Search.vue';
 import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';
 
+const { y } = useWindowScroll();
+
 type TabMode = 'dashboard' | 'search' | 'posts' | 'post' | 'comment';
 
 const { isAuthenticated } = useAuth();
-// const { me } = useMe();
 const { canCreateArticle } = useCanCreateArticle();
 
 const isOpen = ref(false);
 const activeTab = ref<TabMode>('dashboard');
 const isHoverLogo = ref(false);
+const toTop = ref(true);
 
 const toggleNav = (): void => {
   isOpen.value = !isOpen.value
@@ -156,6 +160,8 @@ const onHoverLogo = (isHover = true): void => {
 }
 const isActiveTab = (tab: TabMode) => activeTab.value === tab;
 
+watch(y, (val, old) => toTop.value = val < old);
+
 const logout = async () => await useLogout();
 </script>
 <style lang="scss" scoped>
@@ -166,6 +172,12 @@ const logout = async () => await useLogout();
   width: $navSize;
   height: calc(100vh - #{$navMargin * 1.5});
   z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &.toTop {
+    opacity: 1;
+  }
 
   >.inner {
     display: flex;
@@ -461,6 +473,15 @@ const logout = async () => await useLogout();
     overflow: hidden;
   }
 
+  .backdrop {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
   &.isOpen {
     width: calc(100% - #{$navMargin * 2});
 
@@ -483,6 +504,10 @@ const logout = async () => await useLogout();
     }
 
     .overlay {
+      display: block;
+    }
+
+    .backdrop {
       display: block;
     }
   }

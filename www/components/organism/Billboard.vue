@@ -127,6 +127,10 @@ onMounted(() => {
 
     &.full {
       width: 100%;
+
+      @include until($desktop) {
+        width: calc(100% - 80px);
+      }
     }
 
     .title {
@@ -195,18 +199,26 @@ onMounted(() => {
   }
 
   @include until($desktop) {
-    display: block;
-    min-height: initial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    height: 100vh;
+    overflow: hidden;
 
     .frame {
-      display: block;
-      // flex-direction: column-reverse;
+      // display: block;
       padding: 0 $gap * 0.5;
       overflow: initial;
+      height: initial;
+      max-height: 100%;
+      flex-direction: column;
     }
 
     .content {
-      width: 100%;
+      width: calc(100% - 80px);
+      margin: auto;
+      max-width: calc($mainSize - 80px);
       font-size: 0.8rem;
       padding-top: 20px;
 
@@ -220,26 +232,50 @@ onMounted(() => {
     .image {
       // padding-top: 10px;
       padding: 0;
-      width: 100%;
+      width: calc(100% - 80px);
+      margin: auto;
+      max-width: $mainSize;
       max-height: initial;
+      // flex-shrink: 3;
+      min-height: 0;
+      overflow: hidden;
 
       >a {
-        display: block;
+        // display: block;
+        display: flex;
+
         // max-width: 100%;
         // max-height: 100%;
+        >img {
+          display: block;
+          min-height: 0;
+        }
       }
     }
 
     .nav {
-      // top: 0;
+      position: absolute;
+      display: block;
+      top: 0;
       right: 0;
       width: 100%;
-      // height: 100%;
-      justify-content: space-between;
+      height: 0;
+      // justify-content: space-between;
 
       >li {
         // height: 100%;
-        width: 30px;
+        width: 40px;
+        position: absolute;
+        top: calc(50vh - 10vh);
+        height: 20vh;
+
+        &:first-child {
+          left: 0
+        }
+
+        &:last-child {
+          right: 0;
+        }
       }
     }
   }
