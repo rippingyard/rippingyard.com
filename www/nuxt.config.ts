@@ -5,15 +5,10 @@ export default defineNuxtConfig({
   },
   ssr: true,
   telemetry: false,
-  dirs: [
-    {
-      "path": "~/components/atoms",
-      "global": true
-    },
-    "~/components"
-  ],
+  // dir: "~/components",
   modules: [
     '@vueuse/nuxt',
+    // '@nuxtjs/style-resources',
     [
       '@nuxtjs/google-adsense',
       {
@@ -25,9 +20,9 @@ export default defineNuxtConfig({
       },
     ],
   ],
-  buildModules: [
-    '@nuxtjs/style-resources',
-  ],
+  // buildModules: [
+  //   '@nuxtjs/style-resources',
+  // ],
   app: {
     head: {
       title: 'ripping yard - 速くて小さな寄る辺なきメディア',

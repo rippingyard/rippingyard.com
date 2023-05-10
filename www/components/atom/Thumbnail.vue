@@ -1,5 +1,5 @@
 ﻿<template>
-  <span v-if="!!props.image" class="image" :class="[size]" :style="bgImage" />
+  <span v-if="!!props.image" class="image" :class="[size, { 'is-square': isSquare }]" :style="bgImage" />
 </template>
 <script lang="ts" setup>
 
@@ -8,20 +8,22 @@ type Size = 'medium' | 'small';
 type Props = {
   image: string;
   size?: Size;
+  isSquare?: boolean;
 }
 
 const props = defineProps<Props>();
 
 const bgImage = computed(() => `background-image:url(${props.image})`);
 const size = computed<Size>(() => props.size || 'medium');
+const isSquare = computed(() => props.isSquare || false);
 </script>
 <style lang="scss" scoped>
 .image {
   width: 110px;
   height: 110px;
-  border-radius: 999999px;
   display: block;
   margin: auto;
+  border-radius: 999999px;
   border: 1px solid $gray-black;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -30,6 +32,10 @@ const size = computed<Size>(() => props.size || 'medium');
   &.small {
     width: 40px;
     height: 40px;
+  }
+
+  &.is-square {
+    border-radius: 0;
   }
 
   @include until-desktop {

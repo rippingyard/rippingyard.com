@@ -1,12 +1,12 @@
 ﻿<template>
   <div class="form" :class="{ 'is-widget': isWidget }">
     <div class="main">
-      <div v-show="showItem" class="item bg-dotted">
+      <!-- <div v-show="showItem" class="item bg-dotted">
         <div class="inner">
           <FormItem />
-          <!-- <ItemForm :item="item" color="yellow" @update-item="updateItem" /> -->
+          <ItemForm :item="item" color="yellow" @update-item="updateItem" />
         </div>
-      </div>
+      </div> -->
       <div class="inner">
         <FormWysiwyg v-if="content !== undefined" v-model="content" />
       </div>
@@ -14,7 +14,7 @@
     <div v-if="isWidget" class="footer" :class="footerClasses">
       <div class="footer-main">
         <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
-        <AtomButton :class="{ 'disabled': isOver || isEmpty }" class="button" :is-loading="isSaving" @click="submit()">
+        <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" @click="submit()">
           投稿する
         </AtomButton>
       </div>
@@ -25,12 +25,12 @@
         </div>
       </div>
     </div>
-    <div v-if="!isWidget" class="side" :class="footerClasses">
+    <div v-if="!isWidget" class="side">
       <div class="inner">
         <div class="side-body">
           <div class="side-block">
             <label>公開日</label>
-            <FormDatePicker v-model="date" />
+            <FormDatePicker v-if="date" v-model="date" />
           </div>
           <div class="side-block">
             <label>文字数</label>
@@ -40,13 +40,24 @@
           </div>
           <div class="side-block">
             <label>記事タイプ</label>
-            <div :class="{ 'is-over': isOver }" class="counter">
-              {{ post.type }}
+            <div>
+              <FormCheckboxes v-if="type" :options="posttypes" v-model="type" />
+            </div>
+          </div>
+          <div class="side-block">
+            <label>記事設定</label>
+            <div>
+              <FormCheckboxes v-if="status" :options="statuses" v-model="status" />
+            </div>
+          </div>
+          <div class="side-block">
+            <label>公開設定</label>
+            <div>
+              <FormCheckboxes v-if="publishStatus" :options="publishStatuses" v-model="publishStatus" />
             </div>
           </div>
         </div>
         <div class="side-foot">
-          <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
           <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
             :expanded="true" @click="submit()">
             {{ submitLabel }}
@@ -58,12 +69,15 @@
 </template>
 <script lang="ts" setup>
 import { Timestamp } from 'firebase/firestore'
-import { OriginalPost, Post, PostStatus } from '~/schemas/post';
+import { OriginalPost, Post, PostStatus, PostType } from '~/schemas/post';
 // import { Item } from '~/types/item'
 // import { permalink } from '~/services/post'
-import { useAuth } from '~/composables/firebase/useAuth';
 import { useSavePost } from '~/composables/save/useSavePost';
 import { getLength } from '~~/utils/typography';
+import { usePostLink } from '~/composables/link/usePostLink';
+// import { UseMutationReturnType } from '@tanstack/vue-query/build/lib/useMutation';
+
+type PublishStatus = 'isPublic' | 'isPrivate';
 
 type Props = {
   post?: OriginalPost;
@@ -75,17 +89,6 @@ type Props = {
   isFooterFixed?: boolean;
 }
 
-// type DataType = {
-//   date: Date
-//   item: Item | null
-//   resetCount: number
-//   isPublic: boolean
-//   isOpen: boolean
-//   isSaving: boolean
-//   cleaningItem: number
-// }
-
-const { isAuthenticated } = useAuth();
 const savePostObject = useSavePost();
 
 const props = withDefaults(
@@ -95,8 +98,51 @@ const props = withDefaults(
   }
 );
 
+const posttypes = computed(() => {
+
+  const types = [];
+
+  types.push({
+    key: 'log',
+    label: 'Log',
+  });
+
+  if (isOver.value) types.push({
+    key: 'article',
+    label: 'Article',
+  })
+
+  return types;
+});
+
+const statuses = computed(() => {
+  return [
+    {
+      key: 'published',
+      label: '公開',
+    },
+    {
+      key: 'drafted',
+      label: '下書き',
+    }
+  ];
+});
+
+const publishStatuses = computed(() => {
+  return [
+    {
+      key: 'isPublic',
+      label: '全世界に公開する',
+    },
+    {
+      key: 'isPrivate',
+      label: '非公開',
+    }
+  ];
+});
+
 const isWidget = computed(() => props.isWidget || false);
-const showItem = computed(() => props.showItem || false);
+// const showItem = computed(() => props.showItem || false);
 const footerClasses = {
   'bg-dotted': props.isFooterDotted || false,
   'bordered': props.isFooterBordered || false,
@@ -105,9 +151,11 @@ const footerClasses = {
 
 const content = ref<string>();
 const entities = ref<string[]>([]);
-const status = ref<PostStatus>('published');
-const isPublic = ref(true);
-const date = ref(new Date);
+const type = ref<PostType>();
+const status = ref<PostStatus>();
+const publishStatus = ref<PublishStatus>();
+const isPublic = computed(() => publishStatus.value === 'isPublic');
+const date = ref();
 const isSaving = ref(false);
 
 const post = computed<Partial<OriginalPost>>(() => {
@@ -115,7 +163,7 @@ const post = computed<Partial<OriginalPost>>(() => {
     ...defaultPost.value,
     ...{
       content: content.value,
-      // type: 'log',
+      type: type.value,
       entities: entities.value,
       status: status.value,
       publishedAt: Timestamp.fromDate(date.value),
@@ -125,11 +173,12 @@ const post = computed<Partial<OriginalPost>>(() => {
 })
 const defaultPost = computed<Partial<OriginalPost>>(() => props?.post || {
   type: 'article',
+  publishedAt: Timestamp.fromDate(new Date),
 });
 const contentLength = computed<number>(() => getLength(content.value || ''));
 const isOver = computed<boolean>(() => contentLength.value > props.limit);
 const isEmpty = computed<boolean>(() => contentLength.value === 0);
-const isReadyToSave = computed(() => !isOver && !isEmpty);
+const isReadyToSave = computed(() => !isEmpty.value);
 
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
@@ -139,6 +188,10 @@ onMounted(() => {
     return;
   }
   content.value = props.post.content;
+  type.value = props.post.type !== 'note' ? props.post.type : 'article';
+  status.value = props.post.status;
+  publishStatus.value = props.post.isPublic ? 'isPublic' : 'isPrivate';
+  date.value = props.post.publishedAt.toDate();
 });
 
 watch(date, () => {
@@ -149,7 +202,7 @@ const submit = async () => {
   console.log('submit!', content);
   if (!savePostObject) return;
 
-  const { mutate: savePost } = savePostObject;
+  const { mutateAsync: savePost } = savePostObject;
 
   // let status = 'failed';
   if (isSaving.value) return;
@@ -157,6 +210,7 @@ const submit = async () => {
   const params: Partial<OriginalPost> = post.value;
 
   if (props.post?.id) params.id = props.post.id;
+  if (params.type === 'note') params.type = 'article';
 
   try {
     isSaving.value = true;
@@ -208,9 +262,14 @@ const submit = async () => {
     //   status = 'succeeded'
 
     console.log('NEWPOST!!!!', newPost);
+    clearForm();
 
-    //   this.clearForm()
-    //   this.$router.push(permalink(newPost.id))
+    console.log('testtesttest')
+    if (!newPost) return;
+
+    const permalink = usePostLink(newPost);
+    console.log('permalink!', permalink, newPost);
+    navigateTo(permalink);
   } catch (e) {
     console.error(e)
   }
@@ -244,11 +303,12 @@ const submit = async () => {
 //     closeForm(): void {
 //       this.isOpen = false
 //     },
-//     clearForm(): void {
-//       this.content = ''
-//       this.entities = []
-//       this.item = null
-//     },
+const clearForm = (): void => {
+  content.value = '';
+  // this.entities = []
+  // this.item = null
+  // console.log('clear!')
+};
 //     updateItem(val: any): void {
 //       // console.log('updateItem', val)
 //       this.item = !val ? null : val
@@ -258,18 +318,19 @@ const submit = async () => {
 <style lang="scss" scoped>
 .form {
   width: 100%;
-  // display: flex;
+  position: relative;
+  display: flex;
   // z-index: 80000;
   // position: sticky;
   // height: calc(100vh - 60px);
-  // justify-content: flex-end;
+  justify-content: space-between;
   // top: $gap;
 
   // padding-right: $navSize + $gap;
 
   .main {
     // flex-grow: 1;
-    // flex-shrink: 0;
+    flex-shrink: 0;
     width: $mainSize;
     // overflow-y: auto;
     // padding-right: $gap;
@@ -288,18 +349,18 @@ const submit = async () => {
 
   .side {
     width: $navSize;
-    position: absolute;
-    top: 0;
-    right: 0;
-    // flex-shrink: 0;
+    position: sticky;
+    top: $gap;
+    flex-shrink: 0;
+    height: 100%;
 
     @include mobile {
       display: none;
     }
 
     >.inner {
-      position: sticky;
-      top: 0;
+      // position: sticky;
+      // top: 0;
       display: flex;
       flex-direction: column;
       align-content: space-between;
@@ -312,7 +373,7 @@ const submit = async () => {
       overflow-y: auto;
       align-self: stretch;
       flex-grow: 1;
-      flex-shrink: 0;
+      flex-shrink: 1;
       padding: $gap * 0.3;
     }
 

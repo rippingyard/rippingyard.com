@@ -4,25 +4,26 @@ import { DocumentReference } from 'firebase/firestore';
 import { User } from '~/schemas/user';
 
 export type PostStatus = 'published' | 'draft';
+export type PostType = 'article' | 'note' | 'log';
 
 export type OriginalPost = {
-  id: string
-  slug: ''
-  content: string
-  colaborators: DocumentData[]
-  createdAt: Timestamp
-  publishedAt: Timestamp
-  updatedAt: Timestamp
-  type: 'article' | 'note' | 'log'
-  owner?: DocumentReference<User>
-  parent?: DocumentData
-  isPublic: boolean
-  isDeleted: boolean
-  entities: string[]
+  id: string;
+  slug: '';
+  content: string;
+  colaborators: DocumentData[];
+  createdAt: Timestamp;
+  publishedAt: Timestamp;
+  updatedAt: Timestamp;
+  type: PostType;
+  owner?: DocumentReference<User>;
+  parent?: DocumentData;
+  isPublic: boolean;
+  isDeleted: boolean;
+  entities: string[];
   counts: {
-    favorite: number
-    bookmark: number
-    pageview: number
+    favorite: number;
+    bookmark: number;
+    pageview: number;
   }
   items: DocumentData[];
   status: PostStatus;

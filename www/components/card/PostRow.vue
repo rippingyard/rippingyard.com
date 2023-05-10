@@ -6,16 +6,26 @@
           {{ post.title }}
         </nuxt-link>
       </h3>
-      <p class="date">{{ post.publishedDate.format('YYYY-MM-DD hh:mm') }}</p>
+      <ul class="footer">
+        <li class="date">
+          <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
+        </li>
+        <!-- <li v-if="props.post.owner">
+          <CardUserLink :userRef="props.post.owner" />
+        </li> -->
+        <li>
+          <AtomEditPostLink :post="post" />
+        </li>
+      </ul>
       <nuxt-link v-if="post.hasThumbnail" :to="post.permalink" class="image sponly">
-        <AtomThumbnail :image="post.thumbnail" />
+        <AtomThumbnail :image="post.thumbnail" :is-square="true" />
       </nuxt-link>
       <!-- <p class="summary">{{ summary }}</p> -->
     </div>
     <div class="extra pconly">
       <template v-if="post.hasThumbnail">
         <nuxt-link :to="post.permalink">
-          <AtomThumbnail :image="post.thumbnail" size="small" />
+          <AtomThumbnail :image="post.thumbnail" size="small" :is-square="true" />
         </nuxt-link>
       </template>
     </div>
@@ -57,10 +67,10 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
       line-height: 1.4;
     }
 
-    .date {
-      font-size: 0.9rem;
-      color: $black-transparent-30;
-    }
+    // .date {
+    //   font-size: 0.9rem;
+    //   color: $black-transparent-30;
+    // }
 
     .summary {
       padding-top: 6px;
@@ -73,6 +83,52 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
     flex-shrink: 1;
     flex-grow: 0;
     padding: $gap * 0.5;
+  }
+
+  .footer {
+    padding-top: 24px;
+    font-size: 0.9rem;
+    color: $black-transparent-30;
+    font-weight: 800;
+    position: relative;
+    margin-bottom: 0;
+
+    >li {
+      margin-right: $gap;
+      display: inline-block;
+
+      .icon {
+        margin-right: 5px;
+      }
+    }
+
+    &::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background-color: $black-transparent-30;
+      top: 12px;
+      left: 0;
+      display: block;
+      position: absolute;
+    }
+
+    >p {
+      display: inline-block;
+
+      .icon {
+        margin-right: 5px;
+      }
+    }
+
+    @include until($desktop) {
+      padding-left: $gap * 0.5;
+      padding-right: $gap * 0.5;
+
+      &::before {
+        left: $gap * 0.5;
+      }
+    }
   }
 
   .entities {

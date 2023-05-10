@@ -14,7 +14,7 @@ import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 
 const route = useRoute();
-const { $openToast: openToast } = useNuxtApp();
+const { $openToast: openToast, $me: me } = useNuxtApp();
 
 const { isLoading, isError, error, data } = usePost(route.params.id as string);
 

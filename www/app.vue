@@ -1,6 +1,6 @@
 ﻿<template>
   <div class="wrapper">
-    <OrganismNav :toTop="toTop" />
+    <OrganismNav />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
@@ -26,6 +26,6 @@ body {
   height: 100%;
   margin: auto;
   // position: absolute;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 </style>

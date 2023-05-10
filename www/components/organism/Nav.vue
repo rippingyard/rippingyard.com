@@ -2,7 +2,7 @@
   <nav ref="el" class="nav" :class="{ isOpen, toTop: toTop || isOpen }">
     <div class="inner">
       <div class="logo" @mouseenter="onHoverLogo()" @mouseleave="onHoverLogo(false)">
-        <span @click="toggleNav()">
+        <span @click="toggle()">
           <IconLogoType />
         </span>
         <IconLines :is-black="isHoverLogo" />
@@ -46,7 +46,7 @@
         </ul>
       </div>
       <div v-show="isOpen" class="body">
-        <div class="close" @click="closeNav" />
+        <div class="close" @click="close" />
       </div>
       <div class="foot">
         <client-only>
@@ -62,7 +62,7 @@
             </li>
           </ul>
           <ul class="triggers close">
-            <li @click="closeNav" />
+            <li @click="close" />
           </ul>
         </client-only>
       </div>
@@ -119,13 +119,14 @@
           </section>-->
     </div>
     <div class="overlay" />
-    <div class="backdrop" @click="closeNav()" />
+    <div class="backdrop" @click="close" />
   </nav>
 </template>
 <script lang="ts" setup>
 import { useWindowScroll } from '@vueuse/core';
 import { useAuth } from '~/composables/firebase/useAuth';
 import { useLogout } from '~/composables/firebase/useLogout';
+import { useNavState } from '~/composables/state/useNavState';
 import IconGauge from '~~/components/icon/Gauge.vue';
 import IconSearch from '~~/components/icon/Search.vue';
 import { useCanCreateArticle } from '~~/composables/permission/useCanCreateArticle';
@@ -136,23 +137,24 @@ type TabMode = 'dashboard' | 'search' | 'posts' | 'post' | 'comment';
 
 const { isAuthenticated } = useAuth();
 const { canCreateArticle } = useCanCreateArticle();
+const { isOpen, open, close, toggle } = useNavState();
 
-const isOpen = ref(false);
+// const isOpen = ref(false);
 const activeTab = ref<TabMode>('dashboard');
 const isHoverLogo = ref(false);
 const toTop = ref(true);
 
-const toggleNav = (): void => {
-  isOpen.value = !isOpen.value
-};
-const openNav = (): void => {
-  isOpen.value = true
-};
-const closeNav = (): void => {
-  isOpen.value = false
-};
+// const toggleNav = (): void => {
+//   isOpen.value = !isOpen.value
+// };
+// const openNav = (): void => {
+//   isOpen.value = true
+// };
+// const closeNav = (): void => {
+//   isOpen.value = false
+// };
 const onClickTab = (tab: TabMode): void => {
-  openNav();
+  open();
   activeTab.value = tab;
 };
 const onHoverLogo = (isHover = true): void => {

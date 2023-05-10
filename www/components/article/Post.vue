@@ -24,16 +24,12 @@
         <li class="date">
           <IconClock />{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}
         </li>
-        <li v-if="owner">
-          <nuxt-link :to="`/people/${owner?.userName}`">
-            <IconUser />{{ owner?.displayName }}
-          </nuxt-link>
+        <li v-if="props.post.owner">
+          <CardUserLink :userRef="props.post.owner" />
         </li>
-        <client-only>
-          <p v-if="canEdit" class="link">
-            <nuxt-link :to="post.editlink">編集する</nuxt-link>
-          </p>
-        </client-only>
+        <li>
+          <AtomEditPostLink :post="props.post" />
+        </li>
       </ul>
     </article>
     <!-- <div class="block sub sticky">
@@ -67,44 +63,24 @@
   </main>
 </template>
 <script lang="ts" setup>
-import { isClient } from '@vueuse/shared';
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
-import { getCachedDoc } from '~~/composables/firestore/useCachedDoc';
-import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
-import { User } from '~~/schemas/user';
 
 const post = ref<Post>();
 const content = ref<string>('');
-const ownerRef = ref<User>();
 const props = defineProps<{
   post: OriginalPost;
 }>();
-const canEdit = ref(false);
 
 onMounted(async () => {
-  console.log('props.post', props.post);
   post.value = useNormalizePost(props.post);
   content.value = useContentFilter(post.value?.contentBody as string);
-
-  if (isClient) {
-    const { canEditPost } = useCanEditPost(post.value);
-    canEdit.value = canEditPost.value;
-  }
-
-  console.log('props.post.owner', !!props.post.owner, props.post.owner);
-  if (props.post.owner) {
-    const user = await getCachedDoc<User>({ ref: props.post.owner });
-    console.log('user by props.post.owner', user)
-    ownerRef.value = user;
-  }
 });
 
 const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
 // const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
-const owner = computed(() => ownerRef.value || null);
 
 </script>
 <style lang="scss" scoped>

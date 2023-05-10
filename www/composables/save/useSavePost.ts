@@ -3,10 +3,11 @@ import { useMe } from '../fetch/useMe';
 import { useFirebase } from '../firebase/useFirebase';
 import { useRetryMutation } from '../firestore/useRetryMutation';
 import { OriginalPost } from '~/schemas/post';
+import { User } from '~/schemas/user';
 
 export const defaultPost: Omit<OriginalPost, 'id'> = {
   slug: '',
-  owner: null,
+  owner: undefined,
   colaborators: [],
   content: '',
   status: 'published',
@@ -71,7 +72,6 @@ const savePost = async (post: Partial<OriginalPost>) => {
     //   status,
     //   payload: params,
     // })
-
     return newPost;
   } catch (e) {
     console.error(e);

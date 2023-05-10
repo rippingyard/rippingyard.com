@@ -4,7 +4,7 @@
       <li v-for="type, i in types" :key="`nav-post-item-${i}-${type.key}`" @click="setType(type.key)">{{ type.label }}
       </li>
     </ul>
-    <OrganismPostList :component="CardPostRow" :is-mine="true" :limit="50" />
+    <OrganismPostList :component="CardPostRow" :is-mine="true" :limit="30" />
   </div>
 </template>
 <script lang="ts" setup>

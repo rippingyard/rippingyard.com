@@ -1,7 +1,9 @@
 ﻿import { QueryParams, useCachedDoc } from '../firestore/useCachedDoc';
 import { OriginalPost } from '~/schemas/post';
 
-export const usePost = (id: string, args?: Omit<QueryParams, 'collection' | 'id'>) => {
+export type PostQueryParams = Omit<QueryParams, 'collection' | 'id'>;
+
+export const usePost = (id: string, args?: PostQueryParams) => {
 
   return useCachedDoc<OriginalPost>({
     ...args,
