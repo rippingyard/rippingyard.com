@@ -2,34 +2,32 @@
   <client-only>
     <section class="inner">
       <StaticNavHeader title="A SMARTER WAY<br />TO RECORD OUR LIVES" subtitle="生命を記録する冴えたやり方 - リッピングヤード" />
-      <div v-if="isAuthenticated">
-        <div class="columns">
-          <div v-for="links, i in linkGroups" :key="`linkGroup-${i}`" class="column links">
-            <div v-for="linkGroup, i2 in links" :key="`linkGroup-${i}-${i2}`">
-              <h3 v-if="linkGroup.title">{{ linkGroup.title }}</h3>
-              <ul>
-                <li v-for="link, i3 in linkGroup.links" :key="`linkGroup-${i}-${i2}-${i3}`">
-                  <nuxt-link :to="link.to">
-                    <IconAngleRight class="icon" />{{ link.label }}
-                  </nuxt-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="column links">
+      <div v-if="!isAuthenticated" class="login bg-dotted">
+        <OrganismLoginForm :is-widget="true" />
+      </div>
+      <div class="columns">
+        <div v-for="links, i in linkGroups" :key="`linkGroup-${i}`" class="column links">
+          <div v-for="linkGroup, i2 in links" :key="`linkGroup-${i}-${i2}`">
+            <h3 v-if="linkGroup.title">{{ linkGroup.title }}</h3>
             <ul>
-              <li>
-                <span @click="logout">
-                  <IconAngleRight class="icon" />ログアウト
-                </span>
+              <li v-for="link, i3 in linkGroup.links" :key="`linkGroup-${i}-${i2}-${i3}`">
+                <nuxt-link :to="link.to">
+                  <IconAngleRight class="icon" />{{ link.label }}
+                </nuxt-link>
               </li>
             </ul>
           </div>
         </div>
-      </div>
-      <div v-else class="login bg-dotted">
-        <OrganismLoginForm :is-widget="true" />
+
+        <div class="column links" v-if="isAuthenticated">
+          <ul>
+            <li>
+              <span @click="logout">
+                <IconAngleRight class="icon" />ログアウト
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
       <StaticInformation />
     </section>
@@ -86,12 +84,12 @@ const linkGroups: LinkGroup[][] = [
     {
       title: 'POST',
       links: [
+        // {
+        //   to: '/posts/',
+        //   label: '投稿記事一覧',
+        // },
         {
-          to: '/',
-          label: '投稿記事一覧',
-        },
-        {
-          to: '/',
+          to: '/post/create',
           label: '新規投稿',
         },
       ],

@@ -413,7 +413,7 @@ const clearForm = (): void => {
 
     @include mobile {
       width: 100%;
-      flex-direction: column;
+      // flex-direction: column;
     }
 
     .footer-main {
@@ -423,10 +423,11 @@ const clearForm = (): void => {
       flex-grow: 1;
 
       @include mobile {
-        display: inline-block;
-        position: absolute;
-        top: 10px;
-        left: 0;
+        // display: inline-block;
+        // position: absolute;
+        // top: 10px;
+        // left: 0;
+        flex-shrink: 0;
       }
     }
 
@@ -439,6 +440,7 @@ const clearForm = (): void => {
       @include mobile {
         width: 100%;
         text-align: right;
+        margin-left: 15px;
       }
     }
 

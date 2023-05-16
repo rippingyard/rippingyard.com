@@ -121,6 +121,7 @@ const title = computed(() => post.value && post.value.content ? getTitle(post.va
 
     h1 {
       padding-top: $gap * 0.5;
+      font-size: 1.8rem;
     }
   }
 }

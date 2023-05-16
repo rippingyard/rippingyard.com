@@ -31,6 +31,11 @@ const classes = {
   display: inline-block;
   color: $black;
 
+  &>a {
+    text-decoration: none;
+    color: $black;
+  }
+
   &.expanded {
     width: 100%;
   }

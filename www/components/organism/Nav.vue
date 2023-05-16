@@ -68,32 +68,34 @@
       </div>
     </div>
     <div class="extra">
-      <ul class="tabs">
-        <li :class="{ active: isActiveTab('dashboard') }" @click="onClickTab('dashboard')">
-          <span class="pconly">ダッシュボード<small>Dashboard</small></span>
-          <span class="sponly">
-            <IconGauge />
-          </span>
-        </li>
-        <li v-if="isAuthenticated" :class="{ active: isActiveTab('posts') }" @click="onClickTab('posts')">
-          <span class="pconly">あなたの記事<small>Posts</small></span>
-          <span class="sponly">
-            <IconBell />
-          </span>
-        </li>
-        <li :class="{ active: isActiveTab('search') }" @click="onClickTab('search')">
-          <span class="pconly">検索<small>Search</small></span>
-          <span class="sponly">
-            <IconSearch />
-          </span>
-        </li>
-        <li v-if="canCreateArticle" :class="{ active: isActiveTab('post') }" @click="onClickTab('post')">
-          <span class="pconly">新規投稿<small>Post</small></span>
-          <span class="sponly">
-            <IconPen />
-          </span>
-        </li>
-      </ul>
+      <client-only>
+        <ul class="tabs">
+          <li :class="{ active: isActiveTab('dashboard') }" @click="onClickTab('dashboard')">
+            <span class="pconly">ダッシュボード<small>Dashboard</small></span>
+            <span class="sponly">
+              <IconGauge />
+            </span>
+          </li>
+          <li v-if="isAuthenticated" :class="{ active: isActiveTab('posts') }" @click="onClickTab('posts')">
+            <span class="pconly">あなたの記事<small>Posts</small></span>
+            <span class="sponly">
+              <IconBell />
+            </span>
+          </li>
+          <li :class="{ active: isActiveTab('search') }" @click="onClickTab('search')">
+            <span class="pconly">検索<small>Search</small></span>
+            <span class="sponly">
+              <IconSearch />
+            </span>
+          </li>
+          <li v-if="canCreateArticle" :class="{ active: isActiveTab('post') }" @click="onClickTab('post')">
+            <span class="pconly">新規投稿<small>Post</small></span>
+            <span class="sponly">
+              <IconPen />
+            </span>
+          </li>
+        </ul>
+      </client-only>
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
       <OrganismPostForm v-show="activeTab === 'post'" :is-footer-dotted="true" :is-widget="true" :show-item="true" />
       <OrganismNavPostList v-if="activeTab === 'posts'" />
@@ -144,15 +146,6 @@ const activeTab = ref<TabMode>('dashboard');
 const isHoverLogo = ref(false);
 const toTop = ref(true);
 
-// const toggleNav = (): void => {
-//   isOpen.value = !isOpen.value
-// };
-// const openNav = (): void => {
-//   isOpen.value = true
-// };
-// const closeNav = (): void => {
-//   isOpen.value = false
-// };
 const onClickTab = (tab: TabMode): void => {
   open();
   activeTab.value = tab;
