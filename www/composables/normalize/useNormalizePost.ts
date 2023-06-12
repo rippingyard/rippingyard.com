@@ -73,13 +73,6 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
     publishedDate: dayjs(originalPost.publishedAt.toDate()),
   });
 
-  setInterval(() => {
-    normalizedPost.value.contentBody += ' +';
-    normalizedPost.value.publishedDate = dayjs();
-    // title.value += ' +';
-    // p.value += ' +';
-  }, 1000);
-
   return { post: normalizedPost, title, p };
 }
 
