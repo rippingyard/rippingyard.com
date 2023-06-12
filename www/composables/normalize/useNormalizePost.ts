@@ -35,27 +35,11 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
   // });
 
   const title = ref('');
-  const p = ref('');
 
   watchEffect(() => {
     console.log('parent.value?.name?.ja', parent.value?.name?.ja);
     title.value = parent.value?.name?.ja || getTitle(originalPost);
   });
-
-  // watchEffect(() => {
-  //   console.log('ppp', ppp);
-  // });
-
-  // console.log('TEST', parent.data);
-
-  // // if (originalPost.parent) {
-  // watchEffect(() => {
-  //   console.log('parent', useItem({ ref: originalPost.parent }))
-  //   console.log('watch', parent);
-  //   console.log('isLoading', isLoading.value);
-  //   // console.log('parent', parent);
-  // });
-  // // }
 
   const normalizedPost = ref<Post>({
     ...originalPost,
@@ -73,7 +57,7 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
     publishedDate: dayjs(originalPost.publishedAt.toDate()),
   });
 
-  return { post: normalizedPost, title, p };
+  return { post: normalizedPost, title };
 }
 
 const permalink = (post: Partial<Post>): string => usePostLink(post);

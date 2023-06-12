@@ -41,19 +41,19 @@
           <div class="side-block">
             <label>記事タイプ</label>
             <div>
-              <FormCheckboxes v-if="type" :options="posttypes" v-model="type" />
+              <FormCheckboxes v-if="type !== undefined" :options="posttypes" v-model="type" />
             </div>
           </div>
           <div class="side-block">
             <label>記事設定</label>
             <div>
-              <FormCheckboxes v-if="status" :options="statuses" v-model="status" />
+              <FormCheckboxes v-if="status !== undefined" :options="statuses" v-model="status" />
             </div>
           </div>
           <div class="side-block">
             <label>公開設定</label>
             <div>
-              <FormCheckboxes v-if="publishStatus" :options="publishStatuses" v-model="publishStatus" />
+              <FormCheckboxes v-if="publishStatus !== undefined" :options="publishStatuses" v-model="publishStatus" />
             </div>
           </div>
         </div>
@@ -191,6 +191,9 @@ const submitLabel = computed(() => props?.post ? '更新する' : '投稿する'
 onMounted(() => {
   if (!props.post) {
     content.value = '';
+    type.value = 'log';
+    status.value = 'drafted';
+    publishStatus.value = 'isPrivate';
     return;
   }
   content.value = props.post.content;
