@@ -2,8 +2,8 @@
   <!-- <div class="container"> -->
   <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
     <ul>
-      <li v-for="post, i in posts" :key="i">
-        <component :is="props.component || CardPost" :post="post" />
+      <li v-for="post, i in filteredPosts" :key="i">
+        <component :is="props.component || CardPost" :post="(post as Post)" />
       </li>
     </ul>
     <div v-if="!hideMore" class="console">
@@ -18,8 +18,8 @@ import CardPost from '~~/components/card/Post.vue';
 import { useMe } from '~~/composables/fetch/useMe';
 import { useInfinitePosts } from '~~/composables/fetch/usePosts';
 import { QueryParams, WhereParams } from '~~/composables/firestore/useCachedDocs';
-import { OriginalPost } from '~~/schemas/post';
-import { useElementVisibility } from '@vueuse/core'
+import { OriginalPost, Post } from '~~/schemas/post';
+import { useElementVisibility } from '@vueuse/core';
 
 type Props = {
   component?: typeof CardPost;
@@ -29,20 +29,27 @@ type Props = {
   order?: OrderByDirection;
   isMine?: boolean;
   hideMore?: boolean;
+  filter?: (post: OriginalPost) => boolean;
 }
 
 const props = defineProps<Props>();
 const posts = ref<OriginalPost[]>();
 const types = computed(() => props.types || ['log', 'note', 'article']);
 
-const target = ref(null)
-const targetIsVisible = useElementVisibility(target)
+const target = ref(null);
+const targetIsVisible = useElementVisibility(target);
 
 const hideMore = computed(() => props.hideMore || false);
 
 const where: WhereParams = [
   { key: 'type', val: types.value },
 ];
+
+const filteredPosts = computed(() => {
+  const filter = props.filter;
+  if (!filter || !posts.value) return posts.value;
+  return posts.value.filter((post) => filter(post));
+})
 
 if (props.isMine) {
   const { myRef } = useMe();

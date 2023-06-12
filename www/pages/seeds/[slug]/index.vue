@@ -35,7 +35,7 @@ const seed = computed<Seed>(() => seeds.value.find((s: Seed) => s.slug === slug)
 
 const title = computed(() => seed.value.title ? `<h1>${seed.value.title}</h1>` : '');
 const body = computed(() => seed.value.body || '');
-const content = computed(() => useContentFilter(title.value + body.value));
+const content = useContentFilter(title.value + body.value);
 
 //   computed: {
 //     getName() {

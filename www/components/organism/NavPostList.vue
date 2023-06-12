@@ -1,22 +1,31 @@
 ﻿<template>
   <div>
     <ul class="triggers bg-dotted">
-      <li v-for="type, i in types" :key="`nav-post-item-${i}-${type.key}`" @click="setType(type.key)">{{ type.label }}
+      <li v-for="type, i in types" :key="`nav-post-item-${i}-${type.key}`" @click="setType(type.key)">
+        {{ type.label }}
       </li>
     </ul>
-    <OrganismPostList :component="CardPostRow" :is-mine="true" :limit="30" />
+    <OrganismPostList :component="CardPostRow" :is-mine="true" :filter="filter" :limit="30" />
   </div>
 </template>
 <script lang="ts" setup>
 import CardPostRow from '~/components/card/PostRow.vue';
+import { OriginalPost, Post, PostType } from '~/schemas/post';
 
-const types = [
-  { key: 'log', label: '日記' },
-  { key: 'note', label: 'メモ' },
-  { key: 'article', label: '記事' },
-];
+const types: {
+  key: PostType;
+  label: string;
+}[] = [
+    { key: 'log', label: '日記' },
+    // { key: 'note', label: 'メモ' },
+    { key: 'article', label: '記事' },
+  ];
 
-const setType = (type: string) => console.log('type', type);
+const type = ref<PostType | undefined>();
+
+const filter = (post: OriginalPost) => !type.value ? true : post.type === type.value;
+
+const setType = (value: PostType) => type.value = value;
 </script>
 <style lang="scss" scoped>
 .triggers {

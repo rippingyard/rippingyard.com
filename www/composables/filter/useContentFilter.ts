@@ -1,10 +1,15 @@
 ﻿import { renderWidgets, sanitize } from '~/utils/typography';
 
 export const useContentFilter = (content: string) => {
-  if (!content) return '';
+
+  const filteredContent = ref('');
+
+  if (!content) return filteredContent;
 
   content = sanitize(content);
   content = renderWidgets(content);
 
-  return content;
+  filteredContent.value = content;
+
+  return filteredContent;
 }

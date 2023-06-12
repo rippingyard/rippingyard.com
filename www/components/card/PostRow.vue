@@ -36,15 +36,12 @@ import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post } from '~/schemas/post';
 import { getSummary } from '~~/utils/typography';
 
-const post = ref<Post>();
 const props = defineProps<{
   post: Post;
   isDark?: boolean;
 }>();
 
-onMounted(() => {
-  post.value = useNormalizePost(props.post);
-});
+const { post } = useNormalizePost(props.post);
 
 const summary = computed(() => post.value?.content ? getSummary(post.value.content) : '');
 
@@ -86,7 +83,7 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
   }
 
   .footer {
-    padding-top: 24px;
+    padding: 24px 0 0 0;
     font-size: 0.9rem;
     color: $black-transparent-30;
     font-weight: 800;
@@ -96,6 +93,7 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
     >li {
       margin-right: $gap;
       display: inline-block;
+      color: $black-transparent-30;
 
       .icon {
         margin-right: 5px;
@@ -122,12 +120,12 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
     }
 
     @include until($desktop) {
-      padding-left: $gap * 0.5;
+      // padding-left: $gap * 0.5;
       padding-right: $gap * 0.5;
 
-      &::before {
-        left: $gap * 0.5;
-      }
+      // &::before {
+      //   // left: $gap * 0.5;
+      // }
     }
   }
 
@@ -153,7 +151,7 @@ const summary = computed(() => post.value?.content ? getSummary(post.value.conte
 
       .date {
         font-size: 0.9rem;
-        color: $gray-black;
+        // color: $gray-black;
         margin-bottom: 10px;
       }
 

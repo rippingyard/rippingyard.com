@@ -1,6 +1,6 @@
 ﻿export const useDefaultValue = <T>() => {
   return {
-    isLoading: ref(true),
+    isLoading: ref(false),
     isError: ref(false),
     error: ref(''),
     data: ref<T>(),

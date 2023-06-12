@@ -2,7 +2,7 @@
   <div v-if="post" class="item">
     <h1 class="title">
       <nuxt-link :to="post.permalink">
-        {{ post.title }}
+        {{ title }}
       </nuxt-link>
     </h1>
     <div class="inner" :class="{ columns: post.thumbnail }">
@@ -31,14 +31,11 @@ import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post } from '~/schemas/post';
 import { getSummary } from '~/utils/typography';
 
-const post = ref<Post>();
 const props = defineProps<{
   post: Post;
 }>();
 
-onMounted(() => {
-  post.value = useNormalizePost(props.post);
-});
+const { post, title } = useNormalizePost(props.post);
 
 const summary = computed(() => post.value && post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 

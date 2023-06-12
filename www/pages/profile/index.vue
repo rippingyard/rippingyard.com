@@ -1,8 +1,8 @@
 ﻿<template>
-  <BlockMain>
+  <BlockMain horizontalSize="large">
     <BlockLoading :is-loading="!me" :is-error="false">
       <!-- <ManageHeading label="ユーザー設定" /> -->
-      <div class="form">
+      <div v-if="isReady" class="form">
         <div class="columns">
           <div class="column c60">
             <div class="box wysiwyg">
@@ -13,7 +13,7 @@
           <div class="column c40">
             <div class="box wysiwyg">
               <h2>プロフィール画像</h2>
-              <FormImageUploader />
+              <FormImageUploader :default-image="avatar" :is-auto-upload="true" :on-change="uploadImage" />
             </div>
           </div>
         </div>
@@ -22,7 +22,7 @@
           <FormTextArea v-model="profile" placeholder="プロフィールを入力" @click="removeError('profile')" />
         </div>
         <div class="box wysiwyg">
-          <AtomButton class="button" @click="submit">設定変更</AtomButton>
+          <AtomButton class="button" :is-loading="isSaving" @click="submit">設定変更</AtomButton>
         </div>
       </div>
     </BlockLoading>
@@ -33,22 +33,29 @@
 // import { getExt } from '~/plugins/file'
 // import { schemaUser } from '~/plugins/validators/user'
 
+import { useSaveUser } from '~/composables/save/useSaveUser';
 import { useMe } from '~~/composables/fetch/useMe';
 import { User } from '~~/schemas/user';
 
+const saveUserObject = useSaveUser();
 const { me } = useMe();
 
+const isReady = ref(false);
+const isSaving = ref(false);
 const displayName = ref('');
 const profile = ref('');
+const avatar = ref('');
 
 onMounted(() => setDefault(me.value));
 watch(me, () => setDefault(me.value));
 
 const setDefault = (me?: User) => {
+  console.log('me!', me);
   if (!me) return;
   displayName.value = me?.displayName || '';
-  console.log('me!!!', me?.profile);
   profile.value = me?.profile || '';
+  avatar.value = me?.avatar || '';
+  isReady.value = true;
 }
 
 // export default Vue.extend({
@@ -85,27 +92,41 @@ const setDefault = (me?: User) => {
 //       this.image = file
 //     },
 
-const submit = () => {
-
-};
+const uploadImage = (url: string) => {
+  avatar.value = url;
+}
 
 const removeError = (field: string) => {
   console.log('error', field);
 };
 
+const submit = async () => {
+  if (!saveUserObject) return;
+
+  const { mutateAsync: saveUser } = saveUserObject;
+
+  const params = {
+    ...me.value,
+    displayName: displayName.value,
+    avatar: avatar.value,
+    profile: profile.value,
+  };
+
+  try {
+    isSaving.value = true;
+
+    console.log('params', params);
+    await saveUser(params);
+
+  } catch (e) {
+    console.error(e);
+  }
+
+  isSaving.value = false;
+};
+
 //     async submit(): Promise<void> {
 //       try {
-//         if (this.image) {
-//           const ext = getExt(this.image)
-//           if (!ext) return
-
-//           const filename = `avatars/${this.$data.me.uid}.${ext}`
-//           const result = await (this as any).$fire.storage
-//             .ref()
-//             .child(filename)
-//             .put(this.image)
-//           this.avatar = await result.ref.getDownloadURL()
-//         }
 
 //         const params = {
 //           uid: this.$data.me.uid,

@@ -5,10 +5,11 @@
         <ArticlePost v-if="data" :post="data" />
       </BlockLoading>
     </BlockMain>
-    <OrganismBillboard />
+    <!-- <OrganismBillboard /> -->
   </div>
 </template>
 <script lang="ts" setup>
+import { isServer } from '@tanstack/vue-query';
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
@@ -21,6 +22,7 @@ const { isLoading, isError, error, data } = usePost(route.params.id as string);
 const title = computed(() => data.value ? getTitle(data.value) : '');
 
 const checkPermission = () => {
+  if (isServer) return;
   if (isLoading.value) return;
 
   if (!data.value) {

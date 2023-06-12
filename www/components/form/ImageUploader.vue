@@ -1,16 +1,26 @@
 ﻿<template>
   <div class="uploader">
     <div class="inner">
-      <div v-show="file?.url" class="preview">
+      <div v-if="defaultImage" class="preview">
         <div class="image">
-          <img :src="file?.url" />
+          <img :src="defaultImage" />
           <div class="close">
-            <AtomButton class="button" :no-border="true" @click="removeImage">
+            <AtomButton class="button" :no-border="true" @click="removeDefaultImage">
               <IconClose />
             </AtomButton>
           </div>
         </div>
-        <div class="data">
+      </div>
+      <div v-show="!defaultImage && file?.url" class="preview">
+        <div class="image">
+          <img :src="file?.url" />
+          <div class="close" @click="removeImage">
+            <AtomButton class="button" :no-border="true">
+              <IconClose />
+            </AtomButton>
+          </div>
+        </div>
+        <div class="data" v-if="!isAutoUpload">
           <div class="console">
             <AtomButton class="button expanded centered" :is-loading="isUploading" @click="uploadImage()">
               <IconUpload />
@@ -19,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div v-show="!file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
+      <div v-show="!defaultImage && !file?.url" class="drop" :class="{ 'is-over': isOverDropZone }">
         <div ref="dzRef" class="zone">
           <div class="inner" @click="() => openFileDialog()">
             <p class="uploadicon">
@@ -43,6 +53,7 @@ import { useFirebase } from '~~/composables/firebase/useFirebase';
 type Props = {
   onChange?: (file: string) => void;
   defaultImage?: string;
+  isAutoUpload?: boolean;
 }
 
 const props = withDefaults(
@@ -50,6 +61,7 @@ const props = withDefaults(
   {
     onChange: () => {},
     defaultImage: '',
+    isAutoUpload: false,
   }
 );
 
@@ -57,8 +69,10 @@ const { fb } = useFirebase();
 const storage = getStorage(fb);
 const dzRef = ref<HTMLDivElement>();
 const file = ref<ResizedImage>();
+const defaultImage = ref(props.defaultImage);
 const isResizing = ref(false);
 const isUploading = ref(false);
+const isAutoUpload = computed(() => props.isAutoUpload);
 
 const { files, open: openFileDialog } = useFileDialog({
   multiple: false,
@@ -88,7 +102,10 @@ const onDrop = async (files: File[] | null) => {
   } catch (e) {
     console.error(e);
   }
+
   isResizing.value = false;
+
+  if (isAutoUpload) await uploadImage();
 }
 
 const { isOverDropZone } = useDropZone(dzRef, onDrop);
@@ -110,6 +127,7 @@ const uploadImage = async () => {
     const url = await getDownloadURL(uploadHandler);
 
     file.value = undefined;
+    props.onChange(url);
   } catch (e) {
     console.error(e);
   }
@@ -126,10 +144,14 @@ const removeImage = () => {
   file.value = undefined;
 };
 
+const removeDefaultImage = () => {
+  defaultImage.value = '';
+}
+
 </script>
 <style lang="scss" scoped>
 .uploader {
-  padding: 15px;
+  // padding: 15px;
   height: 100%;
 
   >.inner {
@@ -208,6 +230,7 @@ const removeImage = () => {
       img {
         max-width: 100%;
         max-height: 100%;
+        margin: 0;
       }
 
       >.close {
@@ -224,7 +247,7 @@ const removeImage = () => {
 
       &:hover {
         >.close {
-          display: block;
+          display: flex;
           width: 100%;
           height: 100%;
         }

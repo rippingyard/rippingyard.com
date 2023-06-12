@@ -2,6 +2,7 @@
 import { DocumentData, Timestamp } from '@firebase/firestore-types';
 import { DocumentReference } from 'firebase/firestore';
 import { User } from '~/schemas/user';
+import { Item } from './item';
 
 export type PostStatus = 'published' | 'draft';
 export type PostType = 'article' | 'note' | 'log';
@@ -15,8 +16,8 @@ export type OriginalPost = {
   publishedAt: Timestamp;
   updatedAt: Timestamp;
   type: PostType;
-  owner?: DocumentReference<User>;
-  parent?: DocumentData;
+  owner?: DocumentReference<DocumentData>;
+  parent?: DocumentReference<DocumentData>;
   isPublic: boolean;
   isDeleted: boolean;
   entities: string[];

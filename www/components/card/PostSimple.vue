@@ -3,7 +3,7 @@
     <div class="body">
       <h3 class="title">
         <nuxt-link :to="post.permalink">
-          {{ post.title }}
+          {{ title }}
         </nuxt-link>
       </h3>
       <p class="date">{{ post.publishedDate.format('YYYY-MM-DD hh:mm') }}</p>
@@ -31,15 +31,11 @@ import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
 import { Post } from '~/schemas/post';
 import { getSummary } from '~~/utils/typography';
 
-const post = ref<Post>();
 const props = defineProps<{
   post: Post;
   isDark?: boolean;
 }>();
-
-onMounted(() => {
-  post.value = useNormalizePost(props.post);
-});
+const { post, title } = useNormalizePost(props.post);
 
 const summary = computed(() => post.value?.content ? getSummary(post.value.content) : '');
 

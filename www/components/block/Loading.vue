@@ -1,9 +1,9 @@
 ﻿<template>
   <div class="container">
-    <div v-if="props.isLoading" class="loading">
+    <div v-if="isLoading" class="loading">
       <IconLoading />
     </div>
-    <div v-else-if="props.isError" :error="props.error" class="error">
+    <div v-else-if="isError" :error="props.error" class="error">
       Error: {{ props.error?.message }}
     </div>
     <slot v-else />
@@ -15,7 +15,10 @@ const props = defineProps<{
   isLoading: boolean
   isError: boolean
   error?: any
-}>()
+}>();
+
+const isLoading = computed(() => props.isLoading !== undefined ? props.isLoading : true);
+const isError = computed(() => props.isError !== undefined ? props.isError : true);
 
 </script>
 <style lang="scss" scoped>

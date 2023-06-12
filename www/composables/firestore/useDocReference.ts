@@ -6,11 +6,15 @@
 import { useFirebase } from '~/composables/firebase/useFirebase';
 
 export const useDocReference = (arg?: string | DocumentReference, collection?: string) => {
+  try {
+    if (!arg) throw new Error('Unset an arg');
+    if (typeof arg !== 'string') return arg;
+    if (!collection) throw new Error('Unset a collection');
 
-  if (!arg) throw new Error('Unset an arg');
-  if (typeof arg !== 'string') return arg;
-  if (!collection) throw new Error('Unset a collection');
-
-  const { fb } = useFirebase();
-  return doc(getFirestore(fb), collection, arg);
+    const { fb } = useFirebase();
+    return doc(getFirestore(fb), collection, arg);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }

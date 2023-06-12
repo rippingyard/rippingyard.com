@@ -9,6 +9,7 @@
       </div> -->
       <BlockWysiwyg :content="content" :is-article="true" />
       <AdPostBottom />
+      <p>{{ p }}</p>
       <!-- <div v-if="post.parent" class="parent">
         <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
       </div> -->
@@ -68,18 +69,18 @@ import { Post, OriginalPost } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
 
-const post = ref<Post>();
-const content = ref<string>('');
 const props = defineProps<{
   post: OriginalPost;
 }>();
+const { post, title, p } = useNormalizePost(props.post);
+const content = useContentFilter(post?.value?.contentBody || '');
 
-onMounted(async () => {
-  post.value = useNormalizePost(props.post);
-  content.value = useContentFilter(post.value?.contentBody as string);
+watch(post, () => {
+  console.log('post changed', post);
 });
 
-const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
+// const title = computed(() => post?.value?.title);
+// const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
 // const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 
 </script>

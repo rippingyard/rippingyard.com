@@ -15,7 +15,6 @@ export const useCanCreateArticle = () => {
     canCreateArticle.value = !!(me.value && !me.value?.isBanned && !me.value?.isDeleted && ['resident', 'mayor', 'lord'].includes(me.value?.role));
   }
 
-
   return {
     canCreateArticle,
   };

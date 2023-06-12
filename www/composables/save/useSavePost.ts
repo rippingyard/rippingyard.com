@@ -1,4 +1,4 @@
-﻿import { collection, doc, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
+﻿import { collection, doc, DocumentData, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { useMe } from '../fetch/useMe';
 import { useFirebase } from '../firebase/useFirebase';
 import { useRetryMutation } from '../firestore/useRetryMutation';
@@ -53,9 +53,9 @@ const savePost = async (post: Partial<OriginalPost>) => {
 
     const userCollection = collection(db, 'users');
     if (!post.owner) {
-      post.owner = await doc(userCollection, me.value.uid);
-    } else if (post.owner.uid) {
-      post.owner = await doc(userCollection, post.owner.uid)
+      post.owner = await doc<DocumentData>(userCollection, me.value.uid);
+    } else if (post.owner.id) {
+      post.owner = await doc(userCollection, post.owner.id)
     }
 
     const postCollection = collection(db, 'posts');

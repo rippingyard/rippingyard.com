@@ -17,15 +17,15 @@ export type QueryParams = {
 export const getCachedDoc = async <T>(args: QueryParams): Promise<T> => {
   try {
     const { collection, id, ref } = args;
-    console.log('props.post.owner exec', ref, id, collection);
-    const snapshot = await getDoc<DocumentData>(useDocReference(ref || id, collection));
-    console.log('props.post.owner snapshot', snapshot);
+    // console.log('getCachedDoc exec', ref, id, collection);
+    const snapshot = await getDoc<DocumentData>(ref ? useDocReference(ref.id, ref.parent.id) : useDocReference(id, collection));
+    console.log('getCachedDoc snapshot', snapshot);
 
     if (!snapshot.exists()) return {} as T;
 
     return snapshot.data() as T;
   } catch (e) {
-    console.error(e);
+    console.error('getCachedDoc error', e);
     throw e;
   }
 }

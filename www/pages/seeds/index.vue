@@ -63,7 +63,7 @@ const summary = (seed: Seed) => getSummary(seed.body, 320);
 <style lang="scss" scoped>
 ul {
   >li {
-    border-top: 1px dashed $black;
+    // border-top: 1px dashed $black;
 
     >a {
       padding: $gap 0;
@@ -81,6 +81,10 @@ ul {
         font-size: 0.9rem;
         line-height: 1.6;
       }
+    }
+
+    @include until($desktop) {
+      padding: 0 $gap * 0.5;
     }
   }
 }

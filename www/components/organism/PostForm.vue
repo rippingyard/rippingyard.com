@@ -65,6 +65,12 @@
         </div>
       </div>
     </div>
+    <div class="sponly">
+      <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
+        :expanded="true" @click="submit()">
+        {{ submitLabel }}
+      </AtomButton>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -155,7 +161,7 @@ const type = ref<PostType>();
 const status = ref<PostStatus>();
 const publishStatus = ref<PublishStatus>();
 const isPublic = computed(() => publishStatus.value === 'isPublic');
-const date = ref();
+const date = ref(new Date);
 const isSaving = ref(false);
 
 const post = computed<Partial<OriginalPost>>(() => {
@@ -328,12 +334,21 @@ const clearForm = (): void => {
 
   // padding-right: $navSize + $gap;
 
+  @include until($desktop) {
+    display: block;
+    padding: $gap * 0.5;
+  }
+
   .main {
     // flex-grow: 1;
     flex-shrink: 0;
     width: $mainSize;
     // overflow-y: auto;
     // padding-right: $gap;
+
+    @include until($desktop) {
+      width: 100%;
+    }
   }
 
   .item {
