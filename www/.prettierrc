@@ -1,0 +1,8 @@
+﻿{
+  "semi": false,
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "trailingComma": "all",
+  "proseWrap": "always",
+  "singleAttributePerLine": true
+}

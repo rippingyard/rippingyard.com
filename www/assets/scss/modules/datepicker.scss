@@ -1,0 +1,32 @@
+﻿@import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+
+.dp__theme_light {
+  --dp-background-color: #{$white};
+  --dp-text-color: #{$black};
+  --dp-hover-color: #{$black-transparent-20};
+  --dp-hover-text-color: #{$black};
+  --dp-hover-icon-color: #959595;
+  --dp-primary-color: #{$orange};
+  --dp-primary-text-color: #{$white};
+  --dp-secondary-color: #c0c4cc;
+  --dp-border-color: #{$gray};
+  --dp-menu-border-color: transparent;
+  --dp-border-color-hover: #{$gray};
+  --dp-disabled-color: #{$gray};
+  --dp-scroll-bar-background: #{$gray};
+  --dp-scroll-bar-color: #{$gray-black};
+  --dp-success-color: #{$orange};
+  --dp-success-color-disabled: #a3d9b1;
+  --dp-icon-color: #{$orange};
+  --dp-danger-color: #{$orange};
+  --dp-highlight-color: rgba(25, 118, 210, 0.1);
+}
+
+.dp__input {
+  border: none;
+  background-color: transparent;
+}
+
+.dp__inner_nav {
+  border-radius: 0;
+}
