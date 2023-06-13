@@ -3,31 +3,31 @@ name: Deploy to Production
 on:
   release:
     types: [created]
-  schedule:
-    - cron: '0 5,17,22 * * *'
+  # schedule:
+  #   - cron: '0 5,17,22 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Hosting - Install dependencies
-      run: cd hosting && yarn install
-    - name: Hosting - Test
-      run: cd hosting && yarn test
-    - name: Hosting - Generate html files for production
-      run: yarn run build
-      env:
-        FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
-        ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
-        GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
-        FCM_VAPID_KEY: ${{ secrets.FCM_VAPID_KEY_PRD }}
+    # - name: Hosting - Install dependencies
+    #   run: cd hosting && yarn install
+    # - name: Hosting - Test
+    #   run: cd hosting && yarn test
+    # - name: Hosting - Generate html files for production
+    #   run: yarn run build
+    #   env:
+    #     FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
+    #     ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
+    #     GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+    #     FCM_VAPID_KEY: ${{ secrets.FCM_VAPID_KEY_PRD }}
     - name: Functions - Set firebase env to Production
       uses: w9jds/firebase-action@master
       with:
