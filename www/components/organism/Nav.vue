@@ -99,26 +99,7 @@
       <OrganismDashboard v-if="activeTab === 'dashboard'" />
       <OrganismPostForm v-show="activeTab === 'post'" :is-footer-dotted="true" :is-widget="true" :show-item="true" />
       <OrganismNavPostList v-if="activeTab === 'posts'" />
-      <!--
-            
-          <section v-show="activeTab === 'posts'" class="inner">
-            <PostSimpleList
-              :posts="posts"
-              :is-small="true"
-              :has-margin="true"
-              :is-dark="true"
-            />
-          </section>
-          <section v-show="activeTab === 'search'" class="inner">
-            <Search />
-          </section>
-          <section
-            v-if="canCreateArticle"
-            v-show="activeTab === 'post'"
-            class="inner"
-          >
-            <NoteForm />
-          </section>-->
+      <OrganismSearch v-if="activeTab === 'search'" />
     </div>
     <div class="overlay" />
     <div class="backdrop" @click="close" />

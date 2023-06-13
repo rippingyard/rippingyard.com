@@ -6,7 +6,7 @@
           {{ title }}
         </nuxt-link>
       </h3>
-      <p class="date">{{ post.publishedDate.format('YYYY-MM-DD hh:mm') }}</p>
+      <p class="date">{{ post.publishedDate.format('YYYY-MM-DD HH:mm') }}</p>
       <nuxt-link v-if="post.hasThumbnail" :to="post.permalink" class="image sponly">
         <AtomThumbnail :image="post.thumbnail" />
       </nuxt-link>
