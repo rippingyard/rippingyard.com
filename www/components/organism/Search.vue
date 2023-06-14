@@ -34,24 +34,23 @@ const isComposing = ref(false);
 const isEmpty = computed(() => query.value === '' || hits.value.length === 0);
 
 const doSearch = async () => {
-  // if (!this.isComposing) refine(this.query)
+  if (isComposing.value) return;
   await search({ query: query.value });
 }
 
-const hits = computed(() => {
-  return result?.value?.hits || [];
-})
-
-watch(result, () => {
-  console.log('result', result.value);
-  console.log('hits', result.value.hits);
-});
+const hits = computed(() => result?.value?.hits || []);
 
 const permalink = (hit: any): string => `/post/${hit.objectID}`;
 const summary = (content: string): string => getSummary(content, 300);
 const formatDate = (time: number): string => dayjs(time * 1000).format('YYYY-MM-DD HH:mm');
-const startComposing = () => isComposing.value = true;
-const stopComposing = () => isComposing.value = false;
+const startComposing = () => {
+  console.log('startComposing');
+  isComposing.value = true;
+}
+const stopComposing = () => {
+  console.log('stopComposing');
+  isComposing.value = false;
+}
 
 </script>
 <style lang="scss" scoped>

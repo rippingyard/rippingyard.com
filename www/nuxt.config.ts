@@ -139,15 +139,8 @@ export default defineNuxtConfig({
         },
       },
     },
+    esbuild: {
+      pure: ['console.log', 'console.info', 'console.table'],
+    }
   },
-  // sitemap: {
-  //   hostname: process.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app/' : 'https://www.rippingyard.com/',
-  //   cacheTime: 1,
-  //   routes,
-  //   defaults: {
-  //     changefreq: 'daily',
-  //     priority: 1,
-  //     lastmod: new Date().toISOString(),
-  //   },
-  // },
 })
