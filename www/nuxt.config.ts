@@ -19,6 +19,13 @@ export default defineNuxtConfig({
         // analyticsDomainName: domain
       },
     ],
+    [
+      '@nuxtjs/algolia',
+      {
+        apiKey: process.env.VITE_ALGOLIA_APIKEY,
+        applicationId: process.env.VITE_ALGOLIA_APPID,
+      },
+    ]
   ],
   // buildModules: [
   //   '@nuxtjs/style-resources',
