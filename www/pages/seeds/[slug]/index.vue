@@ -6,7 +6,7 @@
         <AdPostBottom />
         <div class="footer">
           <p class="date">
-            <IconClock />{{ seed.published_at }}
+            <IconClock />{{ seed?.published_at }}
           </p>
         </div>
       </BlockLoading>
