@@ -219,6 +219,11 @@
 
       li {
         list-style-position: inside;
+
+        >p {
+          padding: 0;
+          display: inline-block;
+        }
       }
 
       blockquote {

@@ -60,7 +60,7 @@ if (props.isMine) {
       val: myRef.value,
     });
   }
-  // removeWhereKeys.value.push(...['status', 'isPublic']);
+  removeWhereKeys.value.push(...['status', 'isPublic']);
 }
 
 const condition: Omit<QueryParams, 'collection'> = {

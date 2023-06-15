@@ -1,6 +1,6 @@
 ﻿<template>
   <div>
-    <BlockMain>
+    <BlockMain horizontal-size="large">
       <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
         <OrganismUser v-if="user" :user="user" />
       </BlockLoading>
@@ -9,7 +9,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useTitle } from '@vueuse/core';
+import { isServer } from '@tanstack/vue-query';
 import { useUsers } from '~~/composables/fetch/useUsers';
 import { useCanTouchUser } from '~~/composables/permission/useCanTouchUser';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
@@ -29,6 +29,7 @@ const user = computed(() => {
 });
 
 const checkPermission = () => {
+  if (isServer) return;
   if (isLoading.value) return;
 
   if (!user.value) {
