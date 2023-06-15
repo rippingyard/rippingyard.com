@@ -76,6 +76,7 @@ const stopComposing = () => {
     >input {
       border: none;
       width: 100%;
+      outline: none;
     }
 
     >.submit {

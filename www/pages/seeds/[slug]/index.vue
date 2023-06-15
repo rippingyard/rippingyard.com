@@ -6,7 +6,7 @@
         <AdPostBottom />
         <div class="footer">
           <p class="date">
-            <fa-icon icon="clock" class="icon" />{{ seed.published_at }}
+            <IconClock />{{ seed?.published_at }}
           </p>
         </div>
       </BlockLoading>
@@ -31,11 +31,15 @@ const route = useRoute();
 const { data: seeds, isLoading, isError, error } = useSeeds();
 
 const slug = route.params.slug as string;
-const seed = computed<Seed>(() => seeds.value.find((s: Seed) => s.slug === slug));
+const seed = computed<Seed>(() => seeds.value?.find((s: Seed) => s.slug === slug));
 
-const title = computed(() => seed.value.title ? `<h1>${seed.value.title}</h1>` : '');
-const body = computed(() => seed.value.body || '');
-const content = useContentFilter(title.value + body.value);
+const title = computed(() => seed.value?.title ? `<h1>${seed.value.title}</h1>` : '');
+const body = computed(() => seed.value?.body || '');
+const content = ref('');
+
+watchEffect(() => {
+  content.value = useContentFilter(title?.value + body?.value).value;
+});
 
 //   computed: {
 //     getName() {

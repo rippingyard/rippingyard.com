@@ -1,21 +1,9 @@
 ﻿import dayjs from 'dayjs';
-import { initializeApp } from 'firebase/app';
-import { collection, endAt, endBefore, getDocs, getFirestore, orderBy, query, startAfter, startAt, Timestamp, where } from 'firebase/firestore';
+import { collection, endAt, getDocs, orderBy, query, startAfter, Timestamp, where } from 'firebase/firestore';
 import { Routes, buildSitemap } from '../../../../utils/sitemap';
-
-const config = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string,
-};
+import { db } from '~/server/services/firebase';
 
 export default defineEventHandler(async (event) => {
-
-  console.log('firebaseConfig', config);
 
   if (!event.context.params || !event.context.params['year.xml']) {
     throw new Error();
@@ -24,9 +12,6 @@ export default defineEventHandler(async (event) => {
   const year = parseInt(event.context.params['year.xml'].replace('.xml', ''));
 
   const routes: Routes = [];
-
-  const fb = initializeApp(config);
-  const db = getFirestore(fb);
 
   const q = query(
     collection(db, 'posts'),

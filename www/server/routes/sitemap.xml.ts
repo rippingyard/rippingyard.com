@@ -10,6 +10,12 @@ export default defineEventHandler(async (event) => {
       isIndex: true,
     },
     {
+      path: 'sitemaps/seeds.xml',
+      lastmod: dayjs('2020-07-09 07:00'),
+      // priority: '1.00',
+      isIndex: true,
+    },
+    {
       path: 'sitemaps/statics.xml',
       lastmod: dayjs('2020-07-09 07:00'),
       // priority: '1.00',

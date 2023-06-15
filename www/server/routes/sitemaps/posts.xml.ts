@@ -3,13 +3,9 @@ import { Routes, buildSitemap } from '../../../utils/sitemap';
 
 export default defineEventHandler(async (event) => {
 
-  console.log('import.meta.env.VITE_GCLOUD_PROJECT', import.meta.env.VITE_GCLOUD_PROJECT);
-
   const routes: Routes = [];
 
   const thisYear = parseInt(dayjs().format('YYYY'));
-
-  console.log('thisYear', thisYear);
 
   for (let i = 2020; i <= thisYear; i++) {
     routes.push({

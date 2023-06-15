@@ -12,10 +12,12 @@
       <div v-if="isActiveTab('posts')" class="content">
         <OrganismPostList :component="CardPostSimple" :limit="10" />
       </div>
-      <div v-if="user && isActiveTab('profile')" class="content">
-        {{ user.displayName }}
+      <div v-if="user && isActiveTab('profile')" class="profile">
+        <div class="heading">
+          <h1 class="name">{{ user.displayName }}</h1>
+          <p class="account">@{{ user.userName }}</p>
+        </div>
         <div class="block">
-          <h1>プロフィール</h1>
           <BlockWysiwyg :content="user.profile || ''" />
         </div>
         <!-- <div v-if="createdate" class="block">
@@ -144,50 +146,6 @@ const activateTab = (tab: TabType): void => {
   activeTab.value = tab;
 };
 const isActiveTab = (tab: TabType): boolean => activeTab.value === tab;
-
-//   head() {
-//     return {
-//       title: (this as any).user.displayName,
-//       meta: [
-//         {
-//           hid: 'og:title',
-//           property: 'og:title',
-//           content: (this as any).user.displayName,
-//         },
-//         {
-//           hid: 'twitter:title',
-//           name: 'twitter:title',
-//           content: (this as any).user.displayName,
-//         },
-//         {
-//           hid: 'description',
-//           name: 'description',
-//           content: getSummary((this as any).user.profile),
-//         },
-//         {
-//           hid: 'og:description',
-//           property: 'og:description',
-//           content: getSummary((this as any).user.profile),
-//         },
-//         {
-//           hid: 'twitter:description',
-//           name: 'twitter:description',
-//           content: getSummary((this as any).user.profile),
-//         },
-//         // {
-//         //   hid: 'og:url',
-//         //   property: 'og:url',
-//         //   content: (this as any).user.sociallink,
-//         // },
-//         // {
-//         //   hid: 'twitter:url',
-//         //   name: 'twitter:url',
-//         //   content: (this as any).post.sociallink,
-//         // },
-//       ],
-//     }
-//   },
-// })
 </script>
 <style lang="scss" scoped>
 .tabs {
@@ -256,9 +214,18 @@ const isActiveTab = (tab: TabType): boolean => activeTab.value === tab;
 .profile {
   padding-right: $gap;
 
+  .heading {
+    padding: $gap * 0.5 0 $gap;
+  }
+
   .name {
     font-size: 2rem;
     font-weight: 800;
+  }
+
+  .account {
+    font-size: 0.8rem;
+    color: $black-transparent-80;
   }
 
   .avatar {
