@@ -1,11 +1,11 @@
 ﻿<template>
   <div>
     <BlockMain :is-cliff="true">
-      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+      <BlockLoading :is-loading="isLoading" :is-error="isError || isNotFound" :error="errorMessage">
         <ArticlePost v-if="data" :post="data" />
       </BlockLoading>
     </BlockMain>
-    <!-- <OrganismBillboard /> -->
+    <OrganismBillboard v-if="data" :exclude-id="data.id" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -17,13 +17,20 @@ import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 const route = useRoute();
 const { $openToast: openToast, $me: me } = useNuxtApp();
 
-const { isLoading, isError, error, data } = usePost(route.params.id as string);
+const { isLoading: isLoadingPost, isError, error, data } = usePost(route.params.id as string);
 
 const title = computed(() => data.value ? getTitle(data.value) : '');
+const isNotFound = ref(false);
+const errorMessage = computed(() => {
+  if (isError.value) return error;
+  if (isNotFound.value) return 'ページが見つかりません';
+  return '';
+});
+const isLoading = computed(() => isLoadingPost.value && !isNotFound.value);
 
 const checkPermission = () => {
   if (isServer) return;
-  if (isLoading.value) return;
+  if (isLoadingPost.value) return;
 
   if (!data.value) {
     notFound();
@@ -43,7 +50,8 @@ useHtmlHeader({
 
 const notFound = () => {
   openToast('この記事は非公開です');
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  isNotFound.value = true;
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
 }
 
 // head(): any {

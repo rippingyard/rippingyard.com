@@ -10,8 +10,6 @@ const props = defineProps<{
   horizontalSize?: 'normal' | 'large';
 }>();
 
-console.log('props', props);
-
 const classes = [
   {
     'is-cliff': props.isCliff || false,

@@ -20,7 +20,6 @@ const link = usePostEditLink(props.post);
 
 onMounted(async () => {
   if (isClient) {
-    console.log('props.post on editlink', props.post);
     const { canEditPost } = useCanEditPost(props.post);
     canEdit.value = canEditPost.value;
   }

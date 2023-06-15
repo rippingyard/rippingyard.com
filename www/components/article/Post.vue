@@ -2,6 +2,8 @@
   <main v-if="post">
     <BlockHeading>
       <h1>{{ title }}</h1>
+      <!-- <p>{{ post.status }}</p>
+      <p>{{ post.isPublic ? '公開中' : '非公開' }}</p> -->
     </BlockHeading>
     <article class="post">
       <!-- <div v-if="post.parent" class="parent">
@@ -9,7 +11,6 @@
       </div> -->
       <BlockWysiwyg :content="content" :is-article="true" />
       <AdPostBottom />
-      <p>{{ p }}</p>
       <!-- <div v-if="post.parent" class="parent">
         <ItemWidget v-if="post.parent.parentType === 'item'" :item="post.parent" />
       </div> -->
@@ -65,23 +66,14 @@
 </template>
 <script lang="ts" setup>
 import { useNormalizePost } from '~/composables/normalize/useNormalizePost';
-import { Post, OriginalPost } from '~/schemas/post';
-import { getTitle } from '~/utils/typography';
+import { OriginalPost } from '~/schemas/post';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
 
 const props = defineProps<{
   post: OriginalPost;
 }>();
-const { post, title, p } = useNormalizePost(props.post);
+const { post, title } = useNormalizePost(props.post);
 const content = useContentFilter(post?.value?.contentBody || '');
-
-watch(post, () => {
-  console.log('post changed', post);
-});
-
-// const title = computed(() => post?.value?.title);
-// const title = computed(() => post.value && post.value.content ? getTitle(post.value) : '');
-// const summary = computed(() => post.value.contentOriginal ? getSummary(post.value.contentOriginal) : '');
 
 </script>
 <style lang="scss" scoped>

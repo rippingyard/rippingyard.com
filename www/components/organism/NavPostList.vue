@@ -10,14 +10,14 @@
 </template>
 <script lang="ts" setup>
 import CardPostRow from '~/components/card/PostRow.vue';
-import { OriginalPost, Post, PostType } from '~/schemas/post';
+import { OriginalPost, PostType } from '~/schemas/post';
 
 const types: {
   key: PostType;
   label: string;
 }[] = [
     { key: 'log', label: '日記' },
-    // { key: 'note', label: 'メモ' },
+    { key: 'note', label: 'メモ' },
     { key: 'article', label: '記事' },
   ];
 
