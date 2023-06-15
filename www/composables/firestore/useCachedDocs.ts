@@ -38,6 +38,7 @@ export type QueryParams = {
     key: string;
     order?: OrderByDirection;
   };
+  removeWhereKeys?: string[];
 };
 
 export const defaultOp = (val: WhereValue): WhereOp => {
@@ -48,6 +49,7 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
   const { fb } = useFirebase();
   const data: T[] = [];
   const ids: string[] = [];
+  const { removeWhereKeys = [] } = args;
 
   const db = getFirestore(fb);
 
@@ -57,7 +59,10 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
 
   if (args?.where) {
     for (const w of args.where) {
-      q = query(q, where(w.key, w?.op || defaultOp(w.val), w.val))
+      if (!removeWhereKeys.includes(w.key)) {
+        console.log('query key', w.key, w.val);
+        q = query(q, where(w.key, w?.op || defaultOp(w.val), w.val));
+      }
     }
   }
 
@@ -70,6 +75,8 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
       q = query(q, startAfter(pageParam.pageParam[args.orderBy.key]));
     }
   }
+
+  console.log('query', q, args?.orderBy);
 
   const unsubscribe = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach(change => {

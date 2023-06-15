@@ -1,5 +1,5 @@
 ﻿<template>
-  <BlockLoading :is-loading="postsRef.isLoading.value" :is-error="postsRef.isError.value">
+  <BlockLoading :is-loading="isLoading" :is-error="isError">
     <section class="billboard" :class="className">
       <div class="frame no-header">
         <div class="content" :class="{ 'full': !thumbnail }">
@@ -42,37 +42,25 @@ import { OriginalPost } from '~~/schemas/post';
 import { getSummary, getThumbnailFromText, getTitle, hasTitle } from '~~/utils/typography';
 import { numberByString } from '~/utils';
 
+const props = defineProps<{
+  excludeId?: string;
+}>();
+
 const index = ref(0);
-const postsRef = usePosts({
+const { data, isLoading, isError } = usePosts({
   where: [
     { key: 'type', val: ['article'] },
   ],
   limit: 25,
   orderBy: { key: 'publishedAt', order: 'desc' }
 });
-const posts = computed<OriginalPost[]>(() => postsRef.data.value || []);
+const posts = computed<OriginalPost[]>(() => data.value?.filter(p => p.id !== props.excludeId) || []);
 const post = computed<OriginalPost | undefined>(() => {
   if (posts.value.length === 0 || !posts.value[index.value]) return;
   return posts.value[index.value];
 });
 
-// type PostType = Post & {
-//   parent?: Post
-// }
-
-// type DataType = {
-//   post?: PostType
-//   index: number
-// }
-
-//   computed: {
-// const hasTitle = computed((): boolean => {
-//   return post.value ? hasTitle(post.value.content) : false;
-// });
 const hasParentTitle = computed((): boolean => post.value ? !!post.value.parent : false);
-//     hasThumbnail(): boolean {
-//       return this.post ? hasThumbnail(this.post) : false
-//     },
 const title = computed((): string => {
   if (!post.value) return '';
   if (hasTitle(post.value.content)) return getTitle(post.value.content);

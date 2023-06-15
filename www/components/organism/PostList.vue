@@ -38,6 +38,7 @@ const types = computed(() => props.types || ['log', 'note', 'article']);
 
 const target = ref(null);
 const targetIsVisible = useElementVisibility(target);
+const removeWhereKeys = ref<string[]>([]);
 
 const hideMore = computed(() => props.hideMore || false);
 
@@ -59,11 +60,13 @@ if (props.isMine) {
       val: myRef.value,
     });
   }
+  // removeWhereKeys.value.push(...['status', 'isPublic']);
 }
 
 const condition: Omit<QueryParams, 'collection'> = {
   where,
   limit: props.limit || 100,
+  removeWhereKeys: removeWhereKeys.value,
 };
 
 const { isLoading, isError, data, error, hasNextPage, fetchNextPage } = useInfinitePosts(condition);

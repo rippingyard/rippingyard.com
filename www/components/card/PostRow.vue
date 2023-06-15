@@ -16,6 +16,7 @@
         <li>
           <AtomEditPostLink :post="post" />
         </li>
+        <li>{{ post.status }}</li>
       </ul>
       <nuxt-link v-if="post.hasThumbnail" :to="post.permalink" class="image sponly">
         <AtomThumbnail :image="post.thumbnail" :is-square="true" />
