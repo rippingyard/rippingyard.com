@@ -18,7 +18,7 @@ export default defineNuxtModule({
           .map(r => r.route)
         if (!routes?.length) return;
         const timestamp = new Date().toISOString();
-        const domain = process.env.NODE_ENV !== 'production' ? 'https://rippingyard-dev.web.app' : 'https://www.rippingyard.com';
+        const domain = process.env.VERCEL_ENV !== 'production' ? 'https://rippingyard-dev.web.app' : 'https://www.rippingyard.com';
         const sitemap = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
           `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,

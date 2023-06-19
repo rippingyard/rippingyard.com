@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // defer: false,
     // compatibility: false,
     // enabled: true,
-    debug: import.meta.env.NODE_ENV !== 'production',
+    debug: import.meta.env.VERCEL_ENV !== 'production',
     // loadScript: true,
     // vueRouter: useRouter(),
     // trackOnNextTick: false

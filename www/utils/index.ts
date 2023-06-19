@@ -1,5 +1,5 @@
 ﻿export function getDomain() {
-  return process.env.NODE_ENV !== 'production'
+  return process.env.VERCEL_ENV !== 'production'
     ? 'http://localhost:3333'
     : 'https://www.rippingyard.com'
 }

@@ -49,6 +49,7 @@ import { useDropZone, useFileDialog } from '@vueuse/core';
 import { ResizedImage, resizeImage } from '~~/utils/image';
 import { getExt } from '~/utils/file';
 import { useFirebase } from '~~/composables/firebase/useFirebase';
+import { FirebaseApp } from 'firebase/app';
 
 type Props = {
   onChange?: (file: string) => void;
@@ -66,7 +67,7 @@ const props = withDefaults(
 );
 
 const { fb } = useFirebase();
-const storage = getStorage(fb);
+const storage = getStorage(fb as FirebaseApp);
 const dzRef = ref<HTMLDivElement>();
 const file = ref<ResizedImage>();
 const defaultImage = ref(props.defaultImage);

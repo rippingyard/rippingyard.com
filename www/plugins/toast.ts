@@ -1,12 +1,10 @@
-﻿export default defineNuxtPlugin(() => {
+﻿import { Toast } from "~/types/nuxtApp";
+
+export default defineNuxtPlugin(() => {
 
   const timer = ref<NodeJS.Timeout>();
 
-  const toast = ref<{
-    isOpen: boolean,
-    type: 'info' | 'danger',
-    message: string,
-  }>({
+  const toast = ref<Toast>({
     isOpen: false,
     type: 'info',
     message: '',

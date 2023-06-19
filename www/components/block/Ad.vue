@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-const isPrd = import.meta.env.NODE_ENV === 'production';
+const isPrd = import.meta.env.VERCEL_ENV === 'production';
 </script>
 
 <style scoped lang="scss">

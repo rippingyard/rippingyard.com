@@ -4,8 +4,9 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { nuxtApp } from '~/types/nuxtApp';
 
-const { $toast: toast, $closeToast: closeToast } = useNuxtApp();
+const { $toast: toast, $closeToast: closeToast } = useNuxtApp() as unknown as nuxtApp;
 
 const close = () => closeToast();
 </script>
