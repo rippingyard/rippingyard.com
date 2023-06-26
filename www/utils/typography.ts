@@ -2,6 +2,7 @@
 // import { parse } from 'qs';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
+import { OriginalItem } from '~/schemas/item';
 import { OriginalPost, Post } from '~/schemas/post';
 
 export const nl2br = (str: string): string => {
@@ -26,7 +27,7 @@ export const hasTitle = (str: string): boolean => {
   return /<h.(?: .+?)?>.*?<\/h.>/.test(str)
 }
 
-export const getTitle = (str: string | Post | OriginalPost, length: number = 32, alt?: string) => {
+export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalItem, length: number = 32, alt?: string) => {
   if (!str) return ''
   if (typeof str === 'string') {
     const htags = getHtags(str)
@@ -35,9 +36,7 @@ export const getTitle = (str: string | Post | OriginalPost, length: number = 32,
   } else {
     const htags = getHtags(str.content)
     if (htags && htags[0] !== '') return decodeEntities(htags[0])
-    if (str.parent) {
-      if (str.parent?.name?.ja) return str.parent.name.ja
-    }
+    if (parent && parent?.name?.ja) return parent.name.ja;
     return alt || dayjs(str.publishedAt.toDate()).format('YYYY/M/D');
   }
 }
