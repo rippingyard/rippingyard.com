@@ -14,7 +14,7 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
   const title = ref('');
 
   watchEffect(() => {
-    title.value = parent.value?.name?.ja || getTitle(originalPost);
+    title.value = getTitle(originalPost, parent.value);
   });
 
   const normalizedPost = ref<Post>({
