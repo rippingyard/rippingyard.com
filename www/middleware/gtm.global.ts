@@ -4,17 +4,18 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const gtm = useGtm();
   if (!gtm) return;
 
-  // TODO: レースコンディションが過ぎる…
-  setTimeout(() => {
-    console.log('page view: ', to.fullPath, document.title);
-    gtm.trackEvent(
-      {
-        event: 'nuxtRoute',
-        pageType: 'PageView',
-        pageUrl: to.fullPath,
-        pageTitle: document.title,
-        routeName: document.title,
-      }
-    );
-  }, 3000);
+  gtm.trackEvent(
+    {
+      event: 'nuxtRoute',
+      pageType: 'PageView',
+      pageUrl: to.fullPath,
+    }
+  );
+
+  if (process.browser) {
+    gtm.trackEvent({
+      event: 'config',
+      page_title: document.title,
+    });
+  }
 })
