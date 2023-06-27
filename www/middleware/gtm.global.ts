@@ -12,12 +12,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   );
 
-  if (!process) return;
+  // if (!process) return;
 
-  if (process?.browser) {
-    gtm.trackEvent({
-      event: 'config',
-      page_title: document.title,
-    });
-  }
+  // if (process?.browser) {
+  //   gtm.trackEvent({
+  //     event: 'config',
+  //     page_title: document.title,
+  //   });
+  // }
 })
