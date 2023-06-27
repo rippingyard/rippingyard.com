@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   );
 
-  if (process?.browser) {
+  if (process && process?.browser) {
     gtm.trackEvent({
       event: 'config',
       page_title: document.title,
