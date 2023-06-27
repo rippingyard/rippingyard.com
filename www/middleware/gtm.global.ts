@@ -11,11 +11,4 @@ export default defineNuxtRouteMiddleware((to, from) => {
       pageUrl: to.fullPath,
     }
   );
-
-  if (process && process?.client) {
-    gtm.trackEvent({
-      event: 'config',
-      page_title: document.title,
-    });
-  }
 })
