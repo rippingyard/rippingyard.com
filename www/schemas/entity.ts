@@ -4,7 +4,8 @@ type EntityBody = {
   name: string;
 };
 
-type EntityType = 'item' | 'place' | 'work' | 'keyword' | 'person' | 'group' | 'event' | 'bookmark' | 'unknown'
+type EntityType = 'genre';
+// type EntityType = 'item' | 'place' | 'work' | 'keyword' | 'person' | 'group' | 'event' | 'bookmark' | 'unknown';
 
 export type OriginalEntity = {
   id: string;
