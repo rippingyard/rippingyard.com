@@ -1,4 +1,7 @@
-﻿export const useFirebase = () => {
-  const { $fb: fb } = useNuxtApp();
+﻿import { FirebaseApp } from "firebase/app";
+
+export const useFirebase = (): { fb: FirebaseApp } => {
+  const { $fb } = useNuxtApp();
+  const fb = $fb as FirebaseApp;
   return { fb };
 };

@@ -10,16 +10,28 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { isServer } from '@tanstack/vue-query';
+import { nuxtApp } from '~/types/nuxtApp';
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
 
 const route = useRoute();
-const { $openToast: openToast } = useNuxtApp();
+const { $openToast: openToast } = useNuxtApp() as unknown as nuxtApp;
 
 const { isLoading, isError, error, data } = usePost(route.params.id as string);
 
+const notFound = () => {
+  openToast('この記事は非公開です');
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
+
+const notEditable = () => {
+  openToast('この記事を編集する権限がありません');
+  navigateTo('/');
+}
+
 const checkPermission = () => {
-  if (isLoading.value) return;
+  if (isServer || isLoading.value) return;
 
   if (!data.value) {
     notFound();
@@ -32,16 +44,6 @@ const checkPermission = () => {
 
 if (!isLoading.value) checkPermission();
 watch(isLoading, () => checkPermission());
-
-const notFound = () => {
-  openToast('この記事は非公開です');
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-}
-
-const notEditable = () => {
-  openToast('この記事を編集する権限がありません');
-  navigateTo('/');
-}
 
 </script>
 <style lang="scss" scoped>

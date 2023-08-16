@@ -1,6 +1,7 @@
 ﻿export type nuxtApp = {
-  $toast: Toast,
-  $closeToast: any
+  $toast: Toast;
+  $closeToast: any;
+  $openToast: any;
 };
 
 export type Toast = {

@@ -83,26 +83,6 @@ onMounted(() => {
 
 onUnmounted(() => editor.value?.destroy());
 
-
-//   data(): {
-//     uploadedImage: string | null
-//   } {
-//     return {
-//       uploadedImage: null,
-//     }
-//   },
-//   watch: {
-//     value(value) {
-//       if (this.editor.getHTML() === value) return
-//       this.editor.commands.setContent(this.value, false)
-//     },
-//   },
-
-
-// const updateImage = (file: File): void => {
-//   image.value = file;
-// };
-
 const showImageUploader = (): void => {
   showUploader.value = true;
 };
@@ -126,16 +106,16 @@ const closeImageUploader = (): void => {
   cursor: text;
 }
 
-.expanded {
-  width: 100%;
-  height: 100%;
-}
+// .expanded {
+//   width: 100%;
+//   height: 100%;
+// }
 
-.uploader {
-  padding: $gap;
-}
+// .uploader {
+//   padding: $gap;
+// }
 
-.console {
-  margin-bottom: 10px;
-}
+// .console {
+//   margin-bottom: 10px;
+// }
 </style>
