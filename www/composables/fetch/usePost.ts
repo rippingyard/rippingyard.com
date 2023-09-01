@@ -6,8 +6,8 @@ export type PostQueryParams = Omit<QueryParams, 'collection' | 'id'>;
 
 export const usePost = (id: string, args?: PostQueryParams) => {
 
-  const { me } = useMe();
-  console.log('me', me);
+  // const { me } = useMe();
+  // console.log('me', me);
 
   return useCachedDoc<OriginalPost>({
     ...args,

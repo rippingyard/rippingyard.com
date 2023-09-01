@@ -10,6 +10,9 @@
 </template>
 <script lang="ts" setup>
 import { isServer } from '@tanstack/vue-query';
+import { initializeApp } from 'firebase/app';
+import { DocumentData, collection, doc, getDoc, getFirestore } from 'firebase/firestore';
+import { Post } from 'schemas/post';
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
@@ -29,7 +32,7 @@ const errorMessage = computed(() => {
 const isLoading = computed(() => isLoadingPost.value && !isNotFound.value);
 
 const checkPermission = () => {
-  if (isServer) return;
+  if (process.server) return;
   if (isLoadingPost.value) return;
 
   if (!data.value) {
@@ -44,8 +47,23 @@ const checkPermission = () => {
 if (!isLoading.value) checkPermission();
 watch(isLoading, () => checkPermission());
 
-useHtmlHeader({
-  title: () => title.value,
+// useHtmlHeader({
+//   title: () => title.value,
+// });
+
+await useAsyncData('meta', async () => {
+  if (!process.server) return;
+
+  try {
+    const post = await $fetch(`/api/post/${route.params.id}`);
+    console.log('(post as Post).content', (post as any).toString());
+
+    useHtmlHeader({
+      title: getTitle(post as Post),
+    });
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 const notFound = () => {
