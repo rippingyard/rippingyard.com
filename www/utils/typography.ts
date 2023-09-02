@@ -28,7 +28,6 @@ export const hasTitle = (str: string): boolean => {
 }
 
 export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalItem, length: number = 32, alt?: string) => {
-  console.log('str', Object.values(str));
   if (!str) return ''
   if (typeof str === 'string') {
     const htags = getHtags(str)
