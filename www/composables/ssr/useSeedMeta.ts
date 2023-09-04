@@ -1,19 +1,18 @@
 ﻿import { useHtmlHeader } from "~~/composables/utils/useHtmlHeader";
-import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
-import { Post } from "schemas/post";
+import { useSeedSocialLink } from "~~/composables/link/useSeedSocialLink";
 
-export const usePostMeta = async (postId: string) => {
-  await useAsyncData('meta-post', async () => {
+export const useSeedMeta = async (postId: string) => {
+  await useAsyncData('meta-seed', async () => {
     if (!process.server) return;
 
     try {
-      const post = await $fetch(`/api/post/${postId}`);
+      const seed = await $fetch(`/api/seed/${postId}`);
 
-      const title = getTitle(post as Post);
-      const description = getSummary(post.content);
-      const permalink = usePostSocialLink(post);
-
-      const thumbnail = getThumbnailFromText(post?.content);
+      const title = seed?.title || '';
+      const body = seed?.body || '';
+      const description = getSummary(body);
+      const permalink = useSeedSocialLink(seed);
+      const thumbnail = getThumbnailFromText(body);
 
       useHtmlHeader({
         title,
