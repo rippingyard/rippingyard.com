@@ -1,5 +1,6 @@
 ﻿import { Post } from "~~/schemas/post";
+import { useDomain } from "./useDomain";
 
-const domain = process.env.VERCEL_ENV === 'development' ? 'https://rippingyard-qhlsnr9ds-rippingyard.vercel.app' : 'https://www.rippingyard.com'
+const domain = useDomain();
 
 export const usePostSocialLink = (post: Partial<Post>): string => `${domain}/post/${post.id}`;
