@@ -55,15 +55,15 @@ export const hasThumbnailFromText = (str: string): boolean => {
 }
 
 export const getThumbnailFromText = (str: string, isOwn: boolean = false): string => {
-  if (!str) return ''
+  if (!str) return '';
 
-  let image: string = ''
+  let image: string = '';
 
-  image = extractFirstImage(str)
+  image = extractFirstImage(str);
   if (image) return image;
   if (isOwn) return '';
 
-  const urls = extractUrls(str)
+  const urls = extractUrls(str);
 
   if (!urls) return ''
 
@@ -108,6 +108,8 @@ export const getLength = (str: string) => {
 }
 
 export const stripTags = (content: string, linebreak = true) => {
+  if (!DOMPurify?.sanitize) return '';
+
   if (linebreak) {
     content = content.replace(/<\/p>/g, '</p>\n\n');
     content = content.replace(/<br \/>/g, '\n\n');
@@ -119,7 +121,7 @@ export const stripTags = (content: string, linebreak = true) => {
 
   return !content
     ? ''
-    : DOMPurify.sanitize(content, {
+    : DOMPurify?.sanitize(content, {
       ALLOWED_TAGS: [],
     });
 }

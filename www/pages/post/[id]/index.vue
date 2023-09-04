@@ -9,10 +9,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { isServer } from '@tanstack/vue-query';
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
+import { usePostMeta } from '~~/composables/ssr/usePostMeta';
 
 const route = useRoute();
 const { $openToast: openToast, $me: me } = useNuxtApp();
@@ -29,7 +29,7 @@ const errorMessage = computed(() => {
 const isLoading = computed(() => isLoadingPost.value && !isNotFound.value);
 
 const checkPermission = () => {
-  if (isServer) return;
+  if (process.server) return;
   if (isLoadingPost.value) return;
 
   if (!data.value) {
@@ -48,66 +48,13 @@ useHtmlHeader({
   title: () => title.value,
 });
 
+await usePostMeta(route.params.id as string);
+
 const notFound = () => {
   openToast('この記事は非公開です');
   isNotFound.value = true;
   throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true });
 }
-
-// head(): any {
-//     return {
-//       title: getTitle(this.$data.post),
-//       meta: [
-//         {
-//           hid: 'og:title',
-//           property: 'og:title',
-//           content: getTitle(this.$data.post),
-//         },
-//         {
-//           hid: 'twitter:title',
-//           name: 'twitter:title',
-//           content: getTitle(this.$data.post),
-//         },
-//         {
-//           hid: 'description',
-//           name: 'description',
-//           content: getSummary(this.$data.post.content),
-//         },
-//         {
-//           hid: 'og:description',
-//           property: 'og:description',
-//           content: getSummary(this.$data.post.content),
-//         },
-//         {
-//           hid: 'twitter:description',
-//           name: 'twitter:description',
-//           content: getSummary(this.$data.post.content),
-//         },
-//         {
-//           hid: 'og:url',
-//           property: 'og:url',
-//           content: this.$data.post.sociallink,
-//         },
-//         {
-//           hid: 'twitter:url',
-//           name: 'twitter:url',
-//           content: this.$data.post.sociallink,
-//         },
-//         {
-//           hid: 'og:image',
-//           property: 'og:image',
-//           content:
-//             this.ownThumbnail || 'https://www.rippingyard.com/img/ogimage.png',
-//         },
-//         {
-//           hid: 'twitter:image',
-//           name: 'twitter:image',
-//           content:
-//             this.ownThumbnail || 'https://www.rippingyard.com/img/ogimage.png',
-//         },
-//       ],
-//     }
-//   },
 
 </script>
 <style lang="scss" scoped>

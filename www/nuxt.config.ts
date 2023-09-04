@@ -143,4 +143,7 @@ export default defineNuxtConfig({
       pure: ['console.log', 'console.info', 'console.table'],
     }
   },
+  nitro: {
+    preset: 'vercel',
+  },
 })
