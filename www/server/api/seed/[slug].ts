@@ -19,5 +19,11 @@ export default defineEventHandler(async (event) => {
   const res = await axios.get(url);
   const seeds = res.data.reverse();
 
-  return seeds.find((s: Seed) => s.slug === slug);
+  const seed = seeds.find((s: Seed) => s.slug === slug && s.status === 'published');
+
+  if (!seed) return;
+
+  const { id, title, body, user_id, status, created_at, published_at, updated_at } = seed;
+
+  return { id, title, body, user_id, status, created_at, published_at, updated_at };
 });
