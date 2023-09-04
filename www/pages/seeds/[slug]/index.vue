@@ -26,6 +26,7 @@
 import { useSeeds } from '~~/composables/fetch/useSeeds';
 import { useContentFilter } from '~~/composables/filter/useContentFilter';
 import { Seed } from '~~/schemas/seed';
+import { useSeedMeta } from '~~/composables/ssr/useSeedMeta';
 
 const route = useRoute();
 const { data: seeds, isLoading, isError, error } = useSeeds();
@@ -40,6 +41,8 @@ const content = ref('');
 watchEffect(() => {
   content.value = useContentFilter(title?.value + body?.value).value;
 });
+
+await useSeedMeta(route.params.slug as string);
 
 //   computed: {
 //     getName() {

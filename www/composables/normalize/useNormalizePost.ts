@@ -5,6 +5,7 @@ import { numberByString } from '~~/utils';
 import { usePostLink } from '../link/usePostLink';
 import { usePostEditLink } from '../link/usePostEditLink';
 import { useItem } from '../fetch/useItem';
+import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
 
 export const useNormalizePost = (originalPost: OriginalPost) => {
   // if (!originalPost) return;
@@ -26,8 +27,8 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
     autoCode: numberByString(originalPost.id),
     thumbnail: thumbnail(originalPost),
     permalink: permalink(originalPost),
+    sociallink: sociallink(originalPost),
     editlink: editlink(originalPost),
-    sociallink: '/',
     createdDate: dayjs(originalPost.createdAt.toDate()),
     updatedDate: dayjs(originalPost.updatedAt.toDate()),
     publishedDate: dayjs(originalPost.publishedAt.toDate()),
@@ -37,6 +38,7 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
 }
 
 const permalink = (post: Partial<Post>): string => usePostLink(post);
+const sociallink = (post: Partial<Post>): string => usePostSocialLink(post);
 
 const editlink = (post: Partial<Post>): string => usePostEditLink(post);
 
