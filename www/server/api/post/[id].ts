@@ -3,17 +3,15 @@ import { db } from '~/server/services/firebase';
 
 export default defineEventHandler(async (event) => {
 
-  console.log('id', event.context.params?.id);
-
   if (!event.context.params || !event.context.params?.id) {
     throw new Error();
   }
 
-  const id = event.context.params?.id;
+  const postId = event.context.params?.id;
 
   const q = query(
     collection(db, 'posts'),
-    where('id', '==', id),
+    where('id', '==', postId),
     where('isPublic', '==', true),
     where('isDeleted', '==', false),
     where('status', '==', 'published'),
@@ -29,5 +27,7 @@ export default defineEventHandler(async (event) => {
     post = doc.data();
   });
 
-  return post;
+  const { id, parent, createdAt, publishedAt, updatedAt, content, type } = post;
+
+  return { id, parent, createdAt, publishedAt, updatedAt, content, type };
 });
