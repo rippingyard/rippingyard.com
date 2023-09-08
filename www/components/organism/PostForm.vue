@@ -80,15 +80,11 @@
 </template>
 <script lang="ts" setup>
 import { Timestamp } from 'firebase/firestore'
-import { OriginalPost, Post, PostStatus, PostType } from '~/schemas/post';
-// import { Item } from '~/types/item'
-// import { permalink } from '~/services/post'
+import { OriginalPost, PostStatus, PostType } from '~/schemas/post';
 import { useSavePost } from '~/composables/save/useSavePost';
 import { getLength } from '~~/utils/typography';
 import { usePostLink } from '~/composables/link/usePostLink';
-import { useBookmarks } from '~/composables/fetch/useBookmarks';
 import { useEntityFilter } from '~/composables/filter/useEntityFilter';
-// import { UseMutationReturnType } from '@tanstack/vue-query/build/lib/useMutation';
 
 type PublishStatus = 'isPublic' | 'isPrivate';
 
@@ -103,7 +99,6 @@ type Props = {
 }
 
 const savePostObject = useSavePost();
-const useBookmarksObject = useBookmarks();
 
 const props = withDefaults(
   defineProps<Props>(),
@@ -207,7 +202,7 @@ const isReadyToSave = computed(() => !isEmpty.value);
 
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
-useEntityFilter(content);
+// useEntityFilter(content);
 
 onMounted(() => {
   if (!props.post) {
@@ -225,6 +220,7 @@ onMounted(() => {
   publishStatus.value = props.post.isPublic ? 'isPublic' : 'isPrivate';
   date.value = props.post.publishedAt.toDate();
 
+  useEntityFilter(content);
   // mutateAsync(content);
 });
 

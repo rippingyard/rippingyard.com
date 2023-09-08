@@ -3,8 +3,6 @@
 const title = 'ripping yard';
 
 export const useHtmlHeader = (meta: any = {}) => {
-  console.log('useHtmlHeader', meta);
-
   const gtm = useGtm();
 
   useHead({
