@@ -1,8 +1,8 @@
 ﻿<template>
   <div>
     <BlockMain horizontalSize="large">
-      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
-        <div class="inner">
+      <BlockLoading :is-loading="pending" :error="error">
+        <div class="inner" v-if="data">
           <OrganismPostForm :post="data" :is-footer-dotted="false" :is-footer-bordered="true" :is-footer-fixed="true" />
         </div>
       </BlockLoading>
@@ -16,10 +16,10 @@ import { useCanEditPost } from '~~/composables/permission/useCanEditPost';
 const route = useRoute();
 const { $openToast: openToast } = useNuxtApp();
 
-const { isLoading, isError, error, data } = usePost(route.params.id as string);
+const { pending, error, data } = usePost(route.params.id as string);
 
 const checkPermission = () => {
-  if (isLoading.value) return;
+  if (pending.value) return;
 
   if (!data.value) {
     notFound();
@@ -30,8 +30,8 @@ const checkPermission = () => {
   if (!canEditPost.value) notEditable();
 }
 
-if (!isLoading.value) checkPermission();
-watch(isLoading, () => checkPermission());
+if (!pending.value) checkPermission();
+watch(pending, () => checkPermission());
 
 const notFound = () => {
   openToast('この記事は非公開です');

@@ -1,16 +1,14 @@
 ﻿<template>
-  <!-- <div class="container"> -->
-  <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+  <BlockLoading :is-loading="pending" :is-error="!!error" :error="error">
     <ul>
       <li v-for="post, i in filteredPosts" :key="i">
         <component :is="props.component || CardPost" :post="(post as Post)" />
       </li>
     </ul>
-    <div v-if="!hideMore" class="console">
+    <!-- <div v-if="!hideMore" class="console">
       <AtomButton v-if="hasNextPage" ref="target" expanded centered @click="more()">もっと読む</AtomButton>
-    </div>
+    </div> -->
   </BlockLoading>
-  <!-- </div> -->
 </template>
 <script lang="ts" setup>
 import { OrderByDirection } from '@firebase/firestore';
@@ -69,7 +67,7 @@ const condition: Omit<QueryParams, 'collection'> = {
   removeWhereKeys: removeWhereKeys.value,
 };
 
-const { isLoading, isError, data, error, hasNextPage, fetchNextPage } = useInfinitePosts(condition);
+const { pending, error, data } = useInfinitePosts(condition);
 
 watch(data, (newData) => {
   if (!newData) return;
@@ -77,13 +75,13 @@ watch(data, (newData) => {
   posts.value = !newPosts.pages ? newPosts : newPosts.pages.flat();
 });
 
-watch(targetIsVisible, (value) => {
-  if (!value || !hasNextPage) return;
-  more();
-})
+// watch(targetIsVisible, (value) => {
+//   if (!value || !hasNextPage) return;
+//   more();
+// })
 
 const more = () => {
-  fetchNextPage();
+  // fetchNextPage();
 }
 
 </script>

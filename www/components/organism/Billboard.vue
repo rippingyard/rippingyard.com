@@ -1,5 +1,5 @@
 ﻿<template>
-  <BlockLoading :is-loading="isLoading" :is-error="isError">
+  <BlockLoading :is-loading="pending" :error="error">
     <section class="billboard" :class="className">
       <div class="frame no-header">
         <div class="content" :class="{ 'full': !thumbnail }">
@@ -47,7 +47,7 @@ const props = defineProps<{
 }>();
 
 const index = ref(0);
-const { data, isLoading, isError } = usePosts({
+const { data, pending, error } = usePosts({
   where: [
     { key: 'type', val: ['article'] },
   ],

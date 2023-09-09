@@ -7,15 +7,19 @@ import { usePostEditLink } from '../link/usePostEditLink';
 import { useItem } from '../fetch/useItem';
 import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
 
-export const useNormalizePost = (originalPost: OriginalPost) => {
-  // if (!originalPost) return;
+const getParent = (post: OriginalPost) => {
+  if (!post.parent) return { data: undefined };
+  return useItem({ ref: post?.parent });
+}
 
-  const { data: parent } = useItem({ ref: originalPost?.parent });
+export const useNormalizePost = (originalPost: OriginalPost) => {
+
+  const { data: parent } = getParent(originalPost);
 
   const title = ref('');
 
   watchEffect(() => {
-    title.value = getTitle(originalPost, parent.value);
+    title.value = getTitle(originalPost, parent?.value || undefined);
   });
 
   const normalizedPost = ref<Post>({

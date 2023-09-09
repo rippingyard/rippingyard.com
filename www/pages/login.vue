@@ -15,7 +15,6 @@
 <script lang="ts" setup>
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 
-
 useHtmlHeader({
   title: () => 'ログイン',
 });

@@ -3,7 +3,7 @@
     <BlockHeading>
       <AtomTitle>SEEDS<small>古い記事</small></AtomTitle>
     </BlockHeading>
-    <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+    <BlockLoading :is-loading="pending" :error="error">
       <ul>
         <li v-for="seed in seeds" :key="seed.id">
           <nuxt-link :to="permalink(seed)">
@@ -20,7 +20,7 @@ import { useSeeds } from '~~/composables/fetch/useSeeds';
 import { getSummary } from '~/utils/typography';
 import { Seed } from '~~/schemas/seed';
 
-const { data: seeds, isLoading, isError, error } = useSeeds();
+const { data: seeds, pending, error } = useSeeds();
 
 //   computed: {
 //     mainContent() {

@@ -12,9 +12,8 @@
   OrderByDirection,
   startAfter,
 } from 'firebase/firestore';
-import { isServer, QueryFunctionContext, useInfiniteQuery, useQuery } from "@tanstack/vue-query";
+import { QueryFunctionContext } from "@tanstack/vue-query";
 import { useCacheKey } from './useCacheKey';
-import { useDefaultValue } from './useDefaultValue';
 import { useFirebase } from '~/composables/firebase/useFirebase';
 import { maxBy, minBy } from '~~/utils/array';
 
@@ -58,12 +57,17 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
   );
 
   if (args?.where) {
+    const logrows = [];
     for (const w of args.where) {
       if (!removeWhereKeys.includes(w.key)) {
-        console.log('query key', w.key, w.val);
+        logrows.push({
+          key: w.key,
+          val: Array.isArray(w.val) ? w.val.join(', ') : w.val,
+        })
         q = query(q, where(w.key, w?.op || defaultOp(w.val), w.val));
       }
     }
+    console.table(logrows);
   }
 
   if (args?.limit) q = query(q, limit(args.limit));
@@ -75,8 +79,6 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
       q = query(q, startAfter(pageParam.pageParam[args.orderBy.key]));
     }
   }
-
-  console.log('query', q, args?.orderBy);
 
   const unsubscribe = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach(change => {
@@ -114,36 +116,30 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
 }
 
 export const useCachedDocs = <T>(args: QueryParams) => {
-
-  if (isServer) return useDefaultValue<T[]>();
-
-  const queryKey = useCacheKey<QueryParams>(args);
-
-  return useQuery({ queryKey, queryFn: () => getCachedDocs<T>(args) });
+  return useAsyncData(useCacheKey<QueryParams>(args), () => getCachedDocs<T>(args), { server: false });
 }
 
-export const useCachedInfiniteDocs = <T>(
-  args: QueryParams
-) => {
+// export const useCachedInfiniteDocs = <T>(
+//   args: QueryParams
+// ) => {
 
-  const { orderBy } = args;
+//   const { orderBy } = args;
 
-  if (isServer) return useDefaultValue<T[]>();
+//   const queryKey = useCacheKey<QueryParams>(args);
 
-  const queryKey = useCacheKey<QueryParams>(args);
+//   const orderKey = orderBy?.key || 'createdAt';
+//   const order = orderBy?.order || 'desc';
 
-  const orderKey = orderBy?.key || 'createdAt';
-  const order = orderBy?.order || 'desc';
-
-  return useInfiniteQuery({
-    queryKey,
-    queryFn: (pageParam) => getCachedDocs<T>(args, pageParam),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.length === 0) return;
-      const lastPost = order === 'desc' ?
-        minBy(lastPage as { [key: string]: any }[], orderKey) :
-        maxBy(lastPage as { [key: string]: any }[], orderKey);
-      return lastPost;
-    },
-  });
-}
+//   return useInfiniteQuery({
+//     queryKey,
+//     queryFn: (pageParam) => getCachedDocs<T>(args, pageParam),
+//     getNextPageParam: (lastPage) => {
+//       console.log('lastPage', lastPage)
+//       if (lastPage.length === 0) return;
+//       const lastPost = order === 'desc' ?
+//         minBy(lastPage as { [key: string]: any }[], orderKey) :
+//         maxBy(lastPage as { [key: string]: any }[], orderKey);
+//       return lastPost;
+//     },
+//   });
+// }
