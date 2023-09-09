@@ -1,11 +1,11 @@
 ﻿<template>
   <div>
     <BlockMain :is-cliff="true">
-      <BlockLoading :is-loading="isLoading" :is-error="isError || isNotFound" :error="errorMessage">
+      <!-- <BlockLoading :is-loading="isLoading" :is-error="isError || isNotFound" :error="errorMessage">
         <ArticlePost v-if="data" :post="data" />
-      </BlockLoading>
+      </BlockLoading> -->
     </BlockMain>
-    <OrganismBillboard v-if="data" :exclude-id="data.id" />
+    <!-- <OrganismBillboard v-if="data" :exclude-id="data.id" /> -->
   </div>
 </template>
 <script lang="ts" setup>

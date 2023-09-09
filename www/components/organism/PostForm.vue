@@ -176,7 +176,7 @@ const isPublic = computed(() => publishStatus.value === 'isPublic');
 const date = ref(new Date);
 const isSaving = ref(false);
 
-const contentTimer = ref<NodeJS.Timeout>();
+// const contentTimer = ref<NodeJS.Timeout>();
 
 const post = computed<Partial<OriginalPost>>(() => {
   return {
