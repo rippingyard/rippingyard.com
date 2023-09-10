@@ -1,7 +1,7 @@
 ﻿<template>
   <div>
     <BlockMain horizontal-size="large">
-      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+      <BlockLoading :is-loading="pending" :error="error">
         <OrganismUser v-if="user" :user="user" />
       </BlockLoading>
     </BlockMain>
@@ -9,7 +9,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { isServer } from '@tanstack/vue-query';
 import { useUsers } from '~~/composables/fetch/useUsers';
 import { useCanTouchUser } from '~~/composables/permission/useCanTouchUser';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
@@ -17,20 +16,20 @@ import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 const route = useRoute();
 const { $openToast: openToast } = useNuxtApp();
 
-const { isLoading, isError, error, data } = useUsers({
+const { pending, error, data } = useUsers({
   where: [
     { key: 'userName', val: route.params.id },
   ],
 });
 
 const user = computed(() => {
-  if (isLoading.value || !data.value) return null;
+  if (pending.value || !data.value) return null;
   return data.value[0];
 });
 
 const checkPermission = () => {
-  if (isServer) return;
-  if (isLoading.value) return;
+  if (process.server) return;
+  if (pending.value) return;
 
   if (!user.value) {
     notFound();
@@ -48,8 +47,8 @@ useHtmlHeader({
   title: () => user?.value?.displayName || '',
 });
 
-if (!isLoading.value) checkPermission();
-watch(isLoading, () => checkPermission());
+if (!pending.value) checkPermission();
+watch(pending, () => checkPermission());
 
 const notFound = () => {
   openToast('このユーザーは非公開です');
