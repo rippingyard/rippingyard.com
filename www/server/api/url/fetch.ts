@@ -7,7 +7,6 @@ type Params = {
 
 export default eventHandler(async (event) => {
   try {
-    console.log('event', event);
     // const { entity } = event.context.params as Params;
     const { url } = getQuery(event) as Params;
     console.log('url', url);

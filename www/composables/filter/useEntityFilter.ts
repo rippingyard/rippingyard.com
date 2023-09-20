@@ -1,22 +1,24 @@
-﻿import { useBookmark } from "~/composables/fetch/useBookmark";
+﻿import { AsyncData } from "nuxt/app";
+import { OriginalEntity } from "schemas/entity";
+
+export type Bookmark = AsyncData<OriginalEntity | null, null>;
 
 export const useEntityFilter = (content: Ref<string | undefined>) => {
 
   if (!content.value) return;
 
-  const urls = computed(() => extractUrls(toValue(content) || ''));
-  const result = ref<any>();
+  const timer = ref<NodeJS.Timeout>();
 
-  const getUrls = (urls: Ref<string[]>) => {
-    console.log('urls', urls.value);
-    if (urls.value.length === 0) return;
-    return urls.value.map(url => useBookmark(url));
-  }
+  const urls = ref<string[]>(extractUrls(toValue(content) || ''));
 
-  // watch(urls, () => {
-  //   console.log('urls', urls.value);
-  // })
+  watch(content, () => {
+    clearTimeout(timer.value);
+    timer.value = setTimeout(() => {
+      if (!content.value) return;
+      urls.value = extractUrls(toValue(content) || '');
+    }, 5000);
+  });
 
-  result.value = getUrls(urls);
+  return { urls };
 
 };

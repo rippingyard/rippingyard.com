@@ -3,6 +3,7 @@
     <BlockMain :is-cliff="true">
       <BlockLoading :is-loading="isLoading" :error="errorMessage">
         <ArticlePost v-if="data" :post="data" />
+        <BlockBookmarks :urls="urls" />
       </BlockLoading>
     </BlockMain>
     <!-- <OrganismBillboard v-if="data" :exclude-id="data.id" /> -->
@@ -13,6 +14,7 @@ import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 import { usePostMeta } from '~~/composables/ssr/usePostMeta';
+import { useEntityFilter } from '~~/composables/filter/useEntityFilter';
 
 const route = useRoute();
 const { $openToast: openToast, $me: me } = useNuxtApp();
@@ -31,8 +33,7 @@ const errorMessage = computed(() => {
 const isLoading = computed(() => pending.value && !isNotFound.value);
 
 const checkPermission = () => {
-  if (process.server) return;
-  if (pending.value) return;
+  if (process.server || pending.value) return;
 
   if (!data.value) {
     notFound();
@@ -43,8 +44,12 @@ const checkPermission = () => {
   if (!canReadPost.value) notFound();
 }
 
-if (!isLoading.value) checkPermission();
-watch(isLoading, () => checkPermission());
+const filteredContents = ref<any>();
+const urls = computed(() => filteredContents.value?.urls || []);
+const content = computed(() => data.value?.content || '');
+
+watchEffect(() => filteredContents.value = useEntityFilter(content));
+watchEffect(() => checkPermission());
 
 useHtmlHeader({
   title: () => title.value,

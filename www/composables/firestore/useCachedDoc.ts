@@ -28,5 +28,5 @@ export const getCachedDoc = async <T>(args: QueryParams): Promise<T> => {
 }
 
 export const useCachedDoc = <T>(args: QueryParams) => {
-  return useAsyncData<T>(useCacheKey<QueryParams>(args), () => getCachedDoc<T>(args), { server: false, lazy: true });
+  return useAsyncData<T, null>(useCacheKey<QueryParams>(args), () => getCachedDoc<T>(args), { server: false, lazy: true });
 }

@@ -8,9 +8,7 @@ export const useEntity = (params: string | {
   type: EntityType;
 }, args?: EntityQueryParams) => {
 
-  const id = typeof params === 'string' ? params : `${params.type}__${encodeURIComponent(params.id)}`;
-
-  console.log('entity id', id);
+  const id = typeof params === 'string' ? params : params.id;
 
   return useCachedDoc<OriginalEntity>({
     ...args,

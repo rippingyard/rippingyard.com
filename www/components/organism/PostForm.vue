@@ -73,9 +73,7 @@
         </AtomButton>
       </div>
     </div>
-    <ul v-if="urls && urls.length > 0">
-      <li v-for="url in urls" :key="url">{{ url }}</li>
-    </ul>
+    <BlockBookmarks :urls="urls" :save="true" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -151,7 +149,6 @@ const publishStatuses = computed(() => {
 });
 
 const isWidget = computed(() => props.isWidget || false);
-// const showItem = computed(() => props.showItem || false);
 const footerClasses = {
   'bg-dotted': props.isFooterDotted || false,
   'bordered': props.isFooterBordered || false,
@@ -162,21 +159,11 @@ const content = ref<string>();
 const entities = ref<string[]>([]);
 const type = ref<PostType>();
 const status = ref<PostStatus>();
-const urls = ref<string[]>([]);
-const bookmarks = ref<{
-  [id: string]: {
-    title: string;
-    description: string;
-    url: string;
-    image: string;
-  }
-}[]>([]);
+const filteredContents = ref<any>();
 const publishStatus = ref<PublishStatus>();
 const isPublic = computed(() => publishStatus.value === 'isPublic');
 const date = ref(new Date);
 const isSaving = ref(false);
-
-// const contentTimer = ref<NodeJS.Timeout>();
 
 const post = computed<Partial<OriginalPost>>(() => {
   return {
@@ -202,7 +189,7 @@ const isReadyToSave = computed(() => !isEmpty.value);
 
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
-// useEntityFilter(content);
+const urls = computed(() => filteredContents.value?.urls || []);
 
 onMounted(() => {
   if (!props.post) {
@@ -212,7 +199,6 @@ onMounted(() => {
     publishStatus.value = 'isPrivate';
     return;
   }
-  // const { mutateAsync } = useBookmarksObject as any;
 
   content.value = props.post.content;
   type.value = props.post.type !== 'note' ? props.post.type : 'article';
@@ -220,20 +206,8 @@ onMounted(() => {
   publishStatus.value = props.post.isPublic ? 'isPublic' : 'isPrivate';
   date.value = props.post.publishedAt.toDate();
 
-  useEntityFilter(content);
-  // mutateAsync(content);
+  filteredContents.value = useEntityFilter(content);
 });
-
-// watch(content, () => {
-
-//   clearTimeout(contentTimer.value);
-//   contentTimer.value = setTimeout(() => {
-//     if (!content.value) return;
-//     const results = mutateAsync(content.value);
-//     console.log('results', results.value);
-//   }, 5000);
-//   // const results = mutateAsync(content.value);
-// });
 
 const submit = async () => {
   console.log('submit!', content);

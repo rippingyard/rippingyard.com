@@ -20,7 +20,7 @@ export type OriginalEntity = {
   updatedAt: Timestamp;
   // hostGroup?: null;
   isDeleted: boolean;
-  translated: {
+  translated?: {
     [lang: string]: EntityBody;
   };
   counts: {

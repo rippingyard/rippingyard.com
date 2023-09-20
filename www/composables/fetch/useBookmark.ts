@@ -2,10 +2,8 @@
 
 export const useBookmark = (url: string) => {
 
-  console.log('url', url);
-
   return useEntity({
-    id: encodeURI(url),
+    id: encodeURIComponent(url),
     type: 'bookmark',
   });
 
