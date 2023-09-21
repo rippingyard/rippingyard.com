@@ -1,5 +1,5 @@
 ﻿import dayjs from 'dayjs';
-import { Routes, buildSitemap } from '../../../utils/sitemap';
+import { Routes, buildSitemapIndex } from '../../../utils/sitemap';
 
 export default defineEventHandler(async (event) => {
 
@@ -17,5 +17,5 @@ export default defineEventHandler(async (event) => {
   }
 
   event.node.res.setHeader('content-type', 'text/xml');
-  event.node.res.end(buildSitemap(routes));
+  event.node.res.end(buildSitemapIndex(routes));
 });
