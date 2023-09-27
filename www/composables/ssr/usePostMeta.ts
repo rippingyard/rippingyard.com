@@ -1,13 +1,13 @@
 ﻿import { useHtmlHeader } from "~~/composables/utils/useHtmlHeader";
 import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
-import { Post } from "schemas/post";
+import { OriginalPost, Post } from "schemas/post";
 
 export const usePostMeta = async (postId: string) => {
   await useAsyncData('meta-post', async () => {
     if (!process.server) return;
 
     try {
-      const post = await $fetch(`/api/post/${postId}`);
+      const post = await $fetch<OriginalPost>(`/api/post/${postId}`);
 
       const title = getTitle(post as Post);
       const description = getSummary(post.content);

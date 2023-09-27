@@ -37,6 +37,7 @@ export type QueryParams = {
     key: string;
     order?: OrderByDirection;
   };
+  lastVisible?: DocumentData;
   removeWhereKeys?: string[];
 };
 
@@ -44,7 +45,7 @@ export const defaultOp = (val: WhereValue): WhereOp => {
   return Array.isArray(val) ? 'in' : '==';
 }
 
-export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunctionContext<any[], any>): Promise<T[]> => {
+export const getCachedDocs = async <T>(args: QueryParams): Promise<T[]> => {
   const { fb } = useFirebase();
   const data: T[] = [];
   const ids: string[] = [];
@@ -75,8 +76,9 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
   if (args?.orderBy) {
     const order = args.orderBy.order || 'desc';
     q = query(q, orderBy(args.orderBy.key, order));
-    if (pageParam?.pageParam) {
-      q = query(q, startAfter(pageParam.pageParam[args.orderBy.key]));
+    if (args?.lastVisible?.value) {
+      console.log('args.lastVisible[args.orderBy.key]', args.lastVisible.value[args.orderBy.key]);
+      q = query(q, startAfter(args.lastVisible.value[args.orderBy.key]));
     }
   }
 
@@ -117,6 +119,30 @@ export const getCachedDocs = async <T>(args: QueryParams, pageParam?: QueryFunct
 
 export const useCachedDocs = <T>(args: QueryParams) => {
   return useAsyncData(useCacheKey<QueryParams>(args), () => getCachedDocs<T>(args), { server: false });
+}
+
+export const useCachedInfiniteDocs = <T>(args: QueryParams) => {
+  const data = ref<T[]>();
+  const lastVisible = ref<T>();
+
+  if (!data.value) data.value = [];
+
+  return useAsyncData(useCacheKey<QueryParams>(args), async () => {
+    const newData = await getCachedDocs<T>({
+      ...args,
+      lastVisible,
+    });
+    data.value = [...(data.value || []), ...newData];
+
+    return {
+      data,
+      lastVisible,
+      loadMore: () => {
+        if (!data.value) return;
+        lastVisible.value = data.value[data.value.length - 1];
+      },
+    }
+  }, { server: false, watch: [lastVisible] });
 }
 
 // export const useCachedInfiniteDocs = <T>(

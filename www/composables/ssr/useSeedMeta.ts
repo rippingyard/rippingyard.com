@@ -1,12 +1,13 @@
 ﻿import { useHtmlHeader } from "~~/composables/utils/useHtmlHeader";
 import { useSeedSocialLink } from "~~/composables/link/useSeedSocialLink";
+import { Seed } from "~~/schemas/seed";
 
 export const useSeedMeta = async (postId: string) => {
   await useAsyncData('meta-seed', async () => {
     if (!process.server) return;
 
     try {
-      const seed = await $fetch(`/api/seed/${postId}`);
+      const seed = await $fetch<Seed>(`/api/seed/${postId}`);
 
       const title = seed?.title || '';
       const body = seed?.body || '';

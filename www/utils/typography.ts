@@ -42,7 +42,7 @@ export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalIte
 }
 
 export const getHtags = (str: string) => {
-  return str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
+  return str?.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
 }
 
 export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {

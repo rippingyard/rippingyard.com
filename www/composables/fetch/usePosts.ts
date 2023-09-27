@@ -1,4 +1,4 @@
-﻿import { QueryParams, useCachedDocs } from '../firestore/useCachedDocs';
+﻿import { QueryParams, useCachedDocs, useCachedInfiniteDocs } from '../firestore/useCachedDocs';
 import { OriginalPost } from '~/schemas/post';
 
 const buildConditions = (args: Omit<QueryParams, 'collection'> = {}) => {
@@ -36,7 +36,9 @@ export const useInfinitePosts = (payload: Omit<QueryParams, 'collection'> = {}) 
 
   const { args, where } = buildConditions(payload);
 
-  return useCachedDocs<OriginalPost>({
+  console.log('payload', payload);
+
+  return useCachedInfiniteDocs<OriginalPost>({
     ...args,
     collection: 'posts',
     where,
