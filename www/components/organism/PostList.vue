@@ -1,12 +1,12 @@
 ﻿<template>
-  <BlockLoading :is-loading="!isInitialized" :is-error="!!error" :error="error">
+  <BlockLoading :is-loading="isLoading" :is-error="!!error" :error="error">
     <ul v-if="filteredPosts">
       <li v-for="post, i in filteredPosts" :key="i">
         <component :is="props.component || CardPost" :post="(post as Post)" />
       </li>
     </ul>
     <div v-if="!hideMore" class="console">
-      <AtomButton ref="target" expanded centered @click="more()">もっと読む</AtomButton>
+      <AtomButton ref="target" expanded centered @click="more()" :is-loading="pending">もっと読む</AtomButton>
     </div>
   </BlockLoading>
 </template>
@@ -72,12 +72,14 @@ const condition = ref<Omit<QueryParams, 'collection'>>({
 const { pending, error, data: result } = useInfinitePosts(condition.value);
 
 watch(result, () => {
-  if (!result.value) return;
+  if (result.value?.data === undefined) return;
   isInitialized.value = true;
   console.log('result.value.data', result.value.data);
   posts.value = result.value.data;
   loadMore.value = result.value?.loadMore || undefined;
 });
+
+const isLoading = computed(() => !isInitialized.value && pending.value);
 
 watch(targetIsVisible, (value) => {
   if (!value) return;

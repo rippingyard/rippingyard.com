@@ -12,18 +12,14 @@
 <script lang="ts" setup>
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
-import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 import { usePostMeta } from '~~/composables/ssr/usePostMeta';
 import { useEntityFilter } from '~~/composables/filter/useEntityFilter';
 
 const route = useRoute();
 const { $openToast: openToast, $me: me } = useNuxtApp();
 
-await usePostMeta(route.params.id as string);
-
 const { data, pending, error } = usePost(route.params.id as string);
 
-const title = computed(() => data.value ? getTitle(data.value) : '');
 const isNotFound = ref(false);
 const errorMessage = computed(() => {
   if (error.value) return error.value;
@@ -51,9 +47,7 @@ const content = computed(() => data.value?.content || '');
 watchEffect(() => filteredContents.value = useEntityFilter(content));
 watchEffect(() => checkPermission());
 
-useHtmlHeader({
-  title: () => title.value,
-});
+await usePostMeta(route.params.id as string, data);
 
 const notFound = () => {
   openToast('この記事は非公開です');

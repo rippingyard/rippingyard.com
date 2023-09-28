@@ -2,12 +2,11 @@
 import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
 import { OriginalPost, Post } from "schemas/post";
 
-export const usePostMeta = async (postId: string) => {
+export const usePostMeta = async (postId: string, data?: Ref<OriginalPost | null>) => {
   await useAsyncData('meta-post', async () => {
-    if (!process.server) return;
-
     try {
-      const post = await $fetch<OriginalPost>(`/api/post/${postId}`);
+      let post = data?.value || undefined;
+      if (!post) post = await $fetch<OriginalPost>(`/api/post/${postId}`);
 
       const title = getTitle(post as Post);
       const description = getSummary(post.content);
