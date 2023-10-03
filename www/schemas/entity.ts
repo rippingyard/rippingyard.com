@@ -4,7 +4,7 @@ type EntityBody = {
   name: string;
 };
 
-type EntityType = 'genre';
+export type EntityType = 'genre' | 'bookmark' | 'tag';
 // type EntityType = 'item' | 'place' | 'work' | 'keyword' | 'person' | 'group' | 'event' | 'bookmark' | 'unknown';
 
 export type OriginalEntity = {
@@ -20,7 +20,7 @@ export type OriginalEntity = {
   updatedAt: Timestamp;
   // hostGroup?: null;
   isDeleted: boolean;
-  translated: {
+  translated?: {
     [lang: string]: EntityBody;
   };
   counts: {

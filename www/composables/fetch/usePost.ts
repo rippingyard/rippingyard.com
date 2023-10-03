@@ -1,6 +1,6 @@
 ﻿import { QueryParams, useCachedDoc } from '../firestore/useCachedDoc';
 import { OriginalPost } from '~/schemas/post';
-import { useMe } from './useMe';
+// import { useMe } from './useMe';
 
 export type PostQueryParams = Omit<QueryParams, 'collection' | 'id'>;
 

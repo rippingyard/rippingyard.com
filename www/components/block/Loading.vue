@@ -13,12 +13,11 @@
 
 const props = defineProps<{
   isLoading: boolean
-  isError: boolean
   error?: any
 }>();
 
 const isLoading = computed(() => props.isLoading !== undefined ? props.isLoading : true);
-const isError = computed(() => props.isError !== undefined ? props.isError : true);
+const isError = computed(() => !!props.error);
 
 </script>
 <style lang="scss" scoped>

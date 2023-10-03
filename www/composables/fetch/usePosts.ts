@@ -36,6 +36,8 @@ export const useInfinitePosts = (payload: Omit<QueryParams, 'collection'> = {}) 
 
   const { args, where } = buildConditions(payload);
 
+  console.log('payload', payload);
+
   return useCachedInfiniteDocs<OriginalPost>({
     ...args,
     collection: 'posts',

@@ -1,7 +1,7 @@
 ﻿<template>
   <div>
     <BlockMain :is-cliff="true">
-      <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
+      <BlockLoading :is-loading="pending" :error="error">
         <BlockWysiwyg :content="content" :is-article="true" />
         <AdPostBottom />
         <div class="footer">
@@ -29,10 +29,10 @@ import { Seed } from '~~/schemas/seed';
 import { useSeedMeta } from '~~/composables/ssr/useSeedMeta';
 
 const route = useRoute();
-const { data: seeds, isLoading, isError, error } = useSeeds();
+const { data: seeds, pending, error } = useSeeds();
 
 const slug = route.params.slug as string;
-const seed = computed<Seed>(() => seeds.value?.find((s: Seed) => s.slug === slug));
+const seed = computed(() => seeds.value?.find((s: Seed) => s.slug === slug));
 
 const title = computed(() => seed.value?.title ? `<h1>${seed.value.title}</h1>` : '');
 const body = computed(() => seed.value?.body || '');

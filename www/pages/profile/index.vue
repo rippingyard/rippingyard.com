@@ -37,7 +37,7 @@ import { useSaveUser } from '~/composables/save/useSaveUser';
 import { useMe } from '~~/composables/fetch/useMe';
 import { User } from '~~/schemas/user';
 
-const saveUserObject = useSaveUser();
+const mutateAsync = useSaveUser();
 const { me } = useMe();
 
 const isReady = ref(false);
@@ -101,9 +101,6 @@ const removeError = (field: string) => {
 };
 
 const submit = async () => {
-  if (!saveUserObject) return;
-
-  const { mutateAsync: saveUser } = saveUserObject;
 
   const params = {
     ...me.value,
@@ -116,7 +113,7 @@ const submit = async () => {
     isSaving.value = true;
 
     console.log('params', params);
-    await saveUser(params);
+    await mutateAsync(params);
 
   } catch (e) {
     console.error(e);

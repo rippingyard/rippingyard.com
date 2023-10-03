@@ -1,87 +1,88 @@
 ﻿<template>
-  <div class="form" :class="{ 'is-widget': isWidget }">
-    <div class="main">
-      <!-- <div v-show="showItem" class="item bg-dotted">
+  <div>
+    <div class="form" :class="{ 'is-widget': isWidget }">
+      <div class="main">
+        <!-- <div v-show="showItem" class="item bg-dotted">
         <div class="inner">
           <FormItem />
           <ItemForm :item="item" color="yellow" @update-item="updateItem" />
         </div>
       </div> -->
-      <div class="inner">
-        <FormWysiwyg v-if="content !== undefined" v-model="content" />
-      </div>
-    </div>
-    <div v-if="isWidget" class="footer" :class="footerClasses">
-      <div class="footer-main">
-        <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
-        <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" @click="submit()">
-          投稿する
-        </AtomButton>
-      </div>
-      <div class="footer-side">
-        <FormDatePicker v-model="date" />
-        <div :class="{ 'is-over': isOver }" class="counter">
-          {{ contentLength }} / {{ limit }}
+        <div class="inner">
+          <FormWysiwyg v-if="content !== undefined" v-model="content" />
         </div>
       </div>
-    </div>
-    <div v-if="!isWidget" class="side">
-      <div class="inner">
-        <div class="side-body">
-          <div class="side-block">
-            <label>公開日</label>
-            <FormDatePicker v-if="date" v-model="date" />
-          </div>
-          <div class="side-block">
-            <label>文字数</label>
-            <div :class="{ 'is-over': isOver }" class="counter">
-              {{ contentLength }} / {{ limit }}
-            </div>
-          </div>
-          <div class="side-block">
-            <label>記事タイプ</label>
-            <div>
-              <FormCheckboxes v-if="type !== undefined" :options="posttypes" v-model="type" />
-            </div>
-          </div>
-          <div class="side-block">
-            <label>記事設定</label>
-            <div>
-              <FormCheckboxes v-if="status !== undefined" :options="statuses" v-model="status" />
-            </div>
-          </div>
-          <div class="side-block">
-            <label>公開設定</label>
-            <div>
-              <FormCheckboxes v-if="publishStatus !== undefined" :options="publishStatuses" v-model="publishStatus" />
-            </div>
-          </div>
-        </div>
-        <div class="side-foot">
-          <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
-            :expanded="true" @click="submit()">
-            {{ submitLabel }}
+      <div v-if="isWidget" class="footer" :class="footerClasses">
+        <div class="footer-main">
+          <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
+          <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" @click="submit()">
+            投稿する
           </AtomButton>
         </div>
+        <div class="footer-side">
+          <FormDatePicker v-model="date" />
+          <div :class="{ 'is-over': isOver }" class="counter">
+            {{ contentLength }} / {{ limit }}
+          </div>
+        </div>
+      </div>
+      <div v-if="!isWidget" class="side">
+        <div class="inner">
+          <div class="side-body">
+            <div class="side-block">
+              <label>公開日</label>
+              <FormDatePicker v-if="date" v-model="date" />
+            </div>
+            <div class="side-block">
+              <label>文字数</label>
+              <div :class="{ 'is-over': isOver }" class="counter">
+                {{ contentLength }} / {{ limit }}
+              </div>
+            </div>
+            <div class="side-block">
+              <label>記事タイプ</label>
+              <div>
+                <FormCheckboxes v-if="type !== undefined" :options="posttypes" v-model="type" />
+              </div>
+            </div>
+            <div class="side-block">
+              <label>記事設定</label>
+              <div>
+                <FormCheckboxes v-if="status !== undefined" :options="statuses" v-model="status" />
+              </div>
+            </div>
+            <div class="side-block">
+              <label>公開設定</label>
+              <div>
+                <FormCheckboxes v-if="publishStatus !== undefined" :options="publishStatuses" v-model="publishStatus" />
+              </div>
+            </div>
+          </div>
+          <div class="side-foot">
+            <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
+              :expanded="true" @click="submit()">
+              {{ submitLabel }}
+            </AtomButton>
+          </div>
+        </div>
+      </div>
+      <div class="sponly">
+        <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
+          :expanded="true" @click="submit()">
+          {{ submitLabel }}
+        </AtomButton>
       </div>
     </div>
-    <div class="sponly">
-      <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" :centered="true"
-        :expanded="true" @click="submit()">
-        {{ submitLabel }}
-      </AtomButton>
-    </div>
+    <BlockBookmarks :urls="urls" :save="true" />
   </div>
 </template>
 <script lang="ts" setup>
 import { Timestamp } from 'firebase/firestore'
-import { OriginalPost, Post, PostStatus, PostType } from '~/schemas/post';
-// import { Item } from '~/types/item'
-// import { permalink } from '~/services/post'
+import { OriginalPost, PostStatus, PostType } from '~/schemas/post';
 import { useSavePost } from '~/composables/save/useSavePost';
 import { getLength } from '~~/utils/typography';
 import { usePostLink } from '~/composables/link/usePostLink';
-// import { UseMutationReturnType } from '@tanstack/vue-query/build/lib/useMutation';
+import { useEntityFilter } from '~/composables/filter/useEntityFilter';
 
 type PublishStatus = 'isPublic' | 'isPrivate';
 
@@ -95,7 +96,7 @@ type Props = {
   isFooterFixed?: boolean;
 }
 
-const savePostObject = useSavePost();
+const mutateAsync = useSavePost();
 
 const props = withDefaults(
   defineProps<Props>(),
@@ -148,7 +149,6 @@ const publishStatuses = computed(() => {
 });
 
 const isWidget = computed(() => props.isWidget || false);
-// const showItem = computed(() => props.showItem || false);
 const footerClasses = {
   'bg-dotted': props.isFooterDotted || false,
   'bordered': props.isFooterBordered || false,
@@ -159,6 +159,7 @@ const content = ref<string>();
 const entities = ref<string[]>([]);
 const type = ref<PostType>();
 const status = ref<PostStatus>();
+const filteredContents = ref<any>();
 const publishStatus = ref<PublishStatus>();
 const isPublic = computed(() => publishStatus.value === 'isPublic');
 const date = ref(new Date);
@@ -188,30 +189,20 @@ const isReadyToSave = computed(() => !isEmpty.value);
 
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
-onMounted(() => {
-  if (!props.post) {
-    content.value = '';
-    type.value = 'log';
-    status.value = 'drafted';
-    publishStatus.value = 'isPrivate';
-    return;
-  }
-  content.value = props.post.content;
-  type.value = props.post.type !== 'note' ? props.post.type : 'article';
-  status.value = props.post.status;
-  publishStatus.value = props.post.isPublic ? 'isPublic' : 'isPrivate';
-  date.value = props.post.publishedAt.toDate();
-});
+const urls = computed(() => filteredContents.value?.urls || []);
 
-watch(date, () => {
-  console.log('date updated!', date.value);
+onMounted(() => {
+  content.value = props.post?.content || '';
+  type.value = props.post?.type || 'article';
+  status.value = props.post?.status || 'drafted';
+  publishStatus.value = props.post?.isPublic ? 'isPublic' : 'isPrivate';
+  date.value = props.post?.publishedAt.toDate() || new Date();
+
+  filteredContents.value = useEntityFilter(content);
 });
 
 const submit = async () => {
   console.log('submit!', content);
-  if (!savePostObject) return;
-
-  const { mutateAsync: savePost } = savePostObject;
 
   // let status = 'failed';
   if (isSaving.value) return;
@@ -267,13 +258,13 @@ const submit = async () => {
     //   //     if (promises) await Promise.all(promises)
     //   //   }
 
-    const newPost = await savePost(params);
+    console.log('params', params)
+    const newPost = await mutateAsync(params);
     //   status = 'succeeded'
 
     console.log('NEWPOST!!!!', newPost);
     clearForm();
 
-    console.log('testtesttest')
     if (!newPost) return;
 
     const permalink = usePostLink(newPost);

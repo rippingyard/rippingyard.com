@@ -42,7 +42,7 @@ export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalIte
 }
 
 export const getHtags = (str: string) => {
-  return str.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
+  return str?.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
 }
 
 export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {
@@ -92,10 +92,10 @@ export const getThumbnailFromText = (str: string, isOwn: boolean = false): strin
 // }
 
 export const getSummary = (str: string, length = 140) => {
-  str = removeTitle(str)
-  str = removeHtmlTags(str)
-  const tail = str.length > length ? '...' : ''
-  return str.substr(0, length) + tail
+  str = removeTitle(str);
+  str = removeHtmlTags(str);
+  const tail = str.length > length ? '...' : '';
+  return str.substring(0, length) + tail;
 }
 
 export const getTokens = (str: string) => {
@@ -104,29 +104,31 @@ export const getTokens = (str: string) => {
 }
 
 export const getLength = (str: string) => {
-  return !str ? 0 : removeHtmlTags(str).length
+  return !str ? 0 : removeHtmlTags(str).length;
 }
 
 export const stripTags = (content: string, linebreak = true) => {
   if (!DOMPurify?.sanitize) return '';
 
   if (linebreak) {
-    content = content.replace(/<\/p>/g, '</p>\n\n')
-    content = content.replace(/<br \/>/g, '\n\n')
-    content = content.replace(/<br\/>/g, '\n\n')
-    content = content.replace(/<br>/g, '\n\n')
+    content = content.replace(/<\/p>/g, '</p>\n\n');
+    content = content.replace(/<br \/>/g, '\n\n');
+    content = content.replace(/<br\/>/g, '\n\n');
+    content = content.replace(/<br>/g, '\n\n');
   }
+
+  if (!DOMPurify?.sanitize) return content;
 
   return !content
     ? ''
     : DOMPurify?.sanitize(content, {
       ALLOWED_TAGS: [],
-    })
+    });
 }
 
 export function extractFirstImage(content: string): string {
-  const images = extractImages(content)
-  return images.length > 0 ? images[0] : ''
+  const images = extractImages(content);
+  return images.length > 0 ? images[0] : '';
 }
 
 export function extractImages(content: string) {
@@ -141,13 +143,13 @@ export function extractImages(content: string) {
 }
 
 export function extractUrls(content: string): string[] {
-  if (!content) return []
+  if (!content) return [];
 
   const urls = stripTags(content).match(
     /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g
-  )
+  );
 
-  if (!urls) return []
+  if (!urls) return [];
 
   const filteredUrls: string[] = [];
 

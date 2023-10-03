@@ -1,16 +1,14 @@
 ﻿<template>
-  <!-- <div class="container"> -->
-  <BlockLoading :is-loading="isLoading" :is-error="isError" :error="error">
-    <ul>
+  <BlockLoading :is-loading="isLoading" :is-error="!!error" :error="error">
+    <ul v-if="filteredPosts">
       <li v-for="post, i in filteredPosts" :key="i">
         <component :is="props.component || CardPost" :post="(post as Post)" />
       </li>
     </ul>
     <div v-if="!hideMore" class="console">
-      <AtomButton v-if="hasNextPage" ref="target" expanded centered @click="more()">もっと読む</AtomButton>
+      <AtomButton ref="target" expanded centered @click="more()" :is-loading="pending">もっと読む</AtomButton>
     </div>
   </BlockLoading>
-  <!-- </div> -->
 </template>
 <script lang="ts" setup>
 import { OrderByDirection } from '@firebase/firestore';
@@ -33,14 +31,16 @@ type Props = {
 }
 
 const props = defineProps<Props>();
-const posts = ref<OriginalPost[]>();
+const posts = ref<OriginalPost[]>([]);
 const types = computed(() => props.types || ['log', 'note', 'article']);
 
 const target = ref(null);
 const targetIsVisible = useElementVisibility(target);
 const removeWhereKeys = ref<string[]>([]);
 
+const loadMore = ref<() => void>();
 const hideMore = computed(() => props.hideMore || false);
+const isInitialized = ref<boolean>(false);
 
 const where: WhereParams = [
   { key: 'type', val: types.value },
@@ -63,27 +63,33 @@ if (props.isMine) {
   removeWhereKeys.value.push(...['status', 'isPublic']);
 }
 
-const condition: Omit<QueryParams, 'collection'> = {
+const condition = ref<Omit<QueryParams, 'collection'>>({
   where,
   limit: props.limit || 100,
   removeWhereKeys: removeWhereKeys.value,
-};
-
-const { isLoading, isError, data, error, hasNextPage, fetchNextPage } = useInfinitePosts(condition);
-
-watch(data, (newData) => {
-  if (!newData) return;
-  const newPosts = newData as any;
-  posts.value = !newPosts.pages ? newPosts : newPosts.pages.flat();
 });
 
+const { pending, error, data: result } = useInfinitePosts(condition.value);
+
+watch(result, () => {
+  if (result.value?.data === undefined) return;
+  isInitialized.value = true;
+  console.log('result.value.data', result.value.data);
+  posts.value = result.value.data;
+  loadMore.value = result.value?.loadMore || undefined;
+});
+
+const isLoading = computed(() => !isInitialized.value && pending.value);
+
 watch(targetIsVisible, (value) => {
-  if (!value || !hasNextPage) return;
+  if (!value) return;
   more();
-})
+});
 
 const more = () => {
-  fetchNextPage();
+  console.log('more!', loadMore);
+  if (!loadMore.value) return;
+  loadMore.value();
 }
 
 </script>

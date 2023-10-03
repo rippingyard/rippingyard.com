@@ -1,36 +1,35 @@
 ﻿<template>
   <div>
     <BlockMain :is-cliff="true">
-      <BlockLoading :is-loading="isLoading" :is-error="isError || isNotFound" :error="errorMessage">
+      <BlockLoading :is-loading="isLoading" :error="errorMessage">
         <ArticlePost v-if="data" :post="data" />
+        <BlockBookmarks :urls="urls" />
       </BlockLoading>
     </BlockMain>
-    <OrganismBillboard v-if="data" :exclude-id="data.id" />
+    <!-- <OrganismBillboard v-if="data" :exclude-id="data.id" /> -->
   </div>
 </template>
 <script lang="ts" setup>
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
-import { useHtmlHeader } from '~~/composables/utils/useHtmlHeader';
 import { usePostMeta } from '~~/composables/ssr/usePostMeta';
+import { useEntityFilter } from '~~/composables/filter/useEntityFilter';
 
 const route = useRoute();
 const { $openToast: openToast, $me: me } = useNuxtApp();
 
-const { isLoading: isLoadingPost, isError, error, data } = usePost(route.params.id as string);
+const { data, pending, error } = usePost(route.params.id as string);
 
-const title = computed(() => data.value ? getTitle(data.value) : '');
 const isNotFound = ref(false);
 const errorMessage = computed(() => {
-  if (isError.value) return error;
+  if (error.value) return error.value;
   if (isNotFound.value) return 'ページが見つかりません';
   return '';
 });
-const isLoading = computed(() => isLoadingPost.value && !isNotFound.value);
+const isLoading = computed(() => pending.value && !isNotFound.value);
 
 const checkPermission = () => {
-  if (process.server) return;
-  if (isLoadingPost.value) return;
+  if (process.server || pending.value) return;
 
   if (!data.value) {
     notFound();
@@ -41,14 +40,14 @@ const checkPermission = () => {
   if (!canReadPost.value) notFound();
 }
 
-if (!isLoading.value) checkPermission();
-watch(isLoading, () => checkPermission());
+const filteredContents = ref<any>();
+const urls = computed(() => filteredContents.value?.urls || []);
+const content = computed(() => data.value?.content || '');
 
-useHtmlHeader({
-  title: () => title.value,
-});
+watchEffect(() => filteredContents.value = useEntityFilter(content));
+watchEffect(() => checkPermission());
 
-await usePostMeta(route.params.id as string);
+await usePostMeta(route.params.id as string, data);
 
 const notFound = () => {
   openToast('この記事は非公開です');

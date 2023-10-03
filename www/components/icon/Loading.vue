@@ -10,7 +10,7 @@
 
 type Props = {
   color?: 'white' | 'black' | 'yellow';
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large';
 };
 
 const props = withDefaults(
