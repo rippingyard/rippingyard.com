@@ -10,7 +10,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { isServer } from '@tanstack/vue-query';
 import { nuxtApp } from '~/types/nuxtApp';
 import { usePost } from '~~/composables/fetch/usePost';
 import { useCanEditPost } from '~~/composables/permission/useCanEditPost';

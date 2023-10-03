@@ -5,8 +5,6 @@ export type Bookmark = AsyncData<OriginalEntity | null, null>;
 
 export const useEntityFilter = (content: Ref<string | undefined>) => {
 
-  if (!content.value) return;
-
   const timer = ref<NodeJS.Timeout>();
 
   const urls = ref<string[]>(extractUrls(toValue(content) || ''));

@@ -1,9 +1,7 @@
 ﻿import { collection, doc, DocumentData, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { useMe } from '../fetch/useMe';
 import { useFirebase } from '../firebase/useFirebase';
-import { useRetryMutation } from '../firestore/useRetryMutation';
 import { OriginalPost } from '~/schemas/post';
-import { User } from '~/schemas/user';
 
 export const defaultPost: Omit<OriginalPost, 'id'> = {
   slug: '',
@@ -64,6 +62,7 @@ const savePost = async (post: Partial<OriginalPost>) => {
     post.id = postDoc.id;
 
     const newPost = { ...defaultPost, ...post };
+    console.log('newPost', newPost);
 
     await setDoc(postDoc, newPost);
 
@@ -79,6 +78,4 @@ const savePost = async (post: Partial<OriginalPost>) => {
   }
 }
 
-export const useSavePost = () => useRetryMutation(
-  (params: Partial<OriginalPost>) => savePost(params)
-);
+export const useSavePost = () => async (params: Partial<OriginalPost>) => await savePost(params);

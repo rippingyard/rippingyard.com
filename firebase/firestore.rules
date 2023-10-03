@@ -56,6 +56,10 @@ service cloud.firestore {
       allow read;
       allow write: if isAuthenticated();
     }
+    match /relations/{relation} {
+      allow read;
+      allow write: if isAuthenticated();
+    }
     match /comments/{commentId} {
       allow read: if isPublished();
       allow write: if isAuthenticated();

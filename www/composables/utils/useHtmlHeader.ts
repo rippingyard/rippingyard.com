@@ -13,7 +13,6 @@ export const useHtmlHeader = (meta: any = {}) => {
     ,
     ...meta,
   };
-  console.log('header', header.title);
 
   useHead(header);
 

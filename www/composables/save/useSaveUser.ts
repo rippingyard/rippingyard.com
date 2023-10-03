@@ -1,7 +1,6 @@
 ﻿import { collection, doc, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { useMe } from '../fetch/useMe';
 import { useFirebase } from '../firebase/useFirebase';
-import { useRetryMutation } from '../firestore/useRetryMutation';
 import { User } from '~/schemas/user';
 
 export const defaultUser: Omit<User, 'uid'> = {
@@ -53,6 +52,4 @@ const saveUser = async (user: Partial<User>) => {
   }
 }
 
-export const useSaveUser = () => useRetryMutation(
-  (params: Partial<User>) => saveUser(params)
-);
+export const useSaveUser = () => async (params: Partial<User>) => await saveUser(params);

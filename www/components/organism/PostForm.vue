@@ -96,7 +96,7 @@ type Props = {
   isFooterFixed?: boolean;
 }
 
-const savePostObject = useSavePost();
+const mutateAsync = useSavePost();
 
 const props = withDefaults(
   defineProps<Props>(),
@@ -192,28 +192,17 @@ const submitLabel = computed(() => props?.post ? '更新する' : '投稿する'
 const urls = computed(() => filteredContents.value?.urls || []);
 
 onMounted(() => {
-  if (!props.post) {
-    content.value = '';
-    type.value = 'log';
-    status.value = 'drafted';
-    publishStatus.value = 'isPrivate';
-    return;
-  }
-
-  content.value = props.post.content;
-  type.value = props.post.type !== 'note' ? props.post.type : 'article';
-  status.value = props.post.status;
-  publishStatus.value = props.post.isPublic ? 'isPublic' : 'isPrivate';
-  date.value = props.post.publishedAt.toDate();
+  content.value = props.post?.content || '';
+  type.value = props.post?.type || 'article';
+  status.value = props.post?.status || 'drafted';
+  publishStatus.value = props.post?.isPublic ? 'isPublic' : 'isPrivate';
+  date.value = props.post?.publishedAt.toDate() || new Date();
 
   filteredContents.value = useEntityFilter(content);
 });
 
 const submit = async () => {
   console.log('submit!', content);
-  if (!savePostObject) return;
-
-  const { mutateAsync: savePost } = savePostObject;
 
   // let status = 'failed';
   if (isSaving.value) return;
@@ -269,7 +258,8 @@ const submit = async () => {
     //   //     if (promises) await Promise.all(promises)
     //   //   }
 
-    const newPost = await savePost(params);
+    console.log('params', params)
+    const newPost = await mutateAsync(params);
     //   status = 'succeeded'
 
     console.log('NEWPOST!!!!', newPost);

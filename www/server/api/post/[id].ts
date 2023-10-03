@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
   snapshot.forEach((doc) => {
     post = doc.data();
   });
+  if (!post) return {};
 
   const { id, parent, createdAt, publishedAt, updatedAt, content, type } = post;
 

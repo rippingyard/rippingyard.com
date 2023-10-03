@@ -12,7 +12,6 @@
   OrderByDirection,
   startAfter,
 } from 'firebase/firestore';
-import { QueryFunctionContext } from "@tanstack/vue-query";
 import { useCacheKey } from './useCacheKey';
 import { useFirebase } from '~/composables/firebase/useFirebase';
 import { maxBy, minBy } from '~~/utils/array';

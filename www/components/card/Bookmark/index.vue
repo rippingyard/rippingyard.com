@@ -16,8 +16,13 @@
 import { useSaveEntity } from '~/composables/save/useSaveEntity';
 import { OriginalEntity } from '~/schemas/entity';
 import { useBookmark } from '~/composables/fetch/useBookmark';
+import { useSaveRelation } from '~~/composables/save/useSaveRelation';
 import { useUrl } from '~/composables/fetch/useUrl';
 import { isUrl } from '~~/utils';
+import { useEntityId } from '~~/composables/utils/useEntityId';
+import { useMe } from '~~/composables/fetch/useMe';
+import { useDocReference } from '~~/composables/firestore/useDocReference';
+import { useRelation } from '~~/composables/fetch/useRelation';
 
 const props = defineProps<{
   url: string;
@@ -28,9 +33,11 @@ const url = computed(() => props.url);
 const bookmark = ref<OriginalEntity>();
 
 const fetchUrl = useUrl();
-const mutateAsync = useSaveEntity();
+const mutateAsyncEntity = useSaveEntity();
+const mutateAsyncRelation = useSaveRelation();
 
 const { pending, data, error } = useBookmark(url.value);
+const { me } = useMe();
 
 watch(pending, async () => {
   if (pending.value) return;
@@ -40,8 +47,8 @@ watch(pending, async () => {
   }
   if (!props.save) return;
   const { data: metadata } = await fetchUrl(url.value);
-  const result = await mutateAsync({
-    id: encodeURIComponent(url.value),
+  const result = await mutateAsyncEntity({
+    id: useEntityId(encodeURIComponent(url.value), 'bookmark'),
     type: 'bookmark',
     name: metadata.value?.title || url.value,
     description: metadata.value?.description || '',
@@ -51,6 +58,20 @@ watch(pending, async () => {
   if (result) {
     bookmark.value = result;
   }
+
+  const by = useDocReference(me.value?.uid, 'users');
+  const to = useDocReference(result.id, 'entities');
+
+  const relation = await useRelation(by, to, 'bookmark');
+
+  if (!relation) {
+    await mutateAsyncRelation({
+      by,
+      to,
+      as: 'bookmark',
+    });
+  }
+
 });
 
 </script>
