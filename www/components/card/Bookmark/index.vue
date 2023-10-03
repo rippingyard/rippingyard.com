@@ -3,7 +3,7 @@
     <div v-if="pending" class="pending">
       <IconLoading size="medium" />
     </div>
-    <a v-else-if="bookmark" :href="url" target="_blank" class="container">
+    <a v-else-if="bookmark" :href="url || bookmark?.metadata?.url || ''" target="_blank" class="container">
       <div class="contents">
         <p class="name">{{ bookmark.name }}</p>
         <p class="description">{{ bookmark.description }}</p>
@@ -25,12 +25,13 @@ import { useDocReference } from '~~/composables/firestore/useDocReference';
 import { useRelation } from '~~/composables/fetch/useRelation';
 
 const props = defineProps<{
-  url: string;
+  url?: string;
+  bookmark?: OriginalEntity;
   save?: boolean;
 }>();
 
 const url = computed(() => props.url);
-const bookmark = ref<OriginalEntity>();
+const bookmark = ref<OriginalEntity | undefined>(props.bookmark);
 
 const fetchUrl = useUrl();
 const mutateAsyncEntity = useSaveEntity();
@@ -40,13 +41,15 @@ const { pending, data, error } = useBookmark(url.value);
 const { me } = useMe();
 
 watch(pending, async () => {
-  if (pending.value) return;
+  if (!url.value || pending.value || !data.value) return;
   if (data.value?.id) {
     bookmark.value = data.value;
     return;
   }
   if (!props.save) return;
+
   const { data: metadata } = await fetchUrl(url.value);
+
   const result = await mutateAsyncEntity({
     id: useEntityId(encodeURIComponent(url.value), 'bookmark'),
     type: 'bookmark',
@@ -55,6 +58,7 @@ watch(pending, async () => {
     thumbnailImage: isUrl(metadata.value?.image || '') ? metadata.value?.image : '',
     metadata: { ...metadata.value } || undefined,
   });
+
   if (result) {
     bookmark.value = result;
   }
@@ -71,7 +75,6 @@ watch(pending, async () => {
       as: 'bookmark',
     });
   }
-
 });
 
 </script>
