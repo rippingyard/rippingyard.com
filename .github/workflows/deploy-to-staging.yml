@@ -1,4 +1,4 @@
-﻿name: Deploy to Staging
+name: Deploy to Staging
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ jobs:
         node-version: [16.x]
     steps:
     - name: Checkout from ${{ github.head_ref }}
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
     - name: Use Node.js ${{ matrix.node-version }}
