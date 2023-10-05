@@ -9,8 +9,7 @@ export const useHtmlHeader = (meta: any = {}) => {
     title: defaultTitle,
     titleTemplate: (chunk: string) => chunk && chunk !== defaultTitle
       ? `${chunk} - ${defaultTitle}`
-      : `${defaultTitle}`
-    ,
+      : `${defaultTitle}`,
     ...meta,
   };
 

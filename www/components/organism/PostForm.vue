@@ -2,19 +2,12 @@
   <div>
     <div class="form" :class="{ 'is-widget': isWidget }">
       <div class="main">
-        <!-- <div v-show="showItem" class="item bg-dotted">
-        <div class="inner">
-          <FormItem />
-          <ItemForm :item="item" color="yellow" @update-item="updateItem" />
-        </div>
-      </div> -->
         <div class="inner">
           <FormWysiwyg v-if="content !== undefined" v-model="content" />
         </div>
       </div>
       <div v-if="isWidget" class="footer" :class="footerClasses">
         <div class="footer-main">
-          <!-- <div class="status"><span>{{ statusLabel }}</span></div> -->
           <AtomButton :class="{ 'disabled': !isReadyToSave }" class="button" :is-loading="isSaving" @click="submit()">
             投稿する
           </AtomButton>
@@ -77,12 +70,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { Timestamp } from 'firebase/firestore'
+import { DocumentData, DocumentReference, Timestamp } from 'firebase/firestore'
 import { OriginalPost, PostStatus, PostType } from '~/schemas/post';
 import { useSavePost } from '~/composables/save/useSavePost';
 import { getLength } from '~~/utils/typography';
 import { usePostLink } from '~/composables/link/usePostLink';
 import { useEntityFilter } from '~/composables/filter/useEntityFilter';
+import { useDocReference } from '~~/composables/firestore/useDocReference';
+import { useEntityId } from '~~/composables/utils/useEntityId';
 
 type PublishStatus = 'isPublic' | 'isPrivate';
 
@@ -156,10 +151,9 @@ const footerClasses = {
 }
 
 const content = ref<string>();
-const entities = ref<string[]>([]);
 const type = ref<PostType>();
 const status = ref<PostStatus>();
-const filteredContents = ref<any>();
+const filteredContents = ref<ReturnType<typeof useEntityFilter>>();
 const publishStatus = ref<PublishStatus>();
 const isPublic = computed(() => publishStatus.value === 'isPublic');
 const date = ref(new Date);
@@ -171,7 +165,6 @@ const post = computed<Partial<OriginalPost>>(() => {
     ...{
       content: content.value,
       type: type.value,
-      entities: entities.value,
       status: status.value,
       publishedAt: Timestamp.fromDate(date.value),
       isPublic: isPublic.value,
@@ -204,61 +197,19 @@ onMounted(() => {
 const submit = async () => {
   console.log('submit!', content);
 
-  // let status = 'failed';
   if (isSaving.value) return;
 
   const params: Partial<OriginalPost> = post.value;
 
   if (props.post?.id) params.id = props.post.id;
   if (params.type === 'note') params.type = 'article';
+  params.entities = (urls.value || []).map(url => useDocReference(useEntityId(encodeURIComponent(url), 'bookmark'), 'entities')) as DocumentReference<DocumentData>[];
 
   try {
     isSaving.value = true;
 
-    //   if (this.item) {
-    //     const q = await(this as any).$fire.firestore
-    //       .collection('items')
-    //       .where('isDeleted', '==', false)
-    //       .where('path', '==', this.item.path)
-    //       .where('type', '==', this.item.type)
-    //       .limit(1)
-    //       .get()
-
-    //     if (!q.empty) {
-    //       params.parent = q.docs[0].ref
-    //     } else {
-    //       const item = await this.saveItem(this.item)
-    //       params.parent = item
-    //     }
-    //     // console.log('parent', params.parent)
-    //   }
-
-    //   //   if (this.post?.id) params.id = this.post.id
-    //   //   console.log('val', schemaPost.validate(params))
-
-    //   //   const { error } = schemaPost.validate(params)
-    //   //   if (!isEmpty(error)) {
-    //   //     console.log('Error', error.details)
-    //   //     return this.snackAlert('投稿に失敗しました')
-    //   //   }
-
-    //   //   if (this.entities) {
-    //   //     const existanceChecks = this.entities.map(async e => {
-    //   //       console.log('Entity', e)
-    //   //       return await this.$fire.firestore.doc(`entities/${encodeEntity(e)}`).get()
-    //   //     })
-    //   //     const existances = await Promise.all(existanceChecks)
-
-    //   //     const promises = existances.filter(e => !e.exists).map(async e => {
-    //   //       return await this.saveEntity({
-    //   //         id: e.id,
-    //   //       })
-    //   //     })
-
-    //   //     if (promises) await Promise.all(promises)
-    //   //   }
-
     console.log('params', params)
+
     const newPost = await mutateAsync(params);
     //   status = 'succeeded'
 
@@ -267,9 +218,7 @@ const submit = async () => {
 
     if (!newPost) return;
 
-    const permalink = usePostLink(newPost);
-    console.log('permalink!', permalink, newPost);
-    navigateTo(permalink);
+    navigateTo(usePostLink(newPost));
   } catch (e) {
     console.error(e)
   }
@@ -277,56 +226,16 @@ const submit = async () => {
   isSaving.value = false;
 };
 
-// export default Vue.extend({
-//   data(): DataType {
-//     return {
-//       content: '',
-//       date: new Date(),
-//       entities: [],
-//       resetCount: 0,
-//       item: null,
-//       isOpen: false,
-//       isSaving: false,
-//       cleaningItem: new Date().getTime(),
-//     }
-//   },
-//   methods: {
-//     ...mapActions({
-//       saveItem: 'item/save',
-//       savePost: 'post/save',
-//       saveEntity: 'entity/save',
-//       saveActivity: 'activity/save',
-//     }),
-//     toggleForm(): void {
-//       this.isOpen = !this.isOpen
-//     },
-//     closeForm(): void {
-//       this.isOpen = false
-//     },
 const clearForm = (): void => {
   content.value = '';
-  // this.entities = []
-  // this.item = null
-  // console.log('clear!')
 };
-//     updateItem(val: any): void {
-//       // console.log('updateItem', val)
-//       this.item = !val ? null : val
-//     },
-// })
 </script>
 <style lang="scss" scoped>
 .form {
   width: 100%;
   position: relative;
   display: flex;
-  // z-index: 80000;
-  // position: sticky;
-  // height: calc(100vh - 60px);
   justify-content: space-between;
-  // top: $gap;
-
-  // padding-right: $navSize + $gap;
 
   @include until($desktop) {
     display: block;

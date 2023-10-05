@@ -20,7 +20,7 @@ export type OriginalPost = {
   parent?: DocumentReference<DocumentData>;
   isPublic: boolean;
   isDeleted: boolean;
-  entities: string[];
+  entities: DocumentReference<DocumentData>[];
   counts: {
     favorite: number;
     bookmark: number;

@@ -8,6 +8,11 @@ export const useEntityFilter = (content: Ref<string | undefined>) => {
   const timer = ref<NodeJS.Timeout>();
 
   const urls = ref<string[]>(extractUrls(toValue(content) || ''));
+  const entities = computed(() => {
+    return {
+      ...urls
+    }
+  });
 
   watch(content, () => {
     clearTimeout(timer.value);
@@ -17,6 +22,9 @@ export const useEntityFilter = (content: Ref<string | undefined>) => {
     }, 5000);
   });
 
-  return { urls };
+  return {
+    entities: entities.value,
+    urls: urls.value
+  };
 
 };

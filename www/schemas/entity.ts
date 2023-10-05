@@ -1,4 +1,5 @@
 ﻿import { Timestamp } from '@firebase/firestore-types'
+import { DocumentData, DocumentReference } from 'firebase/firestore';
 
 type EntityBody = {
   name: string;
@@ -14,7 +15,7 @@ export type OriginalEntity = {
   description: string;
   thumbnailImage: string;
   images: string[];
-  entities: string[];
+  entities: DocumentReference<DocumentData>[];
   metadata?: { [key: string]: any };
   createdAt: Timestamp;
   updatedAt: Timestamp;
