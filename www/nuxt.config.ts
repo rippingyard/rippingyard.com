@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   // dir: "~/components",
   modules: [
     '@vueuse/nuxt',
-    // '@nuxtjs/style-resources',
     [
       '@nuxtjs/google-adsense',
       {
@@ -27,17 +26,9 @@ export default defineNuxtConfig({
       },
     ]
   ],
-  // buildModules: [
-  //   '@nuxtjs/style-resources',
-  // ],
   app: {
     head: {
       title: 'ripping yard - 速くて小さな寄る辺なきメディア',
-      // titleTemplate: titleChunk => {
-      //   return titleChunk && titleChunk !== 'ripping yard'
-      //     ? `${titleChunk} - ripping yard`
-      //     : 'ripping yard - 速くて小さな寄る辺なきメディア'
-      // },
       htmlAttrs: {
         lang: 'ja',
       },
@@ -110,7 +101,7 @@ export default defineNuxtConfig({
         {
           hid: 'twitter:card',
           name: 'twitter:card',
-          content: 'summary_large_image',
+          content: 'summary',
         },
       ],
       link: [
