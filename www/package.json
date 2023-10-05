@@ -6,6 +6,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port=3333",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -33,7 +35,8 @@
     "eslint-plugin-vue": "^9.8.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "@gtm-support/vue-gtm": "^2.0.0",

@@ -1,4 +1,4 @@
-﻿import { renderWidgets, sanitize } from '~/utils/typography';
+﻿import { renderWidgets, sanitize } from '~~/utils/typography';
 
 export const useContentFilter = (content: string) => {
 

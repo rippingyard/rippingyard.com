@@ -1,6 +1,6 @@
 ﻿import dayjs from 'dayjs';
 import { Post, OriginalPost } from '~/schemas/post';
-import { getThumbnailFromText, getTitle, hasThumbnailFromText, removeTitle } from '~/utils/typography';
+import { getThumbnailFromText, getTitle, hasThumbnailFromText, removeTitle } from '~~/utils/typography';
 import { numberByString } from '~~/utils';
 import { usePostLink } from '../link/usePostLink';
 import { usePostEditLink } from '../link/usePostEditLink';
