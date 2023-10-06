@@ -1,0 +1,25 @@
+﻿name: UnitTest
+
+on: pull_request
+
+jobs:
+  unittest:
+    name: UnitTest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '18'
+
+    - name: Setup Yarn
+      run: npm install yarn -g
+
+    - name: Install Dependencies
+      run: yarn install
+      
+    - name: Unit Test with Coverage
+      run: yarn test:coverage
