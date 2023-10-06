@@ -26,4 +26,4 @@ jobs:
         VITE_GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       
     - name: Unit Test with Coverage
-      run: yarn test:coverage
+      run: cd www && yarn test:coverage
