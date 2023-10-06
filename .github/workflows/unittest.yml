@@ -1,0 +1,30 @@
+﻿name: UnitTest
+
+on: pull_request
+
+jobs:
+  unittest:
+    name: UnitTest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'yarn'
+
+    - name: Setup Yarn
+      run: npm install yarn -g
+
+    - name: Install Dependencies
+      run: cd www && yarn install
+      env:
+        VITE_ALGOLIA_APPID: ${{ secrets.ALGOLIA_APIKEY_DEV }}
+        VITE_ALGOLIA_APIKEY: ${{ secrets.ALGOLIA_APPID_DEV }}
+        VITE_GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
+      
+    - name: Unit Test with Coverage
+      run: cd www && yarn test:coverage
