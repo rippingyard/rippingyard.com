@@ -16,8 +16,8 @@ export const removeHtmlTags = (str: string) => {
 }
 
 export const removeTitle = (str: string) => {
-  if (!str) return ''
-  return str.replace(/<h.(?: .+?)?>.*?<\/h.>/, '')
+  if (!str) return '';
+  return str.replace(/<h.(?: .+?)?>.*?<\/h.>/g, '');
 }
 
 export const hasTitle = (str: string): boolean => {
