@@ -19,7 +19,7 @@ jobs:
       run: npm install yarn -g
 
     - name: Install Dependencies
-      run: yarn install
+      run: cd www && yarn install
       
     - name: Unit Test with Coverage
       run: yarn test:coverage
