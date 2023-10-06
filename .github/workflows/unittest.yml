@@ -21,8 +21,9 @@ jobs:
     - name: Install Dependencies
       run: cd www && yarn install
       env:
-        VITE_ALGOLIA_APPID: ${{ secrets.VITE_ALGOLIA_APPID }}
-        VITE_ALGOLIA_APIKEY: ${{ secrets.VITE_ALGOLIA_APIKEY }}
+        VITE_ALGOLIA_APPID: ${{ secrets.ALGOLIA_APIKEY_DEV }}
+        VITE_ALGOLIA_APIKEY: ${{ secrets.ALGOLIA_APPID_DEV }}
+        VITE_GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
       
     - name: Unit Test with Coverage
       run: yarn test:coverage
