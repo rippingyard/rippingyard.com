@@ -35,7 +35,7 @@ export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalIte
     const htags = getHtags(str.content)
     if (htags && htags[0] !== '') return decodeEntities(htags[0])
     if (parent && parent?.name?.ja) return parent.name.ja;
-    return alt || dayjs(str.publishedAt.toDate()).format('YYYY/M/D');
+    return alt || dayjs(str.publishedAt.toDate ? str.publishedAt.toDate() : str.publishedAt.seconds * 1000).format('YYYY年M月D日の記録');
   }
 }
 
