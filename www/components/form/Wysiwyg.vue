@@ -25,7 +25,7 @@ import { Mention } from '@tiptap/extension-mention';
 import { useTagSuggestion } from '~~/composables/suggestion/useTagSuggestion';
 // import Placeholder from '@tiptap/extension-placeholder'
 
-// import Caption from '~/plugins/editor/Caption'
+import Caption from '~~/utils/editor/Caption';
 // import Item from '~/plugins/editor/Item'
 // import ItemSuggestion from '~/plugins/suggestions/item'
 
@@ -47,7 +47,7 @@ onMounted(() => {
     content: props.modelValue,
     extensions: [
       StarterKit,
-      // Caption,
+      Caption,
       Highlight,
       // Subscript,
       // TextStyle,

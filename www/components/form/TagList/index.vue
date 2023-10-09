@@ -11,8 +11,9 @@
   </div>
 </template>
 <script setup lang="ts">
+import { SuggestionKeyDownProps } from '@tiptap/suggestion';
 
-type Item = any;
+type Item = string;
 
 const props = defineProps<{
   items: Item[];
@@ -32,9 +33,7 @@ const selectedIndex = ref<number>(0);
 
 watch(items, () => selectedIndex.value = 0);
 
-console.log('this', this);
-
-const onKeyDown = ref(({ event }) => {
+const onKeyDown = ref(({ event }: SuggestionKeyDownProps) => {
 
   console.log('event', event);
 
@@ -75,6 +74,10 @@ const selectItem = (index: number) => {
     props.command({ id: item });
   }
 };
+
+defineExpose({
+  onKeyDown,
+});
 </script>
 
 <style lang="scss">
