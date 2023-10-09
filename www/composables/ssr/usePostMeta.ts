@@ -8,8 +8,6 @@ export const usePostMeta = async (postId: string, data?: Ref<OriginalPost | null
       let post = data?.value || undefined;
       if (!post) post = await $fetch<OriginalPost>(`/api/post/${postId}`);
 
-      console.log('post', post);
-
       const title = getTitle(post as Post);
       const description = getSummary(post.content);
       const permalink = usePostSocialLink(post);
