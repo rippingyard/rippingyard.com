@@ -1,5 +1,8 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { nl2br, removeHtmlTags, removeTitle, hasTitle, getTitle } from './typography';
+import { Timestamp } from 'firebase/firestore';
+import { OriginalPost } from 'schemas/post';
+import dayjs from 'dayjs';
 
 const html = '<h1>タイトル</h1><h2>h2タイトル</h2><h3>h3タイトル</h3><p>本文<a href="https://www.rippingyard.com" target="_blank">リンク</a></p>';
 
@@ -78,19 +81,66 @@ describe('getTitle', () => {
       const str = '<p>タイトルではありません</p>';
       expect(getTitle(str)).toBe('タイトルではありません');
     });
+    it('Hタグがなく、文字数が多い場合は、省略される', () => {
+      const str = '<p>1234567890123456789012345678901234567890</p>';
+      expect(getTitle(str)).toBe('12345678901234567890123456789012...');
+    });
+    it('Hタグがなく、文字数が多い場合は、省略文字数を調整できる', () => {
+      const str = '<p>1234567890123456789012345678901234567890</p>';
+      expect(getTitle(str, undefined, 5)).toBe('12345...');
+    });
+  });
+  describe('引数がobjectの場合', () => {
+
+    const now = new Date();
+
+    const post: OriginalPost = {
+      id: 'test',
+      content: '<h1>タイトルです</h1>',
+      slug: 'test',
+      createdAt: Timestamp.fromDate(now),
+      publishedAt: Timestamp.fromDate(now),
+      updatedAt: Timestamp.fromDate(now),
+      type: 'log',
+      isPublic: true,
+      isDeleted: true,
+      entities: [],
+      status: 'published'
+    };
+
+    it('H1タグがある場合は、その中身が返る', () => {
+      expect(getTitle({
+        ...post,
+        content: '<h1>タイトルです</h1>',
+      })).toBe('タイトルです');
+    });
+    it('H2タグがある場合は、その中身が返る', () => {
+      expect(getTitle({
+        ...post,
+        content: '<h2>h2タイトルです</h2>',
+      })).toBe('h2タイトルです');
+    });
+    it('H3タグがある場合は、その中身が返る', () => {
+      expect(getTitle({
+        ...post,
+        content: '<h3>h3タイトルです</h3>',
+      })).toBe('h3タイトルです');
+    });
+    it('Hタグが複数ある場合は、最初のHタグが返る', () => {
+      expect(getTitle({
+        ...post,
+        content: '<h3>h3タイトルです</h3><h1>タイトルです</h1>',
+      })).toBe('h3タイトルです');
+      expect(getTitle({
+        ...post,
+        content: '<h2>h2タイトルです</h2><h3>h3タイトルです</h3>',
+      })).toBe('h2タイトルです');
+    });
+    it('Hタグがない場合は、日時からタイトルが返る', () => {
+      expect(getTitle({
+        ...post,
+        content: '<p>タイトルではありません</p>',
+      })).toBe(dayjs(now).format('YYYY年M月D日の記録'));
+    });
   });
 });
-
-// export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalItem, length: number = 32, alt?: string) => {
-//   if (!str) return ''
-//   if (typeof str === 'string') {
-//     const htags = getHtags(str)
-//     if (htags && htags[0] !== '') return decodeEntities(htags[0])
-//     return alt || getSummary(str, length)
-//   } else {
-//     const htags = getHtags(str.content)
-//     if (htags && htags[0] !== '') return decodeEntities(htags[0])
-//     if (parent && parent?.name?.ja) return parent.name.ja;
-//     return alt || dayjs(str.publishedAt.toDate ? str.publishedAt.toDate() : str.publishedAt.seconds * 1000).format('YYYY年M月D日の記録');
-//   }
-// }
