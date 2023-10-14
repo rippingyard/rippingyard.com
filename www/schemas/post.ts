@@ -2,7 +2,6 @@
 import { DocumentData, Timestamp } from '@firebase/firestore-types';
 import { DocumentReference } from 'firebase/firestore';
 import { User } from '~/schemas/user';
-import { Item } from './item';
 
 export type PostStatus = 'published' | 'drafted';
 export type PostType = 'article' | 'note' | 'log';

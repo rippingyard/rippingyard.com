@@ -2,7 +2,7 @@
   <div class="items">
     <template v-if="items.length">
       <button class="item" :class="classes(index)" v-for="(item, index) in items" :key="index" @click="selectItem(index)">
-        {{ item }}
+        {{ item.name }}
       </button>
     </template>
     <div v-else class="item">
@@ -12,14 +12,13 @@
 </template>
 <script setup lang="ts">
 import { SuggestionKeyDownProps } from '@tiptap/suggestion';
+import { EntityType } from '~~/composables/suggestion/useTagSuggestion';
 
-type Item = string;
+type Item = EntityType;
 
 const props = defineProps<{
   items: Item[];
-  command: (item: {
-    id: Item
-  }) => void;
+  command: (item: { id: string, label: string }) => void;
 }>();
 
 const classes = (index: number) => {
@@ -28,7 +27,7 @@ const classes = (index: number) => {
   };
 };
 
-const items = computed(() => props.items);
+const items = computed<Item[]>(() => props.items);
 const selectedIndex = ref<number>(0);
 
 watch(items, () => selectedIndex.value = 0);
@@ -69,9 +68,8 @@ const enterHandler = () => {
 
 const selectItem = (index: number) => {
   const item = items.value[index];
-
   if (item) {
-    props.command({ id: item });
+    props.command({ id: item.name, label: item.name });
   }
 };
 
