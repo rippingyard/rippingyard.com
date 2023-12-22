@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "yarn emulator:start",
-    "build": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
+    "buildOld": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
+    "build": "vite build",
+    "type-check": "tsc",
     "lint": "cd hosting && yarn lint",
     "lint:js": "eslint --fix --ext .ts,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint --fix **/*.{vue,css} --ignore-path .gitignore",

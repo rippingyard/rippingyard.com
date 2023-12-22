@@ -4,6 +4,9 @@
 
 firebase-export*
 
+# turborepo
+.turbo
+
 # log
 *-debug.log
 node_modules
