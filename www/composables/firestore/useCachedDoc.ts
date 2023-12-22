@@ -15,7 +15,8 @@ export type QueryParams = {
 export const getCachedDoc = async <T>(args: QueryParams): Promise<T> => {
   try {
     const { collection, id, ref } = args;
-    const snapshot = await getDoc<DocumentData>(ref ? useDocReference(ref.id, ref.parent.id || undefined) : useDocReference(id, collection));
+    const doc = ref ? useDocReference(ref.id, ref.parent.id || undefined) : useDocReference(id, collection);
+    const snapshot = await getDoc<DocumentData>(doc!);
     console.log('getCachedDoc snapshot', snapshot);
 
     if (!snapshot.exists()) return {} as T;

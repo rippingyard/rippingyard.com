@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
 import { OrderByDirection } from '@firebase/firestore';
-import CardPost from '~~/components/card/Post.vue';
+import CardPost from '~~/components/card/Post/index.vue';
 import { useMe } from '~~/composables/fetch/useMe';
 import { useInfinitePosts } from '~~/composables/fetch/usePosts';
 import { QueryParams, WhereParams } from '~~/composables/firestore/useCachedDocs';
@@ -50,7 +50,7 @@ const filteredPosts = computed(() => {
   const filter = props.filter;
   if (!filter || !posts.value) return posts.value;
   return posts.value.filter((post) => filter(post));
-})
+});
 
 if (props.isMine) {
   const { myRef } = useMe();
@@ -72,9 +72,8 @@ const condition = ref<Omit<QueryParams, 'collection'>>({
 const { pending, error, data: result } = useInfinitePosts(condition.value);
 
 watch(result, () => {
-  if (result.value?.data === undefined) return;
+  if (!result.value?.data) return;
   isInitialized.value = true;
-  console.log('result.value.data', result.value.data);
   posts.value = result.value.data;
   loadMore.value = result.value?.loadMore || undefined;
 });

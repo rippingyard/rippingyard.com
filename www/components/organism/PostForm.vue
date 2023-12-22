@@ -73,11 +73,19 @@
 import { DocumentData, DocumentReference, Timestamp } from 'firebase/firestore'
 import { OriginalPost, PostStatus, PostType } from '~/schemas/post';
 import { useSavePost } from '~/composables/save/useSavePost';
+import { useSaveEntity } from '~/composables/save/useSaveEntity';
 import { getLength } from '~~/utils/typography';
 import { usePostLink } from '~/composables/link/usePostLink';
 import { useEntityFilter } from '~/composables/filter/useEntityFilter';
 import { useDocReference } from '~~/composables/firestore/useDocReference';
 import { useEntityId } from '~~/composables/utils/useEntityId';
+import { useSnapshot } from '~~/composables/firestore/useSnapshot';
+import { Entity, EntityType } from '~~/schemas/entity';
+import { useRelation } from '~~/composables/fetch/useRelation';
+import { useSaveRelation } from '~~/composables/save/useSaveRelation';
+import { useClearRelations } from '~~/composables/save/useClearRelations';
+import { useRemoveEntityPrefix } from '~~/composables/utils/useRemoveEntityPrefix';
+import { useTagSuggestion } from '~~/composables/suggestion/useTagSuggestion';
 
 type PublishStatus = 'isPublic' | 'isPrivate';
 
@@ -91,7 +99,21 @@ type Props = {
   isFooterFixed?: boolean;
 }
 
-const mutateAsync = useSavePost();
+const content = ref<string>();
+const type = ref<PostType>();
+const status = ref<PostStatus>();
+const filteredContents = ref<ReturnType<typeof useEntityFilter>>();
+const publishStatus = ref<PublishStatus>();
+const isPublic = computed(() => publishStatus.value === 'isPublic');
+const date = ref(new Date);
+const isSaving = ref(false);
+
+const mutatePost = useSavePost();
+const mutateEntity = useSaveEntity();
+const mutateRelation = useSaveRelation();
+const mutateClearRelations = useClearRelations();
+
+const { refresh: refleshTag } = useTagSuggestion();
 
 const props = withDefaults(
   defineProps<Props>(),
@@ -109,7 +131,7 @@ const posttypes = computed(() => {
     label: 'Log',
   });
 
-  if (isOver.value) types.push({
+  if (type.value === 'article' || isOver.value) types.push({
     key: 'article',
     label: 'Article',
   })
@@ -150,15 +172,6 @@ const footerClasses = {
   'fixed': props.isFooterFixed || false,
 }
 
-const content = ref<string>();
-const type = ref<PostType>();
-const status = ref<PostStatus>();
-const filteredContents = ref<ReturnType<typeof useEntityFilter>>();
-const publishStatus = ref<PublishStatus>();
-const isPublic = computed(() => publishStatus.value === 'isPublic');
-const date = ref(new Date);
-const isSaving = ref(false);
-
 const post = computed<Partial<OriginalPost>>(() => {
   return {
     ...defaultPost.value,
@@ -183,6 +196,7 @@ const isReadyToSave = computed(() => !isEmpty.value);
 const submitLabel = computed(() => props?.post ? '更新する' : '投稿する');
 
 const urls = computed(() => filteredContents.value?.urls || []);
+const tags = computed(() => filteredContents.value?.tags || []);
 
 onMounted(() => {
   content.value = props.post?.content || '';
@@ -195,7 +209,8 @@ onMounted(() => {
 });
 
 const submit = async () => {
-  console.log('submit!', content);
+  console.log('submit!', content.value);
+  filteredContents.value = useEntityFilter(content);
 
   if (isSaving.value) return;
 
@@ -203,16 +218,75 @@ const submit = async () => {
 
   if (props.post?.id) params.id = props.post.id;
   if (params.type === 'note') params.type = 'article';
-  params.entities = (urls.value || []).map(url => useDocReference(useEntityId(encodeURIComponent(url), 'bookmark'), 'entities')) as DocumentReference<DocumentData>[];
+
+  params.entities = [];
+
+  const entities = {
+    tags: (tags.value || []).map(t => useDocReference(useEntityId(t.replace(/^#/, ''), 'tag'), 'entities')),
+    urls: (urls.value || []).map(u => useDocReference(useEntityId(u, 'bookmark'), 'entities')),
+  }
 
   try {
     isSaving.value = true;
 
-    console.log('params', params)
+    console.log('params', params);
 
-    const newPost = await mutateAsync(params);
-    //   status = 'succeeded'
+    const by = useDocReference(params.id, 'posts');
 
+    const setEntities = async (entities: DocumentReference<DocumentData>[], type: EntityType) => {
+      if (entities.length === 0) return [];
+      return await Promise.all(entities.map(async entity => {
+
+        const entityDoc = await useSnapshot<Entity>({
+          id: entity.id,
+          collection: 'entities',
+        });
+        console.log('entity', entityDoc.exists());
+
+        if (!entityDoc.exists()) {
+          await mutateEntity({
+            id: entity.id,
+            name: useRemoveEntityPrefix(entity.id, type),
+            type,
+          });
+        }
+
+        const to = useDocReference(entity.id, 'entities');
+
+        const as = type === 'bookmark' ? type : 'relation';
+
+        const relatedBy = await useRelation(by, to, as);
+
+        if (!relatedBy) {
+          await mutateRelation({
+            by,
+            to,
+            as,
+          });
+        }
+
+        const relatedTo = await useRelation(to, by, as);
+
+        if (!relatedTo) {
+          await mutateRelation({
+            by: to,
+            to: by,
+            as,
+          });
+        }
+
+        return entity;
+      }));
+    }
+
+    await mutateClearRelations(by);
+
+    if (entities.tags.length > 0) params.entities.push(...await setEntities(entities.tags, 'tag'));
+    if (entities.urls.length > 0) params.entities.push(...await setEntities(entities.urls, 'bookmark'));
+
+    refleshTag();
+
+    const newPost = await mutatePost(params);
     console.log('NEWPOST!!!!', newPost);
     clearForm();
 

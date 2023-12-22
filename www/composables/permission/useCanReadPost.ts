@@ -2,15 +2,19 @@
 import { OriginalPost } from "~~/schemas/post";
 
 const isPermitted = (post?: OriginalPost) => {
-  console.log('post', post);
   if (!post) return false;
 
   const { myRef } = useMe();
-  console.log('me', post.owner?.path, myRef.value?.path);
+  const { owner, isPublic, status } = post;
+  console.log('me', owner?.path, myRef.value?.path);
 
-  if (post.owner && myRef.value && post.owner?.path === myRef.value?.path) return true;
+  console.log('post', post);
 
-  return post.isPublic && post.status === 'published';
+  if (owner && myRef.value && owner?.path === myRef.value?.path) return true;
+  console.log('status', status);
+  console.log('isPublic', isPublic);
+
+  return isPublic && status === 'published';
 }
 
 export const useCanReadPost = (post?: OriginalPost) => {

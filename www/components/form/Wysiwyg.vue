@@ -76,7 +76,6 @@ onMounted(() => {
           class: 'mention',
         },
         renderLabel({ options, node }) {
-          console.log('node', node.attrs);
           return `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`
         },
         suggestion,

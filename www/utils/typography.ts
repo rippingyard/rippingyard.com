@@ -39,18 +39,14 @@ export const getTitle = (str: string | Post | OriginalPost, parent?: OriginalIte
   }
 }
 
-export const getHtags = (str: string) => {
-  return str?.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s))
-}
+export const getHtags = (str: string) => str?.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map(s => removeHtmlTags(s));
 
 export const getI18nName = (nameObject: { [lang: string]: string }, lang: 'en' | 'ja' = 'ja'): string => {
   if (!nameObject) return ''
   return nameObject[lang] || ''
 }
 
-export const hasThumbnailFromText = (str: string): boolean => {
-  return !!getThumbnailFromText(str)
-}
+export const hasThumbnailFromText = (str: string): boolean => !!getThumbnailFromText(str);
 
 export const getThumbnailFromText = (str: string, isOwn: boolean = false): string => {
   if (!str) return '';
@@ -101,9 +97,7 @@ export const getTokens = (str: string) => {
   return str ? str.match(/.{3}/g) : [];
 }
 
-export const getLength = (str: string) => {
-  return !str ? 0 : removeHtmlTags(str).length;
-}
+export const getLength = (str: string) => !str ? 0 : removeHtmlTags(str).length;
 
 export const stripTags = (content: string, linebreak = true) => {
   if (!DOMPurify?.sanitize) return '';
@@ -158,6 +152,24 @@ export function extractUrls(content: string): string[] {
   return filteredUrls.sort()
 }
 
+export const extractTags = (content: string): string[] => {
+  if (!content) return [];
+
+  const tags = stripTags(content).match(
+    /(?<=\s|^)#\S+/g
+  );
+
+  if (!tags) return [];
+
+  const filteredTags: string[] = [];
+
+  for (const tag of tags) {
+    if (!filteredTags.includes(tag)) filteredTags.push(tag);
+  }
+
+  return filteredTags.sort();
+}
+
 export const renderWidgets = (content: string) => {
   if (!content) return ''
 
@@ -165,9 +177,9 @@ export const renderWidgets = (content: string) => {
   const urls = extractUrls(content)
   if (!urls) return content
 
-  content = content.replace(/"http/g, '"[http]')
+  content = content.replace(/"http/g, '"[http]');
 
-  urls.reverse()
+  urls.reverse();
 
   let urlInfo: URL;
   let html = ''
@@ -192,12 +204,10 @@ export const renderWidgets = (content: string) => {
         break
     }
 
-    content = content.replace(url, html)
+    content = content.replace(url, html);
   })
 
-  content = content.replace(/"\[http\]/g, '"http')
-
-  return content
+  return content.replace(/"\[http\]/g, '"http');
 }
 
 export function sanitize(content: string) {

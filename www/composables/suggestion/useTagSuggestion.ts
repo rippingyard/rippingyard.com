@@ -4,12 +4,13 @@ import { useEntities } from '~~/composables/fetch/useEntities';
 import tippy from 'tippy.js';
 import { GetReferenceClientRect } from 'tippy.js';
 import TagList from '~~/components/form/TagList/index.vue';
+import { useEntityId } from '~~/composables/utils/useEntityId';
 
 type ClientRect = GetReferenceClientRect | null;
 
 export type EntityType = {
   name: string;
-  isAdd: boolean;
+  id: string | null;
 }
 
 export const useTagSuggestion = () => {
@@ -17,28 +18,28 @@ export const useTagSuggestion = () => {
   let component: VueRenderer;
   let popup: ReturnType<typeof tippy>;
 
-  const { pending, data } = useEntities({
+  const { data, refresh } = useEntities({
     where: [
       { key: 'type', val: 'tag' }
     ],
   });
 
-  const entities: EntityType[] = [
-    'Lea Thompson', 'Cyndi Lauper', 'Tom Cruise', 'Madonna', 'Jerry Hall', 'Joan Collins', 'Winona Ryder', 'Christina Applegate', 'Alyssa Milano', 'Molly Ringwald', 'Ally Sheedy', 'Debbie Harry', 'Olivia Newton-John', 'Elton John', 'Michael J. Fox', 'Axl Rose', 'Emilio Estevez', 'Ralph Macchio', 'Rob Lowe', 'Jennifer Grey', 'Mickey Rourke', 'John Cusack', 'Matthew Broderick', 'Justine Bateman', 'Lisa Bonet',
-  ].map(e => {
+  const entities: EntityType[] = (data.value || []).map(e => {
     return {
-      name: e,
-      isAdd: false,
+      name: e.name,
+      id: e.id,
     }
   });
+  console.log('entities', entities);
 
   const items = computed<EntityType[]>(() => {
-    const items = query.value ? entities.filter(e => e.name.toLowerCase().startsWith(query.value.toLowerCase())).slice(0, 5) : [];
+    if (!query.value) return [];
+    const items = entities.filter(e => e.name.toLowerCase().startsWith(query.value.toLowerCase())).slice(0, 5);
     return [
       ...items,
       {
-        name: 'Add New Tag',
-        isAdd: true,
+        name: query.value,
+        id: useEntityId(query.value, 'tag'),
       },
     ]
   });
@@ -82,7 +83,6 @@ export const useTagSuggestion = () => {
             popup[0].hide();
             return true;
           }
-          console.log('component', component);
           return component.ref?.onKeyDown(props);
         },
         onExit() {
@@ -95,5 +95,6 @@ export const useTagSuggestion = () => {
 
   return {
     suggestion,
+    refresh,
   }
 }

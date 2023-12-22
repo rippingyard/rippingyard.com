@@ -17,10 +17,17 @@ export const Caption = Node.create<CaptionOptions>({
 
   // priority: 9999,
 
-  defaultOptions: {
-    HTMLAttributes: {
-      class: 'caption'
-    },
+  // defaultOptions: {
+  //   HTMLAttributes: {
+  //     class: 'caption'
+  //   },
+  // },
+
+  addOptions() {
+    return {
+      ...this.parent?.(),
+      class: 'caption',
+    }
   },
 
   content: 'inline*',
@@ -31,9 +38,9 @@ export const Caption = Node.create<CaptionOptions>({
 
   addAttributes() {
     return {
-      // class: {
-      //   default: 'caption',
-      // },
+      class: {
+        default: 'caption',
+      },
     }
   },
 

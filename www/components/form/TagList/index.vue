@@ -34,8 +34,6 @@ watch(items, () => selectedIndex.value = 0);
 
 const onKeyDown = ref(({ event }: SuggestionKeyDownProps) => {
 
-  console.log('event', event);
-
   if (event.key === 'ArrowUp') {
     upHandler();
     return true;

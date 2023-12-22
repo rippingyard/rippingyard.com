@@ -1,3 +1,6 @@
 ﻿import { Post } from "~~/schemas/post";
+import { useDomain } from "./useDomain";
 
-export const usePostLink = (post: Partial<Post>): string => `/post/${post.id}`;
+const domain = useDomain();
+
+export const usePostLink = (post: Partial<Post>, isFullpath = false): string => `${isFullpath ? domain : ''}/post/${post.id}`;
