@@ -21,9 +21,11 @@ import { Link } from '@tiptap/extension-link';
 import { Image } from '@tiptap/extension-image';
 import { BubbleMenu } from '@tiptap/extension-bubble-menu';
 import { FloatingMenu } from '@tiptap/extension-floating-menu';
+import { Mention } from '@tiptap/extension-mention';
+import { useTagSuggestion } from '~~/composables/suggestion/useTagSuggestion';
 // import Placeholder from '@tiptap/extension-placeholder'
 
-// import Caption from '~/plugins/editor/Caption'
+import Caption from '~~/utils/editor/Caption';
 // import Item from '~/plugins/editor/Item'
 // import ItemSuggestion from '~/plugins/suggestions/item'
 
@@ -38,12 +40,14 @@ const editor = ref<Editor>();
 // const image = ref<File>();
 const showUploader = ref(false);
 
+const { suggestion } = useTagSuggestion();
+
 onMounted(() => {
   editor.value = new Editor({
     content: props.modelValue,
     extensions: [
       StarterKit,
-      // Caption,
+      Caption,
       Highlight,
       // Subscript,
       // TextStyle,
@@ -67,12 +71,15 @@ onMounted(() => {
         //   return editor.isActive('paragraph')
         // },
       }),
-      // Item.configure({
-      //   HTMLAttributes: {
-      //     class: 'mention',
-      //   },
-      //   suggestion: ItemSuggestion,
-      // }),
+      Mention.configure({
+        HTMLAttributes: {
+          class: 'mention',
+        },
+        renderLabel({ options, node }) {
+          return `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`
+        },
+        suggestion,
+      }),
     ],
     onUpdate: () => {
       if (!editor.value) return;

@@ -21,11 +21,9 @@
     <button :class="{ 'is-active': props.editor.isActive('image') }" @click="$emit('showImageUploader')">
       <IconImage />
     </button>
-    <!-- <button
-      @click="props.editor.chain().focus().setCaption().run()"
-    >
-      <fa-icon icon="closed-captioning" />
-    </button> -->
+    <button @click="props.editor.chain().focus().setCaption({}).run()">
+      <IconCaption />
+    </button>
     <button :class="{ 'is-active': props.editor.isActive('bulletList') }"
       @click="props.editor.chain().focus().toggleBulletList().run()">
       <IconList />

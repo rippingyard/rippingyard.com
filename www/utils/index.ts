@@ -1,10 +1,8 @@
-﻿export function getDomain() {
-  return process.env.VERCEL_ENV !== 'production'
-    ? 'http://localhost:3333'
-    : 'https://www.rippingyard.com'
-}
+﻿export const getDomain = () => process.env.VERCEL_ENV !== 'production'
+  ? 'http://localhost:3333'
+  : 'https://www.rippingyard.com';
 
-export function createToken(length: number = 8) {
+export const createToken = (length: number = 8) => {
   const letters = 'abcdefghjkmnpqrstuvwxyz'
   const numbers = '23456789'
   const string = letters + letters.toUpperCase() + numbers

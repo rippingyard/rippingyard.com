@@ -2,16 +2,15 @@
 import { DocumentData, Timestamp } from '@firebase/firestore-types';
 import { DocumentReference } from 'firebase/firestore';
 import { User } from '~/schemas/user';
-import { Item } from './item';
 
 export type PostStatus = 'published' | 'drafted';
 export type PostType = 'article' | 'note' | 'log';
 
 export type OriginalPost = {
   id: string;
-  slug: '';
+  slug?: string;
   content: string;
-  colaborators: DocumentData[];
+  colaborators?: DocumentData[];
   createdAt: Timestamp;
   publishedAt: Timestamp;
   updatedAt: Timestamp;
@@ -21,12 +20,12 @@ export type OriginalPost = {
   isPublic: boolean;
   isDeleted: boolean;
   entities: DocumentReference<DocumentData>[];
-  counts: {
+  counts?: {
     favorite: number;
     bookmark: number;
     pageview: number;
   }
-  items: DocumentData[];
+  items?: DocumentData[];
   status: PostStatus;
 }
 

@@ -2,24 +2,37 @@
   <div>
     <BlockMain :is-cliff="true">
       <BlockLoading :is-loading="isLoading" :error="errorMessage">
-        <ArticlePost v-if="data" :post="data" />
-        <BlockBookmarks :urls="urls" />
+        <ul>
+          <li v-for="datum of data" :key="datum.to.path"><CardPostProxy :doc="datum.to" /></li>
+        </ul>
+        <!-- <BlockBookmarks :urls="urls" /> -->
       </BlockLoading>
     </BlockMain>
     <!-- <OrganismBillboard v-if="data" :exclude-id="data.id" /> -->
   </div>
 </template>
 <script lang="ts" setup>
-import { usePost } from '~~/composables/fetch/usePost';
-import { useCanReadPost } from '~~/composables/permission/useCanReadPost';
 import { useErrorNotFound } from '~~/composables/error/useErrorNotFound';
-import { usePostMeta } from '~~/composables/ssr/usePostMeta';
 import { useEntityFilter } from '~~/composables/filter/useEntityFilter';
+import { useEntity } from '~~/composables/fetch/useEntity';
+import { useEntityId } from '~~/composables/utils/useEntityId';
+import { useCanReadEntity } from '~~/composables/permission/useCanReadEntity';
+import { useEntityMeta } from '~~/composables/ssr/useEntityMeta';
+import { useRelations } from '~~/composables/fetch/useRelations';
+import { useDocReference } from '~~/composables/firestore/useDocReference';
 
-const route = useRoute();
+const props = defineProps<{
+  doc: DocumentReference
+}>();
 
-console.log('route.params.id', route.params.id);
-const { data, pending, error } = usePost(route.params.id as string);
+const doc = computed(() => props.doc || undefined);
+console.log('doc', doc.value);
+
+const { data, pending, error} = useRelations({
+  where: [
+    {key: 'by', val: doc.value}
+  ]
+});
 
 const isNotFound = ref(false);
 const errorMessage = computed(() => {
@@ -37,26 +50,23 @@ const checkPermission = () => {
     useErrorNotFound();
     return;
   }
-
-  const { canReadPost } = useCanReadPost(data.value);
-  if (!canReadPost.value) {
-    console.error('no permission')
-    useErrorNotFound();
-  }
 }
 
-const filteredContents = ref<any>();
-const urls = computed(() => filteredContents.value?.urls || []);
-const content = computed(() => data.value?.content || '');
+// const filteredContents = ref<any>();
+// const content = computed(() => data.value?.description || '');
 
 // watch(content, () => filteredContents.value = useEntityFilter(content));
 watch(data, () => {
   console.log('data!!', data.value);
-  filteredContents.value = useEntityFilter(content);
+  if (!data.value) return;
+
+  for(const datum of data.value) {
+    console.log('datum', datum);
+  }
+
+  // filteredContents.value = useEntityFilter(content);
   checkPermission();
 });
-
-await usePostMeta(route.params.id as string, data);
 
 </script>
 <style lang="scss" scoped>

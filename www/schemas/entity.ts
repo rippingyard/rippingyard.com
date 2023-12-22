@@ -1,4 +1,5 @@
 ﻿import { Timestamp } from '@firebase/firestore-types'
+import { Dayjs } from 'dayjs';
 import { DocumentData, DocumentReference } from 'firebase/firestore';
 
 type EntityBody = {
@@ -32,4 +33,15 @@ export type OriginalEntity = {
   status: 'published' | 'draft';
 }
 
-export type Entity = OriginalEntity;
+export type Entity = OriginalEntity & {
+  title: string;
+  contentBody: string;
+  thumbnail: string;
+  hasThumbnail: boolean;
+  autoCode: number;
+  permalink: string;
+  editlink: string;
+  sociallink?: string;
+  createdDate: Dayjs;
+  updatedDate: Dayjs;
+};

@@ -1,18 +1,20 @@
 ﻿import { useHtmlHeader } from "~~/composables/utils/useHtmlHeader";
-import { OriginalPost, Post } from "schemas/post";
-import { usePostLink } from "~~/composables/link/usePostLink";
+import { OriginalEntity } from "~~/schemas/entity";
+import { useEntityLink } from "~~/composables/link/useEntityLink";
 
-export const usePostMeta = async (postId: string, data?: Ref<OriginalPost | null>) => {
-  await useAsyncData(`meta-post-${postId}`, async () => {
+export const useEntityMeta = async (entityId: string, data?: Ref<OriginalEntity | null>) => {
+  console.log('useEntityMeta', entityId);
+  await useAsyncData(`meta-entity-${entityId}`, async () => {
     try {
-      let post = data?.value || undefined;
-      if (!post) post = await $fetch<OriginalPost>(`/api/post/${postId}`);
+      let entity = data?.value || undefined;
+      if (!entity) entity = await $fetch<OriginalEntity>(`/api/entity/${entityId}`);
 
-      const title = getTitle(post as Post);
-      const description = getSummary(post.content);
-      const permalink = usePostLink(post, true);
+      // const title = getTitle(entity as Entity);
+      const title = entity?.name || entity.id!;
+      const description = getSummary(entity.description);
+      const permalink = useEntityLink(entity, true);
 
-      const thumbnail = getThumbnailFromText(post?.content);
+      const thumbnail = getThumbnailFromText(entity?.description);
 
       useHtmlHeader({
         title,

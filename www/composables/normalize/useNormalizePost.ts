@@ -5,7 +5,6 @@ import { numberByString } from '~~/utils';
 import { usePostLink } from '../link/usePostLink';
 import { usePostEditLink } from '../link/usePostEditLink';
 import { useItem } from '../fetch/useItem';
-import { usePostSocialLink } from '~~/composables/link/usePostSocialLink';
 
 const getParent = (post: OriginalPost) => {
   if (!post.parent) return { data: undefined };
@@ -42,7 +41,7 @@ export const useNormalizePost = (originalPost: OriginalPost) => {
 }
 
 const permalink = (post: Partial<Post>): string => usePostLink(post);
-const sociallink = (post: Partial<Post>): string => usePostSocialLink(post);
+const sociallink = (post: Partial<Post>): string => usePostLink(post, true);
 
 const editlink = (post: Partial<Post>): string => usePostEditLink(post);
 
