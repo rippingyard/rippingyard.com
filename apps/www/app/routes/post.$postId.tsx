@@ -1,6 +1,8 @@
 ﻿import { css } from '@emotion/react';
-import { LoaderFunctionArgs, MetaFunction, defer } from '@remix-run/node';
+import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
+import { defer } from '@vercel/remix';
+import type { LoaderFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
 import { Article } from '~/components/article';
@@ -8,7 +10,9 @@ import { usePost } from '~/hooks/fetch/usePost';
 import { useDate } from '~/hooks/normalize/useDate';
 import { getSummary, getTitle } from '~/utils/typography';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader: LoaderFunction = async ({
+  params,
+}: LoaderFunctionArgs) => {
   try {
     const { postId } = params;
 
