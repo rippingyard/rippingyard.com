@@ -4,3 +4,4 @@ public
 build
 .cache
 .env
+.vercel
