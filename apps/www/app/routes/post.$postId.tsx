@@ -1,8 +1,8 @@
 ﻿import { css } from '@emotion/react';
-import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { LoaderFunctionArgs } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
 import { defer } from '@vercel/remix';
-import type { LoaderFunction } from '@vercel/remix';
+import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
 import { Article } from '~/components/article';

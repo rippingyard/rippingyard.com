@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx remix build",
+    "build": "remix build",
     "dev": "remix dev --port 8000 -c 'node --es-module-specifier-resolution=node server.mjs'",
     "serve": "PORT=3334 node server.mjs",
+    "start": "remix-serve ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

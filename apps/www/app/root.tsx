@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import type { LinksFunction } from '@remix-run/node'; // or cloudflare/deno
 import {
   Links,
   LiveReload,
@@ -9,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
+import type { LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css';
 
 import { Layout } from './components/layout';
