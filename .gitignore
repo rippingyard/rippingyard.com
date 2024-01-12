@@ -10,3 +10,6 @@ firebase-export*
 # log
 *-debug.log
 node_modules
+
+# env
+.env
