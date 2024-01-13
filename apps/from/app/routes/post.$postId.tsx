@@ -7,9 +7,12 @@ import { usePost } from '~/hooks/fetch/usePost';
 import { useDate } from '~/hooks/normalize/useDate';
 import { getSummary, getTitle } from '~/utils/typography';
 
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { Await, useLoaderData } from '@remix-run/react';
-import { Suspense } from 'react';
+import { LoaderFunctionArgs } from '.pnpm/@remix-run+node@2.5.0_typescript@5.3.3/node_modules/@remix-run/node/dist';
+import {
+  Await,
+  useLoaderData,
+} from '.pnpm/@remix-run+react@2.5.0_react-dom@18.2.0_react@18.2.0_typescript@5.3.3/node_modules/@remix-run/react/dist';
+import { Suspense } from '.pnpm/@types+react@18.2.47/node_modules/@types/react';
 
 export const loader: LoaderFunction = async ({
   params,

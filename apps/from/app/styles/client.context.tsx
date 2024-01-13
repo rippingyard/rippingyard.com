@@ -1,4 +1,4 @@
-﻿import { createContext } from "react";
+﻿import { createContext } from '.pnpm/@types+react@18.2.47/node_modules/@types/react';
 
 export interface ClientStyleContextData {
   reset: () => void;

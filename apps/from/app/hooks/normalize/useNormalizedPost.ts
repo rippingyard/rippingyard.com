@@ -12,7 +12,7 @@ import {
 import { usePostEditLink } from '../link/usePostEditLink';
 import { usePostLink } from '../link/usePostLink';
 
-import { useMemo } from 'react';
+import { useMemo } from '.pnpm/@types+react@18.2.47/node_modules/@types/react';
 
 // import { useItem } from '../fetch/useItem';
 // import { usePostEditLink } from '../link/usePostEditLink';

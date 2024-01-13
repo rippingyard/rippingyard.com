@@ -5,7 +5,7 @@
   removeTitle,
 } from '~/utils/typography';
 
-import { useMemo } from 'react';
+import { useMemo } from '.pnpm/@types+react@18.2.47/node_modules/@types/react';
 
 type Options = {
   alt?: string;
