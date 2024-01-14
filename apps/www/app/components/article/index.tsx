@@ -1,7 +1,7 @@
-﻿import { useContent } from '~/hooks/normalize/useContent';
-import { articleStyle } from '~/utils/style';
+﻿import { FC } from 'react';
 
-import { FC } from 'react';
+import { useContent } from '~/hooks/normalize/useContent';
+import { articleStyle } from '~/utils/style';
 
 type Props = {
   text: string;
