@@ -9,8 +9,6 @@ import { usePosts } from '~/hooks/fetch/usePosts';
 import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 
-export const config = { runtime: 'edge' };
-
 export const loader: LoaderFunction = async () => {
   const posts = await usePosts();
   return defer({
