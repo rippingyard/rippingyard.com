@@ -57,6 +57,7 @@ export const useQuery = async <T>(
   const data: T[] = [];
   const ids: string[] = [];
   const { removeWhereKeys = [] } = args;
+  console.log('args', args);
 
   const { db } = useFirestore();
 

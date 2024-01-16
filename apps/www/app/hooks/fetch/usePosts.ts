@@ -27,9 +27,10 @@ const buildConditions = (args: Omit<QueryParams<Post>, 'collection'> = {}) => {
 export const usePosts = async (
   payload: Omit<QueryParams<Post>, 'collection'> = {}
 ) => {
-  const args = buildConditions(payload);
+  const { args, where } = buildConditions(payload);
   const { data } = await useQuery<Post>({
     collection: 'posts',
+    where,
     ...args,
   });
   return data;
