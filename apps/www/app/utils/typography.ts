@@ -184,24 +184,30 @@ export const renderWidgets = (content: string) => {
   urls.forEach((url) => {
     html = url;
     urlInfo = new URL(url);
-    // console.log('parsed url', urlInfo);
+    console.log('parsed url', urlInfo);
 
-    switch (urlInfo.hostname) {
-      case 'youtube.com':
-      case 'jp.youtube.com':
-      case 'www.youtube.com':
-        if (urlInfo.searchParams.has('v')) {
-          // console.log('youtubeId', urlInfo.searchParams.get('v'));
-          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
-            'v'
-          )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
-        }
-        break;
+    // TODO: Hydration Errorに対応する
+    // https://react.dev/errors/422?invariant=422
+    // https://react.dev/errors/418?invariant=418
+    // https://react.dev/errors/425?invariant=425
+    // Text content does not match server-rendered HTML.
 
-      default:
-        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;
-        break;
-    }
+    // switch (urlInfo.hostname) {
+    //   case 'youtube.com':
+    //   case 'jp.youtube.com':
+    //   case 'www.youtube.com':
+    //     if (urlInfo.searchParams.has('v')) {
+    //       // console.log('youtubeId', urlInfo.searchParams.get('v'));
+    //       html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
+    //         'v'
+    //       )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
+    //     }
+    //     break;
+
+    //   default:
+    //     html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;
+    //     break;
+    // }
 
     content = content.replace(url, html);
   });
