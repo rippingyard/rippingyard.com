@@ -1,16 +1,17 @@
 ﻿import { css } from '@emotion/react';
+import { Await, useLoaderData } from '@remix-run/react';
 import { defer } from '@vercel/remix';
 import type { LoaderFunction } from '@vercel/remix';
+import { Suspense } from 'react';
 
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePosts } from '~/hooks/fetch/usePosts';
 
-import { Await, useLoaderData } from '@remix-run/react';
-import { Suspense } from 'react';
-
 export const loader: LoaderFunction = async () => {
-  const posts = await usePosts();
+  const posts = await usePosts({
+    limit: 25,
+  });
   return defer({
     posts: posts.sort((a, b) => (a.publishedAt > b.publishedAt ? -1 : 1)),
   });
