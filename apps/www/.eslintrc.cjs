@@ -7,7 +7,6 @@ module.exports = {
     'plugin:import/typescript',
     // 'plugin:storybook/recommended',
     'prettier',
-    'next/core-web-vitals',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',

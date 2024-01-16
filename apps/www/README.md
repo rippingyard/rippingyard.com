@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Remix
 
-## Getting Started
+This directory is a brief example of a [Remix](https://remix.run/docs) site that can be deployed to Vercel with zero configuration.
 
-First, run the development server:
+To get started, run the Remix cli with this template
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+npx create-remix@latest --template vercel/vercel/examples/remix
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy Your Own
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/remix&template=remix)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+_Live Example: https://remix-run-template.vercel.app_
 
-## Learn More
+You can also deploy using the [Vercel CLI](https://vercel.com/cli):
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm i -g vercel
+vercel
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To run your Remix app locally, make sure your project's local dependencies are installed:
 
-## Deploy on Vercel
+```sh
+npm install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Afterwards, start the Remix development server like so:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```sh
+npm run dev
+```
+
+Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
