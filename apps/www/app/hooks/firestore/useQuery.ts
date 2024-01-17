@@ -77,7 +77,7 @@ export const useQuery = async <T>(
     // console.table(logrows);
   }
 
-  if (args?.limit) q = query(q, limit(args.limit));
+  if (args?.limit && args?.limit > 0) q = query(q, limit(args.limit));
 
   if (args?.orderBy) {
     const order = args.orderBy.order || 'desc';

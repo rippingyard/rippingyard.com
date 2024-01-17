@@ -3,6 +3,7 @@ import createEmotionServer from '@emotion/server/create-instance';
 import type { EntryContext } from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
+import { EntryContext as EntryContextVercel } from '@vercel/remix';
 import isbot from 'isbot';
 import { PassThrough } from 'node:stream';
 import { renderToPipeableStream, renderToString } from 'react-dom/server';
@@ -29,7 +30,8 @@ export default function handleRequest(
   remixContext: EntryContext
   // loadContext: AppLoadContext
 ) {
-  if (isSitemapUrl(request)) return sitemap(request, remixContext);
+  if (isSitemapUrl(request))
+    return sitemap(request, remixContext as EntryContextVercel);
 
   return isbot(request.headers.get('user-agent'))
     ? handleBotRequest(
