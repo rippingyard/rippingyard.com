@@ -125,6 +125,9 @@ function handleBrowserRequest(
     </ServerStyleContext.Provider>
   );
 
+  console.log('html', html);
+  console.log('markup', markup);
+
   responseHeaders.set('Content-Type', 'text/html');
 
   // let shellRendered = false;
