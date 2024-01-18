@@ -1,5 +1,5 @@
-import { CacheProvider } from '@emotion/react';
-import createEmotionServer from '@emotion/server/create-instance';
+// import { CacheProvider } from '@emotion/react';
+// import createEmotionServer from '@emotion/server/create-instance';
 import type { EntryContext } from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
@@ -9,8 +9,8 @@ import { PassThrough } from 'node:stream';
 import { renderToPipeableStream, renderToString } from 'react-dom/server';
 import { createSitemapGenerator } from 'remix-sitemap';
 
-import createEmotionCache from './styles/createEmotionCache';
-import ServerStyleContext from './styles/server.context';
+// import createEmotionCache from './styles/createEmotionCache';
+// import ServerStyleContext from './styles/server.context';
 
 const ABORT_DELAY = 5_000;
 
@@ -104,29 +104,22 @@ function handleBrowserRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  const cache = createEmotionCache();
-  const { extractCriticalToChunks } = createEmotionServer(cache);
+  // const cache = createEmotionCache();
+  // const { extractCriticalToChunks } = createEmotionServer(cache);
 
-  const html = renderToString(
-    <ServerStyleContext.Provider value={null}>
-      <CacheProvider value={cache}>
-        <RemixServer context={remixContext} url={request.url} />
-      </CacheProvider>
-    </ServerStyleContext.Provider>
-  );
+  // const html = renderToString(
+  //   <ServerStyleContext.Provider value={null}>
+  //     <CacheProvider value={cache}>
+  //       <RemixServer context={remixContext} url={request.url} />
+  //     </CacheProvider>
+  //   </ServerStyleContext.Provider>
+  // );
 
-  const chunks = extractCriticalToChunks(html);
+  // const chunks = extractCriticalToChunks(html);
 
   const markup = renderToString(
-    <ServerStyleContext.Provider value={chunks.styles}>
-      <CacheProvider value={cache}>
-        <RemixServer context={remixContext} url={request.url} />
-      </CacheProvider>
-    </ServerStyleContext.Provider>
+    <RemixServer context={remixContext} url={request.url} />
   );
-
-  console.log('html', html);
-  console.log('markup', markup);
 
   responseHeaders.set('Content-Type', 'text/html');
 

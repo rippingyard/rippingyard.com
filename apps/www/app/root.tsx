@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { cssBundleHref } from '@remix-run/css-bundle';
 import {
   Links,
   LiveReload,
@@ -12,10 +12,11 @@ import type { LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css';
 
 import { Layout } from './components/layout';
-import { FONT, black, white } from './utils/style';
+import { bodyStyle } from './styles/body.css';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: destyle },
+  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
 
 export const meta: MetaFunction = () => [
@@ -35,7 +36,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body css={bodyStyle}>
+      <body className={bodyStyle}>
         <Layout>
           <Outlet />
         </Layout>
@@ -46,13 +47,3 @@ export default function App() {
     </html>
   );
 }
-
-const bodyStyle = css({
-  margin: 0,
-  padding: 0,
-  fontFamily: FONT.NORMAL,
-  fontSize: 18,
-  lineHeight: 1.8,
-  backgroundColor: white(),
-  color: black(),
-});

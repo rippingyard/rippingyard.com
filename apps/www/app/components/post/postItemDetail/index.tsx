@@ -1,5 +1,4 @@
-﻿import { css } from '@emotion/react';
-import { SerializeFrom } from '@remix-run/node';
+﻿import { SerializeFrom } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import { FC } from 'react';
 
@@ -8,7 +7,9 @@ import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
 import { usePostTitle } from '~/hooks/normalize/usePostTitle';
 import { Post } from '~/schemas/post';
-import { articleStyle } from '~/utils/style';
+import { articleStyle } from '~/styles/article.css';
+
+import { footerStyle, headingStyle } from './style.css';
 
 type Props = {
   post: SerializeFrom<Post>;
@@ -21,7 +22,7 @@ export const PostListItemDetail: FC<Props> = ({ post }) => {
   return (
     <>
       {(hasHeadingTag && (
-        <div css={[articleStyle, headingStyle]}>
+        <div className={`${articleStyle} ${headingStyle}`}>
           <h1>
             <Link to={permalink}>{title}</Link>
           </h1>
@@ -32,24 +33,9 @@ export const PostListItemDetail: FC<Props> = ({ post }) => {
         </div>
       )}
       <Article text={content} />
-      <div css={footerStyle}>
+      <div className={footerStyle}>
         <Link to={permalink}>{createdate}</Link>
       </div>
     </>
   );
 };
-
-const headingStyle = css({
-  a: {
-    textDecoration: 'none',
-    color: 'inherit',
-  },
-  'a:hover': {
-    textDecoration: 'underline',
-    cursor: 'pointer',
-  },
-});
-
-const footerStyle = css({
-  fontSize: '0.8em',
-});

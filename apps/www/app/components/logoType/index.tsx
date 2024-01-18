@@ -1,8 +1,7 @@
-﻿import { SerializedStyles } from '@emotion/react';
-import { FC } from 'react';
+﻿import { FC } from 'react';
 
 export const LogoType: FC<{
-  style?: SerializedStyles;
+  style?: string;
 }> = ({ style }) => {
   return (
     <svg
@@ -10,7 +9,7 @@ export const LogoType: FC<{
       width="171.605"
       height="69.108"
       viewBox="0 0 171.605 69.108"
-      css={style}
+      className={style}
     >
       <path
         id="svg_textlogo"

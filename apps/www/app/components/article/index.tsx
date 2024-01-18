@@ -1,7 +1,7 @@
-﻿import { useContent } from '~/hooks/normalize/useContent';
-import { articleStyle } from '~/utils/style';
+﻿import { FC } from 'react';
 
-import { FC } from 'react';
+import { useContent } from '~/hooks/normalize/useContent';
+import { articleStyle } from '~/styles/article.css';
 
 type Props = {
   text: string;
@@ -9,5 +9,7 @@ type Props = {
 
 export const Article: FC<Props> = ({ text = '' }) => {
   const html = useContent(text);
-  return <div css={articleStyle} dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div className={articleStyle} dangerouslySetInnerHTML={{ __html: html }} />
+  );
 };

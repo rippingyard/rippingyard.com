@@ -192,22 +192,22 @@ export const renderWidgets = (content: string) => {
     // https://react.dev/errors/425?invariant=425
     // Text content does not match server-rendered HTML.
 
-    // switch (urlInfo.hostname) {
-    //   case 'youtube.com':
-    //   case 'jp.youtube.com':
-    //   case 'www.youtube.com':
-    //     if (urlInfo.searchParams.has('v')) {
-    //       // console.log('youtubeId', urlInfo.searchParams.get('v'));
-    //       html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
-    //         'v'
-    //       )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
-    //     }
-    //     break;
+    switch (urlInfo.hostname) {
+      case 'youtube.com':
+      case 'jp.youtube.com':
+      case 'www.youtube.com':
+        if (urlInfo.searchParams.has('v')) {
+          // console.log('youtubeId', urlInfo.searchParams.get('v'));
+          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
+            'v'
+          )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
+        }
+        break;
 
-    //   default:
-    //     html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;
-    //     break;
-    // }
+      default:
+        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;
+        break;
+    }
 
     content = content.replace(url, html);
   });

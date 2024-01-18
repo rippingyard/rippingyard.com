@@ -1,15 +1,14 @@
-﻿import { css } from '@emotion/react';
+﻿import type { LoaderFunctionArgs } from '@remix-run/node';
+import { Await, useLoaderData } from '@remix-run/react';
 import { defer } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
+import { Suspense } from 'react';
 
 import { Article } from '~/components/article';
 import { usePost } from '~/hooks/fetch/usePost';
 import { useDate } from '~/hooks/normalize/useDate';
+import { containerStyle } from '~/styles/container.css';
 import { getSummary, getTitle } from '~/utils/typography';
-
-import type { LoaderFunctionArgs } from '@remix-run/node';
-import { Await, useLoaderData } from '@remix-run/react';
-import { Suspense } from 'react';
 
 export const loader: LoaderFunction = async ({
   params,
@@ -52,7 +51,7 @@ export default function Main() {
   const { post } = useLoaderData<typeof loader>();
   return (
     <div>
-      <main css={mainStyle}>
+      <main className={containerStyle}>
         <h2>Post</h2>
         <Suspense fallback={<div>Loading</div>}>
           <Await resolve={post}>
@@ -63,9 +62,3 @@ export default function Main() {
     </div>
   );
 }
-
-const mainStyle = css({
-  maxWidth: 780,
-  margin: 'auto',
-  padding: 24,
-});

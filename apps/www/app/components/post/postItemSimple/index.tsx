@@ -1,5 +1,4 @@
-﻿import { css } from '@emotion/react';
-import { SerializeFrom } from '@remix-run/node';
+﻿import { SerializeFrom } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import { FC } from 'react';
 
@@ -7,7 +6,8 @@ import { Article } from '~/components/article';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
 import { Post } from '~/schemas/post';
-import { gray } from '~/utils/style';
+
+import { contentStyle, footerStyle } from './style.css';
 
 type Props = {
   post: SerializeFrom<Post>;
@@ -18,23 +18,12 @@ export const PostListItemSimple: FC<Props> = ({ post }) => {
   const createdate = useDate(post.createdAt);
   return (
     <>
-      <div css={contentStyle}>
+      <div className={contentStyle}>
         <Article text={post.content} />
       </div>
-      <div css={footerStyle}>
+      <div className={footerStyle}>
         <Link to={permalink}>{createdate}</Link>
       </div>
     </>
   );
 };
-
-const contentStyle = css({
-  padding: 16,
-  paddingBottom: 0,
-  background: gray(),
-  borderRadius: 8,
-});
-
-const footerStyle = css({
-  fontSize: '0.8em',
-});
