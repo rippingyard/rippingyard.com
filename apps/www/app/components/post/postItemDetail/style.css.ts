@@ -1,5 +1,7 @@
 ﻿import { globalStyle, style } from '@vanilla-extract/css';
 
+import { rootVars } from '~/styles/vars.css';
+
 export const headingStyle = style({});
 
 globalStyle(`${headingStyle} a`, {
@@ -13,5 +15,5 @@ globalStyle(`${headingStyle} a:hover`, {
 });
 
 export const footerStyle = style({
-  fontSize: '0.8em',
+  fontSize: rootVars.font.size.small,
 });

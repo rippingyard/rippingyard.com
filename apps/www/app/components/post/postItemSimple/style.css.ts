@@ -1,14 +1,15 @@
 ﻿import { style } from '@vanilla-extract/css';
 
-import { gray } from '~/utils/style';
+import { vars } from '~/styles/theme.css';
+import { rootVars } from '~/styles/vars.css';
 
 export const contentStyle = style({
   padding: 16,
   paddingBottom: 0,
-  background: gray(),
+  background: vars.color.highlight,
   borderRadius: 8,
 });
 
 export const footerStyle = style({
-  fontSize: '0.8em',
+  fontSize: rootVars.font.size.small,
 });

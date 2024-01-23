@@ -1,10 +1,10 @@
 ﻿import { globalStyle, style } from '@vanilla-extract/css';
 
-import { black, blue, grayDark, yellow } from '~/utils/style';
+import { vars } from './theme.css';
 
 const blockStyle = {
   paddingBottom: 25,
-  fontSize: '1em',
+  fontSize: '1rem',
   // textAlign: 'justify',
 };
 
@@ -15,7 +15,7 @@ export const articleStyle = style({
 
 globalStyle(`${articleStyle} a`, {
   textDecoration: 'underline',
-  color: blue(),
+  color: vars.color.primaryDark,
 });
 
 globalStyle(`${articleStyle} p`, {
@@ -108,12 +108,12 @@ globalStyle(`${articleStyle} ol li`, {
 });
 
 globalStyle(`${articleStyle} mark`, {
-  backgroundColor: yellow(),
+  backgroundColor: vars.color.secondry,
 });
 
 globalStyle(`${articleStyle} blockquote`, {
   ...blockStyle,
-  border: `4px solid ${black()}`,
+  border: `4px solid ${vars.color.neutral}`,
   marginBottom: 25,
   padding: 25,
   fontFamily: 'serif',
@@ -129,12 +129,12 @@ globalStyle(`${articleStyle} blockquote > p:last-of-type`, {
 
 globalStyle(`${articleStyle} pre`, {
   ...blockStyle,
-  border: `3px solid ${yellow()}`,
+  border: `3px solid ${vars.color.secondry}`,
   padding: 25,
   marginBottom: 25,
   fontSize: '0.9em',
-  backgroundColor: black(),
-  color: yellow(),
+  backgroundColor: vars.color.neutral,
+  color: vars.color.secondry,
 });
 
 globalStyle(`${articleStyle} li p`, {
@@ -166,7 +166,7 @@ globalStyle(`${articleStyle} hr`, {
   display: 'block',
   border: 'none',
   height: 1,
-  backgroundColor: grayDark(),
+  backgroundColor: vars.color.shadow,
   marginBottom: 25,
 });
 

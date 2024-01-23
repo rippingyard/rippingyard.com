@@ -30,11 +30,9 @@ export const loader: LoaderFunction = async ({
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
   const { post } = data;
-  console.log('post.content', post.content);
   const title = getTitle(post.content, {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
-  console.log('title', title);
   const summary = getSummary(post.content, 340);
   const htmlTitle = `${title} - rippingyard`;
   return [
