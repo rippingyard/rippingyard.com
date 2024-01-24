@@ -28,6 +28,7 @@ export const loader = () => {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',
+      'Cache-Control': 'public, max-age=432000',
       'xml-version': '1.0',
       encoding: 'UTF-8',
     },
