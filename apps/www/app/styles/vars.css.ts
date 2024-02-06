@@ -1,11 +1,11 @@
-﻿import { createGlobalTheme } from '@vanilla-extract/css';
-
-import { FONT } from '~/utils/style';
+﻿/* eslint-disable quotes */
+import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const rootVars = createGlobalTheme(':root', {
   font: {
     family: {
-      normal: FONT.NORMAL,
+      normal:
+        "'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif",
     },
     size: {
       base: '18px',

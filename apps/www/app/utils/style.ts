@@ -1,9 +1,4 @@
-﻿export enum FONT {
-  // eslint-disable-next-line quotes
-  NORMAL = "'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif",
-}
-
-export enum LAYER {
+﻿export enum LAYER {
   FIXED_HEADER = 100,
 }
 
