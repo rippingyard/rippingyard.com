@@ -1,8 +1,17 @@
-﻿import { FC } from 'react';
+﻿import { FC, useEffect, useState } from 'react';
 
 export const Gtag: FC<{
   gtagId: string;
 }> = ({ gtagId }) => {
+  const [showGtag, setShowGtag] = useState(false);
+
+  useEffect(() => {
+    if (!gtagId) return;
+    setShowGtag(true);
+  }, [gtagId]);
+
+  if (!showGtag) return;
+
   return (
     <script
       async
