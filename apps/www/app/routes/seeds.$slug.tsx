@@ -7,21 +7,25 @@ import { Suspense } from 'react';
 import { Article } from '~/components/article';
 import { Heading } from '~/components/heading';
 import { Loading } from '~/features/loading';
-import { usePost } from '~/hooks/fetch/usePost';
+import { useSeed } from '~/hooks/fetch/useSeed';
 import { useDate } from '~/hooks/normalize/useDate';
 import { containerStyle } from '~/styles/container.css';
+import { seedToPost } from '~/utils/seed';
 import { getSummary, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
   params,
 }: LoaderFunctionArgs) => {
   try {
-    const { postId } = params;
+    const { slug } = params;
+    console.log('slug', slug);
 
-    if (!postId) throw new Error();
+    if (!slug) throw new Error();
 
-    const { post } = await usePost(postId);
-    if (!post) throw new Error();
+    const seed = await useSeed(slug);
+    if (!seed) throw new Error();
+
+    const post = seedToPost(seed);
 
     return defer({ post });
   } catch (e) {
@@ -32,6 +36,7 @@ export const loader: LoaderFunction = async ({
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
   const { post } = data;
+
   const title = getTitle(post.content, {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
@@ -52,7 +57,7 @@ export default function Main() {
   return (
     <div>
       <main className={containerStyle}>
-        <Heading>Post</Heading>
+        <Heading>Seed</Heading>
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <Article text={post.content} />

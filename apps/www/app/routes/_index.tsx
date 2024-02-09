@@ -3,7 +3,10 @@ import { defer } from '@vercel/remix';
 import type { LoaderFunction } from '@vercel/remix';
 import { Timestamp } from 'firebase/firestore';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
+import { Button } from '~/components/button';
+import { Heading } from '~/components/heading';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePosts } from '~/hooks/fetch/usePosts';
@@ -13,7 +16,7 @@ import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 
 const args: Omit<QueryParams<Post>, 'collection'> = {
-  limit: 25,
+  limit: 1,
   orderBy: {
     key: 'publishedAt',
     order: 'desc',
@@ -45,13 +48,9 @@ export default function Index() {
     [posts]
   );
 
-  const fetcher = useFetcher<{ posts: Post[] }>();
+  const { ref, inView } = useInView({ threshold: 0 });
 
-  useEffect(() => {
-    if (!fetcher.data || fetcher.state === 'loading') return;
-    const newPosts = fetcher.data.posts;
-    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-  }, [fetcher.data, fetcher.state]);
+  const fetcher = useFetcher<{ posts: Post[] }>();
 
   const loadMore = useCallback(() => {
     const after = toMicroseconds(lastPublishedAt);
@@ -59,12 +58,27 @@ export default function Index() {
     fetcher.load(query);
   }, [fetcher, lastPublishedAt]);
 
+  useEffect(() => {
+    if (!fetcher.data || fetcher.state === 'loading') return;
+    const newPosts = fetcher.data.posts;
+    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+  }, [fetcher.data, fetcher.state]);
+
+  // useEffect(() => {
+  //   console.log('inView', inView);
+  //   if (!inView) return;
+  //   onLoadMore();
+  // }, [inView, onLoadMore]);
+
   return (
     <main className={containerStyle}>
-      <h2>Posts</h2>
+      <Heading>Posts</Heading>
       <Suspense fallback={<Loading />}>
         <Await resolve={posts}>
-          <PostList posts={posts} onLoadMore={loadMore} />
+          <PostList posts={posts} />
+          <Button ref={ref} onClick={loadMore}>
+            Load More...{inView ? 'IN' : 'OUT'}
+          </Button>
         </Await>
       </Suspense>
     </main>

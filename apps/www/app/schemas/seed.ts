@@ -1,37 +1,28 @@
 ﻿// import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
-// import { User } from './user';
-
-// const PostStatusSchema = z.enum(['published', 'drafted']);
-// const PostTypeSchema = z.enum(['article', 'note', 'log']);
+const SeedStatusSchema = z.enum(['published', 'drafted']);
+const SeedTypeSchema = z.enum(['archive']);
 
 const SeedSchema = z.object({
   id: z.string(),
   slug: z.string(),
-  createdAt: z.string(),
+  title: z.string(),
+  leading: z.string().nullable(),
+  created_at: z.string(),
   published_at: z.string(),
-  updatedAt: z.string(),
-  // content: z.string(),
+  updated_at: z.string(),
+  deleted_at: z.string().nullable(),
+  body: z.string(),
+  image_id: z.string().nullable(),
+  parent_id: z.string().nullable(),
+  search_body: z.string().optional().nullable(),
   // isPublic: z.boolean(),
   // isDeleted: z.boolean(),
-  // count: z
-  //   .object({
-  //     favorite: z.number(),
-  //     bookmark: z.number(),
-  //     pageview: z.number(),
-  //   })
-  //   .optional(),
   // owner: z.any().refine(DocumentReferenceSchema),
-  // collaborators: z.any().refine(DocumentReferenceSchema),
-  // parent: z.any().refine(DocumentReferenceSchema).optional(),
-  // entities: z.any().refine(DocumentReferenceSchema).array(),
-  // items: z.any().refine(DocumentReferenceSchema).array(),
-  // type: PostTypeSchema,
-  // status: PostStatusSchema,
-  status: z.string(),
+  type: SeedTypeSchema,
+  user_id: z.number(),
+  status: SeedStatusSchema,
 });
 
 export type Seed = z.infer<typeof SeedSchema>;
-// export type PostType = z.infer<typeof PostTypeSchema>;
-// export type PostStatus = z.infer<typeof PostStatusSchema>;

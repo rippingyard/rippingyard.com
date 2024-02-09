@@ -13,11 +13,15 @@ import { footerStyle, headingStyle } from './style.css';
 
 type Props = {
   post: SerializeFrom<Post>;
+  permalink?: string;
 };
 
-export const PostListItemDetail: FC<Props> = ({ post }) => {
+export const PostListItemDetail: FC<Props> = ({
+  post,
+  permalink: overwriteLink,
+}) => {
   const { title, content, hasHeadingTag } = usePostTitle(post.content);
-  const permalink = usePostLink(post.id);
+  const permalink = overwriteLink || usePostLink(post.id);
   const createdate = useDate(post.createdAt);
   return (
     <>
