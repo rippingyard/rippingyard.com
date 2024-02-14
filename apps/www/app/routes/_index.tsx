@@ -5,8 +5,8 @@ import { Timestamp } from 'firebase/firestore';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Button } from '~/components/button';
-import { Heading } from '~/components/heading';
+import { Button } from '~/components/Button';
+import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePosts } from '~/hooks/fetch/usePosts';
@@ -16,7 +16,7 @@ import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 
 const args: Omit<QueryParams<Post>, 'collection'> = {
-  limit: 1,
+  limit: 12,
   orderBy: {
     key: 'publishedAt',
     order: 'desc',
@@ -41,6 +41,8 @@ export const loader: LoaderFunction = async (remixContext) => {
 
 export default function Index() {
   const { posts: initialPosts } = useLoaderData<{ posts: Post[] }>();
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [queries, setQueries] = useState<string[]>([]);
 
   const [posts, setPosts] = useState(initialPosts);
   const lastPublishedAt = useMemo(
@@ -53,22 +55,28 @@ export default function Index() {
   const fetcher = useFetcher<{ posts: Post[] }>();
 
   const loadMore = useCallback(() => {
+    console.log('fetcher', fetcher);
+    console.log('queries', queries);
+    console.log('lastPublishedAt', lastPublishedAt);
+    if (!lastPublishedAt || isCompleted || fetcher.state !== 'idle') return;
     const after = toMicroseconds(lastPublishedAt);
     const query = `?index&after=${after}`;
+    if (queries.includes(query)) return;
+    setQueries((prev) => [...prev, query]);
     fetcher.load(query);
-  }, [fetcher, lastPublishedAt]);
+  }, [fetcher, isCompleted, lastPublishedAt, queries]);
 
   useEffect(() => {
-    if (!fetcher.data || fetcher.state === 'loading') return;
+    if (!fetcher.data || fetcher.state !== 'idle') return;
     const newPosts = fetcher.data.posts;
+    if (newPosts.length === 0) return setIsCompleted(true);
     setPosts((prevPosts) => [...prevPosts, ...newPosts]);
   }, [fetcher.data, fetcher.state]);
 
-  // useEffect(() => {
-  //   console.log('inView', inView);
-  //   if (!inView) return;
-  //   onLoadMore();
-  // }, [inView, onLoadMore]);
+  useEffect(() => {
+    if (!inView || fetcher.state !== 'idle') return;
+    loadMore();
+  }, [fetcher.state, inView, loadMore]);
 
   return (
     <main className={containerStyle}>
@@ -76,9 +84,11 @@ export default function Index() {
       <Suspense fallback={<Loading />}>
         <Await resolve={posts}>
           <PostList posts={posts} />
-          <Button ref={ref} onClick={loadMore}>
-            Load More...{inView ? 'IN' : 'OUT'}
-          </Button>
+          {!isCompleted && (
+            <Button ref={ref} onClick={loadMore}>
+              Load More...
+            </Button>
+          )}
         </Await>
       </Suspense>
     </main>

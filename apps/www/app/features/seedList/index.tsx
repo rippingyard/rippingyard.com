@@ -1,6 +1,6 @@
 ﻿import { FC, memo } from 'react';
 
-import { PostListItemDetail } from '~/components/post/postItemDetail';
+import { PostListItemDetail } from '~/components/Post/PostItemDetail';
 import { Seed } from '~/schemas/seed';
 import { seedToPost } from '~/utils/seed';
 

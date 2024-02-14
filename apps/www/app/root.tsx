@@ -18,12 +18,26 @@ import * as gtag from '~/middlewares/gtag.client';
 
 import './styles/root.css';
 
+import { Adsense } from './components/Adsense';
+import { AdsenseTag } from './components/AdsenseTag';
+import { Env } from './components/Env';
 import { Gtag } from './components/Gtag';
-import { Layout } from './components/layout';
+import { Layout } from './components/Layout';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async () => {
-  return json({ gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX' });
+  const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
+
+  const env: Env = {
+    VITE_GA_ADSENSE_ID: adsenseId,
+    NODE_ENV: process.env.NODE_ENV,
+  };
+
+  return json({
+    gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
+    adsenseId,
+    env,
+  });
 };
 
 export const links: LinksFunction = () => [
@@ -37,7 +51,7 @@ export const meta: MetaFunction = () => [
 
 export default function App() {
   const location = useLocation();
-  const { gtagId } = useLoaderData<typeof loader>();
+  const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (!gtagId) return;
@@ -48,6 +62,7 @@ export default function App() {
   return (
     <html lang="ja">
       <head>
+        <Env env={env} />
         <Gtag gtagId={gtagId} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta charSet="utf-8" />
@@ -57,6 +72,7 @@ export default function App() {
         />
         <Meta />
         <Links />
+        <AdsenseTag adsenseId={adsenseId} />
       </head>
       <body className={themeClass}>
         <Layout>
@@ -65,6 +81,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Adsense slot="4746787312" />
       </body>
     </html>
   );
