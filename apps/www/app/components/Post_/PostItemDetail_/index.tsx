@@ -2,7 +2,7 @@
 import { Link } from '@remix-run/react';
 import { FC } from 'react';
 
-import { Article } from '~/components/Article';
+import { Article } from '~/components/Article_';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
 import { usePostTitle } from '~/hooks/normalize/usePostTitle';

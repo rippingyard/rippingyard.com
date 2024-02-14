@@ -4,7 +4,7 @@ import { defer } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
-import { Article } from '~/components/Article';
+import { Article } from '~/components/Article_';
 import { Heading } from '~/components/Heading_';
 import { Loading } from '~/features/loading';
 import { usePost } from '~/hooks/fetch/usePost';
