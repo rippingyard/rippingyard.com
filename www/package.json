@@ -12,16 +12,6 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
-  "lint-staged": {
-    "*.{ts,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
-  },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.1.1",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
