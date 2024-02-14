@@ -5,8 +5,8 @@ import { Timestamp } from 'firebase/firestore';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Button } from '~/components/Button';
-import { Heading } from '~/components/Heading';
+import { Button } from '~/components/Button_';
+import { Heading } from '~/components/Heading_';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePosts } from '~/hooks/fetch/usePosts';

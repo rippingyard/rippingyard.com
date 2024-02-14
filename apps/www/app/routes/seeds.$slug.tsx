@@ -5,7 +5,7 @@ import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
 import { Article } from '~/components/Article';
-import { Heading } from '~/components/Heading';
+import { Heading } from '~/components/Heading_';
 import { Loading } from '~/features/loading';
 import { useSeed } from '~/hooks/fetch/useSeed';
 import { useDate } from '~/hooks/normalize/useDate';

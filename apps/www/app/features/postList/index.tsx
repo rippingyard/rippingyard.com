@@ -1,8 +1,8 @@
 ﻿import { SerializeFrom } from '@remix-run/node';
 import { FC } from 'react';
 
-import { PostListItemDetail } from '~/components/Post/PostItemDetail';
-import { PostListItemSimple } from '~/components/Post/PostItemSimple';
+import { PostListItemDetail } from '~/components/Post_/PostItemDetail_';
+import { PostListItemSimple } from '~/components/Post_/PostItemSimple_';
 import { usePostTitle } from '~/hooks/normalize/usePostTitle';
 import { Post } from '~/schemas/post';
 
