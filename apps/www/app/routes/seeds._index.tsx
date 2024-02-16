@@ -4,8 +4,8 @@ import type { LoaderFunction } from '@vercel/remix';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Button } from '~/components/Button_';
-import { Heading } from '~/components/Heading_';
+import { Button } from '~/components/Button';
+import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { SeedList } from '~/features/seedList';
 import { useSeeds } from '~/hooks/fetch/useSeeds';

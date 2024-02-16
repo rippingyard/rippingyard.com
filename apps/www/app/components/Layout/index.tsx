@@ -8,8 +8,8 @@ import {
   logoStyle,
   logoTypeStyle,
 } from './style.css';
-import { Logo } from '../Logo_';
-import { LogoType } from '../LogoType_';
+import { Logo } from '../Logo';
+import { LogoType } from '../LogoType';
 
 export const Layout: FC<ComponentPropsWithoutRef<'div'>> = ({ children }) => {
   return (

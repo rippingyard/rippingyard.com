@@ -22,7 +22,7 @@ import { Adsense } from './components/Adsense';
 import { AdsenseTag } from './components/AdsenseTag';
 import { Env } from './components/Env';
 import { Gtag } from './components/Gtag';
-import { Layout } from './components/Layout_';
+import { Layout } from './components/Layout';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async () => {
