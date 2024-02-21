@@ -1,13 +1,19 @@
 ﻿import { FC, ReactNode, memo } from 'react';
 
-import { containerStyle } from './style.css';
+import { dottedBackgroundStyle } from '~/styles/pattern.css';
+
+import { containerStyle, innerStyle } from './style.css';
 
 type Props = {
   children: ReactNode;
 };
 
 const HeadingComponent: FC<Props> = ({ children }) => {
-  return <h2 className={containerStyle}>{children}</h2>;
+  return (
+    <header className={containerStyle}>
+      <h2 className={`${innerStyle} ${dottedBackgroundStyle}`}>{children}</h2>
+    </header>
+  );
 };
 
 export const Heading = memo(HeadingComponent);

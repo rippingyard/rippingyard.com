@@ -50,15 +50,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Main() {
   const { post } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <>
+      <Heading>Post</Heading>
       <main className={containerStyle}>
-        <Heading>Post</Heading>
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <Article text={post.content} />
           </Await>
         </Suspense>
       </main>
-    </div>
+    </>
   );
 }

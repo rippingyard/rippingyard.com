@@ -1,7 +1,7 @@
-﻿import { Await, useFetcher, useLoaderData } from '@remix-run/react';
+﻿import { Await, useLoaderData } from '@remix-run/react';
 import { json, type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase/firestore';
-import { Suspense, useEffect, useMemo } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { Button } from '~/components/Button';
@@ -40,9 +40,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
+  const key = 'top';
   const { items: initialItems } = useLoaderData<typeof loader>();
+  const [canAutoload] = useState(true);
 
-  const fetcher = useFetcher<{ items: Post[] }>();
   const { ref, inView } = useInView();
 
   const {
@@ -51,11 +52,13 @@ export default function Index() {
     loadMore,
     isCompleted,
   } = useInifiniteItems<Post>({
+    key,
     initialItems: initialItems as Post[],
-    fetcher,
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);
+
+  const isLoading = useMemo(() => state === 'loading', [state]);
 
   const query = useMemo(() => {
     const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
@@ -64,23 +67,29 @@ export default function Index() {
   }, [sortedPosts]);
 
   useEffect(() => {
-    if (!inView || state !== 'idle' || !query) return;
+    if (!canAutoload || !inView || state !== 'idle' || !query) return;
     loadMore(query);
-  }, [inView, loadMore, query, state]);
+  }, [canAutoload, inView, loadMore, query, state]);
 
   return (
-    <main className={containerStyle}>
+    <>
       <Heading>Posts</Heading>
-      <Suspense fallback={<Loading />}>
-        <Await resolve={posts}>
-          <PostList posts={sortedPosts} />
-          {!isCompleted && query && (
-            <Button ref={ref} onClick={() => loadMore(query)}>
-              Load More...
-            </Button>
-          )}
-        </Await>
-      </Suspense>
-    </main>
+      <main className={containerStyle}>
+        <Suspense fallback={<Loading />}>
+          <Await resolve={posts}>
+            <PostList posts={sortedPosts} />
+            {!isCompleted && query && (
+              <Button
+                ref={ref}
+                isLoading={isLoading}
+                onClick={() => loadMore(query)}
+              >
+                もっと読む
+              </Button>
+            )}
+          </Await>
+        </Suspense>
+      </main>
+    </>
   );
 }

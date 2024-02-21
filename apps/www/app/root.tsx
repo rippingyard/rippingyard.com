@@ -13,6 +13,7 @@ import {
 import { json, type LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css';
 import { useEffect } from 'react';
+import rdtStylesheet from 'remix-development-tools/index.css';
 
 import * as gtag from '~/middlewares/gtag.client';
 
@@ -43,13 +44,16 @@ export const loader = async () => {
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: destyle },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  ...(process.env.NODE_ENV === 'development'
+    ? [{ rel: 'stylesheet', href: rdtStylesheet }]
+    : []),
 ];
 
 export const meta: MetaFunction = () => [
   { title: 'ripping yard - 速くて小さな寄る辺なきメディア' },
 ];
 
-export default function App() {
+function App() {
   const location = useLocation();
   const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
 
@@ -86,3 +90,12 @@ export default function App() {
     </html>
   );
 }
+
+let AppExport = App;
+
+if (process.env.NODE_ENV === 'development') {
+  const { withDevTools } = await import('remix-development-tools');
+  AppExport = withDevTools(AppExport);
+}
+
+export default AppExport;

@@ -1,20 +1,30 @@
-﻿import { FetcherWithComponents } from '@remix-run/react';
+﻿import { useFetcher } from '@remix-run/react';
 import { SerializeFrom } from '@vercel/remix';
 import { useCallback, useEffect, useState } from 'react';
 
 type Props<T> = {
+  key: string;
   initialItems: SerializeFrom<T>[];
-  fetcher: FetcherWithComponents<
-    SerializeFrom<{
-      items: T[];
-    }>
-  >;
 };
 
-export const useInifiniteItems = <T>({ initialItems, fetcher }: Props<T>) => {
-  const [items, setItems] = useState(initialItems);
+const getCachedItems = <T>(key: string): SerializeFrom<T>[] => {
+  // if (!sessionStorage) return [];
+  // const cache = sessionStorage.getItem(key);
+  // return cache ? JSON.parse(cache) : [];
+  console.log('key', key);
+  return [];
+};
+
+export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
+  const cachedItems = getCachedItems<T>(key);
+
+  const [items, setItems] = useState(
+    cachedItems.length > 0 ? cachedItems : initialItems
+  );
   const [isCompleted, setIsCompleted] = useState(false);
   const [queries, setQueries] = useState<string[]>([]);
+
+  const fetcher = useFetcher<{ items: T[] }>();
 
   const loadMore = useCallback(
     (query: string) => {
@@ -32,6 +42,10 @@ export const useInifiniteItems = <T>({ initialItems, fetcher }: Props<T>) => {
     if (newItems.length === 0) return setIsCompleted(true);
     setItems((prevItems) => [...prevItems, ...newItems] as SerializeFrom<T>[]);
   }, [fetcher.data, fetcher.state]);
+
+  useEffect(() => {
+    if (sessionStorage) sessionStorage.setItem(key, JSON.stringify(items));
+  }, [items, key]);
 
   return {
     items,

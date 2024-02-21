@@ -4,7 +4,7 @@ import { vars } from '~/styles/theme.css';
 import { zIndex } from '~/utils/style';
 
 export const containerStyle = style({
-  paddingTop: 72,
+  paddingTop: 68,
 });
 
 export const headerContainerStyle = style({
@@ -19,7 +19,7 @@ export const headerContainerStyle = style({
 export const headerInnerStyle = style({
   margin: '16px 24px 0',
   paddingBottom: 16,
-  borderBottom: `2px solid ${vars.color.primary}`,
+  borderBottom: `2px solid ${vars.color.neutral}`,
   // borderBottom: `1px dotted ${cyan()}`,
   width: 'calc(100% - 48px)',
   backgroundColor: vars.color.background,
@@ -28,7 +28,7 @@ export const headerInnerStyle = style({
 export const logoStyle = style({
   width: 20,
   height: 20,
-  color: vars.color.primary,
+  color: vars.color.neutral,
   marginRight: 8,
   marginBottom: 11,
 });
@@ -36,5 +36,5 @@ export const logoStyle = style({
 export const logoTypeStyle = style({
   width: 75,
   height: 30,
-  color: vars.color.primary,
+  color: vars.color.neutral,
 });
