@@ -5,6 +5,7 @@ import { zIndex } from '~/utils/style';
 
 export const containerStyle = style({
   paddingTop: 68,
+  paddingBottom: 100,
 });
 
 export const headerContainerStyle = style({
@@ -12,8 +13,9 @@ export const headerContainerStyle = style({
   top: 0,
   left: 0,
   width: '100%',
-  backgroundColor: vars.color.background,
+  // backgroundColor: vars.color.background,
   zIndex: zIndex('FIXED_HEADER'),
+  backdropFilter: 'blur(12px)',
 });
 
 export const headerInnerStyle = style({
@@ -22,7 +24,7 @@ export const headerInnerStyle = style({
   borderBottom: `2px solid ${vars.color.neutral}`,
   // borderBottom: `1px dotted ${cyan()}`,
   width: 'calc(100% - 48px)',
-  backgroundColor: vars.color.background,
+  // backgroundColor: vars.color.background,
 });
 
 export const logoStyle = style({

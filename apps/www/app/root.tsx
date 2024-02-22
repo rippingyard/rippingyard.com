@@ -19,7 +19,6 @@ import * as gtag from '~/middlewares/gtag.client';
 
 import './styles/root.css';
 
-import { Adsense } from './components/Adsense';
 import { AdsenseTag } from './components/AdsenseTag';
 import { Env } from './components/Env';
 import { Gtag } from './components/Gtag';
@@ -85,7 +84,6 @@ function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <Adsense slot="4746787312" />
       </body>
     </html>
   );

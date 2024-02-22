@@ -38,16 +38,18 @@ export default function Index() {
   }, [inView, loadMore]);
 
   return (
-    <main className={containerStyle}>
+    <>
       <Heading>Seeds</Heading>
-      <Suspense fallback={<Loading />}>
-        <Await resolve={seeds}>
-          <SeedList seeds={seeds} />
-          <Button ref={ref} onClick={loadMore}>
-            Load More...
-          </Button>
-        </Await>
-      </Suspense>
-    </main>
+      <main className={containerStyle}>
+        <Suspense fallback={<Loading />}>
+          <Await resolve={seeds}>
+            <SeedList seeds={seeds} />
+            <Button ref={ref} onClick={loadMore}>
+              Load More...
+            </Button>
+          </Await>
+        </Suspense>
+      </main>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { defer } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
+import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
@@ -55,15 +56,16 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Main() {
   const { post } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <>
+      <Heading>Seed</Heading>
       <main className={containerStyle}>
-        <Heading>Seed</Heading>
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <Article text={post.content} />
+            <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
           </Await>
         </Suspense>
       </main>
-    </div>
+    </>
   );
 }
