@@ -1,6 +1,6 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
 import { defer } from '@vercel/remix';
-import type { LoaderFunction } from '@vercel/remix';
+import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -16,6 +16,18 @@ export const loader: LoaderFunction = async () => {
   return defer({
     seeds: await useSeeds(),
   });
+};
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = 'Seeds - rippingyard';
+  return [
+    { title },
+    { property: 'og:title', content: title },
+    { name: 'twitter:title', content: title },
+    // { name: 'description', content: summary },
+    // { property: 'og:description', content: summary },
+    // { name: 'twitter:description', content: summary },
+  ];
 };
 
 export default function Index() {

@@ -20,7 +20,7 @@ const EnvComponent: FC<{
   return (
     <script
       dangerouslySetInnerHTML={{
-        __html: `window.env = ${JSON.stringify(env)}; console.log('window.env', window.env)`,
+        __html: `window.env = ${JSON.stringify(env)}`,
       }}
     />
   );

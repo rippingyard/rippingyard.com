@@ -50,6 +50,11 @@ export const links: LinksFunction = () => [
 
 export const meta: MetaFunction = () => [
   { title: 'ripping yard - 速くて小さな寄る辺なきメディア' },
+  {
+    name: 'description',
+    content:
+      '隣の庭をのぞきこめ！リッピング・ヤードは種を撒くようにあらゆる事柄を紹介していく、寄る辺なき小さなメディアです。',
+  },
 ];
 
 function App() {
@@ -73,6 +78,9 @@ function App() {
           name="viewport"
           content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
         />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="ripping yard" />
+        <meta property="fb:app_id" content="374907709233344" />
         <Meta />
         <Links />
         <AdsenseTag adsenseId={adsenseId} />

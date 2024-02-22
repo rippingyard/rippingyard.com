@@ -19,7 +19,6 @@ export const loader: LoaderFunction = async ({
 }: LoaderFunctionArgs) => {
   try {
     const { slug } = params;
-    console.log('slug', slug);
 
     if (!slug) throw new Error();
 
@@ -42,7 +41,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
   const summary = getSummary(post.content, 340);
-  const htmlTitle = `${title} - rippingyard`;
+  const htmlTitle = `${title} - Seed - rippingyard`;
   return [
     { title: htmlTitle },
     { property: 'og:title', content: htmlTitle },
