@@ -19,10 +19,10 @@ import * as gtag from '~/middlewares/gtag.client';
 
 import './styles/root.css';
 
-import { AdsenseTag } from './components/AdsenseTag';
 import { Env } from './components/Env';
 import { Gtag } from './components/Gtag';
 import { Layout } from './components/Layout';
+import { useAdsenseTag } from './hooks/external/useAdsenseTag';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async () => {
@@ -67,6 +67,8 @@ function App() {
     gtag.pageview(location.pathname, gtagId);
   }, [location, gtagId]);
 
+  useAdsenseTag(adsenseId);
+
   return (
     <html lang="ja">
       <head>
@@ -83,7 +85,6 @@ function App() {
         <meta property="fb:app_id" content="374907709233344" />
         <Meta />
         <Links />
-        <AdsenseTag adsenseId={adsenseId} />
       </head>
       <body className={themeClass}>
         <Layout>

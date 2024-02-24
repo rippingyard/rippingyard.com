@@ -28,14 +28,13 @@ export const Adsense: FC<Props> = ({ slot }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (!w || !w?.env?.VITE_GA_ADSENSE_ID) return;
-    console.log('w.env.NODE_ENV', w.env.NODE_ENV);
-    // if (w.adsbygoogle && w.env.NODE_ENV !== 'development') {
-    if (w.adsbygoogle) {
-      w.adsbygoogle.push({});
-    }
+    // if (!w?.env?.VITE_GA_ADSENSE_ID) return;
+    // // if (w.adsbygoogle && w.env.NODE_ENV !== 'development') {
+    // if (w?.adsbygoogle) {
+    //   w.adsbygoogle.push({});
+    // }
     setShow(true);
-  }, [w]);
+  }, [w?.adsbygoogle, w?.env?.VITE_GA_ADSENSE_ID]);
 
   if (!show) return;
 

@@ -15,6 +15,7 @@ export const headerContainerStyle = style({
   width: '100%',
   // backgroundColor: vars.color.background,
   zIndex: zIndex('FIXED_HEADER'),
+  WebkitBackdropFilter: 'blur(12px)',
   backdropFilter: 'blur(12px)',
 });
 
