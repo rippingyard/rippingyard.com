@@ -2,6 +2,8 @@
   DocumentData,
   DocumentReference,
   OrderByDirection,
+  QueryDocumentSnapshot,
+  Timestamp,
   collection,
   getDocs,
   limit,
@@ -41,7 +43,7 @@ export type QueryParams<T> = {
   collection: string;
   where?: WhereParams;
   limit?: number;
-  startAfter?: string | number;
+  startAfter?: string | number | Timestamp;
   orderBy?: OrderBy;
   lastVisible?: DocumentData;
   removeWhereKeys?: string[];
@@ -53,10 +55,15 @@ export const defaultOp = (val: WhereValue): WhereOp =>
 
 export const useQuery = async <T>(
   args: QueryParams<T>
-): Promise<{ data: T[] }> => {
+): Promise<{
+  data: T[];
+  loadMore: () => void;
+  lastVisible?: QueryDocumentSnapshot<DocumentData, DocumentData>;
+}> => {
   const data: T[] = [];
   const ids: string[] = [];
   const { removeWhereKeys = [] } = args;
+  console.log('args', args);
 
   const { db } = useFirestore();
 
@@ -76,17 +83,16 @@ export const useQuery = async <T>(
     // console.table(logrows);
   }
 
-  if (args?.limit) q = query(q, limit(args.limit));
+  if (args?.limit && args?.limit > 0) q = query(q, limit(args.limit));
 
   if (args?.orderBy) {
     const order = args.orderBy.order || 'desc';
     q = query(q, orderBy(args.orderBy.key, order));
-    if (args?.lastVisible?.value) {
-      console.log(
-        'args.lastVisible[args.orderBy.key]',
-        args.lastVisible.value[args.orderBy.key]
-      );
-      q = query(q, startAfter(args.lastVisible.value[args.orderBy.key]));
+    if (args?.lastVisible) {
+      q = query(q, startAfter(args?.lastVisible));
+    }
+    if (args?.startAfter) {
+      q = query(q, startAfter(args?.startAfter));
     }
   }
 
@@ -115,9 +121,18 @@ export const useQuery = async <T>(
     });
   });
 
-  await getDocs(q); // TODO: これは要らないはず
+  const docSnapshots = await getDocs(q);
+  const lastVisible =
+    docSnapshots.docs[docSnapshots.docs.length - 1] || undefined;
 
-  return { data };
+  const loadMore = () => {
+    console.log('TESTTEST');
+  };
+  // const loadMore = useCallback(() => {
+  //   console.log('lastVisible', lastVisible);
+  // }, [lastVisible]);
+
+  return { data, lastVisible, loadMore };
 };
 
 // // export const useCachedInfiniteDocs = <T>(args: QueryParams) => {

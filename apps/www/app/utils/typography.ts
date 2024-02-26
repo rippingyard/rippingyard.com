@@ -184,19 +184,19 @@ export const renderWidgets = (content: string) => {
   urls.forEach((url) => {
     html = url;
     urlInfo = new URL(url);
-    // console.log('parsed url', urlInfo);
+    console.log('parsed url', urlInfo);
 
     switch (urlInfo.hostname) {
-      case 'youtube.com':
-      case 'jp.youtube.com':
-      case 'www.youtube.com':
-        if (urlInfo.searchParams.has('v')) {
-          // console.log('youtubeId', urlInfo.searchParams.get('v'));
-          html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
-            'v'
-          )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
-        }
-        break;
+      // case 'youtube.com':
+      // case 'jp.youtube.com':
+      // case 'www.youtube.com':
+      //   if (urlInfo.searchParams.has('v')) {
+      //     // console.log('youtubeId', urlInfo.searchParams.get('v'));
+      //     html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
+      //       'v'
+      //     )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
+      //   }
+      //   break;
 
       default:
         html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;

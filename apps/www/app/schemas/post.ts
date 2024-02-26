@@ -24,8 +24,8 @@ const PostSchema = z.object({
       pageview: z.number(),
     })
     .optional(),
-  owner: z.any().refine(DocumentReferenceSchema),
-  collaborators: z.any().refine(DocumentReferenceSchema),
+  owner: z.any().refine(DocumentReferenceSchema).optional(),
+  collaborators: z.any().refine(DocumentReferenceSchema).optional(),
   parent: z.any().refine(DocumentReferenceSchema).optional(),
   entities: z.any().refine(DocumentReferenceSchema).array(),
   items: z.any().refine(DocumentReferenceSchema).array(),

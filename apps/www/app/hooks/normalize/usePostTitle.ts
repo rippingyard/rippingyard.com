@@ -1,11 +1,11 @@
-﻿import { useMemo } from 'react';
-
-import {
+﻿import {
   getHeadingTags,
   getSummary,
   getTitle,
   removeTitle,
 } from '~/utils/typography';
+
+import { useMemo } from 'react';
 
 type Options = {
   alt?: string;

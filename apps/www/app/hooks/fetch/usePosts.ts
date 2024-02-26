@@ -27,24 +27,10 @@ const buildConditions = (args: Omit<QueryParams<Post>, 'collection'> = {}) => {
 export const usePosts = async (
   payload: Omit<QueryParams<Post>, 'collection'> = {}
 ) => {
-  const args = buildConditions(payload);
-  const { data } = await useQuery<Post>({
+  const { args, where } = buildConditions(payload);
+  return await useQuery<Post>({
     collection: 'posts',
+    where,
     ...args,
   });
-  return data;
 };
-
-// export const useInfinitePosts = (payload: Omit<QueryParams, 'collection'> = {}) => {
-
-//   const { args, where } = buildConditions(payload);
-
-//   console.log('payload', payload);
-
-//   return useCachedInfiniteDocs<Post>({
-//     ...args,
-//     collection: 'posts',
-//     where,
-//   });
-
-// };

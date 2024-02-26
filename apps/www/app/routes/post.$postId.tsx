@@ -1,13 +1,15 @@
-﻿import { css } from '@emotion/react';
-import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+﻿import type { LoaderFunctionArgs } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
 import { defer } from '@vercel/remix';
-import type { LoaderFunction } from '@vercel/remix';
+import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
-import { Article } from '~/components/article';
+import { Article } from '~/components/Article';
+import { Heading } from '~/components/Heading';
+import { Loading } from '~/features/loading';
 import { usePost } from '~/hooks/fetch/usePost';
 import { useDate } from '~/hooks/normalize/useDate';
+import { containerStyle } from '~/styles/container.css';
 import { getSummary, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
@@ -30,11 +32,9 @@ export const loader: LoaderFunction = async ({
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
   const { post } = data;
-  console.log('post.content', post.content);
   const title = getTitle(post.content, {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
-  console.log('title', title);
   const summary = getSummary(post.content, 340);
   const htmlTitle = `${title} - rippingyard`;
   return [
@@ -50,21 +50,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Main() {
   const { post } = useLoaderData<typeof loader>();
   return (
-    <div>
-      <main css={mainStyle}>
-        <h2>Post</h2>
-        <Suspense fallback={<div>Loading</div>}>
+    <>
+      <Heading>Post</Heading>
+      <main className={containerStyle}>
+        <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <Article text={post.content} />
           </Await>
         </Suspense>
       </main>
-    </div>
+    </>
   );
 }
-
-const mainStyle = css({
-  maxWidth: 780,
-  margin: 'auto',
-  padding: 24,
-});
