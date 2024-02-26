@@ -8,21 +8,21 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
+  // useLocation,
 } from '@remix-run/react';
 import { json, type LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import rdtStylesheet from 'remix-development-tools/index.css';
 
-import * as gtag from '~/middlewares/gtag.client';
+// import * as gtag from '~/middlewares/gtag.client';
 
 import './styles/root.css';
 
 import { Env } from './components/Env';
-import { Gtag } from './components/Gtag';
 import { Layout } from './components/Layout';
-import { useAdsenseTag } from './hooks/external/useAdsenseTag';
+import { useAdsenseTag } from './hooks/script/useAdsenseTag';
+import { useGTM } from './hooks/script/useGTM';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async () => {
@@ -58,22 +58,21 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  const location = useLocation();
+  // const location = useLocation();
   const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
 
-  useEffect(() => {
-    if (!gtagId) return;
-    console.log('pageview', location.pathname);
-    gtag.pageview(location.pathname, gtagId);
-  }, [location, gtagId]);
+  // useEffect(() => {
+  //   if (!gtagId) return;
+  //   gtag.pageview(location.pathname, gtagId);
+  // }, [location, gtagId]);
 
+  useGTM(gtagId);
   useAdsenseTag(adsenseId);
 
   return (
     <html lang="ja">
       <head>
         <Env env={env} />
-        <Gtag gtagId={gtagId} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta charSet="utf-8" />
         <meta
