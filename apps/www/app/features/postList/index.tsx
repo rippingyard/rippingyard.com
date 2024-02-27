@@ -1,31 +1,22 @@
 ﻿import { SerializeFrom } from '@remix-run/node';
 import { FC, memo } from 'react';
 
-import { PostListItemDetail } from '~/components/Post/PostItemDetail';
-import { PostListItemSimple } from '~/components/Post/PostItemSimple';
-import { usePostTitle } from '~/hooks/normalize/usePostTitle';
+import { type ItemMode, PostItem } from '~/components/PostItem';
 import { Post } from '~/schemas/post';
 
 import { containerStyle, itemStyle } from './style.css';
 
 type Props = {
   posts: SerializeFrom<Post>[];
+  mode?: ItemMode;
 };
 
-const Item: FC<{
-  post: SerializeFrom<Post>;
-}> = ({ post }) => {
-  const { hasHeadingTag } = usePostTitle(post.content);
-  if (hasHeadingTag) return <PostListItemDetail post={post} />;
-  return <PostListItemSimple post={post} />;
-};
-
-export const PostList: FC<Props> = memo(({ posts = [] }) => {
+export const PostList: FC<Props> = memo(({ posts = [], mode = 'list' }) => {
   return (
     <ul className={containerStyle}>
       {posts.map((post) => (
         <li key={post.id} className={itemStyle}>
-          <Item post={post} />
+          <PostItem post={post} mode={mode} />
         </li>
       ))}
     </ul>

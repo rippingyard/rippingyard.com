@@ -9,7 +9,11 @@ export const rootVars = createGlobalTheme(':root', {
     },
     size: {
       base: '18px',
+      large: '1.6rem',
+      medium: '1.2rem',
+      normal: '1rem',
       small: '0.8rem',
+      tiny: '0.7rem',
     },
     weight: {
       normal: '400',

@@ -77,7 +77,7 @@ export default function Index() {
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
           <Await resolve={posts}>
-            <PostList posts={sortedPosts} />
+            <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
                 ref={ref}

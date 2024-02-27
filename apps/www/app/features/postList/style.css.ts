@@ -6,6 +6,4 @@ export const containerStyle = style({
   padding: 0,
 });
 
-export const itemStyle = style({
-  marginBottom: 32,
-});
+export const itemStyle = style({});

@@ -21,3 +21,11 @@ export const innerStyle = style({
   padding: 32,
   borderBottom: `1px solid ${vars.color.neutral}`,
 });
+
+export const partialStyle = style({
+  display: 'inline-block',
+  fontSize: '0.8rem',
+  fontWeight: rootVars.font.weight.bold,
+  padding: '16px 0',
+  borderBottom: `4px solid ${vars.color.neutral}`,
+});
