@@ -18,20 +18,32 @@ const yellow = (opacity: number = 1) => `hsla(47, 100%, 58%, ${opacity})`;
 export const [themeClass, vars] = createTheme({
   color: {
     /**
-     * black
+     * Black
      */
     neutral: black(),
     /**
-     * white
+     * White
      */
     background: white(),
+    /**
+     * Gray
+     */
     highlight: gray(),
+    /**
+     * Dark gray
+     */
     shadow: darkGray(),
+    /**
+     * Cyan
+     */
     primary: cyan(),
     /**
      * Dark blue
      */
     primaryDark: blue(),
+    /**
+     * Yellow
+     */
     secondry: yellow(),
   },
 });
