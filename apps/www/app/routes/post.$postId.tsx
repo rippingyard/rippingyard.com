@@ -1,15 +1,19 @@
 ﻿import type { LoaderFunctionArgs } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
-import { defer } from '@vercel/remix';
+import { json } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 
+import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
+import { PostList } from '~/features/postList';
 import { usePost } from '~/hooks/fetch/usePost';
+import { usePosts } from '~/hooks/fetch/usePosts';
 import { useDate } from '~/hooks/normalize/useDate';
 import { containerStyle } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
@@ -23,7 +27,12 @@ export const loader: LoaderFunction = async ({
     const { post } = await usePost(postId);
     if (!post) throw new Error();
 
-    return defer({ post });
+    const { data: nextPosts } = await usePosts({
+      limit: 3,
+      startAfter: post.publishedAt,
+    });
+
+    return json({ post, nextPosts });
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
@@ -48,14 +57,26 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Main() {
-  const { post } = useLoaderData<typeof loader>();
+  const { post, nextPosts } = useLoaderData<typeof loader>();
+
+  const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
+
   return (
     <>
       <Heading>Post</Heading>
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
-            <Article text={post.content} />
+            <section className={articleSectionStyle}>
+              <Article text={post.content} />
+              <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+            </section>
+            {hasNext && (
+              <>
+                <Heading level="partial">もっと読む</Heading>
+                <PostList posts={nextPosts} />
+              </>
+            )}
           </Await>
         </Suspense>
       </main>

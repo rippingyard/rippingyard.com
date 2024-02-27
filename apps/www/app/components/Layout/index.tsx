@@ -5,6 +5,7 @@ import {
   containerStyle,
   headerContainerStyle,
   headerInnerStyle,
+  logoLinkStyle,
   logoStyle,
   logoTypeStyle,
 } from './style.css';
@@ -16,7 +17,7 @@ export const Layout: FC<ComponentPropsWithoutRef<'div'>> = ({ children }) => {
     <div className={containerStyle}>
       <header className={headerContainerStyle}>
         <div className={headerInnerStyle}>
-          <Link to="/">
+          <Link to="/" className={logoLinkStyle}>
             <Logo style={logoStyle} />
             <LogoType style={logoTypeStyle} />
           </Link>

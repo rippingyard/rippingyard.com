@@ -27,7 +27,7 @@ globalStyle(`${articleStyle} h1`, {
   fontSize: '2.2em',
   lineHeight: 1.4,
   fontWeight: 800,
-  paddingTop: '3em',
+  paddingTop: '2.2em',
   // @include until($desktop) {
   //   font-size: 1.8rem;
 });
@@ -37,7 +37,7 @@ globalStyle(`${articleStyle} h2`, {
   fontSize: '1.6em',
   lineHeight: 1.4,
   fontWeight: 800,
-  paddingTop: '2.2em',
+  paddingTop: '1.6em',
   // @include until($desktop) {
   //   font-size: 1.4rem;
   // }
@@ -48,7 +48,7 @@ globalStyle(`${articleStyle} h3`, {
   fontSize: '1.4em',
   lineHeight: 1.4,
   fontWeight: 800,
-  paddingTop: '1.8em',
+  paddingTop: '1.4em',
   // @include until($desktop) {
   //   font-size: 1.3rem;
   // }
@@ -56,7 +56,7 @@ globalStyle(`${articleStyle} h3`, {
 
 globalStyle(`${articleStyle} h4`, {
   ...blockStyle,
-  fontSize: '1.2em',
+  fontSize: '1.1em',
   lineHeight: 1.4,
   fontWeight: 800,
   paddingTop: '1.4em',

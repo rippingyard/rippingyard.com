@@ -1,16 +1,18 @@
 ﻿import type { LoaderFunctionArgs } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
-import { defer } from '@vercel/remix';
+import { json } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense } from 'react';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
+import { PostItem } from '~/components/PostItem';
 import { Loading } from '~/features/loading';
-import { useSeed } from '~/hooks/fetch/useSeed';
+import { useSeeds } from '~/hooks/fetch/useSeeds';
 import { useDate } from '~/hooks/normalize/useDate';
 import { containerStyle } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { seedToPost } from '~/utils/seed';
 import { getSummary, getTitle } from '~/utils/typography';
 
@@ -22,12 +24,20 @@ export const loader: LoaderFunction = async ({
 
     if (!slug) throw new Error();
 
-    const seed = await useSeed(slug);
-    if (!seed) throw new Error();
+    const seeds = await useSeeds();
+    const index = seeds.findIndex((seed) => seed.slug === slug);
+
+    if (index < 0) throw new Error();
+
+    const seed = seeds[index];
+    const prevSeed = seeds[index - 1] || undefined;
+    const nextSeed = seeds[index + 1] || undefined;
 
     const post = seedToPost(seed);
+    const prevPost = prevSeed ? seedToPost(prevSeed) : undefined;
+    const nextPost = nextSeed ? seedToPost(nextSeed) : undefined;
 
-    return defer({ post });
+    return json({ post, prevPost, nextPost });
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
@@ -53,15 +63,33 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Main() {
-  const { post } = useLoaderData<typeof loader>();
+  const { post, nextPost, prevPost } = useLoaderData<typeof loader>();
   return (
     <>
       <Heading>Seed</Heading>
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
-            <Article text={post.content} />
-            <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+            <section className={articleSectionStyle}>
+              <Article text={post.content} />
+              <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+
+              {(nextPost || prevPost) && (
+                <Heading level="partial">もっと読む</Heading>
+              )}
+              {prevPost && (
+                <PostItem
+                  post={prevPost}
+                  permalink={`/seeds/${prevPost.slug}`}
+                />
+              )}
+              {nextPost && (
+                <PostItem
+                  post={nextPost}
+                  permalink={`/seeds/${nextPost.slug}`}
+                />
+              )}
+            </section>
           </Await>
         </Suspense>
       </main>

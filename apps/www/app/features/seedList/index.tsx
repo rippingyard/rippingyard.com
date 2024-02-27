@@ -1,6 +1,6 @@
 ﻿import { FC, memo } from 'react';
 
-import { PostListItemDetail } from '~/components/Post/PostItemDetail';
+import { PostItem } from '~/components/PostItem';
 import { Seed } from '~/schemas/seed';
 import { seedToPost } from '~/utils/seed';
 
@@ -15,10 +15,7 @@ const SeedListComponent: FC<Props> = ({ seeds = [] }) => {
     <ul className={containerStyle}>
       {seeds.map((seed) => (
         <li key={seed.id} className={itemStyle}>
-          <PostListItemDetail
-            post={seedToPost(seed)}
-            permalink={`/seeds/${seed.slug}`}
-          />
+          <PostItem post={seedToPost(seed)} permalink={`/seeds/${seed.slug}`} />
         </li>
       ))}
     </ul>

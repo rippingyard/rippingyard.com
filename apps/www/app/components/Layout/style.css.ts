@@ -41,3 +41,7 @@ export const logoTypeStyle = style({
   height: 30,
   color: vars.color.neutral,
 });
+
+export const logoLinkStyle = style({
+  display: 'inline-block',
+});
