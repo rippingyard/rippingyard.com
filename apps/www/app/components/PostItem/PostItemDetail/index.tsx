@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { Article } from '~/components/Article';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
-import { usePostTitle } from '~/hooks/normalize/usePostTitle';
+import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { Post } from '~/schemas/post';
 import { articleStyle } from '~/styles/article.css';
 
@@ -25,7 +25,7 @@ export const PostListItemDetail: FC<Props> = ({
   post,
   permalink: overwriteLink,
 }) => {
-  const { title, content, hasHeadingTag } = usePostTitle(post.content);
+  const { title, content, hasHeadingTag } = usePostContents(post.content);
   const permalink = overwriteLink || usePostLink(post.id);
   const createdate = useDate(post.createdAt);
 

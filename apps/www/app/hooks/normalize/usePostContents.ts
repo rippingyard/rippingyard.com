@@ -1,11 +1,12 @@
-﻿import {
+﻿import { useMemo } from 'react';
+
+import {
   getHeadingTags,
   getSummary,
+  getThumbnailFromText,
   getTitle,
   removeTitle,
 } from '~/utils/typography';
-
-import { useMemo } from 'react';
 
 type Options = {
   alt?: string;
@@ -13,7 +14,7 @@ type Options = {
   summaryLength?: number;
 };
 
-export const usePostTitle = (str: string, options: Options = {}) => {
+export const usePostContents = (str: string, options: Options = {}) => {
   const { alt, titleLength = 140, summaryLength = 240 } = options;
 
   const headings = useMemo(() => getHeadingTags(str) || [], [str]);
@@ -37,12 +38,17 @@ export const usePostTitle = (str: string, options: Options = {}) => {
     [content, summaryLength]
   );
 
+  const thumbnail = useMemo(() => getThumbnailFromText(content), [content]);
+  const hasThumbnail = useMemo(() => !!thumbnail, [thumbnail]);
+
   return {
     title,
     content,
     summary,
     headings,
+    thumbnail,
     hasHeadingTag,
+    hasThumbnail,
   };
 
   // if (typeof content === 'string') {
