@@ -2,6 +2,7 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
+import { mediaQuery } from '~/utils/style';
 
 export const containerStyle = style({
   display: 'flex',
@@ -11,6 +12,12 @@ export const containerStyle = style({
   borderBottom: `1px solid ${vars.color.shadow}`,
   ':hover': {
     backgroundColor: vars.color.highlight,
+  },
+  '@media': {
+    [mediaQuery('SP')]: {
+      flexDirection: 'column-reverse',
+      gap: 8,
+    },
   },
 });
 
@@ -22,6 +29,7 @@ export const headingStyle = style({
   fontSize: rootVars.font.size.medium,
   fontWeight: rootVars.font.weight.bold,
   marginBottom: 4,
+  lineHeight: 1.6,
 });
 
 export const summaryStyle = style({
@@ -36,8 +44,15 @@ export const imageStyle = style({
   flexShrink: 0,
   width: 90,
   height: 90,
-  borderRadius: 999,
+  borderRadius: 16,
   overflow: 'hidden',
+  '@media': {
+    [mediaQuery('SP')]: {
+      borderRadius: 8,
+      height: 140,
+      width: '100%',
+    },
+  },
 });
 
 globalStyle(`${imageStyle} > img`, {

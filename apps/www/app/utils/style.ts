@@ -1,10 +1,10 @@
-﻿export enum LAYER {
+﻿enum LAYER {
   FIXED_HEADER = 100,
 }
 
-export const zIndex = (layer: keyof typeof LAYER) => LAYER[layer];
+enum MEDIA_QUERY {
+  SP = 'screen and (max-width: 401px)',
+}
 
-// $orange: hsl(14, 100%, 53%);
-// $green: #D9DB7B;
-// $cyan: #2BCEFE;
-// $red: #F00;
+export const zIndex = (layer: keyof typeof LAYER) => LAYER[layer];
+export const mediaQuery = (type: keyof typeof MEDIA_QUERY) => MEDIA_QUERY[type];
