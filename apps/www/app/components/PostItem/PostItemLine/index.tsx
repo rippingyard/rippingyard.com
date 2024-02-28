@@ -34,7 +34,7 @@ const PostItemLineComponent: FC<Props> = ({
   const createdate = useDate(post.createdAt);
 
   return (
-    <Link to={permalink} className={containerStyle}>
+    <Link to={permalink} className={containerStyle} prefetch="viewport">
       <div className={contentStyle}>
         {hasHeadingTag && <h4 className={headingStyle}>{title}</h4>}
         <p className={summaryStyle}>{summary}</p>
