@@ -35,7 +35,9 @@ export const PostListItemDetail: FC<Props> = ({
         <>
           <div className={`${articleStyle} ${headingStyle}`}>
             <h1>
-              <Link to={permalink}>{title}</Link>
+              <Link to={permalink} prefetch="viewport">
+                {title}
+              </Link>
             </h1>
           </div>
           <Article text={content} />
@@ -46,7 +48,9 @@ export const PostListItemDetail: FC<Props> = ({
         </div>
       )}
       <div className={footerStyle}>
-        <Link to={permalink}>{createdate}</Link>
+        <Link to={permalink} prefetch="viewport">
+          {createdate}
+        </Link>
       </div>
     </div>
   );
