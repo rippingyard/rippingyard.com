@@ -8,14 +8,10 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  // useLocation,
 } from '@remix-run/react';
 import { json, type LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css';
-// import { useEffect } from 'react';
 import rdtStylesheet from 'remix-development-tools/index.css';
-
-// import * as gtag from '~/middlewares/gtag.client';
 
 import './styles/root.css';
 
@@ -58,13 +54,7 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  // const location = useLocation();
   const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
-
-  // useEffect(() => {
-  //   if (!gtagId) return;
-  //   gtag.pageview(location.pathname, gtagId);
-  // }, [location, gtagId]);
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);

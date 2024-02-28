@@ -1,5 +1,7 @@
 ﻿import { globalStyle, style } from '@vanilla-extract/css';
 
+import { mediaQuery } from '~/utils/style';
+
 import { vars } from './theme.css';
 
 const blockStyle = {
@@ -11,6 +13,7 @@ const blockStyle = {
 export const articleStyle = style({
   outline: 'none',
   lineHeight: 1.8,
+  overflow: 'hidden',
 });
 
 globalStyle(`${articleStyle} a`, {
@@ -117,6 +120,11 @@ globalStyle(`${articleStyle} blockquote`, {
   marginBottom: 25,
   padding: 25,
   fontFamily: 'serif',
+  '@media': {
+    [mediaQuery('SP')]: {
+      padding: 12,
+    },
+  },
 });
 
 globalStyle(`${articleStyle} blockquote > p`, {
