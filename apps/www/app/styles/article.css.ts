@@ -3,10 +3,11 @@
 import { mediaQuery } from '~/utils/style';
 
 import { vars } from './theme.css';
+import { rootVars } from './vars.css';
 
 const blockStyle = {
   paddingBottom: 25,
-  fontSize: '1rem',
+  fontSize: rootVars.font.size['medium'],
   // textAlign: 'justify',
 };
 
@@ -27,20 +28,20 @@ globalStyle(`${articleStyle} p`, {
 
 globalStyle(`${articleStyle} h1`, {
   ...blockStyle,
-  fontSize: '2.2em',
+  fontSize: rootVars.font.size['xxx-large'],
   lineHeight: 1.4,
-  fontWeight: 800,
-  paddingTop: '2.2em',
+  fontWeight: rootVars.font.weight.bold,
+  paddingTop: rootVars.font.size['xxx-large'],
   // @include until($desktop) {
   //   font-size: 1.8rem;
 });
 
 globalStyle(`${articleStyle} h2`, {
   ...blockStyle,
-  fontSize: '1.6em',
+  fontSize: rootVars.font.size['xx-large'],
   lineHeight: 1.4,
-  fontWeight: 800,
-  paddingTop: '1.6em',
+  fontWeight: rootVars.font.weight.bold,
+  paddingTop: rootVars.font.size['xx-large'],
   // @include until($desktop) {
   //   font-size: 1.4rem;
   // }
@@ -48,10 +49,10 @@ globalStyle(`${articleStyle} h2`, {
 
 globalStyle(`${articleStyle} h3`, {
   ...blockStyle,
-  fontSize: '1.4em',
+  fontSize: rootVars.font.size['x-large'],
   lineHeight: 1.4,
-  fontWeight: 800,
-  paddingTop: '1.4em',
+  fontWeight: rootVars.font.weight.bold,
+  paddingTop: rootVars.font.size['x-large'],
   // @include until($desktop) {
   //   font-size: 1.3rem;
   // }
@@ -59,10 +60,10 @@ globalStyle(`${articleStyle} h3`, {
 
 globalStyle(`${articleStyle} h4`, {
   ...blockStyle,
-  fontSize: '1.1em',
+  fontSize: rootVars.font.size['large'],
   lineHeight: 1.4,
-  fontWeight: 800,
-  paddingTop: '1.4em',
+  fontWeight: rootVars.font.weight.bold,
+  paddingTop: '1.4rem',
   // @include until($desktop) {
   //   font-size: 1.2rem;
   // }
@@ -70,9 +71,9 @@ globalStyle(`${articleStyle} h4`, {
 
 globalStyle(`${articleStyle} h5`, {
   ...blockStyle,
-  fontSize: '1.15em',
+  fontSize: '1.15rem',
   lineHeight: 1.4,
-  paddingTop: '1em',
+  paddingTop: '1rem',
   // @include until($desktop) {
   //   font-size: 1.1rem;
   // }
@@ -80,9 +81,9 @@ globalStyle(`${articleStyle} h5`, {
 
 globalStyle(`${articleStyle} h6`, {
   ...blockStyle,
-  fontSize: '1.1em',
+  fontSize: '1.1rem',
   lineHeight: 1.4,
-  paddingTop: '0.8em',
+  paddingTop: '0.8rem',
   // @include until($desktop) {
   //   font-size: 1.05rem;
   // }
@@ -119,7 +120,7 @@ globalStyle(`${articleStyle} blockquote`, {
   border: `4px solid ${vars.color.neutral}`,
   marginBottom: 25,
   padding: 25,
-  fontFamily: 'serif',
+  fontFamily: rootVars.font.family.serif,
   '@media': {
     [mediaQuery('SP')]: {
       padding: 12,
@@ -140,7 +141,7 @@ globalStyle(`${articleStyle} pre`, {
   border: `3px solid ${vars.color.secondry}`,
   padding: 25,
   marginBottom: 25,
-  fontSize: '0.9em',
+  fontSize: rootVars.font.size['small'],
   backgroundColor: vars.color.neutral,
   color: vars.color.secondry,
 });
@@ -152,7 +153,7 @@ globalStyle(`${articleStyle} li p`, {
 globalStyle(`${articleStyle} .caption`, {
   ...blockStyle,
   display: 'block',
-  fontSize: '0.8em',
+  fontSize: rootVars.font.size['x-small'],
 });
 
 globalStyle(`${articleStyle} img`, {
