@@ -81,7 +81,7 @@
     "prosemirror-inputrules": "^1.2.0",
     "prosemirror-model": "1.16.1",
     "query-string": "^6.13.7",
-    "sanitize-html": "^2.3.0",
+    "sanitize-html": "^2.12.1",
     "tippy.js": "^6.2.7",
     "url-parse": "^1.5.9",
     "vue-instantsearch": "^4.3.3",
