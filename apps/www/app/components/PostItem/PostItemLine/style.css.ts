@@ -37,7 +37,7 @@ export const summaryStyle = style({
 });
 
 export const footerStyle = style({
-  fontSize: rootVars.font.size.tiny,
+  fontSize: rootVars.font.size['x-small'],
 });
 
 export const imageStyle = style({

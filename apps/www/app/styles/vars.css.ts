@@ -6,14 +6,18 @@ export const rootVars = createGlobalTheme(':root', {
     family: {
       normal:
         "'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif",
+      serif: 'serif',
     },
     size: {
       base: '18px',
-      large: '1.6rem',
-      medium: '1.2rem',
-      normal: '1rem',
-      small: '0.8rem',
-      tiny: '0.7rem',
+      'xxx-large': '2.2rem',
+      'xx-large': '1.6rem',
+      'x-large': '1.4rem',
+      large: '1.1rem',
+      medium: '1rem',
+      small: '0.9rem',
+      'x-small': '0.8rem',
+      'xx-small': '0.65rem',
     },
     weight: {
       normal: '400',
