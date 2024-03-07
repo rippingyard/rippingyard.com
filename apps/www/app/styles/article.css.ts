@@ -194,6 +194,14 @@ globalStyle(`${articleStyle} .widget-youtube > iframe`, {
   height: '100% !important',
 });
 
+globalStyle(`${articleStyle} .youtube-image`, {
+  position: 'relative',
+  display: 'block',
+  maxWidth: '100%',
+  margin: 0,
+  padding: 0,
+});
+
 // [contenteditable]:focus {
 //   outline: none;
 // }

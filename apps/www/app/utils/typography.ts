@@ -68,9 +68,7 @@ export const getThumbnailFromText = (
       case 'www.youtube.com':
         if (urlInfo.searchParams.has('v')) {
           // console.log('youtubeId', queries.v)
-          image = `https://i.ytimg.com/vi/${urlInfo.searchParams.get(
-            'v'
-          )}/hqdefault.jpg`;
+          image = getYoutubeThumbnail(urlInfo.searchParams.get('v'));
         }
         break;
     }
@@ -78,6 +76,9 @@ export const getThumbnailFromText = (
 
   return image;
 };
+
+export const getYoutubeThumbnail = (v: string | null) =>
+  !v ? '' : `https://i.ytimg.com/vi/${v}/hqdefault.jpg`;
 
 // export const getSocialTitle = (str: string) => {
 //   if (!str) return str
@@ -166,48 +167,6 @@ export function extractUrls(content: string): string[] {
 
   return filteredUrls.sort();
 }
-
-export const renderWidgets = (content: string) => {
-  if (!content) return '';
-
-  // const contentPlain = stripTags(content)
-  const urls = extractUrls(content);
-  if (!urls) return content;
-
-  content = content.replace(/"http/g, '"[http]');
-
-  urls.reverse();
-
-  let urlInfo: URL;
-  let html = '';
-
-  urls.forEach((url) => {
-    html = url;
-    urlInfo = new URL(url);
-    console.log('parsed url', urlInfo);
-
-    switch (urlInfo.hostname) {
-      // case 'youtube.com':
-      // case 'jp.youtube.com':
-      // case 'www.youtube.com':
-      //   if (urlInfo.searchParams.has('v')) {
-      //     // console.log('youtubeId', urlInfo.searchParams.get('v'));
-      //     html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
-      //       'v'
-      //     )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
-      //   }
-      //   break;
-
-      default:
-        html = `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`;
-        break;
-    }
-
-    content = content.replace(url, html);
-  });
-
-  return content.replace(/"\[http\]/g, '"http');
-};
 
 export function sanitize(content: string) {
   return !content
