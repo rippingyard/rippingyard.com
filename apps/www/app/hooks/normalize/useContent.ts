@@ -3,7 +3,10 @@
 import {
   extractUrls,
   getSummary,
+  getYouTubeId,
+  getYouTubeSymbol,
   getYoutubeThumbnail,
+  isYouTubeUrl,
   sanitize,
 } from '~/utils/typography';
 
@@ -85,22 +88,6 @@ export const convertYouTubeWidgets = (text: string, urls: string[] = []) => {
 
   return content;
 };
-
-const isYouTubeUrl = (url: string) => {
-  const urlInfo = new URL(url);
-  return ['youtube.com', 'jp.youtube.com', 'www.youtube.com'].includes(
-    urlInfo.hostname
-  );
-};
-
-const getYouTubeId = (url: string) => {
-  if (!isYouTubeUrl(url)) return;
-  const urlInfo = new URL(url);
-  if (!urlInfo.searchParams.has('v')) return;
-  return urlInfo.searchParams.get('v')!;
-};
-
-const getYouTubeSymbol = (id: string) => `[[YouTube:${id}]]`;
 
 export const useContent = (text: string) => {
   // const urls = useMemo(() => extractUrls(text), [text]);

@@ -1,5 +1,6 @@
 ﻿enum LAYER {
   FIXED_HEADER = 100,
+  COVER = 20,
 }
 
 enum MEDIA_QUERY {

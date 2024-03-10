@@ -5,8 +5,6 @@
   style,
 } from '@vanilla-extract/css';
 
-// import { vars } from '~/styles/theme.css';
-
 const rotate = keyframes({
   '0%': { transform: 'rotate(0deg)' },
   '100%': { transform: 'rotate(360deg)' },
@@ -15,7 +13,6 @@ const rotate = keyframes({
 const baseLoaderStyle: ComplexStyleRule = {
   animation: `${rotate} 1s ease-in-out infinite`,
   lineHeight: 1,
-
   width: 24,
 };
 

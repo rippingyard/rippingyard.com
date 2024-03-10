@@ -38,9 +38,8 @@ export const getI18nName = (
   return nameObject[lang] || '';
 };
 
-export const hasThumbnailFromText = (str: string): boolean => {
-  return !!getThumbnailFromText(str);
-};
+export const hasThumbnailFromText = (str: string): boolean =>
+  !!getThumbnailFromText(str);
 
 export const getThumbnailFromText = (
   str: string,
@@ -167,6 +166,22 @@ export function extractUrls(content: string): string[] {
 
   return filteredUrls.sort();
 }
+
+export const isYouTubeUrl = (url: string) => {
+  const urlInfo = new URL(url);
+  return ['youtube.com', 'jp.youtube.com', 'www.youtube.com'].includes(
+    urlInfo.hostname
+  );
+};
+
+export const getYouTubeId = (url: string) => {
+  if (!isYouTubeUrl(url)) return;
+  const urlInfo = new URL(url);
+  if (!urlInfo.searchParams.has('v')) return;
+  return urlInfo.searchParams.get('v')!;
+};
+
+export const getYouTubeSymbol = (id: string) => `[[YouTube:${id}]]`;
 
 export function sanitize(content: string) {
   return !content

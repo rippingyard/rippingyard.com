@@ -10,6 +10,7 @@ export const containerStyle = style({
   alignItems: 'center',
   padding: '16px 0',
   borderBottom: `1px solid ${vars.color.shadow}`,
+  overflow: 'hidden',
   ':hover': {
     backgroundColor: vars.color.highlight,
   },
@@ -44,11 +45,11 @@ export const imageStyle = style({
   flexShrink: 0,
   width: 90,
   height: 90,
-  borderRadius: 16,
+  borderRadius: rootVars.border.radius.large,
   overflow: 'hidden',
   '@media': {
     [mediaQuery('SP')]: {
-      borderRadius: 8,
+      borderRadius: rootVars.border.radius.normal,
       height: 140,
       width: '100%',
     },

@@ -161,6 +161,7 @@ globalStyle(`${articleStyle} img`, {
   margin: '0 auto 25px',
   maxWidth: '100%',
   height: 'auto',
+  borderRadius: rootVars.border.radius.normal,
 });
 
 globalStyle(`${articleStyle} img + .caption`, {
@@ -177,29 +178,6 @@ globalStyle(`${articleStyle} hr`, {
   height: 1,
   backgroundColor: vars.color.shadow,
   marginBottom: 25,
-});
-
-globalStyle(`${articleStyle} .widget-youtube`, {
-  position: 'relative',
-  display: 'block',
-  width: '100%',
-  paddingTop: '56.25%',
-});
-
-globalStyle(`${articleStyle} .widget-youtube > iframe`, {
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  width: '100% !important',
-  height: '100% !important',
-});
-
-globalStyle(`${articleStyle} .youtube-image`, {
-  position: 'relative',
-  display: 'block',
-  maxWidth: '100%',
-  margin: 0,
-  padding: 0,
 });
 
 // [contenteditable]:focus {
