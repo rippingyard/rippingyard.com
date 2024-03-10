@@ -11,7 +11,7 @@ export const contentWithNoTitleStyle = style({
   padding: 16,
   paddingBottom: 0,
   background: vars.color.highlight,
-  borderRadius: 8,
+  borderRadius: rootVars.border.radius.normal,
 });
 
 export const headingStyle = style({});

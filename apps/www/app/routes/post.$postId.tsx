@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async ({
     if (!post) throw new Error();
 
     const { data: nextPosts } = await usePosts({
-      limit: 3,
+      limit: 5,
       startAfter: post.publishedAt,
     });
 

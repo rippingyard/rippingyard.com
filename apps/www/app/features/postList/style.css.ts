@@ -6,4 +6,6 @@ export const containerStyle = style({
   padding: 0,
 });
 
-export const itemStyle = style({});
+export const itemStyle = style({
+  overflow: 'hidden',
+});

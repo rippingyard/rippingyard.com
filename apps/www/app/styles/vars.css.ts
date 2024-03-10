@@ -24,4 +24,12 @@ export const rootVars = createGlobalTheme(':root', {
       bold: '800',
     },
   },
+  border: {
+    radius: {
+      sharp: '3px',
+      normal: '8px',
+      large: '16px',
+      circle: '999px',
+    },
+  },
 });
