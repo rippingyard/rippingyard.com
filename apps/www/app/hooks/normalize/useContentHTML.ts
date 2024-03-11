@@ -20,6 +20,9 @@ export const useContentHTML = (block: ContentBlock) => {
         content += text;
         break;
       }
+      case 'hardBreak':
+        content += '<br />';
+        break;
       default:
         break;
     }

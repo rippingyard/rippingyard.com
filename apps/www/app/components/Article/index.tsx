@@ -62,7 +62,7 @@ const NodeComponent: FC<{ block: ContentBlock }> = ({ block }) => {
     case 'listItem':
       return <ListItem block={block} />;
     default:
-      console.log(block.type, block);
+      console.warn('An undefined block was found', block.type, block);
       return;
   }
 };

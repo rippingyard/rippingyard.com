@@ -18,6 +18,7 @@ type BlockType =
   | 'orderedList'
   | 'codeBlock'
   | 'listItem'
+  | 'hardBreak'
   | 'horizontalRule';
 
 type Attributes = Partial<{
@@ -44,12 +45,6 @@ export type ContentBlock = {
   marks?: Mark[];
   attrs?: Attributes;
 };
-
-// export type ContentBlock = {
-//   type: BlockType;
-//   content: string;
-//   attrs?: Attributes;
-// };
 
 export const useContentBlocks = (html: string) => {
   const sanitizedHtml = sanitize(html);
