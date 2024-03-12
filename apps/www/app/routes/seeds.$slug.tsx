@@ -10,14 +10,16 @@ import { Heading } from '~/components/Heading';
 import { PostItem } from '~/components/PostItem';
 import { Loading } from '~/features/loading';
 import { useSeeds } from '~/hooks/fetch/useSeeds';
-import { useDate } from '~/hooks/normalize/useDate';
+import { useSeedLink } from '~/hooks/link/useSeedLink';
+import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
 import { seedToPost } from '~/utils/seed';
-import { getSummary, getTitle } from '~/utils/typography';
+import { getSummary } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
   params,
+  request,
 }: LoaderFunctionArgs) => {
   try {
     const { slug } = params;
@@ -37,7 +39,10 @@ export const loader: LoaderFunction = async ({
     const prevPost = prevSeed ? seedToPost(prevSeed) : undefined;
     const nextPost = nextSeed ? seedToPost(nextSeed) : undefined;
 
-    return json({ post, prevPost, nextPost });
+    const path = useSeedLink(post.slug as string);
+    const canonicalUrl = new URL(path, request.url).toString();
+
+    return json({ post, prevPost, nextPost, canonicalUrl });
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
@@ -45,20 +50,26 @@ export const loader: LoaderFunction = async ({
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
-  const { post } = data;
+  const { post, canonicalUrl } = data;
 
-  const title = getTitle(post.content, {
-    alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
-  });
-  const summary = getSummary(post.content, 340);
+  const { title, summary, thumbnail } = usePostContents(post.content);
+
+  const image = thumbnail || '/images/ogimage.png';
+  const description = getSummary(post.content, 140);
   const htmlTitle = `${title} - Seed - rippingyard`;
+
   return [
     { title: htmlTitle },
+    { name: 'description', content: description },
+    { tagName: 'link', rel: 'canonical', href: canonicalUrl },
     { property: 'og:title', content: htmlTitle },
-    { name: 'twitter:title', content: htmlTitle },
-    { name: 'description', content: summary },
     { property: 'og:description', content: summary },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:image', content: image },
+    { name: 'twitter:title', content: htmlTitle },
     { name: 'twitter:description', content: summary },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:card', content: 'summary' },
   ];
 };
 
