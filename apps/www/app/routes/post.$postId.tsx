@@ -11,13 +11,16 @@ import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePost } from '~/hooks/fetch/usePost';
 import { usePosts } from '~/hooks/fetch/usePosts';
+import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
+import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
-import { getSummary, getTitle } from '~/utils/typography';
+import { getSummary } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
   params,
+  request,
 }: LoaderFunctionArgs) => {
   try {
     const { postId } = params;
@@ -32,7 +35,15 @@ export const loader: LoaderFunction = async ({
       startAfter: post.publishedAt,
     });
 
-    return json({ post, nextPosts });
+    const path = usePostLink(post.id as string);
+    const canonicalUrl = new URL(path, request.url).toString();
+
+    return json({
+      post,
+      nextPosts,
+      canonicalUrl,
+      meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
+    });
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
@@ -40,19 +51,28 @@ export const loader: LoaderFunction = async ({
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
-  const { post } = data;
-  const title = getTitle(post.content, {
+  const { post, canonicalUrl } = data;
+
+  const { title, summary, thumbnail } = usePostContents(post.content, {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
-  const summary = getSummary(post.content, 340);
+
+  const description = getSummary(post.content, 140);
   const htmlTitle = `${title} - rippingyard`;
+  const image = thumbnail || '/images/ogimage.png';
+
   return [
     { title: htmlTitle },
+    { tagName: 'link', rel: 'canonical', href: canonicalUrl },
+    { name: 'description', content: description },
     { property: 'og:title', content: htmlTitle },
-    { name: 'twitter:title', content: htmlTitle },
-    { name: 'description', content: summary },
     { property: 'og:description', content: summary },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:image', content: image },
+    { name: 'twitter:title', content: htmlTitle },
     { name: 'twitter:description', content: summary },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:card', content: 'summary' },
   ];
 };
 
