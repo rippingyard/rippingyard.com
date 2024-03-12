@@ -1,4 +1,4 @@
-﻿import { FC, memo, useState } from 'react';
+﻿import { FC, memo, useEffect, useMemo, useState } from 'react';
 
 import { PlayYouTubeIcon } from '~/assets/icons/PlayYouTube';
 import { getYouTubeId, getYoutubeThumbnail } from '~/utils/typography';
@@ -13,9 +13,12 @@ import {
 
 const YouTubeComponent: FC<{ url: string }> = ({ url }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const youtubeId = getYouTubeId(url);
+  const youtubeId = useMemo(() => getYouTubeId(url), [url]);
   if (!youtubeId) return;
-  const thumbnail = getYoutubeThumbnail(youtubeId);
+  const thumbnail = useMemo(() => getYoutubeThumbnail(youtubeId), [youtubeId]);
+
+  useEffect(() => setIsPlaying(false), [url]);
+
   return (
     <>
       {!isPlaying && (
@@ -41,8 +44,6 @@ const YouTubeComponent: FC<{ url: string }> = ({ url }) => {
       )}
     </>
   );
-
-  return <button onClick={() => console.log('YouTube!')}>YouTube Test</button>;
 };
 
 export const YouTube = memo(YouTubeComponent);
