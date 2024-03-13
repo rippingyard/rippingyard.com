@@ -13,10 +13,9 @@ import { usePost } from '~/hooks/fetch/usePost';
 import { usePosts } from '~/hooks/fetch/usePosts';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
-import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
-import { getSummary } from '~/utils/typography';
+import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
   params,
@@ -53,10 +52,11 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
   const { post, canonicalUrl } = data;
 
-  const { title, summary, thumbnail } = usePostContents(post.content, {
+  const title = getTitle(post.content, {
     alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
   });
-
+  const summary = getSummary(post.content, 340);
+  const thumbnail = getThumbnailFromText(post.content);
   const description = getSummary(post.content, 140);
   const htmlTitle = `${title} - rippingyard`;
   const image = thumbnail || '/images/ogimage.png';
