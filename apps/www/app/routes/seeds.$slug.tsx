@@ -11,11 +11,10 @@ import { PostItem } from '~/components/PostItem';
 import { Loading } from '~/features/loading';
 import { useSeeds } from '~/hooks/fetch/useSeeds';
 import { useSeedLink } from '~/hooks/link/useSeedLink';
-import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
 import { seedToPost } from '~/utils/seed';
-import { getSummary } from '~/utils/typography';
+import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
   params,
@@ -52,7 +51,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
   const { post, canonicalUrl } = data;
 
-  const { title, summary, thumbnail } = usePostContents(post.content);
+  const title = getTitle(post.content);
+  const summary = getSummary(post.content, 340);
+  const thumbnail = getThumbnailFromText(post.content);
 
   const image = thumbnail || '/images/ogimage.png';
   const description = getSummary(post.content, 140);

@@ -89,7 +89,7 @@ export const getTitle = (
   options: Partial<{
     alt: string;
     titleLength: number;
-  }>
+  }> = {}
 ) => {
   const { alt, titleLength = 140 } = options;
   const headings = getHeadingTags(str);

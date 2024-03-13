@@ -7,5 +7,5 @@ export const containerStyle = style({
 });
 
 export const itemStyle = style({
-  marginBottom: 32,
+  // marginBottom: 32,
 });
