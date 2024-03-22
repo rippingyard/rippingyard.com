@@ -10,7 +10,7 @@ export enum ADSENSE_IDS {
   TOP_MIDDLE = '3474759621',
 }
 
-type WindowWithAdsense = Window &
+export type WindowWithEnv = Window &
   typeof globalThis & {
     adsbygoogle: {
       push: (_: unknown) => void;
@@ -24,7 +24,7 @@ type Props = {
 
 export const Adsense: FC<Props> = ({ slot }) => {
   const w =
-    typeof window !== 'undefined' ? (window as WindowWithAdsense) : undefined;
+    typeof window !== 'undefined' ? (window as WindowWithEnv) : undefined;
   const [show, setShow] = useState(false);
 
   useEffect(() => {
