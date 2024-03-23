@@ -10,10 +10,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/css-bundle": "^2.5.0",
-    "@remix-run/node": "^2.0.0",
-    "@remix-run/react": "^2.0.0",
-    "@remix-run/serve": "^2.0.0",
+    "@remix-run/css-bundle": "^2.8.1",
+    "@remix-run/node": "^2.8.1",
+    "@remix-run/react": "^2.8.1",
+    "@remix-run/serve": "^2.8.1",
     "@tiptap/extension-highlight": "^2.2.4",
     "@tiptap/extension-image": "^2.2.4",
     "@tiptap/extension-link": "^2.2.4",
@@ -27,6 +27,7 @@
     "dayjs": "^1.11.10",
     "destyle.css": "^4.0.0",
     "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
     "isbot": "^3.6.8",
     "isomorphic-dompurify": "^2.2.0",
     "react": "^18.2.0",
