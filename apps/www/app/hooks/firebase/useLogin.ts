@@ -4,7 +4,7 @@ import { ZodError, ZodIssue } from 'zod';
 
 import { Auth, AuthSchema } from '~/schemas/auth';
 
-import { useAuth } from './useAuth';
+import { useFirebase } from './useFirebase';
 
 const defaultErrors = new ZodError<Auth>([]).flatten();
 
@@ -13,16 +13,20 @@ export const useLogin = async (args: Auth) => {
   console.log('email', email);
   console.log('password', password);
 
+  const { auth } = useFirebase();
+
   try {
     AuthSchema.parse({
       email,
       password,
     });
 
-    const user = await signInWithEmailAndPassword(useAuth(), email, password);
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
+    const token = await user.getIdToken();
 
     return {
       user,
+      token,
       errors: defaultErrors,
     };
   } catch (e) {
@@ -57,6 +61,7 @@ export const useLogin = async (args: Auth) => {
 
     return {
       users: null,
+      token: null,
       errors,
     };
   }

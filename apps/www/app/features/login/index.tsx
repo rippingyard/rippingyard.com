@@ -1,4 +1,4 @@
-﻿import { Form } from '@remix-run/react';
+﻿import { Form, useSubmit } from '@remix-run/react';
 import { FC, useState } from 'react';
 import { ZodError, typeToFlattenedError } from 'zod';
 
@@ -14,6 +14,7 @@ export const Login: FC = () => {
   const [errors, setErrors] = useState<typeToFlattenedError<Auth, string>>(
     new ZodError<Auth>([]).flatten()
   );
+  const submit = useSubmit();
 
   const emailId = 'email';
   const passwordId = 'password';
@@ -26,11 +27,21 @@ export const Login: FC = () => {
     const email = (formData.get('email') || '') as string;
     const password = (formData.get('password') || '') as string;
 
-    const { user, errors } = await useLogin({
+    const { user, token, errors } = await useLogin({
       email,
       password,
     });
     console.log('authedUser', user);
+
+    await submit(
+      { token, uid: user?.uid || '' },
+      {
+        method: 'POST',
+        action: '/login',
+        navigate: false,
+      }
+    );
+
     setErrors(errors);
   };
 
