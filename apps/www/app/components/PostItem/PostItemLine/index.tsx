@@ -1,5 +1,5 @@
-﻿import { SerializeFrom } from '@remix-run/node';
-import { Link } from '@remix-run/react';
+﻿import { Link } from '@remix-run/react';
+import { SerializeFrom } from '@vercel/remix';
 import { FC, memo, useMemo } from 'react';
 
 import { usePostLink } from '~/hooks/link/usePostLink';

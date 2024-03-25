@@ -1,6 +1,6 @@
-﻿import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
+﻿import { useLoaderData } from '@remix-run/react';
+import { json, redirect } from '@vercel/remix';
+import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
   ActionFunction,
   LoaderFunction,
@@ -9,7 +9,12 @@ import type {
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
-import { commitSession, getSession } from '~/middlewares/session';
+import {
+  commitSession,
+  getSession,
+  getAuthToken,
+  isAuthenticated,
+} from '~/middlewares/session.server';
 
 export const loader: LoaderFunction = async ({
   request,
@@ -17,6 +22,8 @@ export const loader: LoaderFunction = async ({
   try {
     const title = 'ログイン';
     const canonicalUrl = new URL('login', request.url).toString();
+
+    if (await isAuthenticated(request)) return redirect('/');
 
     return json({
       title,
@@ -32,7 +39,9 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
 
   const session = await getSession(request.headers.get('Cookie'));
-  session.set('token', formData.get('token') as string);
+  const token = await getAuthToken(formData.get('token') as string);
+
+  session.set('token', token);
   session.set('uid', formData.get('uid') as string);
 
   return json(

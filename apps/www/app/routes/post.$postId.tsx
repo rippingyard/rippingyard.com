@@ -1,6 +1,6 @@
-﻿import type { LoaderFunctionArgs } from '@remix-run/node';
-import { Await, useLoaderData } from '@remix-run/react';
+﻿import { Await, useLoaderData } from '@remix-run/react';
 import { json } from '@vercel/remix';
+import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense, useMemo } from 'react';
 

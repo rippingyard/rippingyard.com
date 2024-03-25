@@ -1,5 +1,5 @@
-﻿import { SerializeFrom } from '@remix-run/node';
-import { Link } from '@remix-run/react';
+﻿import { Link } from '@remix-run/react';
+import { SerializeFrom } from '@vercel/remix';
 import { FC } from 'react';
 
 import { Article } from '~/components/Article';

@@ -19,7 +19,7 @@ import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
-import { getSession } from './middlewares/session';
+import { getSession, isAuthenticated } from './middlewares/session.server';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -41,10 +41,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const session = await getSession(request.headers.get('Cookie'));
 
-  console.log('uid from session', session.get('uid'));
   console.log('token from session', session.get('token'));
 
+  const isAuthed = await isAuthenticated(request);
+
   return json({
+    isAuthed,
     gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
     adsenseId,
     env,
@@ -69,7 +71,7 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
+  const { isAuthed, gtagId, adsenseId, env } = useLoaderData<typeof loader>();
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
@@ -92,7 +94,7 @@ function App() {
         <Links />
       </head>
       <body className={themeClass}>
-        <Layout>
+        <Layout isAuthenticated={isAuthed}>
           <Outlet />
         </Layout>
         <ScrollRestoration />
