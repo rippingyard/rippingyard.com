@@ -20,6 +20,8 @@ export const headerContainerStyle = style({
 });
 
 export const headerInnerStyle = style({
+  display: 'flex',
+  justifyContent: 'space-between',
   margin: '16px 24px 0',
   paddingBottom: 16,
   borderBottom: `2px solid ${vars.color.neutral}`,

@@ -1,11 +1,17 @@
-﻿import { initializeApp, FirebaseApp, getApp } from 'firebase/app';
+﻿import { initializeApp, getApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 import { WindowWithEnv } from '~/components/Adsense';
 import { Env } from '~/components/Env';
 
-export const useFirebase = (): { fb: FirebaseApp } => {
+export const useFirebase = () => {
+  const fb = getFirebase();
+  return { fb, auth: getAuth(fb) };
+};
+
+const getFirebase = () => {
   try {
-    return { fb: getApp() };
+    return getApp();
   } catch (e) {
     const env = (typeof process !== 'undefined'
       ? process.env
@@ -22,6 +28,6 @@ export const useFirebase = (): { fb: FirebaseApp } => {
       measurementId: env.VITE_FIREBASE_MEASUREMENT_ID,
     };
 
-    return { fb: initializeApp(config) };
+    return initializeApp(config);
   }
 };

@@ -1,4 +1,4 @@
-﻿import { SerializeFrom } from '@remix-run/node';
+﻿import { SerializeFrom } from '@vercel/remix';
 import { FC, memo } from 'react';
 
 import { type ItemMode, PostItem } from '~/components/PostItem';

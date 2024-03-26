@@ -1,10 +1,20 @@
-﻿import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
-import type { LoaderFunction, MetaFunction } from '@vercel/remix';
+﻿import { useLoaderData } from '@remix-run/react';
+import { json, redirect } from '@vercel/remix';
+import type { LoaderFunctionArgs } from '@vercel/remix';
+import type {
+  ActionFunction,
+  LoaderFunction,
+  MetaFunction,
+} from '@vercel/remix';
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
+import {
+  commitSession,
+  getSession,
+  getAuthToken,
+  isAuthenticated,
+} from '~/middlewares/session.server';
 
 export const loader: LoaderFunction = async ({
   request,
@@ -12,6 +22,8 @@ export const loader: LoaderFunction = async ({
   try {
     const title = 'ログイン';
     const canonicalUrl = new URL('login', request.url).toString();
+
+    if (await isAuthenticated(request)) return redirect('/');
 
     return json({
       title,
@@ -21,6 +33,25 @@ export const loader: LoaderFunction = async ({
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const session = await getSession(request.headers.get('Cookie'));
+  const token = await getAuthToken(formData.get('token') as string);
+
+  session.set('token', token);
+  session.set('uid', formData.get('uid') as string);
+
+  return json(
+    {},
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    }
+  );
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

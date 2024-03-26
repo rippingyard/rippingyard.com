@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import { json, type LinksFunction } from '@vercel/remix';
+import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
 import destyle from 'destyle.css?url';
 import { useMemo } from 'react';
 
@@ -15,10 +15,11 @@ import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
+import { getSession, isAuthenticated } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
 
   const env: Env = {
@@ -35,7 +36,14 @@ export const loader = async () => {
     VITE_FIREBASE_MEASUREMENT_ID: process.env.VITE_FIREBASE_MEASUREMENT_ID!,
   };
 
+  const session = await getSession(request.headers.get('Cookie'));
+
+  console.log('token from session', session.get('token'));
+
+  const isAuthed = await isAuthenticated(request);
+
   return json({
+    isAuthed,
     gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
     adsenseId,
     env,
@@ -59,7 +67,7 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  const { gtagId, adsenseId, env } = useLoaderData<typeof loader>();
+  const { isAuthed, gtagId, adsenseId, env } = useLoaderData<typeof loader>();
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
@@ -84,7 +92,7 @@ function App() {
         <Links />
       </head>
       <body className={className}>
-        <Layout>
+        <Layout isAuthenticated={isAuthed}>
           <Outlet />
         </Layout>
         <ScrollRestoration />

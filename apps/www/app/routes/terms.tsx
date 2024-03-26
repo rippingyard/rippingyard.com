@@ -1,6 +1,6 @@
-﻿import type { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+﻿import { useLoaderData } from '@remix-run/react';
 import { json } from '@vercel/remix';
+import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 
 import { Heading } from '~/components/Heading';
