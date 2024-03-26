@@ -1,7 +1,0 @@
-﻿.DS_Store
-node_modules
-public
-build
-.cache
-.env
-.vercel
