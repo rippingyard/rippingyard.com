@@ -16,12 +16,12 @@ export const loader = () => {
       // priority: '1.00',
       isIndex: true,
     },
-    {
-      path: 'sitemaps/statics.xml',
-      lastmod: dayjs('2020-07-09 07:00'),
-      // priority: '1.00',
-      isIndex: true,
-    },
+    // {
+    //   path: 'sitemaps/statics.xml',
+    //   lastmod: dayjs('2020-07-09 07:00'),
+    //   // priority: '1.00',
+    //   isIndex: true,
+    // },
   ];
   // Return the response with the content, a status 200 message, and the appropriate headers for an XML page
   return new Response(buildSitemapIndex(routes), {
