@@ -1,16 +1,18 @@
 {
-  "name": "blog",
+  "name": "rippingyard.com",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "PORT=3334 remix dev --manual --port 8000",
-    "start": "remix-serve ./build/index.js",
+    "build": "remix vite:build",
+    "build:old": "remix build",
+    "dev": "remix vite:dev",
+    "dev:old": "PORT=3334 remix dev --manual --port 8000",
+    "start": "remix-serve ./build/server/index.js",
+    "start:old": "remix-serve ./build/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/css-bundle": "^2.8.1",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
@@ -21,8 +23,8 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.1.16",
     "@tiptap/starter-kit": "^2.1.16",
-    "@vercel/analytics": "^1.0.2",
-    "@vercel/remix": "^2.0.0",
+    "@vercel/analytics": "^1.2.2",
+    "@vercel/remix": "^2.8.1",
     "axios": "^1.6.5",
     "dayjs": "^1.11.10",
     "destyle.css": "^4.0.0",
@@ -37,13 +39,14 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.0.0",
-    "@remix-run/eslint-config": "^2.0.0",
+    "@remix-run/dev": "^2.8.1",
+    "@remix-run/eslint-config": "^2.8.1",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/vite-plugin": "^4.0.6",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -54,10 +57,11 @@
     "prettier": "^3.2.1",
     "remix-development-tools": "^3.7.4",
     "typescript": "^5.1.6",
+    "vite": "^5.2.6",
     "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18"
   }
 }

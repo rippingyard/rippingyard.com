@@ -1,7 +1,5 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
 import {
   Links,
-  LiveReload,
   Meta,
   MetaFunction,
   Outlet,
@@ -10,15 +8,14 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { json, type LinksFunction } from '@vercel/remix';
-import destyle from 'destyle.css';
-import rdtStylesheet from 'remix-development-tools/index.css';
-
-import './styles/root.css';
+import destyle from 'destyle.css?url';
+import { useMemo } from 'react';
 
 import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
+import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async () => {
@@ -47,10 +44,9 @@ export const loader = async () => {
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: destyle },
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
-  ...(process.env.NODE_ENV === 'development'
-    ? [{ rel: 'stylesheet', href: rdtStylesheet }]
-    : []),
+  // ...(process.env.NODE_ENV === 'development'
+  //   ? [{ rel: 'stylesheet', href: rdtStylesheet }]
+  //   : []),
 ];
 
 export const meta: MetaFunction = () => [
@@ -68,8 +64,10 @@ function App() {
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
 
+  const className = useMemo(() => [bodyStyle, themeClass].join(' '), []);
+
   return (
-    <html lang="ja">
+    <html lang="ja" className={className}>
       <head>
         <Env env={env} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -85,23 +83,22 @@ function App() {
         <Meta />
         <Links />
       </head>
-      <body className={themeClass}>
+      <body className={className}>
         <Layout>
           <Outlet />
         </Layout>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
 }
 
-let AppExport = App;
+// let AppExport = App;
 
-if (process.env.NODE_ENV === 'development') {
-  const { withDevTools } = await import('remix-development-tools');
-  AppExport = withDevTools(AppExport);
-}
+// if (process.env.NODE_ENV === 'development') {
+//   const { withDevTools } = await import('remix-development-tools');
+//   AppExport = withDevTools(AppExport);
+// }
 
-export default AppExport;
+export default App;

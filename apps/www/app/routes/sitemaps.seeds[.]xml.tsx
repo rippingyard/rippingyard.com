@@ -4,7 +4,7 @@ import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 
 import { useStorage } from '~/hooks/firebase/useStorage';
 import { Seed } from '~/schemas/seed';
-import { Routes, buildSitemapIndex } from '~/utils/sitemap';
+import { Routes, buildSitemap } from '~/utils/sitemap';
 
 export const loader = async () => {
   const routes: Routes = [];
@@ -28,7 +28,7 @@ export const loader = async () => {
   });
 
   // Return the response with the content, a status 200 message, and the appropriate headers for an XML page
-  return new Response(buildSitemapIndex(routes), {
+  return new Response(buildSitemap(routes), {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',

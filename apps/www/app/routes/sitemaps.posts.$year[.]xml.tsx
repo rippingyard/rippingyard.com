@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 
 import { useFirestore } from '~/hooks/firestore/useFirestore';
-import { Routes, buildSitemapIndex } from '~/utils/sitemap';
+import { Routes, buildSitemap } from '~/utils/sitemap';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { year } = params;
@@ -49,7 +49,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   });
 
   // Return the response with the content, a status 200 message, and the appropriate headers for an XML page
-  return new Response(buildSitemapIndex(routes), {
+  return new Response(buildSitemap(routes), {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',
