@@ -18,6 +18,11 @@ const baseButtonStyle: ComplexStyleRule = {
 
 export const buttonStyle = style(baseButtonStyle);
 
+export const successButtonStyle = style({
+  backgroundColor: vars.color.primary,
+  boxShadow: `0 0 2px 0 ${vars.color.primary}`,
+});
+
 globalStyle(`${buttonStyle}:hover`, {
   color: vars.color.primaryDark,
   boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
