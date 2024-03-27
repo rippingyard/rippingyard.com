@@ -31,22 +31,16 @@ export const Default: Story = {
   },
 };
 
-// export const Secondary: Story = {
-//   args: {
-//     label: 'Button',
-//   },
-// };
+export const Success: Story = {
+  args: {
+    children: 'TEST',
+    color: 'success',
+  },
+};
 
-// export const Large: Story = {
-//   args: {
-//     size: 'large',
-//     label: 'Button',
-//   },
-// };
-
-// export const Small: Story = {
-//   args: {
-//     size: 'small',
-//     label: 'Button',
-//   },
-// };
+export const Loading: Story = {
+  args: {
+    children: 'Now Loading',
+    isLoading: true,
+  },
+};
