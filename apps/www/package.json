@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "build:old": "remix build",
+    "build:sb": "storybook build",
     "dev": "remix vite:dev",
-    "dev:old": "PORT=3334 remix dev --manual --port 8000",
     "start": "remix-serve ./build/server/index.js",
     "start:old": "remix-serve ./build/index.js",
     "test": "vitest",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "sb": "storybook dev -p 6006"
   },
   "dependencies": {
     "@remix-run/node": "^2.8.1",
@@ -40,8 +40,17 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.2.25",
     "@remix-run/dev": "^2.8.1",
     "@remix-run/eslint-config": "^2.8.1",
+    "@storybook/addon-essentials": "^8.0.4",
+    "@storybook/addon-interactions": "^8.0.4",
+    "@storybook/addon-links": "^8.0.4",
+    "@storybook/addon-onboarding": "^8.0.4",
+    "@storybook/blocks": "^8.0.4",
+    "@storybook/react": "^8.0.4",
+    "@storybook/react-vite": "^8.0.4",
+    "@storybook/test": "^8.0.4",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",
     "@types/react": "^18.2.47",
@@ -58,8 +67,10 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-storybook": "^0.8.0",
     "prettier": "^3.2.1",
     "remix-development-tools": "^3.7.4",
+    "storybook": "^8.0.4",
     "typescript": "^5.1.6",
     "vite": "^5.2.6",
     "vite-tsconfig-paths": "^4.3.1",
