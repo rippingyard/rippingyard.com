@@ -17,10 +17,6 @@ module.exports = {
     },
   },
   rules: {
-    // 'react-refresh/only-export-components': [
-    //   'warn',
-    //   { allowConstantExport: true },
-    // ],
     quotes: ['error', 'single'],
     'react-hooks/exhaustive-deps': 'error',
     'import/order': [
