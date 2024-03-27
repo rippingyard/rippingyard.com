@@ -15,7 +15,7 @@ import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
-import { getSession, isAuthenticated } from './middlewares/session.server';
+import { isAuthenticated } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
@@ -35,10 +35,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID!,
     VITE_FIREBASE_MEASUREMENT_ID: process.env.VITE_FIREBASE_MEASUREMENT_ID!,
   };
-
-  const session = await getSession(request.headers.get('Cookie'));
-
-  console.log('token from session', session.get('token'));
 
   const isAuthed = await isAuthenticated(request);
 
@@ -83,7 +79,6 @@ function App() {
         <meta
           name="viewport"
           content="width=device-width,initial-scale=1,viewport-fit=cover"
-          // content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
         />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="ripping yard" />

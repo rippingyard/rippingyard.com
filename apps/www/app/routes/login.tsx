@@ -6,6 +6,7 @@ import type {
   LoaderFunction,
   MetaFunction,
 } from '@vercel/remix';
+import dayjs from 'dayjs';
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
@@ -43,6 +44,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   session.set('token', token);
   session.set('uid', formData.get('uid') as string);
+  session.set('authenticatedAt', dayjs().valueOf());
 
   return json(
     {},
