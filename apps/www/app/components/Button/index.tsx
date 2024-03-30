@@ -6,7 +6,7 @@
   useMemo,
 } from 'react';
 
-import { LoaderIcon } from '~/assets/icons/Loader';
+import { IconLoader } from '~/assets/icons/Loader';
 
 import { buttonStyle, successButtonStyle } from './style.css';
 
@@ -26,7 +26,7 @@ export const Button: FC<Props> = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <button ref={ref} {...props} className={className}>
-        {(isLoading && <LoaderIcon />) || children}
+        {(isLoading && <IconLoader />) || children}
       </button>
     );
   }

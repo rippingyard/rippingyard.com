@@ -2,6 +2,7 @@
 import { Image } from '@tiptap/extension-image';
 import { Link } from '@tiptap/extension-link';
 import { generateJSON } from '@tiptap/html';
+import { AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useMemo } from 'react';
 
@@ -55,7 +56,7 @@ export const useContentBlocks = (html: string) => {
         Image,
         Link,
         Highlight,
-      ]) as ContentBlock,
+      ] as AnyExtension[]) as ContentBlock,
     [sanitizedHtml]
   );
 
