@@ -2,12 +2,13 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
-import { mediaQuery } from '~/utils/style';
+import { mediaQuery, zIndex } from '~/utils/style';
 
 export const containerStyle = style({});
 
 globalStyle('.tippy-box', {
   maxWidth: '100% !important',
+  zIndex: `${zIndex('COVER')} !important`,
 });
 
 globalStyle(`${containerStyle} button`, {

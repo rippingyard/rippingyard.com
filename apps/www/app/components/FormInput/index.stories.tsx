@@ -1,12 +1,13 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
 
+import { FormInput } from '.';
+
 // import { fn } from '@storybook/test';
-import { Button } from '.';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Button> = {
-  title: 'Component/Button',
-  component: Button,
+const meta: Meta<typeof FormInput> = {
+  title: 'Component/Form/Input',
+  component: FormInput,
   // parameters: {
   //   // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
   //   layout: 'centered',
@@ -23,32 +24,9 @@ const meta: Meta<typeof Button> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof FormInput>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  args: {
-    children: 'TEST',
-  },
-};
-
-export const Success: Story = {
-  args: {
-    children: 'TEST',
-    color: 'success',
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    children: 'TEST',
-    isGhost: true,
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    children: 'Now Loading',
-    isLoading: true,
-  },
+  args: {},
 };

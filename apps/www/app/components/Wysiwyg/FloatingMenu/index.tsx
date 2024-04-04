@@ -1,5 +1,5 @@
 ﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 import { IconCode } from '~/assets/icons/Code';
 import { IconHeading } from '~/assets/icons/Heading';
@@ -14,9 +14,10 @@ import { containerStyle, labelStyle } from './style.css';
 
 type Props = {
   editor: Editor;
+  showImageUploader: Dispatch<SetStateAction<boolean>>;
 };
 
-export const FloatingMenu: FC<Props> = ({ editor }) => {
+export const FloatingMenu: FC<Props> = ({ editor, showImageUploader }) => {
   return (
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
@@ -48,7 +49,7 @@ export const FloatingMenu: FC<Props> = ({ editor }) => {
         >
           <IconHeading /> 小見出し
         </button>
-        <button onClick={() => undefined}>
+        <button onClick={() => showImageUploader(true)}>
           <IconImage /> <span className={labelStyle}>画像</span>
         </button>
         <button onClick={() => editor.chain().focus().toggleBulletList().run()}>
