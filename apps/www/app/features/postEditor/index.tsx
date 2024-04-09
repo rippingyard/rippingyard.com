@@ -1,4 +1,5 @@
 ﻿import { Form } from '@remix-run/react';
+import dayjs from 'dayjs';
 import { FC, useCallback, useState } from 'react';
 
 import { Button } from '~/components/Button';
@@ -15,6 +16,9 @@ import {
 export const PostEditor: FC = () => {
   const [html, setHtml] = useState<string>('');
 
+  const now = dayjs();
+  const uploadpath = `posts/${now.format('YYYY/MM')}/`;
+
   const onUpdate = useCallback((content: string) => {
     setHtml(content);
   }, []);
@@ -26,7 +30,7 @@ export const PostEditor: FC = () => {
         <header className={headerStyle}>
           <FormTextarea name="title" defaultValue="" isBold isHeading />
         </header>
-        <Wysiwyg content="" onUpdate={onUpdate} />
+        <Wysiwyg content="" uploadpath={uploadpath} onUpdate={onUpdate} />
       </section>
       <footer className={footerStyle}>
         <Button>投稿</Button>

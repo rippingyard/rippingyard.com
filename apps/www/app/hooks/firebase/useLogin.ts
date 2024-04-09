@@ -24,6 +24,9 @@ export const useLogin = async (args: Auth) => {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
     const token = await user.getIdToken();
 
+    // TODO: csrfTokenの処理を忘れず
+    // https://firebase.google.com/docs/auth/admin/manage-cookies?hl=ja#sign_in
+
     return {
       user,
       token,

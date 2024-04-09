@@ -1,10 +1,10 @@
 ﻿import { createCookieSessionStorage } from '@vercel/remix';
-import dayjs from 'dayjs';
-import admin from 'firebase-admin';
-import { initializeApp as initializeAdminApp } from 'firebase-admin/app';
+// import dayjs from 'dayjs';
+
+import { useAdmin } from '~/hooks/firebase/useAdmin.server';
 
 const SESSION_AGE = 60 * 60 * 24 * 14; // 二週間
-const TOKEN_AGE = 60 * 60 * 2; // 二時間
+// const TOKEN_AGE = 60 * 60 * 2; // 二時間
 
 type SessionData = {
   uid: string;
@@ -14,19 +14,6 @@ type SessionData = {
 
 type SessionFlashData = {
   error: string;
-};
-
-const getAdminAuth = () => {
-  const cert = JSON.parse(
-    process.env.VITE_GOOGLE_APPLICATION_CREDENTIALS || ''
-  );
-  if (!admin.apps.length) {
-    initializeAdminApp({
-      credential: admin.credential.cert(cert),
-      databaseURL: process.env.VITE_FIREBASE_DATABASE_URL,
-    });
-  }
-  return admin.auth();
 };
 
 const { getSession, commitSession, destroySession } =
@@ -43,32 +30,42 @@ const { getSession, commitSession, destroySession } =
   });
 
 const getAuthToken = async (idToken: string) => {
-  const adminAuth = getAdminAuth();
+  const admin = useAdmin();
+  const adminAuth = admin.auth();
   const decodedToken = await adminAuth.verifyIdToken(idToken);
+
   if (new Date().getTime() / 1000 - decodedToken.auth_time > 5 * 60) {
     throw new Error('Recent sign in required');
   }
   const expiresIn = SESSION_AGE * 1000;
-  return adminAuth.createSessionCookie(idToken, { expiresIn });
+
+  return adminAuth.createSessionCookie(idToken, {
+    expiresIn,
+  });
 };
 
 const getMe = async (request: Request): Promise<{ uid: string | null }> => {
-  const adminAuth = getAdminAuth();
-  const now = dayjs().valueOf();
+  const admin = useAdmin();
+  const adminAuth = admin.auth();
+  // const now = dayjs().valueOf();
   const emptyValue = { uid: null };
   const cookieSession = await getSession(request.headers.get('Cookie'));
-  const uid = cookieSession.get('uid');
+  // const uid = cookieSession.get('uid');
   const token = cookieSession.get('token');
-  const authenticatedAt = cookieSession.get('authenticatedAt') || 0;
-  if (!token || !uid) return emptyValue;
+  // const authenticatedAt = cookieSession.get('authenticatedAt') || 0;
+  if (!token) return emptyValue;
 
   try {
-    if (authenticatedAt + 1000 * TOKEN_AGE > now) return { uid };
-    console.log(
-      'verify token!',
-      dayjs(authenticatedAt + 1000 * TOKEN_AGE).format('YYYY-MM-DD HH:mm:ss')
-    );
-    await adminAuth.verifySessionCookie(token, true);
+    // if (authenticatedAt + 1000 * TOKEN_AGE > now) return { uid };
+    // console.log(
+    //   'verify token!',
+    //   dayjs(authenticatedAt + 1000 * TOKEN_AGE).format('YYYY-MM-DD HH:mm:ss')
+    // );
+    const { uid } = await adminAuth.verifySessionCookie(token, true);
+
+    // const auth = useAuth();
+    // const bucket = admin.storage().bucket();
+
     return { uid };
   } catch (e) {
     return emptyValue;

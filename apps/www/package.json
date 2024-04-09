@@ -6,9 +6,9 @@
   "scripts": {
     "build": "remix vite:build",
     "build:sb": "storybook build",
-    "dev": "remix vite:dev & pnpm sb",
+    "dev": "remix vite:dev",
+    "dev:all": "pnpm dev & pnpm sb",
     "start": "remix-serve ./build/server/index.js",
-    "start:old": "remix-serve ./build/index.js",
     "test": "vitest",
     "typecheck": "tsc",
     "sb": "storybook dev -p 6006"

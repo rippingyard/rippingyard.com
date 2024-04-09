@@ -33,8 +33,6 @@ export const resizeImage = (
         reader.readAsDataURL(blob);
 
         reader.onload = async () => {
-          console.log('blob', blob, blob.type);
-          console.log('reader.result', reader.result);
           resolve({
             blob,
             file: new File([blob], '', {

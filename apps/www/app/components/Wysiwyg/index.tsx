@@ -17,10 +17,11 @@ import { containerStyle, modalStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
+  uploadpath: string;
   onUpdate: (content: string) => void;
 };
 
-export const Wysiwyg: FC<Props> = ({ content, onUpdate }) => {
+export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
   const className = [articleStyle, containerStyle].join(' ');
   const dzRef = useRef(null);
 
@@ -109,9 +110,8 @@ export const Wysiwyg: FC<Props> = ({ content, onUpdate }) => {
       {(showImageUploader || isOverDropZone) && (
         <div className={modalStyle}>
           <ImageUploader
-            // editor={editor}
-            isUploading={false}
-            onUpload={() => undefined}
+            editor={editor}
+            uploadpath={uploadpath}
             onClose={() => setShowImageUploader(false)}
           />
         </div>

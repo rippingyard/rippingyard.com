@@ -20,6 +20,7 @@ export const textareaStyle = style({
 
 export const headingStyle = style({
   fontSize: rootVars.font.size['xxx-large'],
+  lineHeight: 1.4,
   padding: '16px 0',
 });
 

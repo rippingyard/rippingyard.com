@@ -16,7 +16,7 @@ import {
 type Props = {
   file: ResizedImage | undefined;
   isUploading: boolean;
-  onUpload: () => void;
+  onUpload: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onRemoveImage: () => void;
 };
 
