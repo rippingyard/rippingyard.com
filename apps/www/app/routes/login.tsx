@@ -37,23 +37,28 @@ export const loader: LoaderFunction = async ({
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+  try {
+    const formData = await request.formData();
 
-  const session = await getSession(request.headers.get('Cookie'));
-  const token = await getAuthToken(formData.get('token') as string);
+    const session = await getSession(request.headers.get('Cookie'));
+    const token = await getAuthToken(formData.get('token') as string);
 
-  session.set('token', token);
-  session.set('uid', formData.get('uid') as string);
-  session.set('authenticatedAt', dayjs().valueOf());
+    session.set('token', token);
+    session.set('uid', formData.get('uid') as string);
+    session.set('authenticatedAt', dayjs().valueOf());
 
-  return json(
-    {},
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    }
-  );
+    return json(
+      {},
+      {
+        headers: {
+          'Set-Cookie': await commitSession(session),
+        },
+      }
+    );
+  } catch (e) {
+    console.error(e);
+    throw new Response('Error', { status: 401 });
+  }
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

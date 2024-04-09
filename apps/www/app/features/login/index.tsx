@@ -11,6 +11,7 @@ import { Auth } from '~/schemas/auth';
 import { containerStyle } from '~/styles/container.css';
 
 export const Login: FC = () => {
+  const [pending, setPending] = useState(false);
   const [errors, setErrors] = useState<typeToFlattenedError<Auth, string>>(
     new ZodError<Auth>([]).flatten()
   );
@@ -21,6 +22,8 @@ export const Login: FC = () => {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setPending(true);
+
     setErrors(new ZodError<Auth>([]).flatten());
     const formData = new FormData(event.currentTarget);
 
@@ -33,16 +36,24 @@ export const Login: FC = () => {
     });
     console.log('authedUser', user);
 
-    await submit(
+    setErrors(errors);
+
+    if (!user) {
+      setPending(false);
+      return;
+    }
+
+    submit(
       { token, uid: user?.uid || '' },
       {
         method: 'POST',
         action: '/login',
         navigate: false,
+        replace: false,
       }
     );
 
-    setErrors(errors);
+    setPending(false);
   };
 
   return (
@@ -51,6 +62,8 @@ export const Login: FC = () => {
       onSubmit={onSubmit}
       className={containerStyle}
       method="post"
+      navigate={false}
+      replace={false}
     >
       <Errors errors={errors.formErrors} />
       <FormField
@@ -80,7 +93,7 @@ export const Login: FC = () => {
         />
       </FormField>
       <FormField>
-        <Button>ログイン</Button>
+        <Button isLoading={pending}>ログイン</Button>
       </FormField>
     </Form>
   );

@@ -31,20 +31,21 @@ export const loader: LoaderFunction = async ({
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  // console.log('request', request);
-  const formData = await request.formData();
-  console.log('formData', formData.get('content'));
+  try {
+    const formData = await request.formData();
 
-  if (!(await isAuthenticated(request))) return redirect('/');
+    const content = formData.get('content');
+    const title = formData.get('title');
 
-  return json(
-    {}
-    //     {
-    //       headers: {
-    //         'Set-Cookie': await commitSession(session),
-    //       },
-    //     }
-  );
+    console.log('formData', { title, content });
+
+    if (!(await isAuthenticated(request))) return redirect('/');
+
+    return json({});
+  } catch (e) {
+    console.error(e);
+    throw new Response('Error', { status: 400 });
+  }
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

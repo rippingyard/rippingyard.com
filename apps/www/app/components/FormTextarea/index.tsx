@@ -1,4 +1,11 @@
-﻿import { ComponentPropsWithRef, FC, useMemo, useRef } from 'react';
+﻿import {
+  ChangeEvent,
+  ComponentPropsWithRef,
+  FC,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 
 import { useTextarea } from '~/hooks/ui/useTextarea';
 
@@ -20,6 +27,14 @@ export const FormTextarea: FC<Props> = ({
 
   const { adjustHeight } = useTextarea({ ref });
 
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) => {
+      if (props.onChange) props.onChange(event);
+      adjustHeight();
+    },
+    [adjustHeight, props]
+  );
+
   const className = useMemo(() => {
     const classes = [textareaStyle];
     if (isHeading) classes.push(headingStyle);
@@ -33,7 +48,7 @@ export const FormTextarea: FC<Props> = ({
       {...props}
       ref={ref}
       className={className}
-      onChange={adjustHeight}
+      onChange={onChange}
     />
   );
 };

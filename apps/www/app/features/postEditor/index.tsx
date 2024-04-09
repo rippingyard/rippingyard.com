@@ -24,7 +24,7 @@ export const PostEditor: FC = () => {
   }, []);
 
   return (
-    <Form method="POST" className={containerStyle}>
+    <Form method="POST" action="/post/create" className={containerStyle}>
       <input type="hidden" name="content" value={html} />
       <section className={bodyStyle}>
         <header className={headerStyle}>
