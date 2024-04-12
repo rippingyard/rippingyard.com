@@ -11,5 +11,5 @@ export const bodyStyle = style({
   lineHeight: 1.8,
   backgroundColor: vars.color.background,
   color: vars.color.neutral,
-  height: '100%',
+  minHeight: '100%',
 });

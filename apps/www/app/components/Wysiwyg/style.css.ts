@@ -3,6 +3,10 @@
 import { vars } from '~/styles/theme.css';
 import { zIndex } from '~/utils/style';
 
+export const wrapperStyle = style({
+  height: '100%',
+});
+
 export const containerStyle = style({
   outline: 'none',
 });

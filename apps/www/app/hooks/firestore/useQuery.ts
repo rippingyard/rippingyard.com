@@ -3,7 +3,6 @@
   DocumentReference,
   OrderByDirection,
   QueryDocumentSnapshot,
-  Timestamp,
   collection,
   getDocs,
   limit,
@@ -13,6 +12,7 @@
   startAfter,
   where,
 } from 'firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 
 import { useFirestore } from './useFirestore';
 

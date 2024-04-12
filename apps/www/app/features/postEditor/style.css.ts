@@ -9,12 +9,17 @@ export const containerStyle = style({
 
 export const headerStyle = style({
   marginBottom: 32,
+  flexShrink: 0,
 });
 
 export const bodyStyle = style({
+  display: 'flex',
+  flexDirection: 'column',
+  flexShrink: 1,
   overflowX: 'hidden',
-  overflowY: 'auto',
+  // overflowY: 'auto',
   paddingBottom: 90,
+  height: '100%',
 });
 
 export const footerStyle = style({

@@ -13,7 +13,7 @@ import { zIndex } from '~/utils/style';
 
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu as FloatingMenuComponent } from './FloatingMenu';
-import { containerStyle, modalStyle } from './style.css';
+import { containerStyle, modalStyle, wrapperStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -100,7 +100,7 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
   if (!editor) return;
 
   return (
-    <div ref={dzRef}>
+    <div ref={dzRef} className={wrapperStyle}>
       <EditorContent editor={editor} className={className} />
       <FloatingMenuComponent
         editor={editor}

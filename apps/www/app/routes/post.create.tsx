@@ -5,9 +5,12 @@ import type {
   LoaderFunction,
   MetaFunction,
 } from '@vercel/remix';
+import { Timestamp } from 'firebase-admin/firestore';
 
 import { PostEditor } from '~/features/postEditor';
-import { isAuthenticated } from '~/middlewares/session.server';
+import { useDocReference } from '~/hooks/firestore/useDocReference';
+import { useSavePost } from '~/hooks/save/useSavePost.server';
+import { getMe, isAuthenticated } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
@@ -31,20 +34,42 @@ export const loader: LoaderFunction = async ({
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  const savePost = useSavePost();
+
   try {
+    const { uid } = await getMe(request);
+
+    if (!uid) throw new Error('Unauthenticated');
+
     const formData = await request.formData();
 
-    const content = formData.get('content');
-    const title = formData.get('title');
+    const contentBody = formData.get('content') as string;
+    const title = formData.get('title') as string;
+    const content = title ? `<h1>${title}</h1>${contentBody}` : contentBody;
 
     console.log('formData', { title, content });
 
-    if (!(await isAuthenticated(request))) return redirect('/');
+    const owner = useDocReference('users', uid);
+    console.log('owner', owner);
 
-    return json({});
+    const post = await savePost({
+      content,
+      type: 'log',
+      status: 'published',
+      publishedAt: Timestamp.now(),
+      isPublic: true,
+    });
+
+    console.log('saved!', post);
+
+    return json({
+      post,
+    });
   } catch (e) {
     console.error(e);
-    throw new Response('Error', { status: 400 });
+    return json(e, {
+      status: 400,
+    });
   }
 };
 

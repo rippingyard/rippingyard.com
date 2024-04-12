@@ -4,7 +4,6 @@
 import { useAdmin } from '~/hooks/firebase/useAdmin.server';
 
 const SESSION_AGE = 60 * 60 * 24 * 14; // 二週間
-// const TOKEN_AGE = 60 * 60 * 2; // 二時間
 
 type SessionData = {
   uid: string;
@@ -47,24 +46,13 @@ const getAuthToken = async (idToken: string) => {
 const getMe = async (request: Request): Promise<{ uid: string | null }> => {
   const admin = useAdmin();
   const adminAuth = admin.auth();
-  // const now = dayjs().valueOf();
   const emptyValue = { uid: null };
   const cookieSession = await getSession(request.headers.get('Cookie'));
-  // const uid = cookieSession.get('uid');
   const token = cookieSession.get('token');
-  // const authenticatedAt = cookieSession.get('authenticatedAt') || 0;
   if (!token) return emptyValue;
 
   try {
-    // if (authenticatedAt + 1000 * TOKEN_AGE > now) return { uid };
-    // console.log(
-    //   'verify token!',
-    //   dayjs(authenticatedAt + 1000 * TOKEN_AGE).format('YYYY-MM-DD HH:mm:ss')
-    // );
     const { uid } = await adminAuth.verifySessionCookie(token, true);
-
-    // const auth = useAuth();
-    // const bucket = admin.storage().bucket();
 
     return { uid };
   } catch (e) {

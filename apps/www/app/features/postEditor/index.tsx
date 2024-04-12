@@ -1,4 +1,4 @@
-﻿import { Form } from '@remix-run/react';
+﻿import { Form, useActionData } from '@remix-run/react';
 import dayjs from 'dayjs';
 import { FC, useCallback, useState } from 'react';
 
@@ -15,6 +15,9 @@ import {
 
 export const PostEditor: FC = () => {
   const [html, setHtml] = useState<string>('');
+
+  const data = useActionData();
+  console.log('data', data);
 
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
