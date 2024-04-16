@@ -1,10 +1,12 @@
-﻿import { Form, useActionData } from '@remix-run/react';
+﻿import { Form } from '@remix-run/react';
 import dayjs from 'dayjs';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 
 import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
+import { Post, PostType } from '~/schemas/post';
+import { getTitle, removeTitle } from '~/utils/typography';
 
 import {
   bodyStyle,
@@ -13,11 +15,23 @@ import {
   headerStyle,
 } from './style.css';
 
-export const PostEditor: FC = () => {
-  const [html, setHtml] = useState<string>('');
+type Props = {
+  post?: Post;
+  action?: string;
+};
 
-  const data = useActionData();
-  console.log('data', data);
+export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
+  const [html, setHtml] = useState<string>(removeTitle(post?.content || ''));
+
+  // console.log('post', post);
+  const content = useMemo(() => post?.content || '', [post?.content]);
+  const title = getTitle(content, {
+    alt: '',
+  });
+  const contentBody = useMemo(() => removeTitle(content), [content]);
+
+  const [type] = useState<PostType>('article');
+  const [isPublic] = useState<boolean>(true);
 
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
@@ -27,16 +41,27 @@ export const PostEditor: FC = () => {
   }, []);
 
   return (
-    <Form method="POST" action="/post/create" className={containerStyle}>
-      <input type="hidden" name="content" value={html} />
+    <Form method="POST" action={action} className={containerStyle}>
+      <input type="hidden" name="contentBody" value={html} />
+      <input type="hidden" name="type" value={type} />
+      <input type="hidden" name="isPublic" value={isPublic ? 1 : 0} />
       <section className={bodyStyle}>
         <header className={headerStyle}>
-          <FormTextarea name="title" defaultValue="" isBold isHeading />
+          <FormTextarea name="title" defaultValue={title} isBold isHeading />
         </header>
-        <Wysiwyg content="" uploadpath={uploadpath} onUpdate={onUpdate} />
+        <Wysiwyg
+          content={contentBody}
+          uploadpath={uploadpath}
+          onUpdate={onUpdate}
+        />
       </section>
       <footer className={footerStyle}>
-        <Button>投稿</Button>
+        <Button name="status" value="drafted">
+          下書き保存
+        </Button>
+        <Button name="status" value="published">
+          公開
+        </Button>
       </footer>
     </Form>
   );

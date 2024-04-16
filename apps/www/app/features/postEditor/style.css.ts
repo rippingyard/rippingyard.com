@@ -1,6 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
+import { size } from '~/utils/style';
 
 export const containerStyle = style({
   position: 'relative',
@@ -23,11 +24,13 @@ export const bodyStyle = style({
 });
 
 export const footerStyle = style({
+  display: 'flex',
+  gap: 16,
   position: 'fixed',
   bottom: 0,
   padding: '16px 0',
   borderTop: `1px solid ${vars.color.shadow}`,
   backgroundColor: vars.color.background,
-  // width: '100%',
-  // maxWidth: size('MAIN'),
+  width: 'calc(100% - (24px * 2))',
+  maxWidth: size('MAIN') - 24 * 2,
 });

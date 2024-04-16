@@ -10,13 +10,16 @@ const savePost = async (
     Pick<
       Post,
       | 'id'
-      | 'content'
       | 'status'
       | 'type'
+      | 'createdAt'
       | 'publishedAt'
       | 'isPublic'
       | 'isDeleted'
-    >
+    > & {
+      title?: string;
+      contentBody: string;
+    }
   >
 ) => {
   try {
@@ -37,16 +40,23 @@ const savePost = async (
     // post.entities = entities
 
     const {
-      content = '',
+      id,
+      title = '',
+      contentBody = '',
       status = 'drafted',
       type = 'log',
       isPublic = false,
       isDeleted = false,
+      createdAt = Timestamp.now(),
       publishedAt = Timestamp.now(),
     } = payload;
 
+    const content = title
+      ? `<h1>${title}</h1>${contentBody || ''}`
+      : contentBody || '';
+
     const post = {
-      id: '',
+      id,
       slug: '',
       // owner: undefined,
       content,
@@ -57,7 +67,7 @@ const savePost = async (
       isPublic,
       isDeleted,
       publishedAt,
-      createdAt: Timestamp.now(),
+      createdAt,
       updatedAt: Timestamp.now(),
     };
 
@@ -79,6 +89,7 @@ const savePost = async (
 
     console.log('newPost', post);
 
+    // Validation
     PostSchema.parse(post);
 
     await postDoc.set(post);

@@ -40,7 +40,8 @@
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.3",
     "remix-typedjson": "^0.4.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.25",
