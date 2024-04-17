@@ -1,3 +1,3 @@
-﻿import { useAdmin } from './useAdmin.server';
+﻿import { useFirebase } from './useFirebase.server';
 
-export const useAdminStorage = () => useAdmin().storage();
+export const useAdminStorage = () => useFirebase().storage();

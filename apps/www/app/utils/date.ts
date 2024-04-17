@@ -1,11 +1,14 @@
 ﻿import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 
-type TimestampType = { seconds: number; nanoseconds: number };
+import { TimestampType } from '~/hooks/normalize/useDate';
 
-const toTimestamp = ({ seconds, nanoseconds }: TimestampType) =>
-  new Timestamp(seconds, nanoseconds);
+const toTimestamp = ({ _seconds, _nanoseconds }: TimestampType) =>
+  new Timestamp(_seconds, _nanoseconds);
 
 const toDate = (times: TimestampType) => dayjs(toTimestamp(times).toDate());
 
-export const toMicroseconds = (times: TimestampType) => toDate(times).valueOf();
+export const toMicroseconds = (times: TimestampType) => {
+  // console.log('typeof Timestamp', toDate);
+  return toDate(times).valueOf();
+};

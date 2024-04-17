@@ -1,7 +1,7 @@
 ﻿import admin from 'firebase-admin';
 import { initializeApp } from 'firebase-admin/app';
 
-export const useAdmin = () => {
+export const useFirebase = () => {
   const cert = JSON.parse(
     process.env.VITE_GOOGLE_APPLICATION_CREDENTIALS || ''
   );

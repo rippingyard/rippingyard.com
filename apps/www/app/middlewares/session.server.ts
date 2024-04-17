@@ -1,7 +1,7 @@
 ﻿import { createCookieSessionStorage } from '@vercel/remix';
 // import dayjs from 'dayjs';
 
-import { useAdmin } from '~/hooks/firebase/useAdmin.server';
+import { useFirebase } from '~/hooks/firebase/useFirebase.server';
 
 const SESSION_AGE = 60 * 60 * 24 * 14; // 二週間
 
@@ -29,7 +29,7 @@ const { getSession, commitSession, destroySession } =
   });
 
 const getAuthToken = async (idToken: string) => {
-  const admin = useAdmin();
+  const admin = useFirebase();
   const adminAuth = admin.auth();
   const decodedToken = await adminAuth.verifyIdToken(idToken);
 
@@ -44,7 +44,7 @@ const getAuthToken = async (idToken: string) => {
 };
 
 const getMe = async (request: Request): Promise<{ uid: string | null }> => {
-  const admin = useAdmin();
+  const admin = useFirebase();
   const adminAuth = admin.auth();
   const emptyValue = { uid: null };
   const cookieSession = await getSession(request.headers.get('Cookie'));

@@ -3,7 +3,8 @@ import { ZodError } from 'zod';
 
 import { Post, PostSchema } from '~/schemas/post';
 
-import { useAdminFirestore } from '../firestore/useAdminFirestore.server';
+import { useDocReference } from '../firestore/useDocReference.server';
+import { useFirestore } from '../firestore/useFirestore.server';
 
 const savePost = async (
   payload: Partial<
@@ -18,26 +19,14 @@ const savePost = async (
       | 'isDeleted'
     > & {
       title?: string;
+      uid: string;
       contentBody: string;
     }
   >
 ) => {
   try {
     // const { fb } = useFirebase();
-    // const db = getFirestore(fb);
-    const db = useAdminFirestore();
-    // const { me } = useMe();
-
-    // TODO: auth処理
-    // if (!me.value) throw new Error('権限がありません');
-
-    // const entities = post.entities || defaultPost.entities
-    // entities.byContent = await dispatch(
-    //   'entity/getEntitiesFromContent',
-    //   post.content,
-    //   { root: true }
-    // )
-    // post.entities = entities
+    const db = useFirestore();
 
     const {
       id,
@@ -55,10 +44,26 @@ const savePost = async (
       ? `<h1>${title}</h1>${contentBody || ''}`
       : contentBody || '';
 
+    const owner = useDocReference(payload.uid, 'users');
+    console.log('owner', owner);
+
+    if (!owner) throw new Error('ユーザーが存在しません');
+
+    // TODO: auth処理
+    // if (!me.value) throw new Error('権限がありません');
+
+    // const entities = post.entities || defaultPost.entities
+    // entities.byContent = await dispatch(
+    //   'entity/getEntitiesFromContent',
+    //   post.content,
+    //   { root: true }
+    // )
+    // post.entities = entities
+
     const post = {
       id,
       slug: '',
-      // owner: undefined,
+      owner,
       content,
       status,
       type,

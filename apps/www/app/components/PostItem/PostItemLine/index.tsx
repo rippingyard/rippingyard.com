@@ -3,7 +3,7 @@ import { SerializeFrom } from '@vercel/remix';
 import { FC, memo, useMemo } from 'react';
 
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { Post } from '~/schemas/post';
 import { getSummary } from '~/utils/typography';
@@ -31,14 +31,15 @@ const PostItemLineComponent: FC<Props> = ({
   const permalink = overwriteLink || usePostLink(post.id);
   const length = useMemo(() => (hasHeadingTag ? 80 : 140), [hasHeadingTag]);
   const summary = useMemo(() => getSummary(content, length), [content, length]);
-  const createdate = useDate(post.createdAt);
+
+  const publishdate = useDate(post.publishedAt as unknown as TimestampType);
 
   return (
     <Link to={permalink} className={containerStyle} prefetch="viewport">
       <div className={contentStyle}>
         {hasHeadingTag && <h4 className={headingStyle}>{title}</h4>}
         <p className={summaryStyle}>{summary}</p>
-        <div className={footerStyle}>{createdate}</div>
+        <div className={footerStyle}>{publishdate}</div>
       </div>
       {hasThumbnail && (
         <div className={imageStyle}>

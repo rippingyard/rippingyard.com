@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import { Article } from '~/components/Article';
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { Post } from '~/schemas/post';
 import { articleStyle } from '~/styles/article.css';
@@ -27,7 +27,7 @@ export const PostListItemDetail: FC<Props> = ({
 }) => {
   const { title, content, hasHeadingTag } = usePostContents(post.content);
   const permalink = overwriteLink || usePostLink(post.id);
-  const createdate = useDate(post.createdAt);
+  const publishdate = useDate(post.publishedAt as unknown as TimestampType);
 
   return (
     <div className={containerStyle}>
@@ -49,7 +49,7 @@ export const PostListItemDetail: FC<Props> = ({
       )}
       <div className={footerStyle}>
         <Link to={permalink} prefetch="viewport">
-          {createdate}
+          {publishdate}
         </Link>
       </div>
     </div>

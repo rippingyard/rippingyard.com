@@ -1,4 +1,4 @@
-﻿import { useActionData } from '@remix-run/react';
+﻿import { useActionData, useLoaderData } from '@remix-run/react';
 import { json, redirect } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
@@ -11,7 +11,9 @@ import { useEffect } from 'react';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
+import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
+import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
 import { getMe, isAuthenticated } from '~/middlewares/session.server';
@@ -19,15 +21,26 @@ import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
   request,
+  params,
 }: LoaderFunctionArgs) => {
+  const { postId } = params;
+
   try {
-    const title = '新規投稿';
-    const canonicalUrl = new URL('post/create', request.url).toString();
+    if (!postId) throw new Error();
+
+    const title = '記事編集';
+    const action = usePostEditLink(postId);
+    const canonicalUrl = new URL(action, request.url).toString();
 
     const isAuthed = await isAuthenticated(request);
     if (!isAuthed) return redirect('/');
 
+    const { post } = await usePost(postId);
+    if (!post) throw new Error();
+
     return json({
+      post,
+      action,
       title,
       canonicalUrl,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
@@ -37,26 +50,42 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const savePost = useSavePost();
 
   try {
+    const { postId } = params;
+    if (!postId) throw new Error();
+
+    const { post } = await usePost(postId);
+    if (!post) throw new Error();
+
     const { uid } = await getMe(request);
 
     if (!uid) throw new Error('Unauthenticated');
 
-    const formData = await usePostFormData(request);
+    const { title, contentBody, type, status, isPublic } =
+      await usePostFormData(request);
 
-    const { post } = await savePost({
-      publishedAt: Timestamp.now(),
+    const createdAt = Timestamp.fromDate(post.createdAt.toDate());
+    const publishedAt = Timestamp.fromDate(post.publishedAt.toDate());
+
+    const { post: newPost } = await savePost({
+      id: post.id,
+      title,
+      contentBody,
       uid,
-      ...formData,
+      type: type || post.type,
+      status: status || post.status,
+      createdAt,
+      publishedAt,
+      isPublic: isPublic !== undefined ? isPublic : post.isPublic,
     });
 
-    console.log('saved!', post);
+    console.log('saved!', newPost);
 
     return json({
-      post,
+      post: newPost,
     });
   } catch (e) {
     console.error(e);
@@ -88,20 +117,22 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Main() {
-  const className = [containerStyle, edgeStyle].join(' ');
+  const { post, action } = useLoaderData<typeof loader>();
 
   const result = useActionData<typeof action>();
+
   useEffect(() => {
     if (result?.post) {
-      console.log('data', result.post);
       console.log('permalink', usePostLink(result.post.id));
       clearCachedItems();
     }
   }, [result]);
 
+  const className = [containerStyle, edgeStyle].join(' ');
+
   return (
     <main className={className}>
-      <PostEditor />
+      <PostEditor post={post} action={action} />
     </main>
   );
 }

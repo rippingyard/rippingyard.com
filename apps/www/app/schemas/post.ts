@@ -1,10 +1,7 @@
-﻿import { Timestamp } from 'firebase/firestore';
-import { Timestamp as ServerTimestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 import { DocumentReferenceSchema } from '~/utils/schema';
-
-// import { User } from './user';
 
 const PostStatusSchema = z.enum(['published', 'drafted']);
 const PostTypeSchema = z.enum(['article', 'note', 'log']);
@@ -12,9 +9,9 @@ const PostTypeSchema = z.enum(['article', 'note', 'log']);
 export const PostSchema = z.object({
   id: z.string(),
   slug: z.string().optional(),
-  createdAt: z.instanceof(Timestamp).or(z.instanceof(ServerTimestamp)),
-  publishedAt: z.instanceof(Timestamp).or(z.instanceof(ServerTimestamp)),
-  updatedAt: z.instanceof(Timestamp).or(z.instanceof(ServerTimestamp)),
+  createdAt: z.instanceof(Timestamp),
+  publishedAt: z.instanceof(Timestamp),
+  updatedAt: z.instanceof(Timestamp),
   content: z.string().min(1),
   isPublic: z.boolean(),
   isDeleted: z.boolean(),

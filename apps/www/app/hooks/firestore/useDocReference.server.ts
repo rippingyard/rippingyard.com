@@ -1,6 +1,6 @@
-﻿import { doc, DocumentReference } from 'firebase/firestore';
+﻿import { DocumentReference } from 'firebase-admin/firestore';
 
-import { useFirestore } from './useFirestore';
+import { useFirestore } from './useFirestore.server';
 
 export const useDocReference = (
   arg?: string | DocumentReference,
@@ -11,8 +11,7 @@ export const useDocReference = (
     if (typeof arg !== 'string') return arg;
     if (!collection) throw new Error('Unset a collection');
 
-    const { db } = useFirestore();
-    return doc(db, collection, arg);
+    return useFirestore().doc(`${collection}/${arg}`);
   } catch (e) {
     console.error(e);
     throw e;
