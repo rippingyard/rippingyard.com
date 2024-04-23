@@ -15,8 +15,9 @@ import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
+import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
-import { getMe, isAuthenticated } from '~/middlewares/session.server';
+import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
@@ -25,6 +26,8 @@ export const loader: LoaderFunction = async ({
 }: LoaderFunctionArgs) => {
   const { postId } = params;
 
+  const canEditPost = useCanEditPost();
+
   try {
     if (!postId) throw new Error();
 
@@ -32,11 +35,12 @@ export const loader: LoaderFunction = async ({
     const action = usePostEditLink(postId);
     const canonicalUrl = new URL(action, request.url).toString();
 
-    const isAuthed = await isAuthenticated(request);
-    if (!isAuthed) return redirect('/');
-
     const { post } = await usePost(postId);
     if (!post) throw new Error();
+
+    const { uid, role } = await getMe(request);
+    if (!uid) return redirect('/');
+    if (!canEditPost(uid, role, post)) return redirect('/');
 
     return json({
       post,

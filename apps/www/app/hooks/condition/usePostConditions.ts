@@ -64,7 +64,5 @@ export const usePostCondition = (
     };
   }
 
-  console.log('where!', where);
-
   return { args, where };
 };

@@ -10,11 +10,12 @@ import dayjs from 'dayjs';
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
+import { useUser } from '~/hooks/fetch/useUser.server';
 import {
   commitSession,
   getSession,
   getAuthToken,
-  isAuthenticated,
+  getMe,
 } from '~/middlewares/session.server';
 
 export const loader: LoaderFunction = async ({
@@ -23,8 +24,9 @@ export const loader: LoaderFunction = async ({
   try {
     const title = 'ログイン';
     const canonicalUrl = new URL('login', request.url).toString();
+    const { uid } = await getMe(request);
 
-    if (await isAuthenticated(request)) return redirect('/');
+    if (!uid) return redirect('/');
 
     return json({
       title,
@@ -40,12 +42,18 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const formData = await request.formData();
 
+    const uid = formData.get('uid') as string;
+
     const session = await getSession(request.headers.get('Cookie'));
     const token = await getAuthToken(formData.get('token') as string);
+    const { user } = await useUser(uid);
 
     session.set('token', token);
-    session.set('uid', formData.get('uid') as string);
+    session.set('uid', uid);
+    session.set('role', user?.role || 'stranger');
     session.set('authenticatedAt', dayjs().valueOf());
+
+    console.log('user', user);
 
     return json(
       {},

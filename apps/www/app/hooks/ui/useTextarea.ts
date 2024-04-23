@@ -1,9 +1,6 @@
 ﻿import { MutableRefObject, useCallback, useEffect } from 'react';
 
-// import { isFirefox, isSafari } from '@inspirehigh-com/react/utils/ua';
-
 type Args = {
-  // id: string;
   rows?: number;
   ref: MutableRefObject<HTMLTextAreaElement | null>;
 };

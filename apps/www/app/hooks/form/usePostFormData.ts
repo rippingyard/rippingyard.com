@@ -9,8 +9,6 @@ export const usePostFormData = async (request: Request) => {
   const status = formData.get('status') as PostStatus;
   const isPublic = (formData.get('isPublic') as string) === '1';
 
-  console.log('status', status);
-
   return {
     contentBody,
     title,

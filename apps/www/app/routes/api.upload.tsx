@@ -7,15 +7,16 @@
 import type { ActionFunction } from '@vercel/remix';
 import { StorageError, getDownloadURL, ref } from 'firebase/storage';
 
-import { useAdminBucket } from '~/hooks/firebase/useAdminBucket.server';
+import { useBucket } from '~/hooks/firebase/useBucket.server';
 import { useStorage } from '~/hooks/firebase/useStorage';
-import { isAuthenticated } from '~/middlewares/session.server';
+import { getMe } from '~/middlewares/session.server';
 
 export const action: ActionFunction = async ({ request }) => {
   try {
     const { storage } = useStorage();
+    const { uid } = await getMe(request);
 
-    if (!(await isAuthenticated(request))) return redirect('/');
+    if (!uid) return redirect('/');
 
     const form = await unstable_parseMultipartFormData(
       request,
@@ -31,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const handler = useAdminBucket().file(filename);
+    const handler = useBucket().file(filename);
     await handler.save(buffer);
     await handler.setMetadata({ contentType });
 

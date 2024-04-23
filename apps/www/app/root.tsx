@@ -15,7 +15,7 @@ import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
-import { isAuthenticated } from './middlewares/session.server';
+import { getMe } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
@@ -36,10 +36,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     VITE_FIREBASE_MEASUREMENT_ID: process.env.VITE_FIREBASE_MEASUREMENT_ID!,
   };
 
-  const isAuthed = await isAuthenticated(request);
+  const { uid } = await getMe(request);
+  const isAuthenticated = !!uid;
 
   return json({
-    isAuthed,
+    isAuthenticated,
     gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
     adsenseId,
     env,
@@ -63,7 +64,8 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  const { isAuthed, gtagId, adsenseId, env } = useLoaderData<typeof loader>();
+  const { isAuthenticated, gtagId, adsenseId, env } =
+    useLoaderData<typeof loader>();
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
@@ -87,7 +89,7 @@ function App() {
         <Links />
       </head>
       <body className={className}>
-        <Layout isAuthenticated={isAuthed}>
+        <Layout isAuthenticated={isAuthenticated}>
           <Outlet />
         </Layout>
         <ScrollRestoration />

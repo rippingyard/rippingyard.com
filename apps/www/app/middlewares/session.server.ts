@@ -2,12 +2,14 @@
 // import dayjs from 'dayjs';
 
 import { useFirebase } from '~/hooks/firebase/useFirebase.server';
+import { Role } from '~/schemas/user';
 
 const SESSION_AGE = 60 * 60 * 24 * 14; // 二週間
 
 type SessionData = {
   uid: string;
   token: string;
+  role: Role;
   authenticatedAt: number;
 };
 
@@ -43,10 +45,15 @@ const getAuthToken = async (idToken: string) => {
   });
 };
 
-const getMe = async (request: Request): Promise<{ uid: string | null }> => {
+const getMe = async (
+  request: Request
+): Promise<{ uid: string | null; role: Role }> => {
   const admin = useFirebase();
   const adminAuth = admin.auth();
-  const emptyValue = { uid: null };
+  const emptyValue: { uid: string | null; role: Role } = {
+    uid: null,
+    role: 'anonymous',
+  };
   const cookieSession = await getSession(request.headers.get('Cookie'));
   const token = cookieSession.get('token');
   if (!token) return emptyValue;
@@ -54,20 +61,12 @@ const getMe = async (request: Request): Promise<{ uid: string | null }> => {
   try {
     const { uid } = await adminAuth.verifySessionCookie(token, true);
 
-    return { uid };
+    const role = cookieSession.get('role') as Role;
+
+    return { uid, role };
   } catch (e) {
     return emptyValue;
   }
 };
 
-const isAuthenticated = async (request: Request): Promise<boolean> =>
-  !!(await getMe(request)).uid;
-
-export {
-  getSession,
-  commitSession,
-  destroySession,
-  isAuthenticated,
-  getMe,
-  getAuthToken,
-};
+export { getSession, commitSession, destroySession, getMe, getAuthToken };

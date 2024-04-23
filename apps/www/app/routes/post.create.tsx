@@ -13,19 +13,24 @@ import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
+import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
-import { getMe, isAuthenticated } from '~/middlewares/session.server';
+import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const canCreatePost = useCanCreatePost();
+
   try {
     const title = '新規投稿';
     const canonicalUrl = new URL('post/create', request.url).toString();
 
-    const isAuthed = await isAuthenticated(request);
-    if (!isAuthed) return redirect('/');
+    // 権限確認
+    const { uid, role } = await getMe(request);
+    if (!uid) return redirect('/');
+    if (!canCreatePost(role)) return redirect('/');
 
     return json({
       title,

@@ -38,13 +38,6 @@ const renderWidgets = (content: string) => {
           if (!YouTubeId) break;
 
           html = getYouTubeSymbol(YouTubeId);
-
-          // html = `[YouTube:${YouTubeId}]`;
-
-          //     // console.log('youtubeId', urlInfo.searchParams.get('v'));
-          //     html = `<span class="widget-youtube"><iframe src="https://www.youtube.com/embed/${urlInfo.searchParams.get(
-          //       'v'
-          //     )}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span>`;
         }
 
         break;
@@ -77,13 +70,6 @@ export const convertYouTubeWidgets = (text: string, urls: string[] = []) => {
       new RegExp(symbol),
       `<img src="${image}" class="youtube-image" />`
     );
-
-    // const d = document.createElement('div');
-    // const root = createRoot(d);
-    // // flushSync(() => {
-    // root.render(<YouTube />);
-    // // });
-    // console.log('document', d);
   }
 
   return content;
@@ -97,7 +83,6 @@ export const useContent = (text: string) => {
 
     c = sanitize(c);
     c = renderWidgets(c);
-    // c = convertYouTubeWidgets(c, urls);
 
     return c;
   }, [text]);

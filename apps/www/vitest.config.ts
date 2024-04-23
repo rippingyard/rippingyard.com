@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
-// import '@vanilla-extract/css/disableRuntimeStyles';
 
 export default defineConfig({
   plugins: [tsconfigPaths(), react(), vanillaExtractPlugin()],
@@ -12,6 +11,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['app/**/*.spec.{ts,tsx}'],
+    setupFiles: './test/vitest.setup.ts',
     alias: {
       '~': path.resolve(__dirname, './app'),
     },

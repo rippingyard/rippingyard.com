@@ -25,7 +25,6 @@ const savePost = async (
   >
 ) => {
   try {
-    // const { fb } = useFirebase();
     const db = useFirestore();
 
     const {
@@ -44,21 +43,11 @@ const savePost = async (
       ? `<h1>${title}</h1>${contentBody || ''}`
       : contentBody || '';
 
+    if (!payload.uid) throw new Error('ユーザーを指定してください');
     const owner = useDocReference(payload.uid, 'users');
-    console.log('owner', owner);
 
-    if (!owner) throw new Error('ユーザーが存在しません');
-
-    // TODO: auth処理
-    // if (!me.value) throw new Error('権限がありません');
-
-    // const entities = post.entities || defaultPost.entities
-    // entities.byContent = await dispatch(
-    //   'entity/getEntitiesFromContent',
-    //   post.content,
-    //   { root: true }
-    // )
-    // post.entities = entities
+    const snap = await owner.get();
+    if (!snap.exists) throw new Error('ユーザーが存在しません');
 
     const post = {
       id,
@@ -76,14 +65,15 @@ const savePost = async (
       updatedAt: Timestamp.now(),
     };
 
-    // TODO: slug
+    // const entities = post.entities || defaultPost.entities
+    // entities.byContent = await dispatch(
+    //   'entity/getEntitiesFromContent',
+    //   post.content,
+    //   { root: true }
+    // )
+    // post.entities = entities
 
-    // const userCollection = collection(db, 'users');
-    // if (!post.owner) {
-    //   post.owner = await doc<DocumentData>(userCollection, me.value.uid);
-    // } else if (post.owner.id) {
-    //   post.owner = await doc(userCollection, post.owner.id);
-    // }
+    // TODO: slug
 
     const postCollection = db.collection('posts');
 
@@ -104,14 +94,16 @@ const savePost = async (
     //   status,
     //   payload: params,
     // })
+
     return { post };
   } catch (e) {
-    console.error(e);
-
     if (e instanceof ZodError) {
-      throw e.flatten();
+      const flattened = e.flatten();
+      console.log('flattened', flattened);
+      throw flattened;
     }
 
+    console.error(e);
     throw e;
   }
 };
