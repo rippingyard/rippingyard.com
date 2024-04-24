@@ -1,6 +1,6 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
 import { json, type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -8,17 +8,22 @@ import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
+import { CACHE_KEYS } from '~/hooks/cache/useCache';
+import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
-import { usePosts } from '~/hooks/fetch/usePosts';
-import { QueryParams } from '~/hooks/firestore/useQuery';
+import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { TimestampType } from '~/hooks/normalize/useDate';
+import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
 import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { uid } = await getMe(request);
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
+    myId: uid || undefined,
     orderBy: {
       key: 'publishedAt',
       order: 'desc',
@@ -40,7 +45,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const key = 'top';
+  const key = CACHE_KEYS.PUBLIC_POSTS;
+
   const { items: initialItems } = useLoaderData<typeof loader>();
   const [canAutoload] = useState(true);
 
@@ -63,7 +69,7 @@ export default function Index() {
   const query = useMemo(() => {
     const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
     if (!lastPublishedAt) return;
-    return `?index&after=${toMicroseconds(lastPublishedAt)}`;
+    return `?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
   }, [sortedPosts]);
 
   useEffect(() => {

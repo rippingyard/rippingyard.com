@@ -180,6 +180,10 @@ globalStyle(`${articleStyle} hr`, {
   marginBottom: 25,
 });
 
+globalStyle(`${articleStyle} [contenteditable]:focus`, {
+  outline: 'none',
+});
+
 // [contenteditable]:focus {
 //   outline: none;
 // }

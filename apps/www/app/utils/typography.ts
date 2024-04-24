@@ -96,7 +96,7 @@ export const getTitle = (
   if (headings) {
     return decodeEntities(headings[0]);
   } else {
-    return alt || getSummary(str, titleLength);
+    return alt ?? getSummary(str, titleLength);
   }
 };
 
@@ -166,6 +166,30 @@ export function extractUrls(content: string): string[] {
 
   return filteredUrls.sort();
 }
+
+export const autolink = (content: string) => {
+  if (!content) return '';
+
+  content = content.replace(/"http/g, '"[http]');
+  content = content.replace(/>http(.*)<\/a>/g, '>[http]$1</a>');
+
+  const urls = extractUrls(content);
+  if (!urls) return content;
+
+  urls.reverse();
+
+  urls.forEach((url) => {
+    content = content.replace(
+      url,
+      `<a href="${url}" target="_blank">${getSummary(url, 44)}</a>`
+    );
+  });
+
+  content = content.replace(/"\[http\]/g, '"http');
+  content = content.replace(/>\[http\]/g, '>http');
+
+  return content;
+};
 
 export const isYouTubeUrl = (url: string) => {
   const urlInfo = new URL(url);

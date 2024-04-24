@@ -8,4 +8,19 @@ export const inputStyle = style({
   borderBottom: `1px solid ${vars.color.neutral}`,
   fontSize: rootVars.font.size.small,
   padding: '5px 0',
+  outline: 'none',
+  selectors: {
+    '&:focus': {
+      borderBottom: `1px solid ${vars.color.primary}`,
+    },
+  },
+});
+
+export const headingStyle = style({
+  fontSize: rootVars.font.size['xxx-large'],
+  padding: '16px 0',
+});
+
+export const boldStyle = style({
+  fontWeight: rootVars.font.weight.bold,
 });

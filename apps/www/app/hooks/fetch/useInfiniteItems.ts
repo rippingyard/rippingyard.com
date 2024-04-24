@@ -2,17 +2,11 @@
 import { SerializeFrom } from '@vercel/remix';
 import { useCallback, useEffect, useState } from 'react';
 
+import { getCachedItems } from '../cache/useCache';
+
 type Props<T> = {
   key: string;
   initialItems: SerializeFrom<T>[];
-};
-
-const getCachedItems = <T>(key: string): SerializeFrom<T>[] => {
-  // if (!sessionStorage) return [];
-  // const cache = sessionStorage.getItem(key);
-  // return cache ? JSON.parse(cache) : [];
-  console.log('key', key);
-  return [];
 };
 
 export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {

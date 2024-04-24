@@ -1,1 +1,3 @@
-﻿export const usePostLink = (id: string): string => `/post/${id}`;
+﻿const postLink = (id: string): string => `/post/${id}`;
+
+export const usePostLink = () => postLink;

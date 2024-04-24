@@ -1,6 +1,8 @@
 ﻿import { Link, useSubmit } from '@remix-run/react';
 import { ComponentPropsWithoutRef, FC, useCallback } from 'react';
 
+import { clearCachedItems } from '~/hooks/cache/useCache';
+
 import {
   containerStyle,
   headerContainerStyle,
@@ -26,6 +28,7 @@ export const Layout: FC<
         navigate: false,
       }
     );
+    clearCachedItems();
   }, [submit]);
 
   return (

@@ -1,4 +1,5 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
+
 // import { fn } from '@storybook/test';
 import { Button } from '.';
 
@@ -35,6 +36,13 @@ export const Success: Story = {
   args: {
     children: 'TEST',
     color: 'success',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    children: 'TEST',
+    isGhost: true,
   },
 };
 

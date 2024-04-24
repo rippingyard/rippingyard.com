@@ -26,6 +26,7 @@ const config: StorybookConfig = {
     <link rel="stylesheet" href="https://unpkg.com/destyle.css@4.0.1/destyle.min.css">
     <style>
       html, body {
+        font-size: 18px;
         background: hsla(0, 0%, 96%, 1);
       }
     </style>

@@ -27,3 +27,15 @@ globalStyle(`${buttonStyle}:hover`, {
   color: vars.color.primaryDark,
   boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
 });
+
+export const ghostButtonStyle = style({
+  boxShadow: 'none',
+  backgroundColor: 'transparent',
+  ':hover': {
+    boxShadow: 'none',
+  },
+});
+
+export const squareButtonStyle = style({
+  borderRadius: rootVars.border.radius.normal,
+});

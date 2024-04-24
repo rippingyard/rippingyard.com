@@ -2,7 +2,7 @@
 
 import { loaderStyle } from './style.css';
 
-export const LoaderIcon: FC = () => {
+export const IconLoader: FC = () => {
   return (
     <svg
       version="1.1"

@@ -4,8 +4,9 @@ import { vars } from '~/styles/theme.css';
 import { zIndex } from '~/utils/style';
 
 export const containerStyle = style({
-  paddingTop: 68,
-  paddingBottom: 100,
+  height: '100%',
+  paddingTop: 66,
+  // paddingBottom: 100,
 });
 
 export const headerContainerStyle = style({
