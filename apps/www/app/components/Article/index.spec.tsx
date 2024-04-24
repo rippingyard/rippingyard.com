@@ -38,6 +38,37 @@ describe('<Article />', () => {
       )
     ).toBeTruthy();
   });
+  it('URLが入力されている場合、すべてのURLが自動的にリンクされること', () => {
+    render(
+      <Article
+        text={
+          '<p>1. 平文普通のやつ：https://www.rippingyard.com</p><p>2. 改行直後<br>https://www.rippingyard.com</p><p>3. liの中：</p><ul><li>https://www.rippingyard.com</li></ul><p>4: URLとリンク先が一緒<br><a href="https://www.rippingyard.com">https://www.rippingyard.com</a></p><p>5. URLとリンク先が異なる<br><a target="_blank" rel="noopener noreferrer nofollow" href="https://www2.rippingyard.com">https://www.rippingyard.com</a></p>'
+        }
+      />
+    );
+    expect(
+      screen.queryAllByText(
+        (content, element) => !!element && element.tagName.toLowerCase() === 'a'
+      ).length
+    ).toBe(5);
+  });
+  it('URLとリンク先が異なる場合、リンク先が変化しないこと', () => {
+    render(
+      <Article
+        text={
+          '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www2.rippingyard.com">https://www.rippingyard.com</a></p>'
+        }
+      />
+    );
+    expect(
+      screen.queryByText(
+        (content, element) =>
+          !!element &&
+          element.tagName.toLowerCase() === 'a' &&
+          element.getAttribute('href') === 'https://www2.rippingyard.com'
+      )
+    ).toBeTruthy();
+  });
   it('YouTubeのURLが入力されている場合、YouTubeのウィジェットが埋め込まれる', () => {
     render(
       <Article text={'<p>https://www.youtube.com/watch?v=RRPd93mCp8s</p>'} />

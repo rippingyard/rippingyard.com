@@ -26,9 +26,11 @@ const PostItemLineComponent: FC<Props> = ({
   post,
   permalink: overwriteLink,
 }) => {
+  const postLink = usePostLink();
+
   const { title, content, thumbnail, hasHeadingTag, hasThumbnail } =
     usePostContents(post.content);
-  const permalink = overwriteLink || usePostLink(post.id);
+  const permalink = overwriteLink || postLink(post.id);
   const length = useMemo(() => (hasHeadingTag ? 80 : 140), [hasHeadingTag]);
   const summary = useMemo(() => getSummary(content, length), [content, length]);
 

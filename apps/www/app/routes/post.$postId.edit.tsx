@@ -1,4 +1,4 @@
-﻿import { useActionData, useLoaderData } from '@remix-run/react';
+﻿import { useActionData, useLoaderData, useNavigate } from '@remix-run/react';
 import { json, redirect } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
@@ -35,7 +35,7 @@ export const loader: LoaderFunction = async ({
     const action = usePostEditLink(postId);
     const canonicalUrl = new URL(action, request.url).toString();
 
-    const { post } = await usePost(postId);
+    const { post } = await usePost(postId, request);
     if (!post) throw new Error();
 
     const { uid, role } = await getMe(request);
@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const { postId } = params;
     if (!postId) throw new Error();
 
-    const { post } = await usePost(postId);
+    const { post } = await usePost(postId, request);
     if (!post) throw new Error();
 
     const { uid } = await getMe(request);
@@ -122,15 +122,17 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Main() {
   const { post, action } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const postLink = usePostLink();
 
   const result = useActionData<typeof action>();
 
   useEffect(() => {
-    if (result?.post) {
-      console.log('permalink', usePostLink(result.post.id));
-      clearCachedItems();
-    }
-  }, [result]);
+    if (!result?.post) return;
+    console.log('permalink!', postLink(result.post.id));
+    clearCachedItems();
+    return navigate(postLink(result.post.id));
+  }, [navigate, postLink, result]);
 
   const className = [containerStyle, edgeStyle].join(' ');
 

@@ -16,7 +16,7 @@ type Props = {
   onClose: () => void;
 };
 
-const endpoint = '/api/upload';
+const endpoint = '/upload';
 
 export const ImageUploader: FC<Props> = ({ editor, uploadpath, onClose }) => {
   const [file, setFile] = useState<ResizedImage>();

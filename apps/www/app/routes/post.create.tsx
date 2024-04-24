@@ -1,4 +1,4 @@
-﻿import { useActionData } from '@remix-run/react';
+﻿import { useActionData, useNavigate } from '@remix-run/react';
 import { json, redirect } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
@@ -94,15 +94,19 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Main() {
   const className = [containerStyle, edgeStyle].join(' ');
+  const navigate = useNavigate();
+  const postLink = usePostLink();
 
   const result = useActionData<typeof action>();
   useEffect(() => {
-    if (result?.post) {
-      console.log('data', result.post);
-      console.log('permalink', usePostLink(result.post.id));
-      clearCachedItems();
-    }
-  }, [result]);
+    if (!result?.post) return;
+
+    const permalink = postLink(result.post.id);
+    console.log('data', result.post);
+    clearCachedItems();
+
+    navigate(permalink);
+  }, [navigate, postLink, result]);
 
   return (
     <main className={className}>

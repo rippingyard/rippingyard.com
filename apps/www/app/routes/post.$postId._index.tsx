@@ -1,4 +1,4 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
+﻿import { Await, Link, useLoaderData } from '@remix-run/react';
 import { json } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
@@ -11,8 +11,11 @@ import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
+import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
+import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
@@ -23,10 +26,12 @@ export const loader: LoaderFunction = async ({
 }: LoaderFunctionArgs) => {
   try {
     const { postId } = params;
+    const canEditPost = useCanEditPost();
+    const postLink = usePostLink();
 
     if (!postId) throw new Error();
 
-    const { post } = await usePost(postId);
+    const { post } = await usePost(postId, request);
     console.log('post', post);
     if (!post) throw new Error();
 
@@ -35,13 +40,15 @@ export const loader: LoaderFunction = async ({
       startAfter: post.publishedAt,
     });
 
-    const path = usePostLink(post.id as string);
+    const path = postLink(post.id);
     const canonicalUrl = new URL(path, request.url).toString();
+    const { uid, role } = await getMe(request);
 
     return json({
       post,
       nextPosts,
       canonicalUrl,
+      canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     });
   } catch (e) {
@@ -79,9 +86,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Main() {
-  const { post, nextPosts } = useLoaderData<typeof loader>();
+  const { post, nextPosts, canEditPost } = useLoaderData<typeof loader>();
 
   const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
+  const editLink = usePostEditLink(post.id);
 
   return (
     <>
@@ -90,8 +98,11 @@ export default function Main() {
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <section className={articleSectionStyle}>
+              {post.status === 'drafted' && <p>この記事は下書き状態です</p>}
+              {!post.isPublic && <p>この記事は一般公開されていません</p>}
               <Article text={post.content} />
               <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+              {canEditPost && <Link to={editLink}>編集</Link>}
             </section>
             {hasNext && (
               <>

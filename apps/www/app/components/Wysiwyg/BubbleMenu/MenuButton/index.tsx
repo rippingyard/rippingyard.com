@@ -20,7 +20,13 @@ export const MenuButton: FC<Props> = ({
   }, [isActive]);
 
   return (
-    <button onClick={() => onClick()} className={className}>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      className={className}
+    >
       {children}
     </button>
   );

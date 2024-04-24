@@ -22,53 +22,85 @@ export const FloatingMenu: FC<Props> = ({ editor, showImageUploader }) => {
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
         <button
-          onClick={() => editor.chain().focus().setNode('paragraph').run()}
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setNode('paragraph').run();
+          }}
         >
           <IconParagraph /> <span className={labelStyle}>段落</span>
         </button>
         <button
-          onClick={() =>
-            editor.chain().focus().setNode('heading', { level: 2 }).run()
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setNode('heading', { level: 2 }).run();
+          }}
         >
           <IconHeading /> <span className={labelStyle}>大見出し</span>
         </button>
         <button
-          onClick={() =>
-            editor.chain().focus().setNode('heading', { level: 3 }).run()
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setNode('heading', { level: 3 }).run();
+          }}
           className={labelStyle}
         >
           <IconHeading /> 中見出し
         </button>
         <button
-          onClick={() =>
-            editor.chain().focus().setNode('heading', { level: 4 }).run()
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setNode('heading', { level: 4 }).run();
+          }}
           className={labelStyle}
         >
           <IconHeading /> 小見出し
         </button>
-        <button onClick={() => showImageUploader(true)}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            showImageUploader(true);
+          }}
+        >
           <IconImage /> <span className={labelStyle}>画像</span>
         </button>
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleBulletList().run();
+          }}
+        >
           <IconList /> <span className={labelStyle}>リスト</span>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleOrderedList().run();
+          }}
         >
           <IconListOl /> <span className={labelStyle}>数字リスト</span>
         </button>
         <button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setHorizontalRule().run();
+          }}
         >
           <IconHorizontalLine /> <span className={labelStyle}>分割線</span>
         </button>
-        <button onClick={() => editor.chain().focus().setBlockquote().run()}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setBlockquote().run();
+          }}
+        >
           <IconQuoteRight /> <span className={labelStyle}>引用</span>
         </button>
-        <button onClick={() => editor.chain().focus().setCodeBlock().run()}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().setCodeBlock().run();
+          }}
+        >
           <IconCode /> <span className={labelStyle}>コード</span>
         </button>
       </div>

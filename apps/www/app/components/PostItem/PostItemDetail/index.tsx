@@ -25,8 +25,10 @@ export const PostListItemDetail: FC<Props> = ({
   post,
   permalink: overwriteLink,
 }) => {
+  const postLink = usePostLink();
+
   const { title, content, hasHeadingTag } = usePostContents(post.content);
-  const permalink = overwriteLink || usePostLink(post.id);
+  const permalink = overwriteLink || postLink(post.id);
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
 
   return (
