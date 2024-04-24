@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({
     const canonicalUrl = new URL('login', request.url).toString();
     const { uid } = await getMe(request);
 
-    if (!uid) return redirect('/');
+    if (uid) return redirect('/');
 
     return json({
       title,
