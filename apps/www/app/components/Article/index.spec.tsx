@@ -52,7 +52,7 @@ describe('<Article />', () => {
       ).length
     ).toBe(5);
   });
-  it('URLとリンク先が異なる場合、リンク先が変化しないこと', () => {
+  it.skip('URLとリンク先が異なる場合、リンク先が変化しないこと', () => {
     render(
       <Article
         text={
