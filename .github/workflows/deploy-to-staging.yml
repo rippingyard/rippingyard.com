@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
     steps:
     - name: Checkout from ${{ github.head_ref }}
       uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
     - name: Functions - Build for develop
       run: cd functions && yarn install && yarn build
     - name: Functions - Deploy to develop
-      uses: w9jds/firebase-action@master
+      uses: w9jds/firebase-action@v12.9.0
       with:
         args: deploy --only functions,firestore:rules --project default
       env:
