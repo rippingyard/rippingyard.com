@@ -89,7 +89,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "sanitize-html": "^2.7.0",
+    "sanitize-html": "^2.12.1",
     "tippy.js": "^6.2.7",
     "url-parse": "^1.5.10",
     "vue-instantsearch": "^4.3.3",
