@@ -1,10 +1,5 @@
-﻿import {
-  ComponentPropsWithRef,
-  FC,
-  ReactNode,
-  forwardRef,
-  useMemo,
-} from 'react';
+﻿import clsx from 'clsx';
+import { ComponentPropsWithRef, FC, ReactNode, forwardRef } from 'react';
 
 import { IconLoader } from '~/assets/icons/Loader';
 
@@ -28,15 +23,12 @@ export const Button: FC<Props> = forwardRef<HTMLButtonElement, Props>(
     { children, isLoading, color, isGhost = false, isSquare = false, ...props },
     ref
   ) => {
-    const className = useMemo(() => {
-      const classes = [buttonStyle];
-
-      if (color === 'success') classes.push(successButtonStyle);
-      if (isGhost) classes.push(ghostButtonStyle);
-      if (isSquare) classes.push(squareButtonStyle);
-
-      return classes.join(' ');
-    }, [color, isGhost, isSquare]);
+    const className = clsx(
+      buttonStyle,
+      color === 'success' && successButtonStyle,
+      isGhost && ghostButtonStyle,
+      isSquare && squareButtonStyle
+    );
 
     return (
       <button ref={ref} {...props} className={className}>

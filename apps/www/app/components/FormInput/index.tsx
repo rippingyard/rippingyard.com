@@ -1,4 +1,5 @@
-﻿import { ComponentPropsWithRef, FC, useMemo } from 'react';
+﻿import clsx from 'clsx';
+import { ComponentPropsWithRef, FC } from 'react';
 
 import { boldStyle, headingStyle, inputStyle } from './style.css';
 
@@ -12,12 +13,11 @@ export const FormInput: FC<Props> = ({
   isBold = false,
   ...props
 }) => {
-  const className = useMemo(() => {
-    const classes = [inputStyle];
-    if (isHeading) classes.push(headingStyle);
-    if (isBold) classes.push(boldStyle);
-    return classes.join(' ');
-  }, [isBold, isHeading]);
+  const className = clsx(
+    inputStyle,
+    isHeading && headingStyle,
+    isBold && boldStyle
+  );
 
   return <input autoComplete="true" {...props} className={className} />;
 };

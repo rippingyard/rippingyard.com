@@ -6,6 +6,7 @@ import type {
   LoaderFunction,
   MetaFunction,
 } from '@vercel/remix';
+import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 
@@ -134,10 +135,8 @@ export default function Main() {
     return navigate(postLink(result.post.id));
   }, [navigate, postLink, result]);
 
-  const className = [containerStyle, edgeStyle].join(' ');
-
   return (
-    <main className={className}>
+    <main className={clsx(containerStyle, edgeStyle)}>
       <PostEditor post={post} action={action} />
     </main>
   );

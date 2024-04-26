@@ -1,4 +1,4 @@
-﻿import { Form } from '@remix-run/react';
+﻿import { Form, useNavigation } from '@remix-run/react';
 import dayjs from 'dayjs';
 import { FC, useCallback, useMemo, useState } from 'react';
 
@@ -22,8 +22,13 @@ type Props = {
 
 export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const [html, setHtml] = useState<string>(removeTitle(post?.content || ''));
+  const navigation = useNavigation();
 
-  // console.log('post', post);
+  const isLoading = useMemo(
+    () => navigation.state !== 'idle',
+    [navigation.state]
+  );
+
   const content = useMemo(() => post?.content || '', [post?.content]);
   const title = getTitle(content, {
     alt: '',
@@ -56,10 +61,10 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
         />
       </section>
       <footer className={footerStyle}>
-        <Button name="status" value="drafted">
+        <Button name="status" value="drafted" isLoading={isLoading}>
           下書き保存
         </Button>
-        <Button name="status" value="published">
+        <Button name="status" value="published" isLoading={isLoading}>
           公開
         </Button>
       </footer>

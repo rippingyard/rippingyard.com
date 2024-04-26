@@ -7,6 +7,6 @@ import { FormInput } from '.';
 describe('<FormInput />', () => {
   it('Inputに文字が表示されること', () => {
     render(<FormInput defaultValue="Input" />);
-    expect(screen.getByRole('textbox')).toHaveValue('Input');
+    expect(screen.getByRole('textbox').getAttribute('value')).toBe('Input');
   });
 });

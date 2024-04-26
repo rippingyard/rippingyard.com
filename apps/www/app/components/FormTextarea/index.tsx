@@ -1,9 +1,9 @@
-﻿import {
+﻿import clsx from 'clsx';
+import {
   ChangeEvent,
   ComponentPropsWithRef,
   FC,
   useCallback,
-  useMemo,
   useRef,
 } from 'react';
 
@@ -35,12 +35,11 @@ export const FormTextarea: FC<Props> = ({
     [adjustHeight, props]
   );
 
-  const className = useMemo(() => {
-    const classes = [textareaStyle];
-    if (isHeading) classes.push(headingStyle);
-    if (isBold) classes.push(boldStyle);
-    return classes.join(' ');
-  }, [isBold, isHeading]);
+  const className = clsx(
+    textareaStyle,
+    isHeading && headingStyle,
+    isBold && boldStyle
+  );
 
   return (
     <textarea
