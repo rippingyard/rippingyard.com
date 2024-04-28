@@ -4,12 +4,11 @@ import { FC } from 'react';
 import { bodyStyle } from '../app/styles/root.css';
 import { themeClass } from '../app/styles/theme.css';
 import '../app/styles/vars.css';
+import clsx from 'clsx';
 
 const Styled = (Story: FC) => {
-  const className = [bodyStyle, themeClass].join(' ');
-
   return (
-    <div className={className}>
+    <div className={clsx(bodyStyle, themeClass)}>
       <Story />
     </div>
   );

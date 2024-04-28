@@ -8,8 +8,8 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
+import clsx from 'clsx';
 import destyle from 'destyle.css?url';
-import { useMemo } from 'react';
 
 import { Env } from './components/Env';
 import { Layout } from './components/Layout';
@@ -70,10 +70,8 @@ function App() {
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
 
-  const className = useMemo(() => [bodyStyle, themeClass].join(' '), []);
-
   return (
-    <html lang="ja" className={className}>
+    <html lang="ja" className={clsx(bodyStyle, themeClass)}>
       <head>
         <Env env={env} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -88,7 +86,7 @@ function App() {
         <Meta />
         <Links />
       </head>
-      <body className={className}>
+      <body className={clsx(bodyStyle, themeClass)}>
         <Layout isAuthenticated={isAuthenticated}>
           <Outlet />
         </Layout>

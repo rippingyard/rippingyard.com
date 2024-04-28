@@ -37,5 +37,5 @@ export const ghostButtonStyle = style({
 });
 
 export const squareButtonStyle = style({
-  borderRadius: rootVars.border.radius.normal,
+  borderRadius: 0,
 });

@@ -1,13 +1,12 @@
-﻿import { FC, useMemo } from 'react';
+﻿import clsx from 'clsx';
+import { FC } from 'react';
 
 import { iconStyle } from '~/styles/icon.css';
 
 export const IconList: FC = () => {
-  const className = useMemo(() => [iconStyle].join(' '), []);
-
   return (
     <svg
-      className={className}
+      className={clsx(iconStyle)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
     >

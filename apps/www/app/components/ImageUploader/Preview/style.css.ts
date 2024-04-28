@@ -8,6 +8,8 @@ export const previewContainerStyle = style({
   width: '100%',
   height: '100%',
   display: 'flex',
+  gap: 10,
+  flexDirection: 'row',
   '@media': {
     [mediaQuery('TB')]: {
       flexDirection: 'column',
@@ -16,7 +18,7 @@ export const previewContainerStyle = style({
 });
 
 export const previewImageStyle = style({
-  // width: 100%;
+  width: '60%',
   height: '100%',
   position: 'relative',
   backgroundColor: vars.color.highlight,
@@ -25,6 +27,11 @@ export const previewImageStyle = style({
   justifyContent: 'center',
   borderRadius: rootVars.border.radius.normal,
   overflow: 'hidden',
+  '@media': {
+    [mediaQuery('TB')]: {
+      width: '100%',
+    },
+  },
 });
 
 globalStyle(`${previewImageStyle} img`, {
@@ -54,9 +61,26 @@ export const previewCloseStyle = style({
 });
 
 export const previewDataStyle = style({
-  // paddingLeft: 10,
+  width: '40%',
   position: 'relative',
   overflow: 'hidden',
+  borderRadius: rootVars.border.radius.normal,
+  border: `1px solid ${vars.color.shadow}`,
+  '@media': {
+    [mediaQuery('TB')]: {
+      width: '100%',
+      border: 0,
+    },
+  },
+});
+
+export const previewDataListStyle = style({
+  padding: 16,
+  '@media': {
+    [mediaQuery('TB')]: {
+      display: 'none',
+    },
+  },
 });
 
 export const consoleStyle = style({
@@ -65,11 +89,12 @@ export const consoleStyle = style({
   // width: 'calc(100% - 10px)',
   width: '100%',
   paddingTop: 10,
-  borderRadius: rootVars.border.radius.normal,
+  // borderRadius: rootVars.border.radius.normal,
   overflow: 'hidden',
   '@media': {
     [mediaQuery('TB')]: {
       position: 'relative',
+      padding: 0,
     },
   },
 });

@@ -12,11 +12,15 @@ describe('<FormTextarea />', () => {
   it('isHeadingの場合、headingStyleが当たっている', () => {
     render(<FormTextarea defaultValue="Textarea" isHeading={true} />);
     screen.debug();
-    expect(screen.getByRole('textbox')).toHaveClass(/headingStyle/);
+    expect(screen.getByRole('textbox').getAttribute('class')).toMatch(
+      /headingStyle/
+    );
   });
   it('isBoldの場合、boldStyleが当たっている', () => {
     render(<FormTextarea defaultValue="Textarea" isBold={true} />);
     screen.debug();
-    expect(screen.getByRole('textbox')).toHaveClass(/boldStyle/);
+    expect(screen.getByRole('textbox').getAttribute('class')).toMatch(
+      /boldStyle/
+    );
   });
 });

@@ -1,14 +1,13 @@
-﻿import { FC, useMemo } from 'react';
+﻿import clsx from 'clsx';
+import { FC } from 'react';
 
 import { iconStyle } from '~/styles/icon.css';
 
 export const IconHighLighter: FC = () => {
-  const className = useMemo(() => [iconStyle].join(' '), []);
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={clsx(iconStyle)}
       viewBox="0 0 576 512"
     >
       <path

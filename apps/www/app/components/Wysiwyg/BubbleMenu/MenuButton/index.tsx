@@ -1,4 +1,5 @@
-﻿import { FC, ReactNode, useMemo } from 'react';
+﻿import clsx from 'clsx';
+import { FC, ReactNode } from 'react';
 
 import { activeButtonStyle, buttonStyle } from './style.css';
 
@@ -13,11 +14,7 @@ export const MenuButton: FC<Props> = ({
   onClick,
   children,
 }) => {
-  const className = useMemo(() => {
-    const classes = [buttonStyle];
-    if (isActive) classes.push(activeButtonStyle);
-    return classes.join(' ');
-  }, [isActive]);
+  const className = clsx(buttonStyle, isActive && activeButtonStyle);
 
   return (
     <button

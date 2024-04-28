@@ -5,6 +5,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import clsx from 'clsx';
 import { ComponentPropsWithRef, FC, useRef, useState } from 'react';
 
 import { ImageUploader } from '~/components/ImageUploader';
@@ -22,7 +23,6 @@ type Props = ComponentPropsWithRef<'textarea'> & {
 };
 
 export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
-  const className = [articleStyle, containerStyle].join(' ');
   const dzRef = useRef(null);
 
   const [showImageUploader, setShowImageUploader] = useState<boolean>(false);
@@ -101,7 +101,10 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
 
   return (
     <div ref={dzRef} className={wrapperStyle}>
-      <EditorContent editor={editor} className={className} />
+      <EditorContent
+        editor={editor}
+        className={clsx(articleStyle, containerStyle)}
+      />
       <FloatingMenuComponent
         editor={editor}
         showImageUploader={setShowImageUploader}
