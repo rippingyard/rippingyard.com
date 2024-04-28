@@ -9,6 +9,7 @@ import {
   consoleStyle,
   previewCloseStyle,
   previewContainerStyle,
+  previewDataListStyle,
   previewDataStyle,
   previewImageStyle,
 } from './style.css';
@@ -26,6 +27,7 @@ export const Preview: FC<Props> = ({
   onRemoveImage,
   onUpload,
 }) => {
+  console.log('file', file);
   if (!file || !file?.url) return;
 
   return (
@@ -37,6 +39,12 @@ export const Preview: FC<Props> = ({
         </div>
       </div>
       <div className={previewDataStyle}>
+        <dl className={previewDataListStyle}>
+          <dt>ファイルサイズ：</dt>
+          <dd>{file?.file.size}</dd>
+          <dt>ファイルタイプ：</dt>
+          <dd>{file?.file.type}</dd>
+        </dl>
         <div className={consoleStyle}>
           <Button
             color="success"
@@ -48,14 +56,6 @@ export const Preview: FC<Props> = ({
             アップロード
           </Button>
         </div>
-        {/* <dl className="filedata">
-    <dt>ファイルサイズ：</dt>
-    <dd>{{ file?.file.size }}</dd>
-    <dt>ファイルタイプ：</dt>
-    <dd>{{ file?.file.type }}</dd>
-    <dt>ファイル名：</dt>
-    <dd>{{ file?.file.name }}</dd>
-  </dl> */}
       </div>
     </div>
   );
