@@ -1,6 +1,6 @@
 ﻿import { Form, useNavigation } from '@remix-run/react';
 import dayjs from 'dayjs';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
@@ -25,9 +25,13 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const navigation = useNavigation();
 
   const isLoading = useMemo(
-    () => navigation.state !== 'idle',
-    [navigation.state]
+    () => navigation.formAction === action && navigation.state === 'submitting',
+    [action, navigation.formAction, navigation.state]
   );
+
+  useEffect(() => {
+    console.log('navigation', navigation);
+  }, [navigation]);
 
   const content = useMemo(() => post?.content || '', [post?.content]);
   const title = getTitle(content, {
