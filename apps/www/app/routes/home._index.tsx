@@ -1,7 +1,12 @@
-﻿import { Link } from '@remix-run/react';
-import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
+﻿import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
 
+import { MenuItem, QuickMenu } from '~/components/QuickMenu';
 import { getMe } from '~/middlewares/session.server';
+
+const links: MenuItem[] = [
+  { to: '/', label: 'Top', caption: 'トップ' },
+  { to: '/post/create', label: 'Create A Post', caption: '新規投稿' },
+];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
@@ -13,11 +18,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index() {
   return (
     <>
-      <p>
-        <Link to="/post/create" prefetch="render">
-          新規投稿
-        </Link>
-      </p>
+      <QuickMenu links={links} prefix="homemenu" />
     </>
   );
 }
