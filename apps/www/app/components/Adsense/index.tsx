@@ -30,7 +30,7 @@ export const Adsense: FC<Props> = ({ slot }) => {
 
   useEffect(() => {
     if (show || !w?.adsbygoogle) return;
-    if (process.env.NODE_ENV !== 'development') w?.adsbygoogle.push({});
+    // if (process.env.NODE_ENV !== 'development') w?.adsbygoogle.push({});
     setShow(true);
   }, [show, w?.adsbygoogle]);
 
