@@ -14,6 +14,7 @@
     "sb": "storybook dev -p 6006"
   },
   "dependencies": {
+    "@ctrl/react-adsense": "^1.7.0",
     "@reactuses/core": "^5.0.10",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",

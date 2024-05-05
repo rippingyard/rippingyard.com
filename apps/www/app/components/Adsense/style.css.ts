@@ -3,5 +3,5 @@
 // import { vars } from '~/styles/theme.css';
 
 export const adStyle = style({
-  minHeight: 140,
+  minHeight: 240,
 });
