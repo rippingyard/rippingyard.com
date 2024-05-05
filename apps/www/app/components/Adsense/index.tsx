@@ -29,10 +29,17 @@ export const Adsense: FC<Props> = ({ slot }) => {
   const isTest = useMemo(() => process.env.NODE_ENV === 'development', []);
 
   useEffect(() => {
-    if (show || !w?.adsbygoogle) return;
-    // if (process.env.NODE_ENV !== 'development') w?.adsbygoogle.push({});
-    setShow(true);
-  }, [show, w?.adsbygoogle]);
+    if (show) return;
+    if (typeof window === 'undefined') return;
+    if (!(window as WindowWithEnv)?.adsbygoogle) return;
+    try {
+      // if (process.env.NODE_ENV !== 'development') w?.adsbygoogle.push({});
+      // (window as WindowWithEnv).adsbygoogle.push({});
+      setShow(true);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [show]);
 
   if (!show) return;
 
