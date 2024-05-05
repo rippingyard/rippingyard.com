@@ -10,7 +10,9 @@ import {
 import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
 import clsx from 'clsx';
 import destyle from 'destyle.css?url';
+import { useEffect } from 'react';
 
+import { WindowWithEnv } from './components/Adsense';
 import { Env } from './components/Env';
 import { Layout } from './components/Layout';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
@@ -69,6 +71,20 @@ function App() {
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
+
+  useEffect(() => {
+    try {
+      if (
+        typeof window === 'undefined' ||
+        !(window as WindowWithEnv)?.adsbygoogle
+      )
+        return;
+      // if (process.env.NODE_ENV !== 'development') w?.adsbygoogle.push({});
+      (window as WindowWithEnv).adsbygoogle.push({});
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   return (
     <html lang="ja" className={clsx(bodyStyle, themeClass)}>
