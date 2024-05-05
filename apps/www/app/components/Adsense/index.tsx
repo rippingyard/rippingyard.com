@@ -1,4 +1,5 @@
-﻿import { FC, useEffect, useMemo, useState } from 'react';
+﻿import { Adsense as ReactAdsense } from '@ctrl/react-adsense';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import { adStyle } from './style.css';
 import { Env } from '../Env';
@@ -43,16 +44,18 @@ export const Adsense: FC<Props> = ({ slot }) => {
 
   if (!show) return;
 
+  // https://medium.com/@ecocix/how-to-implement-google-adsense-into-reactjs-803a7d0d3b8d
+
   return (
     <div className={adStyle}>
-      <ins
+      <ReactAdsense
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client={w?.env.VITE_GA_ADSENSE_ID}
-        data-ad-slot={slot}
-        data-ad-format="auto"
-        data-adtest={isTest ? 'on' : 'off'}
-        data-full-width-responsive="true"
+        client={w?.env.VITE_GA_ADSENSE_ID || ''}
+        slot={slot}
+        format="auto"
+        responsive="true"
+        adTest={isTest ? 'on' : 'off'}
       />
     </div>
   );
