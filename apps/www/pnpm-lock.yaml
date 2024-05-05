@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ctrl/react-adsense':
+    specifier: ^1.7.0
+    version: 1.7.0
   '@reactuses/core':
     specifier: ^5.0.10
     version: 5.0.10(react@18.2.0)
@@ -1895,6 +1898,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@ctrl/react-adsense@1.7.0:
+    resolution: {integrity: sha512-TrDGbAo8KRPHnX/Jtv9CkMV90vK7M/sz8KNECTQgcsHO4e5GyNZL3jqCY4WA0MCwfT48NH34qzyV9e2SWsceLw==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
 
   /@discoveryjs/json-ext@0.5.7:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
