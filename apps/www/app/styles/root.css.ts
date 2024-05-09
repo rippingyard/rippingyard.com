@@ -1,5 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
+import { mediaQuery } from '~/utils/style';
+
 import { vars } from './theme.css';
 import { rootVars } from './vars.css';
 
@@ -12,4 +14,9 @@ export const bodyStyle = style({
   backgroundColor: vars.color.background,
   color: vars.color.neutral,
   minHeight: '100%',
+  '@media': {
+    [mediaQuery('SP')]: {
+      fontSize: rootVars.font.size.sp,
+    },
+  },
 });
