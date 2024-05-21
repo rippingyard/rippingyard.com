@@ -28,10 +28,10 @@ const PostItemLineComponent: FC<Props> = ({
 }) => {
   const postLink = usePostLink();
 
-  const { title, content, thumbnail, hasHeadingTag, hasThumbnail } =
+  const { title, content, thumbnail, hasTitleBlock, hasThumbnail } =
     usePostContents(post.content);
   const permalink = overwriteLink || postLink(post.id);
-  const length = useMemo(() => (hasHeadingTag ? 80 : 140), [hasHeadingTag]);
+  const length = useMemo(() => (hasTitleBlock ? 80 : 140), [hasTitleBlock]);
   const summary = useMemo(() => getSummary(content, length), [content, length]);
 
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
@@ -39,7 +39,7 @@ const PostItemLineComponent: FC<Props> = ({
   return (
     <Link to={permalink} className={containerStyle} prefetch="viewport">
       <div className={contentStyle}>
-        {hasHeadingTag && <h4 className={headingStyle}>{title}</h4>}
+        {hasTitleBlock && <h4 className={headingStyle}>{title}</h4>}
         <p className={summaryStyle}>{summary}</p>
         <div className={footerStyle}>{publishdate}</div>
       </div>

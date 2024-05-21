@@ -27,13 +27,13 @@ export const PostListItemDetail: FC<Props> = ({
 }) => {
   const postLink = usePostLink();
 
-  const { title, content, hasHeadingTag } = usePostContents(post.content);
+  const { title, content, hasTitleBlock } = usePostContents(post.content);
   const permalink = overwriteLink || postLink(post.id);
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
 
   return (
     <div className={containerStyle}>
-      {(hasHeadingTag && (
+      {(hasTitleBlock && (
         <>
           <div className={`${articleStyle} ${headingStyle}`}>
             <h1>
@@ -46,7 +46,7 @@ export const PostListItemDetail: FC<Props> = ({
         </>
       )) || (
         <div className={contentWithNoTitleStyle}>
-          <Article text={content} />
+          <Article text={post.content} />
         </div>
       )}
       <div className={footerStyle}>
