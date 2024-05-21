@@ -93,7 +93,9 @@ export const Login: FC = () => {
         />
       </FormField>
       <FormField>
-        <Button isLoading={pending}>ログイン</Button>
+        <Button color="success" isLoading={pending}>
+          ログイン
+        </Button>
       </FormField>
     </Form>
   );

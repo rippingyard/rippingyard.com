@@ -8,7 +8,7 @@ const baseButtonStyle: ComplexStyleRule = {
   width: '100%',
   textAlign: 'center',
   padding: '16px 24px',
-  boxShadow: `0 0 2px 0 ${vars.color.neutral}`,
+  // boxShadow: `0 0 2px 0 ${vars.color.neutral}`,
   transition: '0.04s',
   lineHeight: 1,
   color: vars.color.neutral,
@@ -20,12 +20,12 @@ export const buttonStyle = style(baseButtonStyle);
 
 export const successButtonStyle = style({
   backgroundColor: vars.color.primary,
-  boxShadow: `0 0 2px 0 ${vars.color.primary}`,
+  // boxShadow: `0 0 2px 0 ${vars.color.primary}`,
 });
 
 globalStyle(`${buttonStyle}:hover`, {
   color: vars.color.primaryDark,
-  boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
+  // boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
 });
 
 export const ghostButtonStyle = style({
@@ -38,4 +38,10 @@ export const ghostButtonStyle = style({
 
 export const squareButtonStyle = style({
   borderRadius: 0,
+});
+
+export const disabledStyle = style({});
+
+globalStyle(`button:disabled.${disabledStyle}`, {
+  cursor: 'not-allowed',
 });
