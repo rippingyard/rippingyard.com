@@ -10,6 +10,7 @@ export const rootVars = createGlobalTheme(':root', {
     },
     size: {
       base: '18px',
+      sp: '16px',
       'xxx-large': '2.2rem',
       'xx-large': '1.6rem',
       'x-large': '1.4rem',

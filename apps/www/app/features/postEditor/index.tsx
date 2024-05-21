@@ -8,11 +8,13 @@ import { Wysiwyg } from '~/components/Wysiwyg';
 import { Post, PostType } from '~/schemas/post';
 import { getTitle, removeTitle } from '~/utils/typography';
 
+import { StatusHeader } from './statusHeader';
 import {
   bodyStyle,
   containerStyle,
   footerStyle,
   headerStyle,
+  headerTitleStyle,
 } from './style.css';
 
 type Props = {
@@ -21,12 +23,12 @@ type Props = {
 };
 
 export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
-  const [html, setHtml] = useState<string>(removeTitle(post?.content || ''));
   const navigation = useNavigation();
+  const [html, setHtml] = useState<string>(removeTitle(post?.content || ''));
 
   const isLoading = useMemo(
-    () => navigation.state !== 'idle',
-    [navigation.state]
+    () => navigation.formAction === action && navigation.state === 'submitting',
+    [action, navigation.formAction, navigation.state]
   );
 
   const content = useMemo(() => post?.content || '', [post?.content]);
@@ -35,11 +37,15 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   });
   const contentBody = useMemo(() => removeTitle(content), [content]);
 
+  const [hasTitle, setHasTitle] = useState(!!title);
+
   const [type] = useState<PostType>('article');
   const [isPublic] = useState<boolean>(true);
 
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
+
+  const label = useMemo(() => (post ? '更新' : '公開'), [post]);
 
   const onUpdate = useCallback((content: string) => {
     setHtml(content);
@@ -52,7 +58,21 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
       <input type="hidden" name="isPublic" value={isPublic ? 1 : 0} />
       <section className={bodyStyle}>
         <header className={headerStyle}>
-          <FormTextarea name="title" defaultValue={title} isBold isHeading />
+          {hasTitle && (
+            <div className={headerTitleStyle}>
+              <FormTextarea
+                name="title"
+                defaultValue={title}
+                isBold
+                isHeading
+              />
+            </div>
+          )}
+          <StatusHeader
+            post={post}
+            hasTitle={hasTitle}
+            setHasTitle={setHasTitle}
+          />
         </header>
         <Wysiwyg
           content={contentBody}
@@ -61,11 +81,23 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
         />
       </section>
       <footer className={footerStyle}>
-        <Button name="status" value="drafted" isLoading={isLoading}>
+        <Button
+          name="status"
+          value="drafted"
+          disabled={isLoading}
+          isLoading={isLoading}
+          isGhost
+        >
           下書き保存
         </Button>
-        <Button name="status" value="published" isLoading={isLoading}>
-          公開
+        <Button
+          name="status"
+          value="published"
+          disabled={isLoading}
+          isLoading={isLoading}
+          color="success"
+        >
+          {label}
         </Button>
       </footer>
     </Form>

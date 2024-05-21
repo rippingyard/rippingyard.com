@@ -9,8 +9,13 @@ export const containerStyle = style({
 });
 
 export const headerStyle = style({
-  marginBottom: 32,
+  // marginBottom: 32,
+  padding: '0 0 32px',
   flexShrink: 0,
+});
+
+export const headerTitleStyle = style({
+  // marginBottom: 16,
 });
 
 export const bodyStyle = style({

@@ -1,6 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
+import { mediaQuery } from '~/utils/style';
 
 import { rootVars } from '../../styles/vars.css';
 
@@ -12,8 +13,13 @@ export const containerStyle = style({
   // backgroundColor: vars.color.primary,
   lineHeight: 1,
   margin: 'auto',
-  marginBottom: 16,
+  // marginBottom: 16,
   width: 'calc(100% - 48px)',
+  '@media': {
+    [mediaQuery('SP')]: {
+      width: 'calc(100% - 32px)',
+    },
+  },
 });
 
 export const innerStyle = style({

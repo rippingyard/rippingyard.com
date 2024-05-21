@@ -102,7 +102,6 @@ export default function Main() {
     if (!result?.post) return;
 
     const permalink = postLink(result.post.id);
-    console.log('data', result.post);
     clearCachedItems();
 
     navigate(permalink);

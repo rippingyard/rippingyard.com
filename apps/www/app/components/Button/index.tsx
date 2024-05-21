@@ -5,6 +5,7 @@ import { IconLoader } from '~/assets/icons/Loader';
 
 import {
   buttonStyle,
+  disabledStyle,
   ghostButtonStyle,
   squareButtonStyle,
   successButtonStyle,
@@ -27,7 +28,8 @@ export const Button: FC<Props> = forwardRef<HTMLButtonElement, Props>(
       buttonStyle,
       color === 'success' && successButtonStyle,
       isGhost && ghostButtonStyle,
-      isSquare && squareButtonStyle
+      isSquare && squareButtonStyle,
+      props?.disabled && disabledStyle
     );
 
     return (

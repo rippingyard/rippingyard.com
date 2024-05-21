@@ -1,7 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
-import { zIndex } from '~/utils/style';
+import { mediaQuery, zIndex } from '~/utils/style';
 
 export const containerStyle = style({
   height: '100%',
@@ -29,6 +29,12 @@ export const headerInnerStyle = style({
   // borderBottom: `1px dotted ${cyan()}`,
   width: 'calc(100% - 48px)',
   // backgroundColor: vars.color.background,
+  '@media': {
+    [mediaQuery('SP')]: {
+      margin: '16px 16px 0',
+      width: 'calc(100% - 32px)',
+    },
+  },
 });
 
 export const logoStyle = style({
