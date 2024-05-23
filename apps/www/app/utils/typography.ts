@@ -21,6 +21,11 @@ export const removeTitle = (str: string) => {
   return str.replace(/<h.(?: .+?)?>.*?<\/h.>/g, '');
 };
 
+export const removeMainTitle = (str: string) => {
+  if (!str) return '';
+  return str.replace(/^<h.(?: .+?)?>.*?<\/h.>/g, '');
+};
+
 export const hasTitle = (str: string): boolean => {
   if (!str) return false;
   return /<h.(?: .+?)?>.*?<\/h.>/.test(str);
@@ -84,21 +89,27 @@ export const getYoutubeThumbnail = (v: string | null) =>
 //   return decodeEntities(getTitle(str)).replace(new RegExp('&', 'g'), '%26')
 // }
 
-export const getTitle = (
-  str: string,
-  options: Partial<{
-    alt: string;
-    titleLength: number;
-  }> = {}
-) => {
-  const { alt, titleLength = 140 } = options;
+type TitleParams = Partial<{
+  alt: string;
+  titleLength: number;
+  withoutSummary: boolean;
+}>;
+
+export const getTitle = (str: string, options: TitleParams = {}) => {
+  const { alt, titleLength = 140, withoutSummary = false } = options;
   const headings = getHeadingTags(str);
   if (headings) {
     return decodeEntities(headings[0]);
   } else {
+    if (withoutSummary) return '';
     return alt ?? getSummary(str, titleLength);
   }
 };
+
+export const getMainTitle = (str: string, options: TitleParams = {}) =>
+  str.match(/^<h[1-6]/)
+    ? getTitle(str, { ...options, withoutSummary: true })
+    : '';
 
 export const getSummary = (str: string, length = 140) => {
   str = removeTitle(str);

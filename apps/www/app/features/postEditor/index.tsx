@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { Post, PostType } from '~/schemas/post';
-import { getTitle, removeTitle } from '~/utils/typography';
+import { getMainTitle, removeMainTitle } from '~/utils/typography';
 
 import { StatusHeader } from './statusHeader';
 import {
@@ -24,7 +24,9 @@ type Props = {
 
 export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const navigation = useNavigation();
-  const [html, setHtml] = useState<string>(removeTitle(post?.content || ''));
+  const [html, setHtml] = useState<string>(
+    removeMainTitle(post?.content || '')
+  );
 
   const isLoading = useMemo(
     () => navigation.formAction === action && navigation.state === 'submitting',
@@ -32,10 +34,14 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   );
 
   const content = useMemo(() => post?.content || '', [post?.content]);
-  const title = getTitle(content, {
-    alt: '',
-  });
-  const contentBody = useMemo(() => removeTitle(content), [content]);
+  const title = useMemo(
+    () =>
+      getMainTitle(content, {
+        alt: '',
+      }),
+    [content]
+  );
+  const contentBody = useMemo(() => removeMainTitle(content), [content]);
 
   const [hasTitle, setHasTitle] = useState(!!title);
 

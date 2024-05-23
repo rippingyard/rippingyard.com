@@ -8,6 +8,8 @@ import {
   removeTitle,
 } from '~/utils/typography';
 
+import { useContentBlocks } from './useContentBlocks';
+
 type Options = {
   alt?: string;
   titleLength?: number;
@@ -16,6 +18,12 @@ type Options = {
 
 export const usePostContents = (str: string, options: Options = {}) => {
   const { alt, titleLength = 140, summaryLength = 240 } = options;
+
+  const { blocks: contentBlocks } = useContentBlocks(str);
+  const hasTitleBlock = useMemo(
+    () => contentBlocks && contentBlocks[0].type === 'heading',
+    [contentBlocks]
+  );
 
   const headings = useMemo(() => getHeadingTags(str) || [], [str]);
   const hasHeadingTag = useMemo(
@@ -47,6 +55,7 @@ export const usePostContents = (str: string, options: Options = {}) => {
     summary,
     headings,
     thumbnail,
+    hasTitleBlock,
     hasHeadingTag,
     hasThumbnail,
   };
