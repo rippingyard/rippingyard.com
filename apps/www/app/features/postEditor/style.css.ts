@@ -1,7 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
-import { size } from '~/utils/style';
+import { mediaQuery, size } from '~/utils/style';
 
 export const containerStyle = style({
   position: 'relative',
@@ -24,8 +24,7 @@ export const bodyStyle = style({
   flexShrink: 1,
   overflowX: 'hidden',
   // overflowY: 'auto',
-  paddingBottom: 90,
-  height: '100%',
+  paddingBottom: 65,
 });
 
 export const footerStyle = style({
@@ -38,4 +37,9 @@ export const footerStyle = style({
   backgroundColor: vars.color.background,
   width: 'calc(100% - (24px * 2))',
   maxWidth: size('MAIN') - 24 * 2,
+  '@media': {
+    [mediaQuery('SP')]: {
+      width: 'calc(100% - (16px * 2))',
+    },
+  },
 });
