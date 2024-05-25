@@ -1,20 +1,11 @@
 ﻿import { Form, useActionData } from '@remix-run/react';
-import {
-  ActionFunction,
-  json,
-  redirect,
-  type LoaderFunctionArgs,
-} from '@vercel/remix';
+import { ActionFunction, json } from '@vercel/remix';
 import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
 
 import { Prompt } from '~/features/prompt';
-import { getMe } from '~/middlewares/session.server';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { uid } = await getMe(request);
-  if (!uid) return redirect('/');
-
+export const loader = async () => {
   return json({});
 };
 

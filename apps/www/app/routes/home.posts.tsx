@@ -1,5 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
+import { json, type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -12,15 +12,11 @@ import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { uid } = await getMe(request);
-  if (!uid) return redirect('/');
-
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
     myId: uid || undefined,

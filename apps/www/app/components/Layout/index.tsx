@@ -10,6 +10,8 @@ import {
   logoLinkStyle,
   logoStyle,
   logoTypeStyle,
+  menuContainerStyle,
+  menuItemStyle,
 } from './style.css';
 import { Logo } from '../Logo';
 import { LogoType } from '../LogoType';
@@ -39,7 +41,29 @@ export const Layout: FC<
             <Logo style={logoStyle} />
             <LogoType style={logoTypeStyle} />
           </Link>
-          {isAuthenticated && <button onClick={onLogout}>ログアウト</button>}
+          {isAuthenticated && (
+            <ul className={menuContainerStyle}>
+              <li>
+                <Link className={menuItemStyle} to="/home" prefetch="render">
+                  ホーム
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className={menuItemStyle}
+                  to="/post/create"
+                  prefetch="render"
+                >
+                  記事投稿
+                </Link>
+              </li>
+              <li>
+                <button className={menuItemStyle} onClick={onLogout}>
+                  ログアウト
+                </button>
+              </li>
+            </ul>
+          )}
         </div>
       </header>
       {children}
