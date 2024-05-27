@@ -30,8 +30,8 @@ export const loader: LoaderFunction = async ({
 
     // 権限確認
     const { uid, role } = await getMe(request);
-    if (!uid) return redirect('/');
-    if (!canCreatePost(role)) return redirect('/');
+    if (!uid) return redirect('/login');
+    if (!canCreatePost(role)) return redirect('/login');
 
     return json({
       title,

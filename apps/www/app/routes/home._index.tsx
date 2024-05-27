@@ -1,7 +1,6 @@
-﻿import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
+﻿import { json } from '@vercel/remix';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
-import { getMe } from '~/middlewares/session.server';
 
 const links: MenuItem[] = [
   { to: '/', label: 'Top', caption: 'トップ' },
@@ -9,17 +8,10 @@ const links: MenuItem[] = [
   { to: '/home/lab', label: 'A Lab', caption: 'ラボ' },
 ];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { uid } = await getMe(request);
-  if (!uid) return redirect('/');
-
+export const loader = async () => {
   return json({});
 };
 
 export default function Index() {
-  return (
-    <>
-      <QuickMenu links={links} prefix="homemenu" />
-    </>
-  );
+  return <QuickMenu links={links} prefix="homemenu" />;
 }

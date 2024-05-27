@@ -7,7 +7,7 @@ import { containerStyle } from '~/styles/container.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
-  if (!uid) return redirect('/');
+  if (!uid) return redirect('/login');
   return json({});
 };
 

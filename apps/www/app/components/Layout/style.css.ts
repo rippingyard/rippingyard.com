@@ -1,6 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
+import { rootVars } from '~/styles/vars.css';
 import { mediaQuery, zIndex } from '~/utils/style';
 
 export const containerStyle = style({
@@ -53,4 +54,21 @@ export const logoTypeStyle = style({
 
 export const logoLinkStyle = style({
   display: 'inline-block',
+});
+
+export const menuContainerStyle = style({
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: rootVars.font.size['x-small'],
+  gap: 8,
+});
+
+export const menuItemStyle = style({
+  display: 'block',
+  padding: '4px 8px',
+  background: vars.color['shadow-20'],
+  borderRadius: rootVars.border.radius.normal,
+  ':hover': {
+    background: vars.color['shadow-40'],
+  },
 });
