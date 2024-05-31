@@ -16,7 +16,7 @@ import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
-import { getMe } from '~/middlewares/session.server';
+import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
@@ -30,8 +30,18 @@ export const loader: LoaderFunction = async ({
 
     // 権限確認
     const { uid, role } = await getMe(request);
-    if (!uid) return redirect('/login');
-    if (!canCreatePost(role)) return redirect('/login');
+    if (!uid || !canCreatePost(role)) {
+      const session = await getSession(request.headers.get('Cookie'));
+      session.flash(
+        'alertMessage',
+        '利用権限がありません。ログインしてください'
+      );
+      return redirect('/login', {
+        headers: {
+          'Set-Cookie': await commitSession(session),
+        },
+      });
+    }
 
     return json({
       title,

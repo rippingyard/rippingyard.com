@@ -13,9 +13,10 @@ import destyle from 'destyle.css?url';
 
 import { Env } from './components/Env';
 import { Layout } from './components/Layout';
+import { Snackbar } from './features/snackbar';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
-import { getMe } from './middlewares/session.server';
+import { commitSession, getMe, getSession } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
@@ -39,12 +40,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
   const isAuthenticated = !!uid;
 
-  return json({
-    isAuthenticated,
-    gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
-    adsenseId,
-    env,
-  });
+  const session = await getSession(request.headers.get('Cookie'));
+  const infoMessage = session.get('infoMessage');
+  const alertMessage = session.get('alertMessage');
+  console.log('infoMessage', infoMessage);
+
+  return json(
+    {
+      isAuthenticated,
+      gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
+      adsenseId,
+      env,
+      infoMessage,
+      alertMessage,
+    },
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    }
+  );
 };
 
 export const links: LinksFunction = () => [
@@ -64,8 +79,14 @@ export const meta: MetaFunction = () => [
 ];
 
 function App() {
-  const { isAuthenticated, gtagId, adsenseId, env } =
-    useLoaderData<typeof loader>();
+  const {
+    isAuthenticated,
+    gtagId,
+    adsenseId,
+    infoMessage = '',
+    alertMessage = '',
+    env,
+  } = useLoaderData<typeof loader>();
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
@@ -90,6 +111,7 @@ function App() {
         <Layout isAuthenticated={isAuthenticated}>
           <Outlet />
         </Layout>
+        <Snackbar info={infoMessage} alert={alertMessage} />
         <ScrollRestoration />
         <Scripts />
       </body>

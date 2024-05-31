@@ -14,6 +14,8 @@ type SessionData = {
 };
 
 type SessionFlashData = {
+  infoMessage: string;
+  alertMessage: string;
   error: string;
 };
 
