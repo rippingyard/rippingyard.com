@@ -53,8 +53,6 @@ export const action: ActionFunction = async ({ request }) => {
     session.set('role', user?.role || 'stranger');
     session.set('authenticatedAt', dayjs().valueOf());
 
-    console.log('user', user);
-
     return json(
       {},
       {

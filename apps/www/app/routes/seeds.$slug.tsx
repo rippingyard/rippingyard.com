@@ -41,7 +41,14 @@ export const loader: LoaderFunction = async ({
     const path = useSeedLink(post.slug as string);
     const canonicalUrl = new URL(path, request.url).toString();
 
-    return json({ post, prevPost, nextPost, canonicalUrl });
+    return json(
+      { post, prevPost, nextPost, canonicalUrl },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=3600',
+        },
+      }
+    );
   } catch (e) {
     throw new Response('Not Found', { status: 404 });
   }
