@@ -12,11 +12,14 @@ import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
+import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { uid } = await getMe(request);
+
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
     myId: uid || undefined,
@@ -74,21 +77,19 @@ export default function Index() {
   }, [canAutoload, inView, loadMore, query, state]);
 
   return (
-    <>
-      <Suspense fallback={<Loading />}>
-        <Await resolve={posts}>
-          <PostList posts={sortedPosts} mode="detail" />
-          {!isCompleted && query && (
-            <Button
-              ref={ref}
-              isLoading={isLoading}
-              onClick={() => loadMore(query)}
-            >
-              もっと読む
-            </Button>
-          )}
-        </Await>
-      </Suspense>
-    </>
+    <Suspense fallback={<Loading />}>
+      <Await resolve={posts}>
+        <PostList posts={sortedPosts} mode="list" />
+        {!isCompleted && query && (
+          <Button
+            ref={ref}
+            isLoading={isLoading}
+            onClick={() => loadMore(query)}
+          >
+            もっと読む
+          </Button>
+        )}
+      </Await>
+    </Suspense>
   );
 }
