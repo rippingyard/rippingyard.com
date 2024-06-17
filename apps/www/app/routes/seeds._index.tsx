@@ -1,7 +1,7 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { defer } from '@vercel/remix';
+import { json } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { Button } from '~/components/Button';
@@ -13,7 +13,7 @@ import { Seed } from '~/schemas/seed';
 import { containerStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async () => {
-  return defer({
+  return json({
     seeds: await useSeeds(),
   });
 };
@@ -39,10 +39,16 @@ export default function Index() {
 
   const { ref, inView } = useInView({ threshold: 0 });
 
+  const showed = useMemo(() => PER_PAGE * (index + 1), [index]);
+  const isCompleted = useMemo(
+    () => showed >= allSeeds.length,
+    [allSeeds.length, showed]
+  );
+
   const loadMore = useCallback(() => {
-    setSeeds(allSeeds.slice(0, PER_PAGE * (index + 1)));
+    setSeeds(allSeeds.slice(0, showed));
     setIndex(index + 1);
-  }, [allSeeds, index]);
+  }, [allSeeds, index, showed]);
 
   useEffect(() => {
     if (!inView) return;
@@ -56,9 +62,11 @@ export default function Index() {
         <Suspense fallback={<Loading />}>
           <Await resolve={seeds}>
             <SeedList seeds={seeds} />
-            <Button ref={ref} onClick={loadMore}>
-              Load More...
-            </Button>
+            {!isCompleted && (
+              <Button ref={ref} onClick={loadMore} isLoading={true}>
+                もっと読む
+              </Button>
+            )}
           </Await>
         </Suspense>
       </main>
