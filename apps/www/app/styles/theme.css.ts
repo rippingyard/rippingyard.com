@@ -35,8 +35,10 @@ export const [themeClass, vars] = createTheme({
      * Dark gray
      */
     shadow: darkGray(),
-    'shadow-40': darkGray(0.4),
     'shadow-20': darkGray(0.2),
+    'shadow-40': darkGray(0.4),
+    'shadow-60': darkGray(0.6),
+    'shadow-80': darkGray(0.8),
     /**
      * Cyan
      */
@@ -67,8 +69,10 @@ export const darkThemeClass = createTheme(vars, {
     primaryDark: blue(),
     secondry: yellow(),
     shadow: gray(),
-    'shadow-40': gray(),
-    'shadow-20': gray(),
+    'shadow-20': gray(0.2),
+    'shadow-40': gray(0.4),
+    'shadow-60': gray(0.6),
+    'shadow-80': gray(0.8),
     warning: orange(),
   },
 });

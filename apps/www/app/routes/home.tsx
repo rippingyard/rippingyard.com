@@ -2,12 +2,20 @@
 import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
 
 import { Heading } from '~/components/Heading';
-import { getMe } from '~/middlewares/session.server';
+import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
-  if (!uid) return redirect('/login');
+  if (!uid) {
+    const session = await getSession(request.headers.get('Cookie'));
+    session.flash('alertMessage', '利用権限がありません。ログインしてください');
+    return redirect('/login', {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    });
+  }
   return json({});
 };
 

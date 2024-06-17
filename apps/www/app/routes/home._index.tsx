@@ -13,5 +13,10 @@ export const loader = async () => {
 };
 
 export default function Index() {
-  return <QuickMenu links={links} prefix="homemenu" />;
+  return (
+    <>
+      <QuickMenu links={links} prefix="homemenu" />
+      <button onClick={() => alert('')}>スナックバー</button>
+    </>
+  );
 }
