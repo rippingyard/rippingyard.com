@@ -9,8 +9,10 @@ import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
+import { UserCard } from '~/features/userCard';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useUser } from '~/hooks/fetch/useUser.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useDate } from '~/hooks/normalize/useDate';
@@ -32,7 +34,7 @@ export const loader: LoaderFunction = async ({
     if (!postId) throw new Error();
 
     const { post } = await usePost(postId, request);
-    console.log('post', post);
+    // console.log('post', post);
     if (!post) throw new Error();
 
     const { data: nextPosts } = await usePosts({
@@ -44,8 +46,11 @@ export const loader: LoaderFunction = async ({
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
+    const { user: owner } = await useUser(post?.owner?.id || '');
+
     return json({
       post,
+      owner,
       nextPosts,
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
@@ -86,7 +91,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Main() {
-  const { post, nextPosts, canEditPost } = useLoaderData<typeof loader>();
+  const { post, owner, nextPosts, canEditPost } =
+    useLoaderData<typeof loader>();
 
   const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
   const editLink = usePostEditLink(post.id);
@@ -101,8 +107,13 @@ export default function Main() {
               {post.status === 'drafted' && <p>この記事は下書き状態です</p>}
               {!post.isPublic && <p>この記事は一般公開されていません</p>}
               <Article text={post.content} />
+              {owner && <UserCard user={owner} />}
               <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
-              {canEditPost && <Link to={editLink}>編集</Link>}
+              {canEditPost && (
+                <p>
+                  <Link to={editLink}>編集</Link>
+                </p>
+              )}
             </section>
             {hasNext && (
               <>

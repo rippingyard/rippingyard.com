@@ -69,7 +69,7 @@ export default function Index() {
   const query = useMemo(() => {
     const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
     if (!lastPublishedAt) return;
-    return `posts?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
+    return `?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
   }, [sortedPosts]);
 
   useEffect(() => {
