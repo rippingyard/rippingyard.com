@@ -34,3 +34,24 @@ export const PostSchema = z.object({
 export type Post = z.infer<typeof PostSchema>;
 export type PostType = z.infer<typeof PostTypeSchema>;
 export type PostStatus = z.infer<typeof PostStatusSchema>;
+
+export type PostAsSearchResult = Pick<
+  Post,
+  | 'type'
+  // | 'createdAt'
+  // | 'publishedAt'
+  // | 'updatedAt'
+  | 'content'
+  | 'isDeleted'
+  | 'isPublic'
+  | 'status'
+> & {
+  title: string;
+  body: string;
+  image: string;
+  createdAt: number;
+  publishedAt: number;
+  updatedAt: number;
+  objectID: string;
+  // _highlightResult: unknown;
+};
