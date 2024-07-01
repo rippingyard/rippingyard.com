@@ -45,7 +45,7 @@ export default function Index() {
   return (
     <main className={containerStyle}>
       <SearchForm query={query} />
-      <SearchResult posts={posts} />
+      <SearchResult posts={posts} query={query} />
     </main>
   );
 }

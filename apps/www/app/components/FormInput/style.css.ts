@@ -5,15 +5,9 @@ import { rootVars } from '~/styles/vars.css';
 
 export const inputStyle = style({
   width: '100%',
-  borderBottom: `1px solid ${vars.color.neutral}`,
   fontSize: rootVars.font.size.small,
   padding: '5px 0',
   outline: 'none',
-  selectors: {
-    '&:focus': {
-      borderBottom: `1px solid ${vars.color.primary}`,
-    },
-  },
 });
 
 export const headingStyle = style({
@@ -23,4 +17,13 @@ export const headingStyle = style({
 
 export const boldStyle = style({
   fontWeight: rootVars.font.weight.bold,
+});
+
+export const borderStyle = style({
+  borderBottom: `1px solid ${vars.color.neutral}`,
+  selectors: {
+    '&:focus': {
+      borderBottom: `1px solid ${vars.color.primary}`,
+    },
+  },
 });

@@ -8,9 +8,10 @@ import { noResultStyle } from './style.css';
 
 type Props = {
   posts: PostAsSearchResult[];
+  query: string;
 };
 
-export const SearchResult: FC<Props> = ({ posts = [] }) => {
+export const SearchResult: FC<Props> = ({ posts = [], query = '' }) => {
   const items = useMemo(
     () =>
       posts.filter((item) => {
@@ -19,15 +20,21 @@ export const SearchResult: FC<Props> = ({ posts = [] }) => {
     [posts]
   );
 
+  const isEmpty = useMemo(
+    () => query && items.length === 0,
+    [items.length, query]
+  );
+
   return (
     <>
-      {(items.length === 0 && <p className={noResultStyle}>結果なし</p>) || (
+      {(isEmpty && <p className={noResultStyle}>結果なし</p>) || (
         <ul>
-          {items.map((item, i) => (
+          {items.map((item) => (
             <li key={item.objectID}>
               <PostItem
                 post={hitToPost(item)}
-                mode={i === 0 ? 'detail' : 'list'}
+                mode="detail"
+                // mode={i === 0 ? 'detail' : 'list'}
               />
             </li>
           ))}

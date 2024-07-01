@@ -12,6 +12,7 @@ const baseButtonStyle: ComplexStyleRule = {
   transition: '0.04s',
   lineHeight: 1,
   color: vars.color.neutral,
+  backgroundColor: vars.color.shadow,
   fontWeight: rootVars.font.weight.bold,
   fontSize: rootVars.font.size.small,
 };
