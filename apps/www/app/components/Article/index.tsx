@@ -1,7 +1,6 @@
 ﻿import { FC, memo } from 'react';
 
 import {
-  BlockType,
   ContentBlock,
   useContentBlocks,
 } from '~/hooks/normalize/useContentBlocks';
