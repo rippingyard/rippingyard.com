@@ -2,13 +2,13 @@
 
 import { ContentBlock } from '~/hooks/normalize/useContentBlocks';
 
-import { ArticleNodeComponents } from '..';
+import { NodeComponents } from './node';
 
 export const ListItem: FC<{ block: ContentBlock }> = ({ block }) => {
   if (!block.content) return;
   return (
     <li>
-      <ArticleNodeComponents blocks={block.content} />
+      <NodeComponents blocks={block.content} />
     </li>
   );
 };
