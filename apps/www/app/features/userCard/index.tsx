@@ -1,15 +1,9 @@
 ﻿import { FC, memo } from 'react';
 
+import { Avatar } from '~/components/Avatar';
 import { User } from '~/schemas/user';
 
-import {
-  containerStyle,
-  imageContainerStyle,
-  imageStyle,
-  mainStyle,
-  nameStyle,
-  sideStyle,
-} from './style.css';
+import { containerStyle, mainStyle, nameStyle, sideStyle } from './style.css';
 
 const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
   if (!user) return;
@@ -21,9 +15,7 @@ const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
       </div>
       {user.avatar && (
         <div className={sideStyle}>
-          <div className={imageContainerStyle}>
-            <img src={user.avatar} className={imageStyle} />
-          </div>
+          <Avatar url={user.avatar} />
         </div>
       )}
     </div>

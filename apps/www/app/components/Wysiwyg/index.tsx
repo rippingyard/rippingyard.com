@@ -6,7 +6,13 @@ import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import { ComponentPropsWithRef, FC, useRef, useState } from 'react';
+import {
+  ComponentPropsWithRef,
+  FC,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 
 import { ImageUploader } from '~/components/ImageUploader';
 import { articleStyle } from '~/styles/article.css';
@@ -18,7 +24,7 @@ import { containerStyle, modalStyle, wrapperStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
-  uploadpath: string;
+  uploadpath?: string;
   onUpdate: (content: string) => void;
 };
 
@@ -29,7 +35,6 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
 
   const extensions: AnyExtension[] = [
     StarterKit,
-    Image,
     Link,
     Highlight,
     FloatingMenu.configure({
@@ -44,6 +49,8 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     }),
   ];
 
+  if (uploadpath) extensions.push(Image);
+
   const editor = useEditor({
     extensions,
     content,
@@ -52,50 +59,17 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     },
   });
 
+  const onUploadedImage = useCallback(
+    ({ url }: { url: string }) => {
+      if (!editor || !url) return;
+      editor.chain().focus().setImage({ src: url }).run();
+    },
+    [editor]
+  );
+
   const isOverDropZone = useDropZone(dzRef, (files) => {
     console.log('files', files);
   });
-
-  // editor.value = new Editor({
-  //   content,
-  //   extensions: [
-  //     StarterKit,
-  //     // // Caption,
-  //     // Highlight,
-  //     // // Subscript,
-  //     // // TextStyle,
-  //     // Image.configure({
-  //     //   inline: false,
-  //     // }),
-  //     // Link.configure({
-  //     //   openOnClick: false,
-  //     // }),
-  //     // // Placeholder.configure({
-  //     // //   placeholder: 'ここに本文を書いていきましょう',
-  //     // // }),
-  //     // BubbleMenu.configure({
-  //     //   shouldShow: ({ editor }) => {
-  //     //     return !editor.isActive('image');
-  //     //   },
-  //     // }),
-  //     // FloatingMenu.configure({
-  //     //   // shouldShow: ({ editor, view, state, oldState }) => {
-  //     //   //   console.log('Editor!', view, state, oldState)
-  //     //   //   return editor.isActive('paragraph')
-  //     //   // },
-  //     // }),
-  //     // Item.configure({
-  //     //   HTMLAttributes: {
-  //     //     class: 'mention',
-  //     //   },
-  //     //   suggestion: ItemSuggestion,
-  //     // }),
-  //   ],
-  //   // onUpdate: () => {
-  //   //   if (!editor.value) return;
-  //   //   emit('update:modelValue', editor.value.getHTML());
-  //   // },
-  // });
 
   if (!editor) return;
 
@@ -107,14 +81,15 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
       />
       <FloatingMenuComponent
         editor={editor}
+        canUploadImage={!!uploadpath}
         showImageUploader={setShowImageUploader}
       />
       <BubbleMenu editor={editor} />
-      {(showImageUploader || isOverDropZone) && (
+      {uploadpath && (showImageUploader || isOverDropZone) && (
         <div className={modalStyle}>
           <ImageUploader
-            editor={editor}
             uploadpath={uploadpath}
+            onUploaded={onUploadedImage}
             onClose={() => setShowImageUploader(false)}
           />
         </div>

@@ -6,18 +6,21 @@ import { Post, PostSchema } from '~/schemas/post';
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';
 
+type PostPayload = Pick<
+  Post,
+  | 'id'
+  | 'slug'
+  | 'status'
+  | 'type'
+  | 'createdAt'
+  | 'publishedAt'
+  | 'isPublic'
+  | 'isDeleted'
+>;
+
 const savePost = async (
   payload: Partial<
-    Pick<
-      Post,
-      | 'id'
-      | 'status'
-      | 'type'
-      | 'createdAt'
-      | 'publishedAt'
-      | 'isPublic'
-      | 'isDeleted'
-    > & {
+    PostPayload & {
       title?: string;
       uid: string;
       contentBody: string;
@@ -49,7 +52,7 @@ const savePost = async (
     const snap = await owner.get();
     if (!snap.exists) throw new Error('ユーザーが存在しません');
 
-    const post = {
+    const post: Partial<Post> = {
       id,
       slug: '',
       owner,
@@ -61,9 +64,10 @@ const savePost = async (
       isPublic,
       isDeleted,
       publishedAt,
-      createdAt,
       updatedAt: Timestamp.now(),
     };
+
+    if (!id) post.createdAt = createdAt;
 
     // const entities = post.entities || defaultPost.entities
     // entities.byContent = await dispatch(

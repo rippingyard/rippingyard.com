@@ -1,4 +1,4 @@
-﻿import { Timestamp } from 'firebase/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 const RoleSchema = z.enum([
@@ -9,10 +9,10 @@ const RoleSchema = z.enum([
   'anonymous',
 ]);
 
-const UserSchema = z.object({
-  uid: z.string(),
-  displayName: z.string(),
-  userName: z.string(),
+export const UserSchema = z.object({
+  uid: z.string().min(1),
+  displayName: z.string().min(1),
+  userName: z.string().min(3),
   code: z.string().optional(),
   profile: z.string().optional(),
   avatar: z.string().optional(),

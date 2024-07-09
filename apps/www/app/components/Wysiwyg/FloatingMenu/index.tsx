@@ -14,10 +14,15 @@ import { containerStyle, labelStyle } from './style.css';
 
 type Props = {
   editor: Editor;
+  canUploadImage?: boolean;
   showImageUploader: Dispatch<SetStateAction<boolean>>;
 };
 
-export const FloatingMenu: FC<Props> = ({ editor, showImageUploader }) => {
+export const FloatingMenu: FC<Props> = ({
+  editor,
+  canUploadImage = true,
+  showImageUploader,
+}) => {
   return (
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
@@ -55,14 +60,16 @@ export const FloatingMenu: FC<Props> = ({ editor, showImageUploader }) => {
         >
           <IconHeading /> 小見出し
         </button>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            showImageUploader(true);
-          }}
-        >
-          <IconImage /> <span className={labelStyle}>画像</span>
-        </button>
+        {canUploadImage && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              showImageUploader(true);
+            }}
+          >
+            <IconImage /> <span className={labelStyle}>画像</span>
+          </button>
+        )}
         <button
           onClick={(e) => {
             e.preventDefault();

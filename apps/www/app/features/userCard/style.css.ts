@@ -3,8 +3,6 @@
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
-const IMAGE_SIZE = 120;
-
 export const containerStyle = style({
   display: 'flex',
   gap: 16,
@@ -18,23 +16,11 @@ export const mainStyle = style({
 });
 
 export const sideStyle = style({
-  width: IMAGE_SIZE,
+  width: rootVars.avatar.size,
   flexShrink: 0,
 });
 
 export const nameStyle = style({
   fontSize: rootVars.font.size['x-large'],
   fontWeight: rootVars.font.weight.bold,
-});
-
-export const imageContainerStyle = style({
-  width: IMAGE_SIZE,
-  height: IMAGE_SIZE,
-  borderRadius: rootVars.border.radius.normal,
-  overflow: 'hidden',
-});
-
-export const imageStyle = style({
-  width: IMAGE_SIZE,
-  objectFit: 'contain',
 });
