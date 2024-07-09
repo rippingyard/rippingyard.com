@@ -33,4 +33,7 @@ export const rootVars = createGlobalTheme(':root', {
       circle: '999px',
     },
   },
+  avatar: {
+    size: '120px',
+  },
 });

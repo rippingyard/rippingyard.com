@@ -5,10 +5,13 @@ const white = (opacity: number = 1) => `hsla(0, 0%, 96%, ${opacity})`;
 const gray = (opacity: number = 1) => `hsla(0, 0%, 93%, ${opacity})`;
 const darkGray = (opacity: number = 1) => `hsla(0, 0%, 67%, ${opacity})`;
 // const blue = (opacity: number = 1) => `rgba(41, 85, 113, ${opacity})`;
-const blue = (opacity: number = 1) => `rgba(0, 79, 113, ${opacity})`;
-const cyan = (opacity: number = 1) => `hsla(194, 99%, 58%, ${opacity})`;
+const blue = (opacity: number = 1) =>
+  `hsl(204.38, 69.388%, 47.914%, ${opacity})`;
+const cyan = (opacity: number = 1) =>
+  `hsl(204.38, 69.388%, 47.914%, ${opacity})`;
 // const cyan = (opacity: number = 1) => `rgba(136, 206, 254, ${opacity})`;
-const yellow = (opacity: number = 1) => `hsla(47, 100%, 58%, ${opacity})`;
+const yellow = (opacity: number = 1) =>
+  `hsl(63.442, 100%, 48.348%, ${opacity})`;
 const orange = (opacity: number = 1) => `hsla(14, 100%, 53%, ${opacity})`;
 
 // $green: #D9DB7B;

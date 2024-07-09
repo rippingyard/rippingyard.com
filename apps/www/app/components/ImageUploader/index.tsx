@@ -1,5 +1,4 @@
-﻿import { Editor } from '@tiptap/react';
-import axios from 'axios';
+﻿import axios from 'axios';
 import dayjs from 'dayjs';
 import { FC, useMemo, useState } from 'react';
 
@@ -11,14 +10,18 @@ import { Preview } from './Preview';
 import { containerStyle, innerStyle } from './style.css';
 
 type Props = {
-  editor: Editor;
   uploadpath: string;
+  onUploaded: (params: { url: string }) => void;
   onClose: () => void;
 };
 
-const endpoint = '/upload';
+export const ImageUploader: FC<Props> = ({
+  uploadpath,
+  onUploaded,
+  onClose,
+}) => {
+  const endpoint = '/upload';
 
-export const ImageUploader: FC<Props> = ({ editor, uploadpath, onClose }) => {
   const [file, setFile] = useState<ResizedImage>();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -30,14 +33,10 @@ export const ImageUploader: FC<Props> = ({ editor, uploadpath, onClose }) => {
     return `${uploadpath}${now.unix()}.${ext}`;
   }, [file, uploadpath]);
 
-  const onUpdateFile = (file: ResizedImage) => {
-    setFile(file);
-  };
-
   const onUploadImage = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (!editor || !filename || !file) return;
+    if (!filename || !file) return;
     event.preventDefault();
     try {
       setIsUploading(true);
@@ -61,7 +60,9 @@ export const ImageUploader: FC<Props> = ({ editor, uploadpath, onClose }) => {
 
       const { url } = data;
 
-      if (url) editor.chain().focus().setImage({ src: data.url }).run();
+      onUploaded({
+        url,
+      });
 
       setFile(undefined);
     } catch (e) {
@@ -69,6 +70,10 @@ export const ImageUploader: FC<Props> = ({ editor, uploadpath, onClose }) => {
     }
     onClose();
     setIsUploading(false);
+  };
+
+  const onUpdateFile = (file: ResizedImage) => {
+    setFile(file);
   };
 
   const removeImage = () => {

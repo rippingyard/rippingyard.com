@@ -130,7 +130,6 @@ export default function Main() {
 
   useEffect(() => {
     if (!result?.post) return;
-    console.log('permalink!', postLink(result.post.id));
     clearCachedItems();
     return navigate(postLink(result.post.id));
   }, [navigate, postLink, result]);
