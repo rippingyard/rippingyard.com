@@ -63,7 +63,7 @@ const savePost = async (
       type: 'log',
       entities: [],
       items: [],
-      isPublic: true,
+      isPublic: false,
       isDeleted: false,
       publishedAt: Timestamp.now(),
       createdAt: Timestamp.now(),
