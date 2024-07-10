@@ -66,7 +66,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (!post) throw new Error();
 
     const { uid } = await getMe(request);
-
     if (!uid) throw new Error('Unauthenticated');
 
     const { title, contentBody, type, status, isPublic } =

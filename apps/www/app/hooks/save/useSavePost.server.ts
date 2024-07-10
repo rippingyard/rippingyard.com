@@ -34,12 +34,11 @@ const savePost = async (
       id,
       title = '',
       contentBody = '',
-      status = 'drafted',
-      type = 'log',
-      isPublic = false,
-      isDeleted = false,
-      createdAt = Timestamp.now(),
-      publishedAt = Timestamp.now(),
+      status,
+      type,
+      isPublic,
+      isDeleted,
+      publishedAt,
     } = payload;
 
     const content = title
@@ -52,22 +51,34 @@ const savePost = async (
     const snap = await owner.get();
     if (!snap.exists) throw new Error('ユーザーが存在しません');
 
+    const postCollection = db.collection('posts');
+
+    const postDoc = id ? postCollection.doc(id) : postCollection.doc();
+
+    const oldPost = (await postDoc.get()).data() as Partial<Post>;
+
     const post: Partial<Post> = {
-      id,
       slug: '',
-      owner,
-      content,
-      status,
-      type,
+      status: 'drafted',
+      type: 'log',
       entities: [],
       items: [],
-      isPublic,
-      isDeleted,
-      publishedAt,
+      isPublic: true,
+      isDeleted: false,
+      publishedAt: Timestamp.now(),
+      createdAt: Timestamp.now(),
+      ...oldPost,
+      id: postDoc.id,
+      owner,
+      content,
       updatedAt: Timestamp.now(),
     };
 
-    if (!id) post.createdAt = createdAt;
+    if (status !== undefined) post.status = status;
+    if (type !== undefined) post.type = type;
+    if (isPublic !== undefined) post.isPublic = isPublic;
+    if (isDeleted !== undefined) post.isDeleted = isDeleted;
+    if (publishedAt !== undefined) post.publishedAt = publishedAt;
 
     // const entities = post.entities || defaultPost.entities
     // entities.byContent = await dispatch(
@@ -78,13 +89,6 @@ const savePost = async (
     // post.entities = entities
 
     // TODO: slug
-
-    const postCollection = db.collection('posts');
-
-    const postDoc = post.id
-      ? postCollection.doc(post.id)
-      : postCollection.doc();
-    post.id = postDoc.id;
 
     console.log('newPost', post);
 
