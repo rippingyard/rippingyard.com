@@ -1,14 +1,7 @@
-# firebase
-.emulator
-.firebase
-
-firebase-export*
-
 # turborepo
 .turbo
 
-# log
-*-debug.log
+# node_modules
 node_modules
 
 # env

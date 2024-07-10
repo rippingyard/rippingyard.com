@@ -11,6 +11,7 @@
     "start": "remix-serve ./build/server/index.js",
     "test": "vitest",
     "typecheck": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "sb": "storybook dev -p 6006"
   },
   "dependencies": {

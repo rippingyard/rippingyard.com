@@ -8,14 +8,13 @@
   "scripts": {
     "dev": "turbo run dev",
     "dev:fb": "yarn emulator:start",
-    "buildOld": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
     "build": "vite build",
     "type-check": "tsc",
     "lint": "cd hosting && yarn lint",
     "lint:js": "eslint --fix --ext .ts,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint --fix **/*.{vue,css} --ignore-path .gitignore",
     "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
-    "functions:watch": "./functions/node_modules/.bin/tsc --watch",
+    "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch",
     "index:pull": "firebase use default && firebase firestore:indexes > firebase/firestore.indexes.json",
     "index:push": "firebase deploy --only firestore:indexes --project production",
     "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"

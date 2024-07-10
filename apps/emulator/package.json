@@ -1,0 +1,18 @@
+{
+  "name": "emulator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "mcatm <tkcs@pelepop.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm emulator:start",
+    "lint:style": "stylelint --fix **/*.{vue,css} --ignore-path .gitignore",
+    "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
+    "index:pull": "firebase use default && firebase firestore:indexes > firebase/firestore.indexes.json",
+    "index:push": "firebase deploy --only firestore:indexes --project production",
+    "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.13.1"
+  }
+}
