@@ -17,17 +17,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      # - name: Hosting - Install dependencies
-      #   run: cd hosting && yarn install
-      # - name: Hosting - Test
-      #   run: cd hosting && yarn test
-      # - name: Hosting - Generate html files for production
-      #   run: yarn run build
-      #   env:
-      #     FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG_PRD }}
-      #     ALGOLIA_CONFIG: ${{ secrets.ALGOLIA_CONFIG_PRD }}
-      #     GA_ADSENSE_ID: ${{ secrets.GA_ADSENSE_ID }}
-      #     FCM_VAPID_KEY: ${{ secrets.FCM_VAPID_KEY_PRD }}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
       - name: Functions - Set firebase env to Production
         uses: w9jds/firebase-action@master
         with:
