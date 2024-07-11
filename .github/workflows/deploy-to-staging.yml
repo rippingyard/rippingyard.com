@@ -27,7 +27,7 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Functions - Build for develop
-        run: cd apps/functions && yarn install && yarn build
+        run: pnpm install && cd apps/functions && pnpm build
       - name: Functions - Deploy to develop
         uses: w9jds/firebase-action@v13.12.0
         with:

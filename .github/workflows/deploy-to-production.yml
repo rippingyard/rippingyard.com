@@ -35,10 +35,10 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Functions - Build for production
-        run: cd apps/functions && yarn install && yarn build
+        run: pnpm install && cd apps/functions && pnpm build
       - name: Functions - Deploy to production
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting,functions,firestore:rules --project production
+          args: deploy --only functions,firestore:rules --project production
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
