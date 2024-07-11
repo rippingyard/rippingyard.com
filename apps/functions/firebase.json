@@ -1,0 +1,7 @@
+﻿{
+  "functions": {
+    "codebase": "js",
+    "runtime": "nodejs18",
+    "source": "."
+  }
+}

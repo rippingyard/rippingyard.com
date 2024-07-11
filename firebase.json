@@ -3,9 +3,6 @@
     "rules": "apps/emulator/config/firestore.rules",
     "indexes": "apps/emulator/config/firestore.indexes.json"
   },
-  "functions": {
-    "runtime": "nodejs18"
-  },
   "storage": {
     "rules": "apps/emulator/config/storage.rules"
   },

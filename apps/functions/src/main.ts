@@ -1,24 +1,11 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { initHttp } from './http';
-import { initFetchUrl } from './api/fetchUrl';
 import { syncPost } from './worker/syncPost';
 import { notify } from './worker/notify';
 import { scanSecret } from './worker/scanSecret';
 
 admin.initializeApp(functions.config().firebase);
 const firestore = admin.firestore();
-
-/**
- * SSR
- */
-export const ssr = functions.https.onRequest(initHttp());
-
-/**
- * APIs
- */
-// fetchUrl
-export const apiFetchUrl = functions.https.onRequest(initFetchUrl());
 
 /**
  * Workers
