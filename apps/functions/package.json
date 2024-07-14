@@ -8,6 +8,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "pnpm start:dev",
+    "dev:emulator": "pnpm start:dev",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "serve": "yarn build && firebase emulators:start --inspect-functions 9229",

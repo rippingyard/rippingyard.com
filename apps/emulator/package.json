@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
+    "dev:emulator": "pnpm dev",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "index:pull": "firebase use default && firebase firestore:indexes > config/firestore.indexes.json",
     "index:push": "firebase deploy --only firestore:indexes --project production",

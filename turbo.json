@@ -8,6 +8,10 @@
       "cache": false,
       "persistent": true
     },
+    "dev:emulator": {
+      "cache": false,
+      "persistent": true
+    },
     "clean": {
       "cache": false
     }

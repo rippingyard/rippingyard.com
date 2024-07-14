@@ -6,7 +6,8 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=./apps/www",
+    "dev:emulator": "turbo run dev:emulator",
     "type-check": "tsc",
     "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch"
   },

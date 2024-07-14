@@ -3,14 +3,12 @@ name: Deploy to Production
 on:
   release:
     types: [created]
-  # schedule:
-  #   - cron: '0 5,17,22 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -24,7 +22,7 @@ jobs:
       - name: Functions - Set firebase env to Production
         uses: w9jds/firebase-action@master
         with:
-          args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" auth.user="${{ secrets.BAUTH_USER }}" auth.password="${{ secrets.BAUTH_PASSWORD }}" --project production
+          args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" --project production
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Functions - Build for production

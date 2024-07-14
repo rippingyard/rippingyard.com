@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from '@remix-run/react';
 import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
 import clsx from 'clsx';
@@ -43,7 +44,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
   const infoMessage = session.get('infoMessage');
   const alertMessage = session.get('alertMessage');
-  console.log('infoMessage', infoMessage);
+
+  const lang = 'ja'; //TODO: i18n対応
 
   return json(
     {
@@ -51,6 +53,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
       adsenseId,
       env,
+      lang,
       infoMessage,
       alertMessage,
     },
@@ -83,6 +86,7 @@ function App() {
     isAuthenticated,
     gtagId,
     adsenseId,
+    lang = 'ja',
     infoMessage = '',
     alertMessage = '',
     env,
@@ -92,7 +96,7 @@ function App() {
   useAdsenseTag(adsenseId);
 
   return (
-    <html lang="ja" className={clsx(bodyStyle, themeClass)}>
+    <html lang={lang} className={clsx(bodyStyle, themeClass)}>
       <head>
         <Env env={env} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -113,6 +117,35 @@ function App() {
         </Layout>
         <Snackbar info={infoMessage} alert={alertMessage} />
         <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError() as string;
+  console.error(error);
+
+  const lang = 'ja';
+
+  return (
+    <html lang={lang}>
+      <head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,viewport-fit=cover"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="ripping yard" />
+        <meta property="fb:app_id" content="374907709233344" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div>{error}</div>
         <Scripts />
       </body>
     </html>
