@@ -1,8 +1,12 @@
-name: Deploy to Production
+name: "[functions:node] Deploy to Production"
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/functions"
+      - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,10 +1,13 @@
-name: Deploy to Staging
+name: "[functions:node] Deploy to Staging"
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened]
     branches: [main]
     tags-ignore: [dependencies]
+    paths:
+      - "apps/functions"
+      - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest
