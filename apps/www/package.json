@@ -7,10 +7,12 @@
     "build": "remix vite:build",
     "build:sb": "storybook build",
     "dev": "remix vite:dev",
+    "dev:emulator": "FIRESTORE_EMULATOR_HOST=localhost:8080 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_STORAGE_EMULATOR_HOST=localhost:9199 remix vite:dev",
     "dev:all": "pnpm dev & pnpm sb",
     "start": "remix-serve ./build/server/index.js",
     "test": "vitest",
     "typecheck": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "sb": "storybook dev -p 6006"
   },
   "dependencies": {
@@ -28,7 +30,7 @@
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
     "@vercel/analytics": "^1.2.2",
-    "@vercel/remix": "^2.8.1",
+    "@vercel/remix": "^2.10.0",
     "algoliasearch": "^4.23.3",
     "axios": "^1.6.5",
     "clsx": "^2.1.1",

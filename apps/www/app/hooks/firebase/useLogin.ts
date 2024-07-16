@@ -10,8 +10,6 @@ const defaultErrors = new ZodError<Auth>([]).flatten();
 
 export const useLogin = async (args: Auth) => {
   const { email, password } = args;
-  console.log('email', email);
-  console.log('password', password);
 
   const { auth } = useFirebase();
 

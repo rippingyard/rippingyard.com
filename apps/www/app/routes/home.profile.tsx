@@ -25,18 +25,20 @@ export const loader: LoaderFunction = async ({
 
     const { uid } = await getMe(request);
     console.log('uid', uid);
-    if (!uid) throw new Error();
+    if (!uid) throw new Error('You have to login');
 
     const { user: me } = await useUser(uid);
-    if (!me) throw new Error();
+    console.log('uid', uid);
+    if (!me) throw new Error('User Not Found');
 
     return json({
       me,
       title,
       canonicalUrl,
     });
-  } catch {
+  } catch (e) {
     console.error('Not Found');
+    throw e;
   }
 };
 

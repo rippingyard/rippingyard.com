@@ -1,31 +1,15 @@
 {
   "firestore": {
-    "rules": "firebase/firestore.rules",
-    "indexes": "firebase/firestore.indexes.json"
+    "rules": "apps/emulator/config/firestore.rules",
+    "indexes": "apps/emulator/config/firestore.indexes.json"
   },
   "functions": {
-    "runtime": "nodejs14"
-  },
-  "hosting": {
-    "public": "hosting/dist",
-    "rewrites": [
-      {
-        "source": "/api/fetch/url/**",
-        "function": "apiFetchUrl"
-      },
-      {
-        "source": "**",
-        "function": "ssr"
-      }
-    ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "codebase": "",
+    "runtime": "nodejs18",
+    "source": "apps/functions"
   },
   "storage": {
-    "rules": "firebase/storage.rules"
+    "rules": "apps/emulator/config/storage.rules"
   },
   "emulators": {
     "auth": {
@@ -45,6 +29,7 @@
       "port": 9199
     },
     "hosting": {
+      "enabled": false,
       "port": 5555
     },
     "pubsub": {

@@ -1,0 +1,7 @@
+﻿# firebase
+.emulator
+.firebase
+
+firebase-export*
+
+*-debug.log

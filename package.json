@@ -6,19 +6,10 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "turbo run dev",
-    "dev:fb": "yarn emulator:start",
-    "buildOld": "rm -rf hosting/dist && rm -rf functions/.nuxt && cd hosting && yarn generate && cd ../ && cp -R hosting/.nuxt functions/",
-    "build": "vite build",
+    "dev": "turbo run dev --filter=./apps/www",
+    "dev:emulator": "turbo run dev:emulator",
     "type-check": "tsc",
-    "lint": "cd hosting && yarn lint",
-    "lint:js": "eslint --fix --ext .ts,.vue --ignore-path .gitignore .",
-    "lint:style": "stylelint --fix **/*.{vue,css} --ignore-path .gitignore",
-    "emulator:start": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
-    "functions:watch": "./functions/node_modules/.bin/tsc --watch",
-    "index:pull": "firebase use default && firebase firestore:indexes > firebase/firestore.indexes.json",
-    "index:push": "firebase deploy --only firestore:indexes --project production",
-    "deploy": "firebase deploy --only hosting,functions,firestore:rules --project default"
+    "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^12.0.0",
@@ -33,12 +24,8 @@
     "prettier": "^3.3.2",
     "stylelint": "^14.16.1",
     "stylelint-config-prettier": "^9.0.5",
-    "stylelint-config-recommended-vue": "^1.5.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-scss": "^5.3.2",
     "typescript": "^5.5.2"
-  },
-  "dependencies": {
-    "@nuxtjs/google-adsense": "^3.0.0"
   }
 }
