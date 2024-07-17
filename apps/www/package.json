@@ -67,7 +67,7 @@
     "@testing-library/react": "^14.2.2",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^6.18.1",
     "@vanilla-extract/css": "^1.14.0",
     "@vanilla-extract/vite-plugin": "^4.0.6",
