@@ -69,14 +69,14 @@ importers:
         specifier: ^2.0.0
         version: 2.3.4(@nestjs/common@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core':
-        specifier: ^8.0.0
-        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+        specifier: ^9.0.5
+        version: 9.4.3(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/passport':
         specifier: ^8.2.1
         version: 8.2.2(@nestjs/common@8.4.7)(passport@0.6.0)
       '@nestjs/platform-express':
         specifier: ^8.0.0
-        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3)
       algoliasearch:
         specifier: ^4.13.0
         version: 4.24.0
@@ -137,7 +137,7 @@ importers:
         version: 8.0.11(typescript@5.5.3)
       '@nestjs/testing':
         specifier: ^8.0.0
-        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(@nestjs/platform-express@8.4.7)
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3)(@nestjs/platform-express@8.4.7)
       '@types/express':
         specifier: ^4.17.13
         version: 4.17.21
@@ -4380,6 +4380,10 @@ packages:
   /@jspm/core@2.0.1:
     resolution: {integrity: sha512-Lg3PnLp0QXpxwLIAuuJboLeRaIhrgJjeuh797QADg3xz8wGLugQOS5DpsE8A6i6Adgzf+bacllkKZG3J0tGfDw==}
 
+  /@lukeed/csprng@1.1.0:
+    resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
+    engines: {node: '>=8'}
+
   /@mdx-js/mdx@2.3.0:
     resolution: {integrity: sha512-jLuwRlz8DQfQNiUCJR50Y09CGPq3fLtmtUQfVrj79E0JWu3dvsVcxVIcfhR5h0iXu+/z++zDrYeiJqifRynJkA==}
     dependencies:
@@ -4498,14 +4502,14 @@ packages:
       uuid: 9.0.0
     dev: false
 
-  /@nestjs/core@8.4.7(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1):
-    resolution: {integrity: sha512-XB9uexHqzr2xkPo6QSiQWJJttyYYLmvQ5My64cFvWFi7Wk2NIus0/xUNInwX3kmFWB6pF1ab5Y2ZBvWdPwGBhw==}
+  /@nestjs/core@9.4.3(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1):
+    resolution: {integrity: sha512-Qi63+wi55Jh4sDyaj5Hhx2jOpKqT386aeo+VOKsxnd+Ql9VvkO/FjmuwBGUyzkJt29ENYc+P0Sx/k5LtstNpPQ==}
     requiresBuild: true
     peerDependencies:
-      '@nestjs/common': ^8.0.0
-      '@nestjs/microservices': ^8.0.0
-      '@nestjs/platform-express': ^8.0.0
-      '@nestjs/websockets': ^8.0.0
+      '@nestjs/common': ^9.0.0
+      '@nestjs/microservices': ^9.0.0
+      '@nestjs/platform-express': ^9.0.0
+      '@nestjs/websockets': ^9.0.0
       reflect-metadata: ^0.1.12
       rxjs: ^7.1.0
     peerDependenciesMeta:
@@ -4517,16 +4521,15 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 8.4.7(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/platform-express': 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)
+      '@nestjs/platform-express': 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3)
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
-      object-hash: 3.0.0
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.14
       rxjs: 7.8.1
-      tslib: 2.4.0
-      uuid: 8.3.2
+      tslib: 2.5.3
+      uid: 2.0.2
     transitivePeerDependencies:
       - encoding
 
@@ -4540,14 +4543,14 @@ packages:
       passport: 0.6.0
     dev: false
 
-  /@nestjs/platform-express@8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7):
+  /@nestjs/platform-express@8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3):
     resolution: {integrity: sha512-lPE5Ltg2NbQGRQIwXWY+4cNrXhJdycbxFDQ8mNxSIuv+LbrJBIdEB/NONk+LLn9N/8d2+I2LsIETGQrPvsejBg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0
       '@nestjs/core': ^8.0.0
     dependencies:
       '@nestjs/common': 8.4.7(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/core': 8.4.7(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/core': 9.4.3(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       body-parser: 1.20.0
       cors: 2.8.5
       express: 4.18.1
@@ -4586,7 +4589,7 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/testing@8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(@nestjs/platform-express@8.4.7):
+  /@nestjs/testing@8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3)(@nestjs/platform-express@8.4.7):
     resolution: {integrity: sha512-aedpeJFicTBeiTCvJWUG45WMMS53f5eu8t2fXsfjsU1t+WdDJqYcZyrlCzA4dL1B7MfbqaTURdvuVVHTmJO8ag==}
     peerDependencies:
       '@nestjs/common': ^8.0.0
@@ -4600,8 +4603,8 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 8.4.7(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/core': 8.4.7(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/platform-express': 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)
+      '@nestjs/core': 9.4.3(@nestjs/common@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/platform-express': 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@9.4.3)
       tslib: 2.4.0
     dev: true
 
@@ -20650,6 +20653,9 @@ packages:
   /tslib@2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
+  /tslib@2.5.3:
+    resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
+
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
@@ -20818,6 +20824,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /uid@2.0.2:
+    resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@lukeed/csprng': 1.1.0
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
