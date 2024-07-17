@@ -33,7 +33,7 @@
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
     "algoliasearch": "^4.13.0",
-    "axios": "^0.28.0",
+    "axios": "^1.7.2",
     "cors": "^2.8.5",
     "dayjs": "^1.11.0",
     "firebase": "^9.6.10",
