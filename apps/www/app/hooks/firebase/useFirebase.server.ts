@@ -5,6 +5,7 @@ export const useFirebase = () => {
   const cert = JSON.parse(
     process.env.VITE_GOOGLE_APPLICATION_CREDENTIALS || ''
   );
+  console.log('cert', cert);
   if (!admin.apps.length) {
     initializeApp({
       credential: admin.credential.cert(cert),
