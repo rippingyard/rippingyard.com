@@ -5,15 +5,12 @@
   unstable_parseMultipartFormData,
 } from '@vercel/remix';
 import type { ActionFunction } from '@vercel/remix';
-import { StorageError, getDownloadURL, ref } from 'firebase/storage';
 
 import { useBucket } from '~/hooks/firebase/useBucket.server';
-import { useStorage } from '~/hooks/firebase/useStorage';
 import { getMe } from '~/middlewares/session.server';
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    const { storage } = useStorage();
     const { uid } = await getMe(request);
 
     if (!uid) return redirect('/');
@@ -25,36 +22,34 @@ export const action: ActionFunction = async ({ request }) => {
       })
     );
 
-    const file = form.get('file') as Blob;
-    const contentType = file.type;
+    const formFile = form.get('file') as Blob;
+    const contentType = formFile.type;
     const filename = form.get('filename') as string;
 
-    const arrayBuffer = await file.arrayBuffer();
+    const arrayBuffer = await formFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     const bucket = useBucket();
     console.log('Bucket object:', bucket);
-    const handler = bucket.file(filename);
-    await handler.save(buffer);
-    await handler.setMetadata({ contentType });
 
-    const url = await getDownloadURL(ref(storage, filename));
-
-    return json({
-      url,
+    const file = bucket.file(filename);
+    await file.save(buffer, {
+      metadata: { contentType },
     });
+
+    const [url] = await file.getSignedUrl({
+      action: 'read',
+      expires: '03-17-2025',
+    });
+
+    return json({ url });
   } catch (e: unknown) {
-    console.error(e);
+    console.error('File upload error:', e);
+    if (e instanceof Error) {
+      console.error('Error message:', e.message);
+      console.error('Error stack:', e.stack);
+    }
 
-    const status: number = e instanceof StorageError ? e.status : 400;
-
-    return json(
-      {
-        error: e,
-      },
-      {
-        status,
-      }
-    );
+    return json({ error: 'File upload failed' }, { status: 400 });
   }
 };
