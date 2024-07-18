@@ -217,8 +217,8 @@ importers:
         specifier: ^2.2.6
         version: 2.4.0(@tiptap/core@2.5.4)(@tiptap/pm@2.5.1)
       '@tiptap/extension-highlight':
-        specifier: ^2.2.4
-        version: 2.4.0(@tiptap/core@2.5.4)
+        specifier: ^2.5.4
+        version: 2.5.4(@tiptap/core@2.5.4)
       '@tiptap/extension-image':
         specifier: ^2.2.4
         version: 2.4.0(@tiptap/core@2.5.4)
@@ -6528,10 +6528,10 @@ packages:
       '@tiptap/core': 2.5.4(@tiptap/pm@2.5.1)
     dev: false
 
-  /@tiptap/extension-highlight@2.4.0(@tiptap/core@2.5.4):
-    resolution: {integrity: sha512-p2I/CaMrs6hzpj/dSw6UNobOWTV38yTjPK+B4ShJQ7IN2u/C82KOTOeFfJoFd9KykmpVOVW3w3nKG3ad0HXPuQ==}
+  /@tiptap/extension-highlight@2.5.4(@tiptap/core@2.5.4):
+    resolution: {integrity: sha512-TSYnFBluZu1YQdTCyXl2wuxFuhFUYFzbaV0f1wq2P2Nc8U2OiiuaNz+QggHw5Hf3ILzkRxQCUQnq97Q/5smMwQ==}
     peerDependencies:
-      '@tiptap/core': ^2.0.0
+      '@tiptap/core': ^2.5.4
     dependencies:
       '@tiptap/core': 2.5.4(@tiptap/pm@2.5.1)
     dev: false
