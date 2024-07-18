@@ -32,7 +32,9 @@ export const action: ActionFunction = async ({ request }) => {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const handler = useBucket().file(filename);
+    const bucket = useBucket();
+    console.log('Bucket object:', bucket);
+    const handler = bucket.file(filename);
     await handler.save(buffer);
     await handler.setMetadata({ contentType });
 
