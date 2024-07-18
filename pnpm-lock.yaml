@@ -326,8 +326,8 @@ importers:
         specifier: ^8.0.5
         version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.3)(react-dom@18.3.1)(react@18.3.1)
       '@storybook/react':
-        specifier: ^8.0.5
-        version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.3)
+        specifier: ^8.2.4
+        version: 8.2.4(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.4)(typescript@5.5.3)
       '@storybook/react-vite':
         specifier: ^8.0.5
         version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.3)(vite@5.2.10)
@@ -5910,6 +5910,14 @@ packages:
       - '@types/react-dom'
     dev: true
 
+  /@storybook/components@8.2.4(storybook@8.2.4):
+    resolution: {integrity: sha512-JLT1RoR/RXX+ZTeFoY85CRHb9Zz3l0PRRUSetEjoIJdnBGeL5C38bs0s9QnYjpCDLUlhdYhTln+GzmbyH8ocpA==}
+    peerDependencies:
+      storybook: ^8.2.4
+    dependencies:
+      storybook: 8.2.4
+    dev: true
+
   /@storybook/core-common@8.1.11(prettier@3.3.3):
     resolution: {integrity: sha512-Ix0nplD4I4DrV2t9B+62jaw1baKES9UbR/Jz9LVKFF9nsua3ON0aVe73dOjMxFWBngpzBYWe+zYBTZ7aQtDH4Q==}
     peerDependencies:
@@ -6095,6 +6103,14 @@ packages:
       - react-dom
     dev: true
 
+  /@storybook/manager-api@8.2.4(storybook@8.2.4):
+    resolution: {integrity: sha512-ayiOtcGupSeLCi2doEsRpALNPo4MBWYruc+e3jjkeVJQIg9A1ipSogNQh8unuOmq9rezO4/vcNBd6MxLs3xLWg==}
+    peerDependencies:
+      storybook: ^8.2.4
+    dependencies:
+      storybook: 8.2.4
+    dev: true
+
   /@storybook/node-logger@8.1.11:
     resolution: {integrity: sha512-wdzFo7B2naGhS52L3n1qBkt5BfvQjs8uax6B741yKRpiGgeAN8nz8+qelkD25MbSukxvbPgDot7WJvsMU/iCzg==}
     dev: true
@@ -6118,6 +6134,14 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
+  /@storybook/preview-api@8.2.4(storybook@8.2.4):
+    resolution: {integrity: sha512-IxOiUYYzNnk1OOz3zQBhsa3P1fsgqeMBZcH7TjiQWs9osuWG20oqsFR6+Z3dxoW8IuQHvpnREGKvAbRsDsThcA==}
+    peerDependencies:
+      storybook: ^8.2.4
+    dependencies:
+      storybook: 8.2.4
+    dev: true
+
   /@storybook/preview@8.1.11:
     resolution: {integrity: sha512-K/9NZmjnL0D1BROkTNWNoPqgL2UaocALRSqCARmkBLgU2Rn/FuZgEclHkWlYo6pUrmLNK+bZ+XzpNMu12iTbpg==}
     dev: true
@@ -6130,6 +6154,18 @@ packages:
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: true
+
+  /@storybook/react-dom-shim@8.2.4(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.4):
+    resolution: {integrity: sha512-p2ypPWuKKFY/ij7yYjvdnrOcfdpxnAJd9D4/2Hm2eVioE4y8HQSND54t9OfkW+498Ez7ph4zW9ez005XqzH/+w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+      storybook: ^8.2.4
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      storybook: 8.2.4
     dev: true
 
   /@storybook/react-vite@8.1.11(prettier@3.3.3)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.3)(vite@5.2.10):
@@ -6205,6 +6241,45 @@ packages:
       - supports-color
     dev: true
 
+  /@storybook/react@8.2.4(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.4)(typescript@5.5.3):
+    resolution: {integrity: sha512-tRkEeFhwq2GeRsPwFc8dINI5L4mXanXaa7/JreB6ZcUeOZD8d81TWXCH9QyGvxfe0LW+DeNujA91mx5Yja35Zw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+      storybook: ^8.2.4
+      typescript: '>= 4.2.x'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@storybook/components': 8.2.4(storybook@8.2.4)
+      '@storybook/global': 5.0.0
+      '@storybook/manager-api': 8.2.4(storybook@8.2.4)
+      '@storybook/preview-api': 8.2.4(storybook@8.2.4)
+      '@storybook/react-dom-shim': 8.2.4(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.4)
+      '@storybook/theming': 8.2.4(storybook@8.2.4)
+      '@types/escodegen': 0.0.6
+      '@types/estree': 0.0.51
+      '@types/node': 18.19.39
+      acorn: 7.4.1
+      acorn-jsx: 5.3.2(acorn@7.4.1)
+      acorn-walk: 7.2.0
+      escodegen: 2.1.0
+      html-tags: 3.3.1
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-element-to-jsx-string: 15.0.0(react-dom@18.3.1)(react@18.3.1)
+      semver: 7.6.2
+      storybook: 8.2.4
+      ts-dedent: 2.2.0
+      type-fest: 2.19.0
+      typescript: 5.5.3
+      util-deprecate: 1.0.2
+    dev: true
+
   /@storybook/router@8.1.11:
     resolution: {integrity: sha512-nU5lsBvy0L8wBYOkjagh29ztZicDATpZNYrHuavlhQ2jznmmHdJvXKYk+VrMAbthjQ6ZBqfeeMNPR1UlnqR5Rw==}
     dependencies:
@@ -6273,6 +6348,14 @@ packages:
       memoizerific: 1.11.3
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: true
+
+  /@storybook/theming@8.2.4(storybook@8.2.4):
+    resolution: {integrity: sha512-B4HQMzTeg1TgV9uPDIoDkMSnP839Y05I9+Tw60cilAD+jTqrCvMlccHfehsTzJk+gioAflunATcbU05TMZoeIQ==}
+    peerDependencies:
+      storybook: ^8.2.4
+    dependencies:
+      storybook: 8.2.4
     dev: true
 
   /@storybook/types@8.1.11:
