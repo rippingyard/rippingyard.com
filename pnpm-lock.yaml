@@ -57,8 +57,8 @@ importers:
   apps/emulator:
     devDependencies:
       firebase-tools:
-        specifier: ^13.13.1
-        version: 13.13.1
+        specifier: ^13.13.3
+        version: 13.13.3
 
   apps/functions:
     dependencies:
@@ -12124,8 +12124,8 @@ packages:
       rsvp: 3.6.2
     dev: true
 
-  /firebase-tools@13.13.1:
-    resolution: {integrity: sha512-FgNfpwJBJog/SMv9mDygbJ3b5ARQkPP1O5+zsjC+YhqzTdq5jHtCzM46OqiQWTjLsIPtaeESqXebUI5rfvq7Ng==}
+  /firebase-tools@13.13.3:
+    resolution: {integrity: sha512-xTlaEhIGkfsMPsJkvjir/AeOQryuRTcoXSlqJO2CZR+IzZCoYPMHO8zMKwEIc1ZEb6nYdRl14gjM8DpGCRpm2A==}
     engines: {node: '>=18.0.0 || >=20.0.0'}
     hasBin: true
     dependencies:
