@@ -5,6 +5,10 @@ export const useFirebase = () => {
   const cert = JSON.parse(
     process.env.VITE_GOOGLE_APPLICATION_CREDENTIALS || ''
   );
+  console.log(
+    'process.env.VITE_FIREBASE_STORAGE_BUCKET',
+    process.env.VITE_FIREBASE_STORAGE_BUCKET
+  );
   if (!getApps().length) {
     return initializeApp({
       credential: admin.credential.cert(cert),
