@@ -1,5 +1,6 @@
 ﻿import { createCookieSessionStorage } from '@vercel/remix';
 // import dayjs from 'dayjs';
+import { getAuth } from 'firebase-admin/auth';
 
 import { useFirebase } from '~/hooks/firebase/useFirebase.server';
 import { Role } from '~/schemas/user';
@@ -33,8 +34,8 @@ const { getSession, commitSession, destroySession } =
   });
 
 const getAuthToken = async (idToken: string) => {
-  const admin = useFirebase();
-  const adminAuth = admin.auth();
+  const app = useFirebase();
+  const adminAuth = getAuth(app);
   const decodedToken = await adminAuth.verifyIdToken(idToken);
 
   if (new Date().getTime() / 1000 - decodedToken.auth_time > 5 * 60) {
@@ -50,8 +51,8 @@ const getAuthToken = async (idToken: string) => {
 const getMe = async (
   request: Request
 ): Promise<{ uid: string | null; role: Role }> => {
-  const admin = useFirebase();
-  const adminAuth = admin.auth();
+  const app = useFirebase();
+  const adminAuth = getAuth(app);
   const emptyValue: { uid: string | null; role: Role } = {
     uid: null,
     role: 'anonymous',
