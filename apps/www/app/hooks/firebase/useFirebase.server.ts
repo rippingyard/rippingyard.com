@@ -12,5 +12,6 @@ export const useFirebase = () => {
       storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
     });
   }
+  console.log('apps', admin.apps);
   return admin;
 };
