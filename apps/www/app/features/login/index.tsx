@@ -34,7 +34,7 @@ export const Login: FC = () => {
       email,
       password,
     });
-    console.log('authedUser', user);
+    // console.log('authedUser', user);
 
     setErrors(errors);
 
