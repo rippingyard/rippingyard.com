@@ -5,15 +5,13 @@
   unstable_parseMultipartFormData,
 } from '@vercel/remix';
 import type { ActionFunction } from '@vercel/remix';
-import { StorageError, getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL } from 'firebase-admin/storage';
 
 import { useBucket } from '~/hooks/firebase/useBucket.server';
-import { useStorage } from '~/hooks/firebase/useStorage';
 import { getMe } from '~/middlewares/session.server';
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    const { storage } = useStorage();
     const { uid } = await getMe(request);
 
     if (!uid) return redirect('/');
@@ -33,25 +31,28 @@ export const action: ActionFunction = async ({ request }) => {
     const buffer = Buffer.from(arrayBuffer);
 
     const handler = useBucket().file(filename);
-    await handler.save(buffer);
-    await handler.setMetadata({ contentType });
+    await handler.save(buffer, {
+      metadata: { contentType },
+      resumable: false,
+    });
 
-    const url = await getDownloadURL(ref(storage, filename));
+    const url = await getDownloadURL(handler);
 
     return json({
       url,
     });
   } catch (e: unknown) {
-    console.error(e);
-
-    const status: number = e instanceof StorageError ? e.status : 400;
+    console.error('Upload error:', e);
+    if (typeof e === 'object' && e !== null) {
+      console.error('Error details:', JSON.stringify(e, null, 2));
+    }
 
     return json(
       {
         error: e,
       },
       {
-        status,
+        status: 400,
       }
     );
   }
