@@ -35,7 +35,6 @@ export const action: ActionFunction = async ({ request }) => {
       metadata: { contentType },
       resumable: false,
     });
-    console.log('File saved successfully');
 
     const url = await getDownloadURL(handler);
 
@@ -44,11 +43,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
   } catch (e: unknown) {
     console.error('Upload error:', e);
-    if (e instanceof Error) {
-      console.error('Error name:', e.name);
-      console.error('Error message:', e.message);
-      console.error('Error stack:', e.stack);
-    }
     if (typeof e === 'object' && e !== null) {
       console.error('Error details:', JSON.stringify(e, null, 2));
     }
