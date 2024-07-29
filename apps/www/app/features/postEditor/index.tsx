@@ -1,4 +1,4 @@
-﻿import { Form, useNavigation } from '@remix-run/react';
+﻿import { Form, useLocation, useNavigation } from '@remix-run/react';
 import dayjs from 'dayjs';
 import { FC, useCallback, useMemo, useState } from 'react';
 
@@ -16,6 +16,7 @@ import {
   headerStyle,
   headerTitleStyle,
 } from './style.css';
+import { useCachedContent } from '~/hooks/cache/useCachedContent';
 
 type Props = {
   post?: Post;
@@ -24,8 +25,12 @@ type Props = {
 
 export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const navigation = useNavigation();
+  const { pathname } = useLocation();
+  const { setCachedContent, getCachedContent } = useCachedContent();
+  const cache = getCachedContent(pathname);
+
   const [html, setHtml] = useState<string>(
-    removeMainTitle(post?.content || '')
+    removeMainTitle(post?.content || cache || '')
   );
 
   const isLoading = useMemo(
@@ -33,7 +38,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
     [action, navigation.formAction, navigation.state]
   );
 
-  const content = useMemo(() => post?.content || '', [post?.content]);
+  const content = useMemo(() => post?.content || cache || '', [post?.content]); //TODO: セットの順番的に、新規投稿の時以外はキャッシュが効かないようにしてある。記事編集時も利用するためには、cache || post?.content || ''とする必要があるが、今は行わない
   const title = useMemo(
     () =>
       getMainTitle(content, {
@@ -54,6 +59,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const label = useMemo(() => (post ? '更新' : '公開'), [post]);
 
   const onUpdate = useCallback((content: string) => {
+    setCachedContent(pathname || '/', content);
     setHtml(content);
   }, []);
 
