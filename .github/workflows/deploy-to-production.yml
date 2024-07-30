@@ -22,7 +22,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 8.9.0
       - name: Functions - Set firebase env to Production
         uses: w9jds/firebase-action@master
         with:
