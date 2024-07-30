@@ -54,7 +54,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.25",
     "@remix-run/dev": "^2.10.3",
-    "@remix-run/eslint-config": "^2.8.1",
+    "@remix-run/eslint-config": "^2.10.3",
     "@storybook/addon-essentials": "^8.2.6",
     "@storybook/addon-interactions": "^8.2.6",
     "@storybook/addon-links": "^8.2.6",
