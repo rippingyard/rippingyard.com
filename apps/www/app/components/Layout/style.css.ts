@@ -41,7 +41,6 @@ export const headerInnerStyle = style({
 export const logoStyle = style({
   width: 20,
   height: 20,
-  color: vars.color.neutral,
   marginRight: 8,
   marginBottom: 11,
 });
@@ -49,11 +48,15 @@ export const logoStyle = style({
 export const logoTypeStyle = style({
   width: 75,
   height: 30,
-  color: vars.color.neutral,
 });
 
 export const logoLinkStyle = style({
   display: 'inline-block',
+  color: vars.color.neutral,
+  transition: 'color 0.5s ease',
+  ':hover': {
+    color: vars.color.primary,
+  },
 });
 
 export const menuContainerStyle = style({

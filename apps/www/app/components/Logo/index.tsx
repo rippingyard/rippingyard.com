@@ -1,4 +1,5 @@
 ﻿import { FC } from 'react';
+import { logoStyle } from './style.css';
 
 export const Logo: FC<{
   style?: string;
@@ -14,12 +15,12 @@ export const Logo: FC<{
       viewBox="-1 -1 400 400"
       overflow="visible"
       enableBackground="new -1 -1 400 400"
-      className={style}
+      className={`${logoStyle} ${style || ''}`}
     >
       <path
         d="M398,199.005C398,308.899,308.916,398,199.01,398C89.103,398,0,308.899,0,199.005
   C0,89.111,89.103,0,199.01,0C308.916,0,398,89.111,398,199.005z"
-        fill="currentColor"
+        className={`${logoStyle}`}
       />
       <path
         d="M292.165,361.101c-1.808,0.389-6.607,0.447-7.541,0.447c-78.978,0-143.002-47.749-143.002-106.633

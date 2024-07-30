@@ -1,4 +1,4 @@
-﻿import { useActionData, useNavigate } from '@remix-run/react';
+﻿import { useActionData, useLocation, useNavigate } from '@remix-run/react';
 import { json, redirect } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
+import { useCachedContent } from '~/hooks/cache/useCachedContent';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
@@ -106,16 +107,20 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Main() {
   const navigate = useNavigate();
   const postLink = usePostLink();
+  const { pathname } = useLocation();
+  const { clearCachedContent } = useCachedContent();
 
   const result = useActionData<typeof action>();
   useEffect(() => {
     if (!result?.post) return;
 
-    const permalink = postLink(result.post.id);
+    clearCachedContent(pathname);
     clearCachedItems();
 
+    const permalink = postLink(result.post.id);
+
     navigate(permalink);
-  }, [navigate, postLink, result]);
+  }, [navigate, pathname, postLink, result]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
