@@ -2,7 +2,7 @@ name: "[functions:node] Deploy to Staging"
 
 on:
   pull_request:
-    types: [opened, reopened, edited]
+    types: [opened, reopened, synchronize]
     branches: [main]
     tags-ignore: [dependencies]
     paths:
