@@ -43,9 +43,12 @@ export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
 
     const uid = formData.get('uid') as string;
+    const tokenFromForm = formData.get('token') as string;
+
+    if (!tokenFromForm) return json({});
 
     const session = await getSession(request.headers.get('Cookie'));
-    const token = await getAuthToken(formData.get('token') as string);
+    const token = await getAuthToken(tokenFromForm);
     const { user } = await useUser(uid);
 
     session.set('token', token);
