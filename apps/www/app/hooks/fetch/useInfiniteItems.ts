@@ -2,15 +2,16 @@
 import { SerializeFrom } from '@vercel/remix';
 import { useCallback, useEffect, useState } from 'react';
 
-import { getCachedItems } from '../cache/useCache';
+import { CACHE_KEYS, cacheItems, getCachedItems } from '../cache/useCache';
 
 type Props<T> = {
-  key: string;
+  key: CACHE_KEYS;
   initialItems: SerializeFrom<T>[];
 };
 
 export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
   const cachedItems = getCachedItems<T>(key);
+  console.log('cached!', cachedItems.length);
 
   const [items, setItems] = useState(
     cachedItems.length > 0 ? cachedItems : initialItems
@@ -38,7 +39,7 @@ export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
   }, [fetcher.data, fetcher.state]);
 
   useEffect(() => {
-    if (sessionStorage) sessionStorage.setItem(key, JSON.stringify(items));
+    cacheItems(key, items);
   }, [items, key]);
 
   return {
