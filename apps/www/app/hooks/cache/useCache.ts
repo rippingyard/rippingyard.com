@@ -15,7 +15,6 @@ const cacheItems = <T>(
   expired: number = 600000
 ): void => {
   if (typeof sessionStorage === 'undefined') return;
-  console.log('expiredAt', Date.now() + expired);
   sessionStorage.setItem(
     key,
     JSON.stringify({
@@ -37,7 +36,7 @@ const getCachedItems = <T>(key: string): SerializeFrom<T>[] => {
     sessionStorage.removeItem(key);
     return [];
   }
-  console.log('cacheObject?.items', cacheObject?.items);
+
   return cacheObject?.items || [];
 };
 
