@@ -1,6 +1,9 @@
-﻿import { json } from '@vercel/remix';
+﻿import { useSubmit } from '@remix-run/react';
+import { json } from '@vercel/remix';
+import { useCallback } from 'react';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
+import { clearCachedItems } from '~/hooks/cache/useCache';
 
 const links: MenuItem[] = [
   { to: '/', label: 'Top', caption: 'トップ' },
@@ -18,9 +21,24 @@ export const loader = async () => {
 };
 
 export default function Index() {
+  const submit = useSubmit();
+
+  const onLogout = useCallback(async () => {
+    await submit(
+      {},
+      {
+        method: 'POST',
+        action: '/logout',
+        navigate: false,
+      }
+    );
+    clearCachedItems();
+  }, [submit]);
+
   return (
     <>
       <QuickMenu links={links} prefix="homemenu" />
+      <span onClick={onLogout}>ログアウト</span>
     </>
   );
 }

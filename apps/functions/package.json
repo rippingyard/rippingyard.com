@@ -45,7 +45,7 @@
     "json-cyclic": "^1.0.2",
     "oembed-parser": "^3.0.0-rc5",
     "query-string": "^6.13.7",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.2",
     "rxjs": "^7.2.0",
     "sanitize-html": "^2.12.1",
     "url-parse": "^1.5.10"

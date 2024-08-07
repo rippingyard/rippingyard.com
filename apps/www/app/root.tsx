@@ -20,6 +20,8 @@ import { useGTM } from './hooks/script/useGTM';
 import { commitSession, getMe, getSession } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
+import { Heading } from './components/Heading';
+import { containerStyle } from './styles/container.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
@@ -124,13 +126,13 @@ function App() {
 }
 
 export function ErrorBoundary() {
-  const error = useRouteError() as string;
+  const error = useRouteError() as any;
   console.error(error);
 
   const lang = 'ja';
 
   return (
-    <html lang={lang}>
+    <html lang={lang} className={clsx(bodyStyle, themeClass)}>
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta charSet="utf-8" />
@@ -144,19 +146,17 @@ export function ErrorBoundary() {
         <Meta />
         <Links />
       </head>
-      <body>
-        <div>{error}</div>
+      <body className={clsx(bodyStyle, themeClass)}>
+        <Layout isAuthenticated={false}>
+          <Heading>Error</Heading>
+          <main className={containerStyle}>
+            <h2>{error?.message || error?.data || 'Error'}</h2>
+          </main>
+        </Layout>
         <Scripts />
       </body>
     </html>
   );
 }
-
-// let AppExport = App;
-
-// if (process.env.NODE_ENV === 'development') {
-//   const { withDevTools } = await import('remix-development-tools');
-//   AppExport = withDevTools(AppExport);
-// }
 
 export default App;

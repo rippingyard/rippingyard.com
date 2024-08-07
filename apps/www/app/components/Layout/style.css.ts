@@ -59,19 +59,10 @@ export const logoLinkStyle = style({
   },
 });
 
-export const menuContainerStyle = style({
-  display: 'flex',
-  alignItems: 'center',
-  fontSize: rootVars.font.size['x-small'],
-  gap: 8,
-});
-
-export const menuItemStyle = style({
-  display: 'block',
-  padding: '4px 8px',
-  background: vars.color['shadow-20'],
-  borderRadius: rootVars.border.radius.normal,
+export const menuButtonStyle = style({
+  fontSize: rootVars.font.size.small,
+  textTransform: 'uppercase',
   ':hover': {
-    background: vars.color['shadow-40'],
+    color: vars.color.primary,
   },
 });

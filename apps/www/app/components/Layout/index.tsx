@@ -1,5 +1,11 @@
-﻿import { Link, useSubmit } from '@remix-run/react';
-import { ComponentPropsWithoutRef, FC, useCallback } from 'react';
+﻿import { Link, useNavigation, useSubmit } from '@remix-run/react';
+import {
+  ComponentPropsWithoutRef,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { clearCachedItems } from '~/hooks/cache/useCache';
 
@@ -10,28 +16,23 @@ import {
   logoLinkStyle,
   logoStyle,
   logoTypeStyle,
-  menuContainerStyle,
-  menuItemStyle,
+  menuButtonStyle,
 } from './style.css';
 import { Logo } from '../Logo';
 import { LogoType } from '../LogoType';
+import { Nav } from '~/features/Nav';
 
 export const Layout: FC<
   ComponentPropsWithoutRef<'div'> & { isAuthenticated: boolean }
 > = ({ children, isAuthenticated }) => {
-  const submit = useSubmit();
+  const [isOpened, setIsOpened] = useState(false);
+  const { state } = useNavigation();
 
-  const onLogout = useCallback(async () => {
-    await submit(
-      {},
-      {
-        method: 'POST',
-        action: '/logout',
-        navigate: false,
-      }
-    );
-    clearCachedItems();
-  }, [submit]);
+  const toggleNav = useCallback(() => setIsOpened(!isOpened), [isOpened]);
+
+  useEffect(() => {
+    state === 'loading' && setIsOpened(false);
+  }, [state]);
 
   return (
     <div className={containerStyle}>
@@ -41,32 +42,13 @@ export const Layout: FC<
             <Logo style={logoStyle} />
             <LogoType style={logoTypeStyle} />
           </Link>
-          {isAuthenticated && (
-            <ul className={menuContainerStyle}>
-              <li>
-                <Link className={menuItemStyle} to="/home" prefetch="render">
-                  ホーム
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={menuItemStyle}
-                  to="/post/create"
-                  prefetch="render"
-                >
-                  記事投稿
-                </Link>
-              </li>
-              <li>
-                <button className={menuItemStyle} onClick={onLogout}>
-                  ログアウト
-                </button>
-              </li>
-            </ul>
-          )}
+          <button className={menuButtonStyle} onClick={toggleNav}>
+            Menu
+          </button>
         </div>
       </header>
       {children}
+      <Nav isOpened={isOpened} isAuthenticated={isAuthenticated} />
     </div>
   );
 };
