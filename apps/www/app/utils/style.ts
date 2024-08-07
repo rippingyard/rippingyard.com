@@ -1,6 +1,7 @@
 ﻿enum LAYER {
   WYSIWYG_MODAL = 99999,
   FIXED_HEADER = 200,
+  FIXED_NAV = 180,
   MODAL = 60,
   COVER = 20,
 }
