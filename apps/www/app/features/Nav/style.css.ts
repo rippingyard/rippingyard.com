@@ -14,6 +14,7 @@ export const wrapperStyle = style({
   backdropFilter: 'blur(12px)',
   transition: 'top 0.2s ease-in-out',
   padding: `90px 24px 24px`,
+  opacity: 0,
 });
 
 export const containerStyle = style({
@@ -23,4 +24,5 @@ export const containerStyle = style({
 
 export const openStyle = style({
   top: 0,
+  opacity: 1,
 });
