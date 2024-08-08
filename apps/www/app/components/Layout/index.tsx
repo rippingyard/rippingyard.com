@@ -1,4 +1,4 @@
-﻿import { Link, useNavigation, useSubmit } from '@remix-run/react';
+﻿import { Link, useNavigation } from '@remix-run/react';
 import {
   ComponentPropsWithoutRef,
   FC,
@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { clearCachedItems } from '~/hooks/cache/useCache';
+import { Nav } from '~/features/_nav';
 
 import {
   containerStyle,
@@ -20,7 +20,6 @@ import {
 } from './style.css';
 import { Logo } from '../Logo';
 import { LogoType } from '../LogoType';
-import { Nav } from '~/features/Nav';
 
 export const Layout: FC<
   ComponentPropsWithoutRef<'div'> & { isAuthenticated: boolean }
