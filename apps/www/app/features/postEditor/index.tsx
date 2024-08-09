@@ -5,6 +5,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
+import { useCachedContent } from '~/hooks/cache/useCachedContent';
 import { Post, PostType } from '~/schemas/post';
 import { getMainTitle, removeMainTitle } from '~/utils/typography';
 
@@ -16,7 +17,6 @@ import {
   headerStyle,
   headerTitleStyle,
 } from './style.css';
-import { useCachedContent } from '~/hooks/cache/useCachedContent';
 
 type Props = {
   post?: Post;
@@ -38,7 +38,10 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
     [action, navigation.formAction, navigation.state]
   );
 
-  const content = useMemo(() => post?.content || cache || '', [post?.content]); //TODO: セットの順番的に、新規投稿の時以外はキャッシュが効かないようにしてある。記事編集時も利用するためには、cache || post?.content || ''とする必要があるが、今は行わない
+  const content = useMemo(
+    () => post?.content || cache || '',
+    [cache, post?.content]
+  ); //TODO: セットの順番的に、新規投稿の時以外はキャッシュが効かないようにしてある。記事編集時も利用するためには、cache || post?.content || ''とする必要があるが、今は行わない
   const title = useMemo(
     () =>
       getMainTitle(content, {
@@ -58,10 +61,13 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
 
   const label = useMemo(() => (post ? '更新' : '公開'), [post]);
 
-  const onUpdate = useCallback((content: string) => {
-    setCachedContent(pathname || '/', content);
-    setHtml(content);
-  }, []);
+  const onUpdate = useCallback(
+    (content: string) => {
+      setCachedContent(pathname || '/', content);
+      setHtml(content);
+    },
+    [pathname, setCachedContent]
+  );
 
   return (
     <Form method="POST" action={action} className={containerStyle}>

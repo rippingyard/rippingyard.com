@@ -13,15 +13,15 @@ import clsx from 'clsx';
 import destyle from 'destyle.css?url';
 
 import { Env } from './components/Env';
+import { Heading } from './components/Heading';
 import { Layout } from './components/Layout';
 import { Snackbar } from './features/snackbar';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
 import { commitSession, getMe, getSession } from './middlewares/session.server';
+import { containerStyle } from './styles/container.css';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
-import { Heading } from './components/Heading';
-import { containerStyle } from './styles/container.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
@@ -126,7 +126,10 @@ function App() {
 }
 
 export function ErrorBoundary() {
-  const error = useRouteError() as any;
+  const error = useRouteError() as {
+    message?: string;
+    data?: string;
+  };
   console.error(error);
 
   const lang = 'ja';
