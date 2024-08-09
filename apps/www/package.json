@@ -38,7 +38,7 @@
     "dayjs": "^1.11.12",
     "destyle.css": "^4.0.0",
     "firebase": "^10.12.4",
-    "firebase-admin": "^12.3.0",
+    "firebase-admin": "^12.3.1",
     "instantsearch.js": "^4.73.2",
     "isbot": "^5.1.13",
     "isomorphic-dompurify": "^2.2.0",
