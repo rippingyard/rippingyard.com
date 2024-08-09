@@ -40,7 +40,7 @@
     "firebase": "^10.12.4",
     "firebase-admin": "^12.3.0",
     "instantsearch.js": "^4.73.2",
-    "isbot": "^5.1.13",
+    "isbot": "^5.1.14",
     "isomorphic-dompurify": "^2.2.0",
     "openai": "^4.40.2",
     "react": "^18.2.0",
