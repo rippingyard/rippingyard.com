@@ -1,5 +1,5 @@
 ﻿import clsx from 'clsx';
-import { ComponentPropsWithRef, FC, ReactNode, forwardRef } from 'react';
+import { ComponentPropsWithRef, ReactNode, forwardRef } from 'react';
 
 import { IconLoader } from '~/assets/icons/Loader';
 
@@ -7,6 +7,7 @@ import {
   buttonStyle,
   disabledStyle,
   ghostButtonStyle,
+  loadingStyle,
   squareButtonStyle,
   successButtonStyle,
 } from './style.css';
@@ -19,13 +20,14 @@ type Props = ComponentPropsWithRef<'button'> & {
   children: ReactNode;
 };
 
-export const Button: FC<Props> = forwardRef<HTMLButtonElement, Props>(
+export const Button = forwardRef<HTMLButtonElement, Props>(
   (
     { children, isLoading, color, isGhost = false, isSquare = false, ...props },
     ref
   ) => {
     const className = clsx(
       buttonStyle,
+      isLoading && loadingStyle,
       color === 'success' && successButtonStyle,
       isGhost && ghostButtonStyle,
       isSquare && squareButtonStyle,

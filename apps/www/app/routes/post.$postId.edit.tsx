@@ -86,8 +86,6 @@ export const action: ActionFunction = async ({ request, params }) => {
       isPublic: isPublic !== undefined ? isPublic : post.isPublic,
     });
 
-    console.log('saved!', newPost);
-
     return json({
       post: newPost,
     });
