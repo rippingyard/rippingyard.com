@@ -28,7 +28,7 @@
     "@tiptap/html": "^2.5.9",
     "@tiptap/pm": "^2.5.9",
     "@tiptap/react": "^2.5.9",
-    "@tiptap/starter-kit": "^2.5.9",
+    "@tiptap/starter-kit": "^2.6.3",
     "@vercel/analytics": "^1.2.2",
     "@vercel/remix": "^2.10.3",
     "algoliasearch": "^4.23.3",
