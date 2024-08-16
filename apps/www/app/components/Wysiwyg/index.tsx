@@ -57,6 +57,7 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     onUpdate: ({ editor }) => {
       onUpdate(editor.getHTML());
     },
+    immediatelyRender: false,
   });
 
   const onUploadedImage = useCallback(
