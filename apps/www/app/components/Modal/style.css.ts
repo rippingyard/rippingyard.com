@@ -2,27 +2,41 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
-import { size } from '~/utils/style';
+import { zIndex } from '~/utils/style';
 
-export const backdropStyle = style({
+export const wrapperStyle = style({
   width: '100vw',
   height: '100dvh',
   display: 'grid',
   placeContent: 'center',
-  backgroundColor: vars.color['shadow-20'],
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  zIndex: zIndex('WYSIWYG_MODAL'),
+});
+
+export const backdropStyle = style({
+  width: '100vw',
+  height: '100dvh',
+  backgroundColor: vars.color['shadow-40'],
   position: 'fixed',
   top: 0,
   left: 0,
   cursor: 'pointer',
+  zIndex: zIndex('MODAL'),
+  WebkitBackdropFilter: 'blur(12px)',
+  backdropFilter: 'blur(12px)',
 });
 
 export const containerStyle = style({
   position: 'relative',
-  maxWidth: size('MAIN'),
+  maxWidth: '95vw',
+  maxHeight: '90dvh',
   backgroundColor: vars.color.background,
   borderRadius: rootVars.border.radius.normal,
   boxShadow: `0px 3px 8px ${vars.color['shadow-40']}`,
-  cursor: 'default',
+  zIndex: zIndex('WYSIWYG_MODAL'),
+  overflow: 'auto',
 });
 
 export const closeButtonStyle = style({

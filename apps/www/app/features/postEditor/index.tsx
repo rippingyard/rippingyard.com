@@ -9,6 +9,7 @@ import { useCachedContent } from '~/hooks/cache/useCachedContent';
 import { Post, PostType } from '~/schemas/post';
 import { getMainTitle, removeMainTitle } from '~/utils/typography';
 
+import { SettingModal } from './settingModal';
 import { StatusHeader } from './statusHeader';
 import {
   bodyStyle,
@@ -28,6 +29,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const { pathname } = useLocation();
   const { setCachedContent, getCachedContent } = useCachedContent();
   const cache = getCachedContent(pathname);
+  const [isSettingOpened, setIsSettingOpened] = useState(false);
 
   const [html, setHtml] = useState<string>(
     removeMainTitle(post?.content || cache || '')
@@ -69,8 +71,18 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
     [pathname, setCachedContent]
   );
 
+  const onConfirm = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSettingOpened(true);
+  }, []);
+
   return (
-    <Form method="POST" action={action} className={containerStyle}>
+    <Form
+      method="POST"
+      action={action}
+      className={containerStyle}
+      onSubmit={(e) => onConfirm(e)}
+    >
       <input type="hidden" name="contentBody" value={html} />
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="isPublic" value={isPublic ? 1 : 0} />
@@ -99,7 +111,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
         />
       </section>
       <footer className={footerStyle}>
-        <Button
+        {/* <Button
           name="status"
           value="drafted"
           disabled={isLoading}
@@ -107,7 +119,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
           isGhost
         >
           下書き保存
-        </Button>
+        </Button> */}
         <Button
           name="status"
           value="published"
@@ -118,6 +130,11 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
           {label}
         </Button>
       </footer>
+      <SettingModal
+        content={content}
+        isOpened={isSettingOpened}
+        onClose={() => setIsSettingOpened(false)}
+      />
     </Form>
   );
 };
