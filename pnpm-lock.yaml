@@ -302,8 +302,8 @@ importers:
         specifier: ^8.2.6
         version: 8.2.6(storybook@8.2.9)
       '@storybook/addon-interactions':
-        specifier: ^8.2.6
-        version: 8.2.6(storybook@8.2.9)(vitest@1.6.0)
+        specifier: ^8.2.9
+        version: 8.2.9(storybook@8.2.9)(vitest@1.6.0)
       '@storybook/addon-links':
         specifier: ^8.2.9
         version: 8.2.9(react@18.3.1)(storybook@8.2.9)
@@ -5150,14 +5150,14 @@ packages:
       storybook: 8.2.9
     dev: true
 
-  /@storybook/addon-interactions@8.2.6(storybook@8.2.9)(vitest@1.6.0):
-    resolution: {integrity: sha512-YXpHf8jWPz9HJV+Fw4GaunaCWeE6uqF24aLXdAd8xuhN1UfWJeNV6AwAvFQ0hTLqvmz0yMhX/5JXDKeKESoYDA==}
+  /@storybook/addon-interactions@8.2.9(storybook@8.2.9)(vitest@1.6.0):
+    resolution: {integrity: sha512-oSxBkqpmp1Vm9v/G8mZeFNXD8k6T1NMgzUWzAx7R5m31rfObhoi5Fo1bKQT5BAhSSsdjjd7owTAFKdhwSotSKg==}
     peerDependencies:
-      storybook: ^8.2.6
+      storybook: ^8.2.9
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.2.6(storybook@8.2.9)
-      '@storybook/test': 8.2.6(storybook@8.2.9)(vitest@1.6.0)
+      '@storybook/instrumenter': 8.2.9(storybook@8.2.9)
+      '@storybook/test': 8.2.9(storybook@8.2.9)(vitest@1.6.0)
       polished: 4.3.1
       storybook: 8.2.9
       ts-dedent: 2.2.0
@@ -5382,17 +5382,6 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     dev: true
 
-  /@storybook/instrumenter@8.2.6(storybook@8.2.9):
-    resolution: {integrity: sha512-RxtpcMTUSq8/wPM6cR6EXVrPEiNuRbC71cIFVFZagOFYvnnOKwSPV+GOLPK0wxMbGB4c5/+Xe8ADefmZTvxOsA==}
-    peerDependencies:
-      storybook: ^8.2.6
-    dependencies:
-      '@storybook/global': 5.0.0
-      '@vitest/utils': 1.6.0
-      storybook: 8.2.9
-      util: 0.12.5
-    dev: true
-
   /@storybook/instrumenter@8.2.9(storybook@8.2.9):
     resolution: {integrity: sha512-+DNjTbsMzlDggsvkhRuOy7aGvQJ4oLCPgunP5Se/3yBjG+M2bYDa0EmC5jC2nwZ3ffpuvbzaVe7fWf7R8W9F2Q==}
     peerDependencies:
@@ -5499,28 +5488,6 @@ packages:
       type-fest: 2.19.0
       typescript: 5.5.4
       util-deprecate: 1.0.2
-    dev: true
-
-  /@storybook/test@8.2.6(storybook@8.2.9)(vitest@1.6.0):
-    resolution: {integrity: sha512-nTzNxReBcMRlX1+8PNU/MuA9ArFbeQhfZXMBIwJJoHOhnNe1knYpyn1++xINxAHKOh0BBhQ0NIMoKdcGmW3V6w==}
-    peerDependencies:
-      storybook: ^8.2.6
-    dependencies:
-      '@storybook/csf': 0.1.11
-      '@storybook/instrumenter': 8.2.6(storybook@8.2.9)
-      '@testing-library/dom': 10.1.0
-      '@testing-library/jest-dom': 6.4.5(vitest@1.6.0)
-      '@testing-library/user-event': 14.5.2(@testing-library/dom@10.1.0)
-      '@vitest/expect': 1.6.0
-      '@vitest/spy': 1.6.0
-      storybook: 8.2.9
-      util: 0.12.5
-    transitivePeerDependencies:
-      - '@jest/globals'
-      - '@types/bun'
-      - '@types/jest'
-      - jest
-      - vitest
     dev: true
 
   /@storybook/test@8.2.9(storybook@8.2.9)(vitest@1.6.0):
