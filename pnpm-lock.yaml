@@ -93,8 +93,8 @@ importers:
         specifier: ^12.3.1
         version: 12.3.1
       firebase-functions:
-        specifier: ^5.0.1
-        version: 5.0.1(firebase-admin@12.3.1)
+        specifier: ^6.0.0
+        version: 6.0.0(firebase-admin@12.3.1)
       html-metadata:
         specifier: ^1.7.1
         version: 1.7.1
@@ -10763,8 +10763,8 @@ packages:
     resolution: {integrity: sha512-q35BzhEDEO7iuvgV/5ou7nZhTbhOTG3Oau/pn6K/U1Ua76HtuJE5tH+0Op8a4B+c8nl6Q80rGwQhLvYbQvOxGQ==}
     dev: true
 
-  /firebase-functions@5.0.1(firebase-admin@12.3.1):
-    resolution: {integrity: sha512-1m+crtgAR8Tl36gjpM02KCY5zduAejFmDSXvih/DB93apg39f0U/WwRgT7sitGIRqyCcIpktNUbXJv7Y9JOF4A==}
+  /firebase-functions@6.0.0(firebase-admin@12.3.1):
+    resolution: {integrity: sha512-QHA3+OxfZWGpYUswcdKahK+Xark4pn9UEVWUvBhyjwmj/xsEDhuW6wq7Eq6i/rFZ0OWn+9zhBti6HrdsLDQNug==}
     engines: {node: '>=14.10.0'}
     hasBin: true
     peerDependencies:
