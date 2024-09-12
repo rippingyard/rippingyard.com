@@ -308,8 +308,8 @@ importers:
         specifier: ^8.2.9
         version: 8.2.9(react@18.3.1)(storybook@8.2.9)
       '@storybook/addon-onboarding':
-        specifier: ^8.2.6
-        version: 8.2.6(react@18.3.1)(storybook@8.2.9)
+        specifier: ^8.3.0
+        version: 8.3.0(react@18.3.1)(storybook@8.2.9)
       '@storybook/blocks':
         specifier: ^8.2.6
         version: 8.2.6(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
@@ -5195,10 +5195,10 @@ packages:
       tiny-invariant: 1.3.3
     dev: true
 
-  /@storybook/addon-onboarding@8.2.6(react@18.3.1)(storybook@8.2.9):
-    resolution: {integrity: sha512-udON3COEbi0f8A8+kdQxER6zueVMW2J4ES7ZrYyk7Z6LzzgAhfxmhdFTqEgY08jBEhuyskA2bA656GWk7X01EQ==}
+  /@storybook/addon-onboarding@8.3.0(react@18.3.1)(storybook@8.2.9):
+    resolution: {integrity: sha512-M40WdKvzN5xqGlKSbQOMRegeEw3Jltr9q99VufUZF/6HZUNVH/maxnOB9lGrlj/boyyhY/KHpZo9/CWrC4CjJQ==}
     peerDependencies:
-      storybook: ^8.2.6
+      storybook: ^8.3.0
     dependencies:
       react-confetti: 6.1.0(react@18.3.1)
       storybook: 8.2.9
