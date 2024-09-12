@@ -268,8 +268,8 @@ importers:
         specifier: ^2.2.0
         version: 2.14.0
       openai:
-        specifier: ^4.40.2
-        version: 4.53.2
+        specifier: ^4.59.0
+        version: 4.59.0(zod@3.23.8)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -14957,17 +14957,25 @@ packages:
       is-wsl: 1.1.0
     dev: true
 
-  /openai@4.53.2:
-    resolution: {integrity: sha512-ohYEv6OV3jsFGqNrgolDDWN6Ssx1nFg6JDJQuaBFo4SL2i+MBoOQ16n2Pq1iBF5lH1PKnfCIOfqAGkmzPvdB9g==}
+  /openai@4.59.0(zod@3.23.8):
+    resolution: {integrity: sha512-3bn7FypMt2R1ZDuO0+GcXgBEnVFhIzrpUkb47pQRoYvyfdZ2fQXcuP14aOc4C8F9FvCtZ/ElzJmVzVqnP4nHNg==}
     hasBin: true
+    peerDependencies:
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      zod:
+        optional: true
     dependencies:
       '@types/node': 18.19.42
       '@types/node-fetch': 2.6.11
+      '@types/qs': 6.9.15
       abort-controller: 3.0.0
       agentkeepalive: 4.5.0
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.7.0
+      qs: 6.12.3
+      zod: 3.23.8
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -15940,7 +15948,6 @@ packages:
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.0.6
-    dev: true
 
   /qs@6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
