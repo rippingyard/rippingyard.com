@@ -71,7 +71,7 @@
     "@vanilla-extract/css": "^1.14.0",
     "@vanilla-extract/vite-plugin": "^4.0.6",
     "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.56.0",
+    "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
