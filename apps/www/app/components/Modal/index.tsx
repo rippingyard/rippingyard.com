@@ -8,6 +8,7 @@ import {
   closeButtonStyle,
   closedStyle,
   containerStyle,
+  innerStyle,
   wrapperStyle,
 } from './style.css';
 
@@ -29,7 +30,7 @@ export const Modal: FC<Props> = ({
         <p className={closeButtonStyle} onClick={onClose}>
           <IconClose />
         </p>
-        {children}
+        <div className={innerStyle}>{children}</div>
       </aside>
       <div className={clsx(backdropStyle)} onClick={onClose} />
     </div>

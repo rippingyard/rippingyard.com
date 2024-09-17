@@ -1,12 +1,12 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
 
 // import { fn } from '@storybook/test';
-import { Button } from '.';
+import { Avatar } from '.';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Button> = {
-  title: 'Component/Button',
-  component: Button,
+const meta: Meta<typeof Avatar> = {
+  title: 'Component/Avatar',
+  component: Avatar,
   parameters: {
     layout: 'centered',
   },
@@ -22,36 +22,23 @@ const meta: Meta<typeof Button> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof Avatar>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    children: 'Default Button',
+    url: 'https://placehold.jp/400x400.png',
   },
 };
 
-export const Success: Story = {
+export const WideInSquare: Story = {
   args: {
-    ...Default.args,
-    children: 'Success Button',
-    color: 'success',
+    url: 'https://placehold.jp/600x200.png',
   },
 };
 
-export const Ghost: Story = {
+export const TallInSquare: Story = {
   args: {
-    ...Default.args,
-    children: 'Ghost Button',
-    isGhost: true,
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    ...Default.args,
-    children: 'Now Loading',
-    isLoading: true,
-    // isGhost: false,
+    url: 'https://placehold.jp/200x600.png',
   },
 };

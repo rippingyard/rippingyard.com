@@ -36,6 +36,11 @@ export const containerStyle = style({
   borderRadius: rootVars.border.radius.normal,
   boxShadow: `0px 3px 8px ${vars.color['shadow-40']}`,
   zIndex: zIndex('WYSIWYG_MODAL'),
+});
+
+export const innerStyle = style({
+  width: 'fit-content',
+  height: 'fit-content',
   overflow: 'auto',
 });
 

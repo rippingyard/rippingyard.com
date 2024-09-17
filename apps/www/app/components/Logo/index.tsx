@@ -1,4 +1,5 @@
 ﻿import { FC } from 'react';
+
 import { logoStyle } from './style.css';
 
 export const Logo: FC<{

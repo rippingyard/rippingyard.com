@@ -1,35 +1,64 @@
 ﻿import axios from 'axios';
-import { FC, useState } from 'react';
+import clsx from 'clsx';
+import {
+  FC,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+  useCallback,
+} from 'react';
 
 import { Button } from '~/components/Button';
+import { FormRadioButton } from '~/components/FormRadioButton';
+import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
+import { CategoryId } from '~/schemas/entity';
+import { PostStatus } from '~/schemas/post';
 
-import { containerStyle } from './style.css';
+import { CategorySelector } from './categorySelector';
+import { EntitySelector } from './entitySelector';
+import {
+  containerBodyStyle,
+  containerStyle,
+  statusItemDescriptionStyle,
+  statusItemLabelStyle,
+  statusItemSelectedStyle,
+  statusItemStyle,
+  statusRadioButtonStyle,
+  statusSelectorStyle,
+} from './style.css';
 
 type Props = {
   content: string;
   isOpened: boolean;
+  isLoading: boolean;
+  isPublic: boolean;
+  isUpdate: boolean;
+  setIsPublic: Dispatch<SetStateAction<boolean>>;
+  setStatus: Dispatch<SetStateAction<PostStatus>>;
+  showEntityCard?: boolean;
   onClose: () => void;
 };
 
-type SuggestedCategory =
-  | 'film'
-  | 'music'
-  | 'book'
-  | 'art'
-  | 'game'
-  | 'politic'
-  | 'food';
+export type SuggestedCategory = CategoryId;
 
-type SuggestedEntity = {
+export type SuggestedEntity = {
   value: string;
   relevance: number;
   categories: SuggestedCategory[];
+  isChecked: boolean;
 };
 
 export const SettingModal: FC<Props> = ({
   content,
   isOpened = false,
+  isLoading = false,
+  isPublic,
+  isUpdate,
+  setIsPublic,
+  setStatus,
+  showEntityCard = false,
   onClose = () => undefined,
 }) => {
   const [suggestedCategories, setSuggestedCategories] = useState<
@@ -38,6 +67,8 @@ export const SettingModal: FC<Props> = ({
   const [suggestedEntities, setSuggestedEntities] = useState<SuggestedEntity[]>(
     []
   );
+
+  const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 
   const getEntities = async () => {
     try {
@@ -69,46 +100,82 @@ export const SettingModal: FC<Props> = ({
     }
   };
 
+  const onChangeStatus = useCallback(
+    (isPublished: boolean) => {
+      setStatus(isPublished ? 'published' : 'drafted');
+      setIsPublic(isPublished);
+    },
+    [setIsPublic, setStatus]
+  );
+
   return (
     <Modal isOpened={isOpened} onClose={onClose}>
+      <Heading isWide>公開設定</Heading>
       <div className={containerStyle}>
-        {suggestedCategories.length > 0 && (
-          <div>
-            <h2>Categories</h2>
-            <ul>
-              {suggestedCategories.map((category: string) => (
-                <li>{category}</li>
-              ))}
-            </ul>
+        <div className={containerBodyStyle}>
+          <div className={statusSelectorStyle}>
+            <div
+              className={clsx(
+                statusItemStyle,
+                isPublic && statusItemSelectedStyle
+              )}
+              onClick={() => onChangeStatus(true)}
+            >
+              <div className={statusRadioButtonStyle}>
+                <FormRadioButton checked={isPublic} />
+              </div>
+              <div className={statusItemLabelStyle}>公開</div>
+              <div className={statusItemDescriptionStyle}>
+                全世界に公開され、一覧や検索結果などにも表示されます
+              </div>
+            </div>
+            <div
+              className={clsx(
+                statusItemStyle,
+                !isPublic && statusItemSelectedStyle
+              )}
+              onClick={() => onChangeStatus(false)}
+            >
+              <div className={statusRadioButtonStyle}>
+                <FormRadioButton checked={!isPublic} />
+              </div>
+              <div className={statusItemLabelStyle}>非公開</div>
+              <div className={statusItemDescriptionStyle}>
+                非公開の記事として保存します
+              </div>
+            </div>
           </div>
-        )}
+          <Button
+            name="status"
+            value="published"
+            disabled={isLoading}
+            isLoading={isLoading}
+            color="success"
+          >
+            {label}
+          </Button>
+        </div>
 
-        {suggestedEntities.length > 0 && (
+        {showEntityCard && (
           <div>
-            <h2>Entities</h2>
-            <ul>
-              {suggestedEntities
-                .sort((a, b) => (a.relevance > b.relevance ? -1 : 1))
-                .map(
-                  (entity: {
-                    value: string;
-                    relevance: number;
-                    categories: string[];
-                  }) =>
-                    entity.relevance > 0.5 && (
-                      <li>
-                        <h3>{entity?.value}</h3>
-                        <p>
-                          {entity?.relevance} / {entity?.categories.join(', ')}
-                        </p>
-                      </li>
-                    )
-                )}
-            </ul>
+            {suggestedCategories.length > 0 && (
+              <>
+                <h2>Categories</h2>
+                <CategorySelector selectedCategories={suggestedCategories} />
+              </>
+            )}
+
+            {suggestedEntities.length > 0 && (
+              <>
+                <h2>Entities</h2>
+                <EntitySelector entities={suggestedEntities} />
+              </>
+            )}
+
+            <hr />
+            <Button onClick={getEntities}>エンティティを取得</Button>
           </div>
         )}
-        <hr />
-        <Button onClick={getEntities}>エンティティを取得</Button>
       </div>
     </Modal>
   );

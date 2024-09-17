@@ -7,6 +7,26 @@ import { DocumentReferenceSchema } from '~/utils/schema';
 //   name: string;
 // };
 
+export const categoryIds = [
+  'film',
+  'music',
+  'book',
+  'art',
+  'game',
+  'politic',
+  'food',
+  'technology',
+] as const;
+export type CategoryId = (typeof categoryIds)[number];
+
+export type Category = {
+  id: CategoryId;
+  label: {
+    ja: string;
+  };
+  isSelected?: boolean;
+};
+
 const EntityStatusSchema = z.enum(['published', 'drafted']);
 const EntityTypeSchema = z.enum(['genre', 'bookmark', 'tag']);
 // type EntityType = 'item' | 'place' | 'work' | 'keyword' | 'person' | 'group' | 'event' | 'bookmark' | 'unknown';
