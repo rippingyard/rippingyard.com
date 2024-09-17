@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { Nav } from '~/features/_nav';
+import { Nav } from '~/features/nav';
 
 import {
   containerStyle,

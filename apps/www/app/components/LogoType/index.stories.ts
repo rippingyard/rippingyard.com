@@ -5,6 +5,9 @@ import { LogoType } from '.';
 const meta: Meta<typeof LogoType> = {
   title: 'Component/LogoType',
   component: LogoType,
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export default meta;

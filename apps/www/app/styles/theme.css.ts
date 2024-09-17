@@ -24,6 +24,7 @@ export const [themeClass, vars] = createTheme({
      * Black
      */
     neutral: black(),
+    'neutral-60': black(0.6),
     /**
      * White
      */
@@ -64,6 +65,7 @@ export const [themeClass, vars] = createTheme({
 export const darkThemeClass = createTheme(vars, {
   color: {
     neutral: white(),
+    'neutral-60': white(0.6),
     background: black(),
     'background-10': black(10),
     'background-20': black(20),
