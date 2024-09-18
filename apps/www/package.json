@@ -42,7 +42,7 @@
     "instantsearch.js": "^4.73.4",
     "isbot": "^5.1.16",
     "isomorphic-dompurify": "^2.2.0",
-    "openai": "^4.55.4",
+    "openai": "^4.62.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-instantsearch": "^7.12.4",
