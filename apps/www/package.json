@@ -57,8 +57,13 @@
     "@storybook/addon-essentials": "^8.2.9",
     "@storybook/addon-interactions": "^8.2.9",
     "@storybook/addon-links": "^8.2.9",
+<<<<<<< HEAD
     "@storybook/addon-onboarding": "^8.2.9",
     "@storybook/blocks": "^8.3.2",
+=======
+    "@storybook/addon-onboarding": "^8.3.3",
+    "@storybook/blocks": "^8.2.9",
+>>>>>>> 66af6f6933a4447a59831d387b195f4542e2d934
     "@storybook/react": "^8.2.9",
     "@storybook/react-vite": "^8.3.3",
     "@storybook/test": "^8.2.9",
