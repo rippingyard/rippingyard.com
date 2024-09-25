@@ -93,8 +93,8 @@ importers:
         specifier: ^12.3.1
         version: 12.3.1
       firebase-functions:
-        specifier: ^6.0.1
-        version: 6.0.1(firebase-admin@12.3.1)
+        specifier: ^5
+        version: 5.1.1(firebase-admin@12.3.1)
       html-metadata:
         specifier: ^1.7.1
         version: 1.7.1
@@ -5296,7 +5296,7 @@ packages:
       browser-assert: 1.2.1
       esbuild: 0.21.5
       esbuild-register: 3.6.0(esbuild@0.21.5)
-      express: 4.19.2
+      express: 4.21.0
       process: 0.11.10
       recast: 0.23.9
       util: 0.12.5
@@ -10826,8 +10826,8 @@ packages:
     resolution: {integrity: sha512-q35BzhEDEO7iuvgV/5ou7nZhTbhOTG3Oau/pn6K/U1Ua76HtuJE5tH+0Op8a4B+c8nl6Q80rGwQhLvYbQvOxGQ==}
     dev: true
 
-  /firebase-functions@6.0.1(firebase-admin@12.3.1):
-    resolution: {integrity: sha512-0rIpTU6dnLRvP3IK+okn1FDjoqjzShm0/S+i4OMY7JFu/HJoyJ1JNkrT4KjECy1/mCHK49KsmH8iYE0rzrglHg==}
+  /firebase-functions@5.1.1(firebase-admin@12.3.1):
+    resolution: {integrity: sha512-KkyKZE98Leg/C73oRyuUYox04PQeeBThdygMfeX+7t1cmKWYKa/ZieYa89U8GHgED+0mF7m7wfNZOfbURYxIKg==}
     engines: {node: '>=14.10.0'}
     hasBin: true
     peerDependencies:
@@ -10836,7 +10836,7 @@ packages:
       '@types/cors': 2.8.17
       '@types/express': 4.17.3
       cors: 2.8.5
-      express: 4.19.2
+      express: 4.21.0
       firebase-admin: 12.3.1
       protobufjs: 7.3.2
     transitivePeerDependencies:
@@ -11552,7 +11552,7 @@ packages:
       extend: 3.0.2
       gaxios: 6.7.0
       google-auth-library: 9.12.0
-      qs: 6.12.3
+      qs: 6.13.0
       url-template: 2.0.8
       uuid: 9.0.1
     transitivePeerDependencies:
@@ -17715,7 +17715,7 @@ packages:
       formidable: 3.5.1
       methods: 1.1.2
       mime: 2.6.0
-      qs: 6.12.3
+      qs: 6.13.0
     transitivePeerDependencies:
       - supports-color
     dev: true
