@@ -16,6 +16,10 @@
       "cache": false,
       "persistent": false
     },
+    "sb": {
+      "cache": false,
+      "persistent": true
+    },
     "clean": {
       "cache": false
     }

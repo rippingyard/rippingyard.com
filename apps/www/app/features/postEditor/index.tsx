@@ -6,9 +6,10 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { Post, PostType } from '~/schemas/post';
+import { Post, PostStatus, PostType } from '~/schemas/post';
 import { getMainTitle, removeMainTitle } from '~/utils/typography';
 
+import { SettingModal } from './settingModal';
 import { StatusHeader } from './statusHeader';
 import {
   bodyStyle,
@@ -28,6 +29,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const { pathname } = useLocation();
   const { setCachedContent, getCachedContent } = useCachedContent();
   const cache = getCachedContent(pathname);
+  const [isSettingOpened, setIsSettingOpened] = useState(false);
 
   const [html, setHtml] = useState<string>(
     removeMainTitle(post?.content || cache || '')
@@ -54,12 +56,11 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const [hasTitle, setHasTitle] = useState(!!title);
 
   const [type] = useState<PostType>('article');
-  const [isPublic] = useState<boolean>(true);
+  const [isPublic, setIsPublic] = useState<boolean>(post?.isPublic ?? false);
+  const [status, setStatus] = useState<PostStatus>(post?.status ?? 'published');
 
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
-
-  const label = useMemo(() => (post ? '更新' : '公開'), [post]);
 
   const onUpdate = useCallback(
     (content: string) => {
@@ -69,11 +70,21 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
     [pathname, setCachedContent]
   );
 
+  const onConfirm = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      console.log('onConfirm!');
+      e.preventDefault();
+      setIsSettingOpened(true);
+    },
+    []
+  );
+
   return (
     <Form method="POST" action={action} className={containerStyle}>
       <input type="hidden" name="contentBody" value={html} />
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="isPublic" value={isPublic ? 1 : 0} />
+      <input type="hidden" name="status" value={status} />
       <section className={bodyStyle}>
         <header className={headerStyle}>
           {hasTitle && (
@@ -99,7 +110,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
         />
       </section>
       <footer className={footerStyle}>
-        <Button
+        {/* <Button
           name="status"
           value="drafted"
           disabled={isLoading}
@@ -107,17 +118,28 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
           isGhost
         >
           下書き保存
-        </Button>
+        </Button> */}
         <Button
           name="status"
           value="published"
           disabled={isLoading}
           isLoading={isLoading}
           color="success"
+          onClick={(e) => onConfirm(e)}
         >
-          {label}
+          公開設定
         </Button>
       </footer>
+      <SettingModal
+        content={content}
+        isOpened={isSettingOpened}
+        isLoading={isLoading}
+        isUpdate={!!post}
+        setStatus={setStatus}
+        isPublic={isPublic}
+        setIsPublic={setIsPublic}
+        onClose={() => setIsSettingOpened(false)}
+      />
     </Form>
   );
 };

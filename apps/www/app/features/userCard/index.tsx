@@ -3,7 +3,13 @@
 import { Avatar } from '~/components/Avatar';
 import { User } from '~/schemas/user';
 
-import { containerStyle, mainStyle, nameStyle, sideStyle } from './style.css';
+import {
+  containerStyle,
+  idStyle,
+  mainStyle,
+  nameStyle,
+  sideStyle,
+} from './style.css';
 
 const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
   if (!user) return;
@@ -12,6 +18,7 @@ const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
     <div className={containerStyle}>
       <div className={mainStyle}>
         <p className={nameStyle}>{user.displayName}</p>
+        <p className={idStyle}>@{user.userName}</p>
       </div>
       {user.avatar && (
         <div className={sideStyle}>
