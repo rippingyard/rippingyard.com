@@ -296,8 +296,8 @@ importers:
         specifier: ^2.11.2
         version: 2.11.2(@remix-run/react@2.11.2)(@remix-run/serve@2.11.2)(typescript@5.5.4)(vite@5.4.8)
       '@remix-run/eslint-config':
-        specifier: ^2.10.3
-        version: 2.10.3(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
+        specifier: ^2.12.1
+        version: 2.12.1(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4)
       '@storybook/addon-essentials':
         specifier: ^8.2.9
         version: 8.2.9(storybook@8.2.9)
@@ -4687,8 +4687,8 @@ packages:
       - ts-node
       - utf-8-validate
 
-  /@remix-run/eslint-config@2.10.3(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4):
-    resolution: {integrity: sha512-Poj8giCzIzbcIxmsRQ/VU3MPaN+pZH4Fbk5/XcRQbBELb1rC2CCOG7H9/MV3EfGxl2RUxrj8vEdRzY6GdQ6FDg==}
+  /@remix-run/eslint-config@2.12.1(eslint@8.57.0)(react@18.3.1)(typescript@5.5.4):
+    resolution: {integrity: sha512-R/1zoLdI7ld8J2+LmFbb0BQAkcdjPYHX8wO7b3zEmoLDBdv2B6nHPBDigIHHzP8XROIlUaZJ5/cpqX8Y9U2O+Q==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       eslint: ^8.0.0
