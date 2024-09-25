@@ -9,13 +9,15 @@
     "dev": "turbo run dev --filter=./apps/www",
     "dev:emulator": "turbo run dev:emulator",
     "build:sb": "turbo run build:sb --filter=./apps/www",
+    "build-storybook": "npm run build:sb",
     "sb": "turbo run sb",
     "clean": "rm -rf .turbo && rm -rf node_modules && turbo run clean",
     "type-check": "tsc",
+    "chromatic": "chromatic --exit-zero-on-changes",
     "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch"
   },
   "devDependencies": {
-    "chromatic": "^11.7.1",
+    "chromatic": "^11.10.4",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-nuxt": "^4.0.0",
