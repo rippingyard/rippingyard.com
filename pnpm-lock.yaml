@@ -311,11 +311,11 @@ importers:
         specifier: ^8.3.3
         version: 8.3.3(react@18.3.1)(storybook@8.2.9)
       '@storybook/blocks':
-        specifier: ^8.3.2
-        version: 8.3.2(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
+        specifier: ^8.3.3
+        version: 8.3.3(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
       '@storybook/react':
-        specifier: ^8.2.9
-        version: 8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)(typescript@5.5.4)
+        specifier: ^8.3.3
+        version: 8.3.3(@storybook/test@8.2.9)(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)(typescript@5.5.4)
       '@storybook/react-vite':
         specifier: ^8.3.3
         version: 8.3.3(@storybook/test@8.2.9)(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)(typescript@5.5.4)(vite@5.4.8)
@@ -5230,12 +5230,12 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/blocks@8.3.2(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9):
-    resolution: {integrity: sha512-z6XTg5fC5XT/8vYYtFqVhQtBYw5MkSlkQF5HM1ntxlEesN4tGd14SjFd24nWuoAHq4G5D2D8KNt41IoNdzeD1A==}
+  /@storybook/blocks@8.3.3(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9):
+    resolution: {integrity: sha512-8Vsvxqstop3xfbsx3Dn1nEjyxvQUcOYd8vpxyp2YumxYO8FlXIRuYL6HAkYbcX8JexsKvCZYxor52D2vUGIKZg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.2
+      storybook: ^8.3.3
     peerDependenciesMeta:
       react:
         optional: true
@@ -5313,14 +5313,6 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
-    dev: true
-
-  /@storybook/components@8.2.9(storybook@8.2.9):
-    resolution: {integrity: sha512-OkkcZ/f/6o3GdFEEK9ZHKIGHWUHmavZUYs5xaSgU64bOrA2aqEFtfeWWitZYTv3Euhk8MVLWfyEMDfez0AlvDg==}
-    peerDependencies:
-      storybook: ^8.2.9
-    dependencies:
-      storybook: 8.2.9
     dev: true
 
   /@storybook/components@8.3.3(storybook@8.2.9):
@@ -5407,26 +5399,10 @@ packages:
       util: 0.12.5
     dev: true
 
-  /@storybook/manager-api@8.2.9(storybook@8.2.9):
-    resolution: {integrity: sha512-mkYvUlfqDw+0WbxIynh5TcrotmoXlumEsOA4+45zuNea8XpEgj5cNBUCnmfEO6yQ85swqkS8YYbMpg1cZyu/Vw==}
-    peerDependencies:
-      storybook: ^8.2.9
-    dependencies:
-      storybook: 8.2.9
-    dev: true
-
   /@storybook/manager-api@8.3.3(storybook@8.2.9):
     resolution: {integrity: sha512-Na4U+McOeVUJAR6qzJfQ6y2Qt0kUgEDUriNoAn+curpoKPTmIaZ79RAXBzIqBl31VyQKknKpZbozoRGf861YaQ==}
     peerDependencies:
       storybook: ^8.3.3
-    dependencies:
-      storybook: 8.2.9
-    dev: true
-
-  /@storybook/preview-api@8.2.9(storybook@8.2.9):
-    resolution: {integrity: sha512-D8/t+a78OJqQAcT/ABa1C4YM/OaLGQ9IvCsp3Q9ruUqDCwuZBj8bG3D4477dlY4owX2ycC0rWYu3VvuK0EmJjA==}
-    peerDependencies:
-      storybook: ^8.2.9
     dependencies:
       storybook: 8.2.9
     dev: true
@@ -5494,45 +5470,6 @@ packages:
       - vite-plugin-glimmerx
     dev: true
 
-  /@storybook/react@8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)(typescript@5.5.4):
-    resolution: {integrity: sha512-F2xZcTDxxjpbqt7eP8rEHmlksiKmE/qtPusEWEY4N4jK01kN+ncxSl8gkJpUohMEmAnVC5t/1v/sU57xv1DYpg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.2.9
-      typescript: '>= 4.2.x'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@storybook/components': 8.2.9(storybook@8.2.9)
-      '@storybook/global': 5.0.0
-      '@storybook/manager-api': 8.2.9(storybook@8.2.9)
-      '@storybook/preview-api': 8.2.9(storybook@8.2.9)
-      '@storybook/react-dom-shim': 8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
-      '@storybook/theming': 8.2.9(storybook@8.2.9)
-      '@types/escodegen': 0.0.6
-      '@types/estree': 0.0.51
-      '@types/node': 18.19.42
-      acorn: 7.4.1
-      acorn-jsx: 5.3.2(acorn@7.4.1)
-      acorn-walk: 7.2.0
-      escodegen: 2.1.0
-      html-tags: 3.3.1
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-element-to-jsx-string: 15.0.0(react-dom@18.3.1)(react@18.3.1)
-      semver: 7.6.3
-      storybook: 8.2.9
-      ts-dedent: 2.2.0
-      type-fest: 2.19.0
-      typescript: 5.5.4
-      util-deprecate: 1.0.2
-    dev: true
-
   /@storybook/react@8.3.3(@storybook/test@8.2.9)(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)(typescript@5.5.4):
     resolution: {integrity: sha512-fHOW/mNqI+sZWttGOE32Q+rAIbN7/Oib091cmE8usOM0z0vPNpywUBtqC2cCQH39vp19bhTsQaSsTcoBSweAHw==}
     engines: {node: '>=18.0.0'}
@@ -5595,14 +5532,6 @@ packages:
       - '@types/jest'
       - jest
       - vitest
-    dev: true
-
-  /@storybook/theming@8.2.9(storybook@8.2.9):
-    resolution: {integrity: sha512-OL0NFvowPX85N5zIYdgeKKaFm7V4Vgtci093vL3cDZT13LGH6GuEzJKkUFGuUGNPFlJc+EgTj0o6PYKrOLyQ6w==}
-    peerDependencies:
-      storybook: ^8.2.9
-    dependencies:
-      storybook: 8.2.9
     dev: true
 
   /@storybook/theming@8.3.3(storybook@8.2.9):
