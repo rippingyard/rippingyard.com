@@ -1,6 +1,9 @@
 # turborepo
 .turbo
 
+# storybook
+build-storybook.log
+
 # node_modules
 node_modules
 

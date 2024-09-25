@@ -19,30 +19,46 @@ const baseButtonStyle: ComplexStyleRule = {
 
 export const buttonStyle = style(baseButtonStyle);
 
+globalStyle(`${buttonStyle}:hover`, {
+  backgroundColor: vars.color.primaryDark,
+  // boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
+});
+
 export const successButtonStyle = style({
   backgroundColor: vars.color.primary,
   // boxShadow: `0 0 2px 0 ${vars.color.primary}`,
 });
 
-globalStyle(`${buttonStyle}:hover`, {
-  color: vars.color.primaryDark,
+globalStyle(`${successButtonStyle}:hover`, {
+  color: vars.color.background,
   // boxShadow: `0 0 8px 0 ${vars.color.primaryDark}`,
 });
 
 export const ghostButtonStyle = style({
   boxShadow: 'none',
   backgroundColor: 'transparent',
-  ':hover': {
-    boxShadow: 'none',
-  },
 });
 
-export const squareButtonStyle = style({
-  borderRadius: 0,
+globalStyle(`${ghostButtonStyle}:hover`, {
+  boxShadow: 'none',
+  backgroundColor: 'transparent',
+  color: vars.color.primary,
+});
+
+export const loadingStyle = style({
+  cursor: 'not-allowed',
+});
+
+globalStyle(`${loadingStyle}:hover`, {
+  backgroundColor: 'inherit',
 });
 
 export const disabledStyle = style({});
 
 globalStyle(`button:disabled.${disabledStyle}`, {
   cursor: 'not-allowed',
+});
+
+export const squareButtonStyle = style({
+  borderRadius: 0,
 });

@@ -50,6 +50,7 @@ export const loader: LoaderFunction = async ({
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     });
   } catch (e) {
+    console.error(e);
     throw new Response('Not Found', { status: 404 });
   }
 };
@@ -120,7 +121,7 @@ export default function Main() {
     const permalink = postLink(result.post.id);
 
     navigate(permalink);
-  }, [navigate, pathname, postLink, result]);
+  }, [clearCachedContent, navigate, pathname, postLink, result]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
