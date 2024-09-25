@@ -12,6 +12,10 @@
       "cache": false,
       "persistent": true
     },
+    "build:sb": {
+      "cache": false,
+      "persistent": false
+    },
     "clean": {
       "cache": false
     }

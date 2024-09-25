@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "turbo run dev --filter=./apps/www",
     "dev:emulator": "turbo run dev:emulator",
+    "build:sb": "turbo run build:sb --filter=./apps/www",
     "clean": "rm -rf .turbo && rm -rf node_modules && turbo run clean",
     "type-check": "tsc",
     "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch"
