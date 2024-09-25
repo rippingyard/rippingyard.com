@@ -124,8 +124,8 @@ importers:
         specifier: ^8.0.0
         version: 8.2.8
       '@nestjs/schematics':
-        specifier: ^10.1.2
-        version: 10.1.3(typescript@5.5.4)
+        specifier: ^10.1.4
+        version: 10.1.4(typescript@5.5.4)
       '@nestjs/testing':
         specifier: ^10.4.1
         version: 10.4.1(@nestjs/common@10.3.10)(@nestjs/core@10.3.10)(@nestjs/platform-express@10.3.10)
@@ -3739,8 +3739,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@nestjs/schematics@10.1.3(typescript@5.5.4):
-    resolution: {integrity: sha512-aLJ4Nl/K/u6ZlgLa0NjKw5CuBOIgc6vudF42QvmGueu5FaMGM6IJrAuEvB5T2kr0PAfVwYmDFBBHCWdYhTw4Tg==}
+  /@nestjs/schematics@10.1.4(typescript@5.5.4):
+    resolution: {integrity: sha512-QpY8ez9cTvXXPr3/KBrtSgXQHMSV6BkOUYy2c2TTe6cBqriEdGnCYqGl8cnfrQl3632q3lveQPaZ/c127dHsEw==}
     peerDependencies:
       typescript: '>=4.8.2'
     dependencies:
