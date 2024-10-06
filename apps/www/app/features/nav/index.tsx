@@ -10,6 +10,7 @@ import { containerStyle, openStyle, wrapperStyle } from './style.css';
 const authedLinks: MenuItem[] = [
   { to: '/', label: 'Top', caption: 'トップ' },
   { to: '/post/create', label: 'Create A Post', caption: '新規投稿' },
+  { to: '/home/posts', label: 'My Posts', caption: '自分の記事一覧' },
   {
     to: '/home/profile',
     label: 'Edit My Profile',

@@ -30,7 +30,7 @@ export const Layout: FC<
   const toggleNav = useCallback(() => setIsOpened(!isOpened), [isOpened]);
 
   useEffect(() => {
-    state === 'loading' && setIsOpened(false);
+    if (state === 'loading') setIsOpened(false);
   }, [state]);
 
   return (
