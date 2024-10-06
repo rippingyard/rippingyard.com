@@ -32,7 +32,7 @@ export const useQuery = async <T>(
         q = q.where(w.key, w?.op || defaultOp(w.val), w.val);
       }
     }
-    // console.table(logrows);
+    console.table(logrows);
   }
 
   if (args?.limit && args?.limit > 0) q = q.limit(args.limit);

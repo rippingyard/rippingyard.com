@@ -13,10 +13,8 @@ export const PostItem: FC<{
   mode?: ItemMode;
   permalink?: string;
 }> = ({ post, mode = 'list', permalink }) => {
-  switch (mode) {
-    case 'detail': {
-      return <PostListItemDetail post={post} permalink={permalink} />;
-    }
-  }
+  if (mode === 'detail')
+    return <PostListItemDetail post={post} permalink={permalink} />;
+
   return <PostItemLine post={post} permalink={permalink} />;
 };

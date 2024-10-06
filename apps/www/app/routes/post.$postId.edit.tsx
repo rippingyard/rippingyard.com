@@ -51,6 +51,7 @@ export const loader: LoaderFunction = async ({
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     });
   } catch (e) {
+    console.error(e);
     throw new Response('Not Found', { status: 404 });
   }
 };

@@ -5,12 +5,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { CACHE_KEYS, cacheItems, getCachedItems } from '../cache/useCache';
 
 type Props<T> = {
-  key: CACHE_KEYS;
+  key?: CACHE_KEYS;
   initialItems: SerializeFrom<T>[];
 };
 
 export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
-  const cachedItems = getCachedItems<T>(key);
+  const cachedItems = key ? getCachedItems<T>(key) : [];
   console.log('cached!', cachedItems.length);
 
   const [items, setItems] = useState(
@@ -39,6 +39,7 @@ export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
   }, [fetcher.data, fetcher.state]);
 
   useEffect(() => {
+    if (!key) return;
     cacheItems(key, items);
   }, [items, key]);
 

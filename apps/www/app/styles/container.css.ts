@@ -14,6 +14,18 @@ export const containerStyle = style({
   },
 });
 
+export const wideContainerStyle = style({
+  maxWidth: '100%',
+  margin: 'auto',
+  padding: 24,
+  height: '100%',
+  '@media': {
+    [mediaQuery('SP')]: {
+      padding: 16,
+    },
+  },
+});
+
 export const edgeStyle = style({
   paddingTop: 0,
   paddingBottom: 0,

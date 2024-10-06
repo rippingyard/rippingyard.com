@@ -37,6 +37,13 @@ export const summaryStyle = style({
   fontSize: rootVars.font.size.small,
 });
 
+export const summaryWithoutTitleStyle = style({
+  fontSize: rootVars.font.size.medium,
+  fontStyle: 'italic',
+  // fontWeight: rootVars.font.weight.bold,
+  color: vars.color['neutral-60'],
+});
+
 export const footerStyle = style({
   fontSize: rootVars.font.size['x-small'],
 });

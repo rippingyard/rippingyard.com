@@ -6,8 +6,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { Button } from '~/components/Button';
 import { Loading } from '~/features/loading';
-import { PostList } from '~/features/postList';
-import { CACHE_KEYS } from '~/hooks/cache/useCache';
+import { PostTable } from '~/features/postTable';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
@@ -23,6 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
     myId: uid || undefined,
+    removeWhereKeys: ['status', 'isPublic'],
     orderBy: {
       key: 'publishedAt',
       order: 'desc',
@@ -44,8 +44,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const key = CACHE_KEYS.PUBLIC_POSTS;
-
   const { items: initialItems } = useLoaderData<typeof loader>();
   const [canAutoload] = useState(true);
 
@@ -57,7 +55,6 @@ export default function Index() {
     loadMore,
     isCompleted,
   } = useInifiniteItems<Post>({
-    key,
     initialItems: initialItems as Post[],
   });
 
@@ -79,7 +76,7 @@ export default function Index() {
   return (
     <Suspense fallback={<Loading />}>
       <Await resolve={posts}>
-        <PostList posts={sortedPosts} mode="list" />
+        <PostTable posts={sortedPosts} />
         {!isCompleted && query && (
           <Button
             ref={ref}

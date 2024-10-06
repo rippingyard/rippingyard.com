@@ -1,4 +1,4 @@
-﻿import { Await, Link, useLoaderData } from '@remix-run/react';
+﻿import { Await, useLoaderData } from '@remix-run/react';
 import { json } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
@@ -7,6 +7,7 @@ import { Suspense, useMemo } from 'react';
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
+import { Link } from '~/components/Link';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
@@ -19,7 +20,7 @@ import { useDate } from '~/hooks/normalize/useDate';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
-import { articleSectionStyle } from '~/styles/section.css';
+import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 export const loader: LoaderFunction = async ({
@@ -110,9 +111,11 @@ export default function Main() {
               {owner && <UserCard user={owner} />}
               <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
               {canEditPost && (
-                <p>
-                  <Link to={editLink}>編集</Link>
-                </p>
+                <div className={articleFooterStyle}>
+                  <Link to={editLink} size="x-small" isButton isBold>
+                    編集
+                  </Link>
+                </div>
               )}
             </section>
             {hasNext && (

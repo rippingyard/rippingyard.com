@@ -3,7 +3,7 @@ import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
 
 import { Heading } from '~/components/Heading';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
-import { containerStyle } from '~/styles/container.css';
+import { wideContainerStyle } from '~/styles/container.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
@@ -23,7 +23,7 @@ export default function Index() {
   return (
     <>
       <Heading>Home</Heading>
-      <main className={containerStyle}>
+      <main className={wideContainerStyle}>
         <Outlet />
       </main>
     </>
