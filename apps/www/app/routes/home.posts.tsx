@@ -10,6 +10,7 @@ import { PostTable } from '~/features/postTable';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useDocReference } from '~/hooks/firestore/useDocReference.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
@@ -19,10 +20,18 @@ import { sortPosts } from '~/utils/post';
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
 
+  if (!uid) throw new Error('You have to login');
+
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
-    myId: uid || undefined,
+    myId: uid,
     removeWhereKeys: ['status', 'isPublic'],
+    where: [
+      {
+        key: 'owner',
+        val: useDocReference(uid, 'users'),
+      },
+    ],
     orderBy: {
       key: 'publishedAt',
       order: 'desc',
