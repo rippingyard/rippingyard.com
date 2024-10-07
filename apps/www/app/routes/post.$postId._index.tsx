@@ -9,6 +9,7 @@ import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { Loading } from '~/features/loading';
+import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
 import { usePost } from '~/hooks/fetch/usePost.server';
@@ -105,11 +106,16 @@ export default function Main() {
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <section className={articleSectionStyle}>
-              {post.status === 'drafted' && <p>この記事は下書き状態です</p>}
-              {!post.isPublic && <p>この記事は一般公開されていません</p>}
+              <PostHeader post={post} />
               <Article text={post.content} />
-              {owner && <UserCard user={owner} />}
-              <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+              {owner && (
+                <div className={articleSectionStyle}>
+                  <UserCard user={owner} />
+                </div>
+              )}
+              <div className={articleSectionStyle}>
+                <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+              </div>
               {canEditPost && (
                 <div className={articleFooterStyle}>
                   <Link to={editLink} size="x-small" isButton isBold>
