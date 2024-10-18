@@ -20,6 +20,9 @@
       "cache": false,
       "persistent": true
     },
+    "test": {
+      "cache": false
+    },
     "clean": {
       "cache": false
     }
