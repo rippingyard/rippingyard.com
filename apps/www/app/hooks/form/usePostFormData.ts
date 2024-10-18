@@ -8,12 +8,14 @@ export const usePostFormData = async (request: Request) => {
   const type = formData.get('type') as PostType;
   const status = formData.get('status') as PostStatus;
   const isPublic = (formData.get('isPublic') as string) === '1';
+  const entities = (formData.getAll('entity') as string[]) || [];
 
   return {
     contentBody,
     title,
     type,
     status,
+    entities,
     isPublic,
   };
 };

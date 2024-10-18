@@ -132,6 +132,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
       </footer>
       <SettingModal
         content={content}
+        entities={post?.entities || []}
         isOpened={isSettingOpened}
         isLoading={isLoading}
         isUpdate={!!post}

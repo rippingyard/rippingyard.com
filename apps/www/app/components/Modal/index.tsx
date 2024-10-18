@@ -2,6 +2,7 @@
 import { ComponentPropsWithoutRef, FC } from 'react';
 
 import { IconClose } from '~/assets/icons/Close';
+import { usePreventScroll } from '~/hooks/ui/usePreventScroll';
 
 import {
   backdropStyle,
@@ -24,6 +25,8 @@ export const Modal: FC<Props> = ({
   onClose = () => undefined,
   ...props
 }) => {
+  usePreventScroll(isOpened);
+
   return (
     <div className={clsx(wrapperStyle, !isOpened && closedStyle)}>
       <aside className={clsx(containerStyle, className)} {...props}>

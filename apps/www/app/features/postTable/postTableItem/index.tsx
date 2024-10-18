@@ -70,7 +70,6 @@ export const PostTableItem: FC<Props> = ({ post }) => {
         </Link>
         <Link
           to={editLink}
-          target="_blank"
           color="warning"
           size="x-small"
           isButton={true}

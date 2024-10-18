@@ -2,10 +2,17 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
+import { size } from '~/utils/style';
 
 export const containerStyle = style({
-  minWidth: '90vw',
+  // minWidth: '90vw',
+  maxWidth: size('MAIN'),
   padding: 32,
+  paddingTop: 8,
+});
+
+export const headerStyle = style({
+  marginBottom: 16,
 });
 
 export const containerBodyStyle = style({});

@@ -10,6 +10,7 @@ import {
 } from 'react';
 
 import { Button } from '~/components/Button';
+// import { FormInput } from '~/components/FormInput';
 import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
@@ -21,6 +22,7 @@ import { EntitySelector } from './entitySelector';
 import {
   containerBodyStyle,
   containerStyle,
+  headerStyle,
   statusItemDescriptionStyle,
   statusItemLabelStyle,
   statusItemSelectedStyle,
@@ -31,6 +33,7 @@ import {
 
 type Props = {
   content: string;
+  entities: string[];
   isOpened: boolean;
   isLoading: boolean;
   isPublic: boolean;
@@ -50,8 +53,11 @@ export type SuggestedEntity = {
   isChecked: boolean;
 };
 
+const mockedEntities = ['Music', 'Film', 'Book', 'Art', 'Game', 'Technology'];
+
 export const SettingModal: FC<Props> = ({
   content,
+  entities = [],
   isOpened = false,
   isLoading = false,
   isPublic,
@@ -61,6 +67,7 @@ export const SettingModal: FC<Props> = ({
   showEntityCard = false,
   onClose = () => undefined,
 }) => {
+  const [selectedEntities, setSelectedEntities] = useState<string[]>(entities);
   const [suggestedCategories, setSuggestedCategories] = useState<
     SuggestedCategory[]
   >([]);
@@ -70,8 +77,12 @@ export const SettingModal: FC<Props> = ({
 
   const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 
-  const getEntities = async () => {
+  const getEntities = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     try {
+      e.preventDefault();
+
       const body = new FormData();
       body.append('content', content);
 
@@ -110,8 +121,21 @@ export const SettingModal: FC<Props> = ({
 
   return (
     <Modal isOpened={isOpened} onClose={onClose}>
-      <Heading isWide>公開設定</Heading>
       <div className={containerStyle}>
+        <div className={headerStyle}>
+          <Heading level="partial">タグ</Heading>
+        </div>
+        <div className={containerBodyStyle}>
+          <EntitySelector
+            entities={[...entities, ...mockedEntities]}
+            selectedEntities={selectedEntities}
+            suggestedEntities={suggestedEntities}
+            setSelectedEntities={setSelectedEntities}
+          />
+        </div>
+        <div className={headerStyle}>
+          <Heading level="partial">公開設定</Heading>
+        </div>
         <div className={containerBodyStyle}>
           <div className={statusSelectorStyle}>
             <div
@@ -145,6 +169,21 @@ export const SettingModal: FC<Props> = ({
               </div>
             </div>
           </div>
+          {showEntityCard && (
+            <div>
+              <CategorySelector selectedCategories={suggestedCategories} />
+              {suggestedEntities.length > 0 && (
+                <>
+                  <h2>Entities</h2>
+                </>
+              )}
+
+              <hr />
+              <Button onClick={(e) => getEntities(e)}>
+                エンティティを取得
+              </Button>
+            </div>
+          )}
           <Button
             name="status"
             value="published"
@@ -155,27 +194,6 @@ export const SettingModal: FC<Props> = ({
             {label}
           </Button>
         </div>
-
-        {showEntityCard && (
-          <div>
-            {suggestedCategories.length > 0 && (
-              <>
-                <h2>Categories</h2>
-                <CategorySelector selectedCategories={suggestedCategories} />
-              </>
-            )}
-
-            {suggestedEntities.length > 0 && (
-              <>
-                <h2>Entities</h2>
-                <EntitySelector entities={suggestedEntities} />
-              </>
-            )}
-
-            <hr />
-            <Button onClick={getEntities}>エンティティを取得</Button>
-          </div>
-        )}
       </div>
     </Modal>
   );
