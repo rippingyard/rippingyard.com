@@ -12,6 +12,7 @@ type PostPayload = Pick<
   | 'slug'
   | 'status'
   | 'type'
+  | 'entities'
   | 'createdAt'
   | 'publishedAt'
   | 'isPublic'
@@ -36,6 +37,7 @@ const savePost = async (
       contentBody = '',
       status,
       type,
+      entities = [],
       isPublic,
       isDeleted,
       publishedAt,
@@ -61,7 +63,6 @@ const savePost = async (
       slug: '',
       status: 'drafted',
       type: 'log',
-      entities: [],
       items: [],
       isPublic: false,
       isDeleted: false,
@@ -71,6 +72,7 @@ const savePost = async (
       id: postDoc.id,
       owner,
       content,
+      entities,
       updatedAt: Timestamp.now(),
     };
 

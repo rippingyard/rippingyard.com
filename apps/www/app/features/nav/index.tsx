@@ -4,6 +4,7 @@ import { FC, useCallback, useMemo } from 'react';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
 import { clearCachedItems } from '~/hooks/cache/useCache';
+import { usePreventScroll } from '~/hooks/ui/usePreventScroll';
 
 import { containerStyle, openStyle, wrapperStyle } from './style.css';
 
@@ -33,6 +34,8 @@ export const Nav: FC<Props> = ({
   isOpened = false,
   isAuthenticated = false,
 }) => {
+  usePreventScroll(isOpened);
+
   const submit = useSubmit();
 
   const links = useMemo(
