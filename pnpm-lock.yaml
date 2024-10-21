@@ -268,8 +268,8 @@ importers:
         specifier: ^2.2.0
         version: 2.14.0
       openai:
-        specifier: ^4.55.4
-        version: 4.55.4(zod@3.23.8)
+        specifier: ^4.68.1
+        version: 4.68.1(zod@3.23.8)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -14735,8 +14735,8 @@ packages:
       is-wsl: 1.1.0
     dev: true
 
-  /openai@4.55.4(zod@3.23.8):
-    resolution: {integrity: sha512-TEC75Y6U/OKIJp9fHao3zkTYfKLYGqXdD2TI+xN2Zd5W8KNKvv6E4/OBTOW7jg7fySfrBrhy5fYzBbyBcdHEtQ==}
+  /openai@4.68.1(zod@3.23.8):
+    resolution: {integrity: sha512-C9XmYRHgra1U1G4GGFNqRHQEjxhoOWbQYR85IibfJ0jpHUhOm4/lARiKaC/h3zThvikwH9Dx/XOKWPNVygIS3g==}
     hasBin: true
     peerDependencies:
       zod: ^3.23.8
