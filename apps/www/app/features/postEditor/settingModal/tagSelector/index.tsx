@@ -8,52 +8,52 @@ import { checkedEntityStyle, entityItemStyle, tagListStyle } from './style.css';
 import { SuggestedEntity } from '..';
 
 type Props = {
-  entities: string[];
-  selectedEntities: string[];
-  suggestedEntities: SuggestedEntity[];
-  setSelectedEntities: Dispatch<SetStateAction<string[]>>;
+  tags: string[];
+  selectedTags: string[];
+  suggestedTags: SuggestedEntity[];
+  setSelectedTags: Dispatch<SetStateAction<string[]>>;
 };
 
-export const EntitySelector: FC<Props> = ({
-  entities = [],
-  selectedEntities = [],
-  suggestedEntities = [],
-  setSelectedEntities,
+export const TagSelector: FC<Props> = ({
+  tags = [],
+  selectedTags = [],
+  suggestedTags = [],
+  setSelectedTags,
 }) => {
   const onSelectEntity = useCallback(
-    (entity: string) => {
-      const index = selectedEntities.findIndex((e) => e === entity);
+    (tag: string) => {
+      const index = selectedTags.findIndex((t) => t === tag);
       if (index < 0) {
-        setSelectedEntities([...selectedEntities, entity]);
+        setSelectedTags([...selectedTags, tag]);
       } else {
-        setSelectedEntities(selectedEntities.filter((e) => e !== entity));
+        setSelectedTags(selectedTags.filter((t) => t !== tag));
       }
     },
-    [selectedEntities, setSelectedEntities]
+    [selectedTags, setSelectedTags]
   );
 
-  console.log('selectedEntities', selectedEntities);
+  console.log('selectedTags', selectedTags);
 
   return (
     <>
-      <ComboBox entities={entities} onSelectItem={onSelectEntity} />
-      {selectedEntities.length > 0 && (
+      <ComboBox entities={tags} onSelectItem={onSelectEntity} />
+      {selectedTags.length > 0 && (
         <ul className={tagListStyle}>
-          {selectedEntities.map((entity, i) => (
+          {selectedTags.map((tag, i) => (
             <li
-              key={`selected-entity-${i}-${entity}`}
+              key={`selected-tag-${i}-${tag}`}
               className={clsx(entityItemStyle, checkedEntityStyle)}
-              onClick={() => onSelectEntity(entity)}
+              onClick={() => onSelectEntity(tag)}
             >
-              <IconTag /> {entity}
-              <input type="hidden" name="entity" value={entity} />
+              <IconTag /> {tag}
+              <input type="hidden" name="tag" value={tag} />
             </li>
           ))}
         </ul>
       )}
-      {suggestedEntities.length > 0 && (
+      {suggestedTags.length > 0 && (
         <ul>
-          {suggestedEntities
+          {suggestedTags
             .sort((a, b) => (a.relevance > b.relevance ? -1 : 1))
             .map(
               (entity) =>

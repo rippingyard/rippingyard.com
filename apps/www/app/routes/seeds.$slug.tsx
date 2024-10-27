@@ -50,6 +50,7 @@ export const loader: LoaderFunction = async ({
       }
     );
   } catch (e) {
+    console.error(e);
     throw new Response('Not Found', { status: 404 });
   }
 };

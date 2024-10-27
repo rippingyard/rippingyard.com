@@ -1,15 +1,18 @@
+import { SerializeFrom } from '@remix-run/node';
+import clsx from 'clsx';
 import { FC, useMemo } from 'react';
+
 import { Post } from '~/schemas/post';
+
 import {
   containerStyle,
   postIsPublicStyle,
   postStatusStyle,
   statusStyle,
 } from './style.css';
-import clsx from 'clsx';
 
 export const PostHeader: FC<{
-  post: Post;
+  post: SerializeFrom<Post>;
 }> = ({ post }) => {
   const isShown = useMemo(
     () => !post.isPublic || post.status === 'drafted',

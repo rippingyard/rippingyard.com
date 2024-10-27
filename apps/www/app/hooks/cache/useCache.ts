@@ -10,7 +10,7 @@ type CacheObject<T> = {
 };
 
 const cacheItems = <T>(
-  key: CACHE_KEYS,
+  key: string,
   items: T[],
   expired: number = 600000
 ): void => {

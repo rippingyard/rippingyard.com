@@ -18,7 +18,6 @@ import { CategoryId } from '~/schemas/entity';
 import { PostStatus } from '~/schemas/post';
 
 import { CategorySelector } from './categorySelector';
-import { EntitySelector } from './entitySelector';
 import {
   containerBodyStyle,
   containerStyle,
@@ -30,10 +29,11 @@ import {
   statusRadioButtonStyle,
   statusSelectorStyle,
 } from './style.css';
+import { TagSelector } from './tagSelector';
 
 type Props = {
   content: string;
-  entities: string[];
+  tags: string[];
   isOpened: boolean;
   isLoading: boolean;
   isPublic: boolean;
@@ -57,7 +57,7 @@ const mockedEntities = ['Music', 'Film', 'Book', 'Art', 'Game', 'Technology'];
 
 export const SettingModal: FC<Props> = ({
   content,
-  entities = [],
+  tags = [],
   isOpened = false,
   isLoading = false,
   isPublic,
@@ -67,7 +67,7 @@ export const SettingModal: FC<Props> = ({
   showEntityCard = false,
   onClose = () => undefined,
 }) => {
-  const [selectedEntities, setSelectedEntities] = useState<string[]>(entities);
+  const [selectedEntities, setSelectedEntities] = useState<string[]>(tags);
   const [suggestedCategories, setSuggestedCategories] = useState<
     SuggestedCategory[]
   >([]);
@@ -77,7 +77,7 @@ export const SettingModal: FC<Props> = ({
 
   const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 
-  const getEntities = async (
+  const getTags = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     try {
@@ -126,11 +126,11 @@ export const SettingModal: FC<Props> = ({
           <Heading level="partial">タグ</Heading>
         </div>
         <div className={containerBodyStyle}>
-          <EntitySelector
-            entities={[...entities, ...mockedEntities]}
-            selectedEntities={selectedEntities}
-            suggestedEntities={suggestedEntities}
-            setSelectedEntities={setSelectedEntities}
+          <TagSelector
+            tags={[...tags, ...mockedEntities]}
+            selectedTags={selectedEntities}
+            suggestedTags={suggestedEntities}
+            setSelectedTags={setSelectedEntities}
           />
         </div>
         <div className={headerStyle}>
@@ -179,9 +179,7 @@ export const SettingModal: FC<Props> = ({
               )}
 
               <hr />
-              <Button onClick={(e) => getEntities(e)}>
-                エンティティを取得
-              </Button>
+              <Button onClick={(e) => getTags(e)}>エンティティを取得</Button>
             </div>
           )}
           <Button

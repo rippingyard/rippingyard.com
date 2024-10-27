@@ -25,7 +25,7 @@ export const PostSchema = z.object({
   owner: z.any().refine(DocumentReferenceSchema).optional(),
   collaborators: z.any().refine(DocumentReferenceSchema).optional(),
   parent: z.any().refine(DocumentReferenceSchema).optional(),
-  entities: z.string().array(),
+  tags: z.string().array(),
   items: z.any().refine(DocumentReferenceSchema).array(),
   type: PostTypeSchema,
   status: PostStatusSchema,
