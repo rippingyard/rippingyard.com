@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CACHE_KEYS, cacheItems, getCachedItems } from '../cache/useCache';
 
 type Props<T> = {
-  key?: CACHE_KEYS;
+  key?: CACHE_KEYS | string;
   initialItems: SerializeFrom<T>[];
 };
 

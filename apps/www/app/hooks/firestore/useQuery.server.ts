@@ -27,7 +27,8 @@ export const useQuery = async <T>(
       if (!removeWhereKeys.includes(w.key)) {
         logrows.push({
           key: w.key,
-          val: Array.isArray(w.val) ? w.val.join(', ') : w.val,
+          // val: Array.isArray(w.val) ? w.val.join(', ') : w.val,
+          val: w.val,
         });
         q = q.where(w.key, w?.op || defaultOp(w.val), w.val);
       }

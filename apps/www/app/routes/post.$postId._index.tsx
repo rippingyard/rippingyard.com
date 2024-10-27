@@ -1,13 +1,14 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
 import { json } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
-import type { LoaderFunction, MetaFunction } from '@vercel/remix';
+import type { MetaFunction } from '@vercel/remix';
 import { Suspense, useMemo } from 'react';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
+import { PostTags } from '~/components/PostTags';
 import { Loading } from '~/features/loading';
 import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
@@ -17,17 +18,14 @@ import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader: LoaderFunction = async ({
-  params,
-  request,
-}: LoaderFunctionArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   try {
     const { postId } = params;
     const canEditPost = useCanEditPost();
@@ -36,7 +34,6 @@ export const loader: LoaderFunction = async ({
     if (!postId) throw new Error();
 
     const { post } = await usePost(postId, request);
-    // console.log('post', post);
     if (!post) throw new Error();
 
     const { data: nextPosts } = await usePosts({
@@ -69,7 +66,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const { post, canonicalUrl } = data;
 
   const title = getTitle(post.content, {
-    alt: useDate(post.publishedAt, 'YYYY年MM月DD日の記録'),
+    alt: useDate(
+      post.publishedAt as unknown as TimestampType,
+      'YYYY年MM月DD日の記録'
+    ),
   });
   const summary = getSummary(post.content, 340);
   const thumbnail = getThumbnailFromText(post.content);
@@ -116,6 +116,17 @@ export default function Main() {
               <div className={articleSectionStyle}>
                 <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
               </div>
+              {post?.tags && (
+                <div className={articleSectionStyle}>
+                  <PostTags tags={post?.tags || []} />
+                  {/* {post.tags.map((tag, i) => (
+                      <li key={`tag-${post.id}-${tag}-${i}`}>
+                        <Link to={`/tag/${tag}`}>{tag}</Link>
+                      </li>
+                    ))} */}
+                </div>
+              )}
+
               {canEditPost && (
                 <div className={articleFooterStyle}>
                   <Link to={editLink} size="x-small" isButton isBold>

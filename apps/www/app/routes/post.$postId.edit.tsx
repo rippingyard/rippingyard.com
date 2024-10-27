@@ -69,7 +69,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const { uid } = await getMe(request);
     if (!uid) throw new Error('Unauthenticated');
 
-    const { title, contentBody, type, status, entities, isPublic } =
+    const { title, contentBody, type, status, tags, isPublic } =
       await usePostFormData(request);
 
     const createdAt = Timestamp.fromDate(post.createdAt.toDate());
@@ -82,7 +82,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       uid,
       type: type || post.type,
       status: status || post.status,
-      entities,
+      tags,
       createdAt,
       publishedAt,
       isPublic: isPublic !== undefined ? isPublic : post.isPublic,

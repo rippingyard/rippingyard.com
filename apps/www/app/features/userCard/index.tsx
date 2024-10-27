@@ -1,4 +1,5 @@
-﻿import { FC, memo } from 'react';
+﻿import { SerializeFrom } from '@remix-run/node';
+import { FC, memo } from 'react';
 
 import { Avatar } from '~/components/Avatar';
 import { User } from '~/schemas/user';
@@ -11,7 +12,7 @@ import {
   sideStyle,
 } from './style.css';
 
-const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
+const UserCardComponent: FC<{ user?: SerializeFrom<User> }> = ({ user }) => {
   if (!user) return;
 
   return (
