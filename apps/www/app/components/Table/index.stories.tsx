@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { fn } from '@storybook/test';
 
-import { Table } from '.';
+import { Table, TableItem } from '.';
 import { Button } from '../Button';
+import { useCallback, useMemo, useState } from 'react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Table> = {
@@ -28,12 +29,9 @@ type Story = StoryObj<typeof Table>;
 
 const items = [...Array(10)].map((_, i) => {
   return {
-    value: {
-      id: `${i + 1}`,
-      title: `タイトル${i}`,
-      button: <Button isGhost>編集</Button>,
-    },
-    isChecked: false,
+    id: `${i + 1}`,
+    title: `タイトル${i}`,
+    button: <Button isGhost>編集</Button>,
   };
 });
 
@@ -45,14 +43,58 @@ export const Default: Story = {
       { key: 'title', label: 'タイトル' },
       { key: 'button', label: 'アクション' },
     ],
-    items,
-    meta: {
+  },
+  render: (args) => {
+    const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
+    const isCheckedAll = useMemo(
+      () => items.length === checkedItems.length,
+      [checkedItems.length, items.length]
+    );
+
+    const onClickCheckbox = useCallback(
+      (item: TableItem) => {
+        const id = item.value.id as string;
+
+        const newCheckedItems: string[] = checkedItems.includes(id)
+          ? checkedItems.filter((checkedId) => checkedId !== id)
+          : [...checkedItems, id];
+
+        setCheckedItems(newCheckedItems);
+      },
+      [checkedItems]
+    );
+
+    const onClickAllCheckbox = useCallback(() => {
+      console.log(isCheckedAll);
+      const newCheckedItems = isCheckedAll ? [] : items.map((item) => item.id);
+      setCheckedItems(newCheckedItems);
+    }, [isCheckedAll, items]);
+
+    const filteredItems: TableItem[] = useMemo(
+      () =>
+        items.map((item) => {
+          return {
+            value: {
+              id: item.id,
+              title: item.title,
+              button: item.button,
+            },
+            isChecked: checkedItems.includes(item.id),
+          };
+        }),
+      [checkedItems, items]
+    );
+
+    const meta = {
       checkbox: {
         key: 'id',
-        isCheckedAll: false,
-        onClick: () => undefined,
-        onClickForAll: () => undefined,
+        isCheckedAll,
+        onClick: onClickCheckbox,
+        onClickForAll: onClickAllCheckbox,
       },
-    },
+    };
+
+    return <Table {...args} items={filteredItems} meta={meta} />;
   },
 };
