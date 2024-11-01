@@ -39,7 +39,7 @@ const savePost = async (
       status,
       type,
       tags = [],
-      suggestedTags,
+      suggestedTags = [],
       isPublic,
       isDeleted,
       publishedAt,
