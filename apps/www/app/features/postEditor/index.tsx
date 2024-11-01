@@ -124,6 +124,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
           value="published"
           disabled={isLoading}
           isLoading={isLoading}
+          isWide
           color="success"
           onClick={(e) => onConfirm(e)}
         >
@@ -133,6 +134,7 @@ export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
       <SettingModal
         content={content}
         tags={post?.tags || []}
+        suggestedTags={post?.suggestedTags || []}
         isOpened={isSettingOpened}
         isLoading={isLoading}
         isUpdate={!!post}

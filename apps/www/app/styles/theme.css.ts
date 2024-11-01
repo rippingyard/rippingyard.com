@@ -13,6 +13,7 @@ const cyan = (opacity: number = 1) =>
 const yellow = (opacity: number = 1) =>
   `hsl(63.442, 100%, 48.348%, ${opacity})`;
 const orange = (opacity: number = 1) => `hsla(14, 100%, 53%, ${opacity})`;
+const green = (opacity: number = 1) => `hsla(101, 59%, 42%, ${opacity})`;
 
 // $green: #D9DB7B;
 // $cyan: #2BCEFE;
@@ -57,6 +58,10 @@ export const [themeClass, vars] = createTheme({
      */
     secondry: yellow(),
     /**
+     * Green
+     */
+    success: green(),
+    /**
      * Orange
      */
     warning: orange(),
@@ -81,5 +86,6 @@ export const darkThemeClass = createTheme(vars, {
     'shadow-60': gray(0.6),
     'shadow-80': gray(0.8),
     warning: orange(),
+    success: green(),
   },
 });

@@ -26,10 +26,11 @@ export const summaryStyle = style({
 
 export const imageStyle = style({
   flexShrink: 0,
-  width: '100%',
+  width: 210,
   height: 140,
   borderRadius: rootVars.border.radius.large,
   overflow: 'hidden',
+  marginBottom: 8,
   // '@media': {
   //   [mediaQuery('SP')]: {
   //     borderRadius: rootVars.border.radius.normal,
@@ -43,4 +44,8 @@ globalStyle(`${imageStyle} > img`, {
   width: '100%',
   height: '100%',
   objectFit: 'cover',
+});
+
+export const tagContainerStyle = style({
+  fontSize: rootVars.font.size['x-small'],
 });

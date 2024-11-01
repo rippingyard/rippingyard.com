@@ -13,6 +13,7 @@ type PostPayload = Pick<
   | 'status'
   | 'type'
   | 'tags'
+  | 'suggestedTags'
   | 'createdAt'
   | 'publishedAt'
   | 'isPublic'
@@ -38,6 +39,7 @@ const savePost = async (
       status,
       type,
       tags = [],
+      suggestedTags,
       isPublic,
       isDeleted,
       publishedAt,
@@ -73,6 +75,7 @@ const savePost = async (
       owner,
       content,
       tags,
+      suggestedTags,
       updatedAt: Timestamp.now(),
     };
 
@@ -81,6 +84,8 @@ const savePost = async (
     if (isPublic !== undefined) post.isPublic = isPublic;
     if (isDeleted !== undefined) post.isDeleted = isDeleted;
     if (publishedAt !== undefined) post.publishedAt = publishedAt;
+
+    if (post?.slug === null) post.slug = '';
 
     // const entities = post.entities || defaultPost.entities
     // entities.byContent = await dispatch(

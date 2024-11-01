@@ -119,11 +119,6 @@ export default function Main() {
               {post?.tags && (
                 <div className={articleSectionStyle}>
                   <PostTags tags={post?.tags || []} />
-                  {/* {post.tags.map((tag, i) => (
-                      <li key={`tag-${post.id}-${tag}-${i}`}>
-                        <Link to={`/tag/${tag}`}>{tag}</Link>
-                      </li>
-                    ))} */}
                 </div>
               )}
 

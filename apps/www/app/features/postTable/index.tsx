@@ -2,10 +2,11 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 
 import { Table, TableItem } from '~/components/Table';
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDate';
 import { Post } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
 
+import { PostTableDate } from './postTableDate';
 import { PostTableItem } from './postTableItem';
 
 const columns = [
@@ -18,6 +19,11 @@ const columns = [
   //   label: 'タイトル',
   // },
   {
+    key: 'publishDate',
+    label: '公開日',
+    width: 80,
+  },
+  {
     key: 'content',
     label: 'コンテンツ',
   },
@@ -25,11 +31,6 @@ const columns = [
     key: 'status',
     label: '公開設定',
     width: 60,
-  },
-  {
-    key: 'publishDate',
-    label: '公開日',
-    width: 180,
   },
 ];
 
@@ -79,9 +80,6 @@ export const PostTable: FC<{ posts: SerializeFrom<Post>[] }> = ({ posts }) => {
         const title = getTitle(post.content, {
           titleLength: 80,
         });
-        const publishDate = useDate(
-          post.publishedAt as unknown as TimestampType
-        );
 
         return {
           value: {
@@ -89,7 +87,11 @@ export const PostTable: FC<{ posts: SerializeFrom<Post>[] }> = ({ posts }) => {
             title,
             content: <PostTableItem post={post} />,
             status: post.status,
-            publishDate,
+            publishDate: (
+              <PostTableDate
+                timestamp={post.publishedAt as unknown as TimestampType}
+              />
+            ),
           },
           isChecked: checkedItems.includes(post.id),
         };
