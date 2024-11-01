@@ -13,7 +13,7 @@ import OpenAI from 'openai';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
 export const config = {
-  maxDuration: 18,
+  maxDuration: 30,
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -55,7 +55,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
     if (run.status !== 'completed') throw new Error(run.status);
-    console.log('run', run);
 
     const messages = await openai.beta.threads.messages.list(run.thread_id);
 
@@ -73,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   } catch (e) {
     console.error(e);
-    return json({});
+    throw e;
   }
 };
 
