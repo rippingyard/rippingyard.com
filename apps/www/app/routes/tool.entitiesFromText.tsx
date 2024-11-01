@@ -12,6 +12,10 @@ import OpenAI from 'openai';
 // import { FormTextarea } from '~/components/FormTextarea';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
+export const config = {
+  maxDuration: 18,
+};
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
   if (!uid) {
@@ -51,6 +55,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
     if (run.status !== 'completed') throw new Error(run.status);
+    console.log('run', run);
 
     const messages = await openai.beta.threads.messages.list(run.thread_id);
 
