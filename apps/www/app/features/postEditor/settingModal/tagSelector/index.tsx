@@ -32,8 +32,6 @@ export const TagSelector: FC<Props> = ({
     [selectedTags, setSelectedTags]
   );
 
-  console.log('selectedTags', selectedTags);
-
   return (
     <>
       <ComboBox entities={tags} onSelectItem={onSelectEntity} />
@@ -52,26 +50,38 @@ export const TagSelector: FC<Props> = ({
         </ul>
       )}
       {suggestedTags.length > 0 && (
-        <ul>
-          {suggestedTags
-            .sort((a, b) => (a.relevance > b.relevance ? -1 : 1))
-            .map(
-              (entity) =>
-                entity.relevance > 0.5 && (
-                  <li
-                    className={clsx(
-                      entityItemStyle,
-                      entity.isChecked && checkedEntityStyle
-                    )}
-                  >
-                    <h3>{entity?.value}</h3>
-                    {/* <p>
-                    {entity?.relevance} / {entity?.categories.join(', ')}
-                  </p> */}
-                  </li>
-                )
-            )}
-        </ul>
+        <>
+          <ul>
+            {suggestedTags
+              .sort((a, b) => (a.relevance > b.relevance ? -1 : 1))
+              .map(
+                (suggestedTag, i) =>
+                  suggestedTag.relevance > 0.3 &&
+                  !selectedTags.includes(suggestedTag.value) && (
+                    <li
+                      className={clsx(
+                        entityItemStyle,
+                        suggestedTag.isChecked && checkedEntityStyle
+                      )}
+                      key={`suggested-tag-${i}-${suggestedTag.value}`}
+                      onClick={() => onSelectEntity(suggestedTag.value)}
+                    >
+                      <IconTag /> {suggestedTag?.value}
+                    </li>
+                  )
+              )}
+          </ul>
+          <ul>
+            {suggestedTags.map((suggestedTag, i) => (
+              <input
+                type="hidden"
+                name={'suggestedTag'}
+                value={JSON.stringify(suggestedTag)}
+                key={`suggested-tag-input-${i}-${suggestedTag.value}`}
+              />
+            ))}
+          </ul>
+        </>
       )}
     </>
   );

@@ -9,13 +9,14 @@ import {
   useCallback,
 } from 'react';
 
+import { IconRotate } from '~/assets/icons/Rotate';
 import { Button } from '~/components/Button';
 // import { FormInput } from '~/components/FormInput';
 import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
 import { CategoryId } from '~/schemas/entity';
-import { PostStatus } from '~/schemas/post';
+import { PostStatus, SuggestedTag } from '~/schemas/post';
 
 import { CategorySelector } from './categorySelector';
 import {
@@ -34,6 +35,7 @@ import { TagSelector } from './tagSelector';
 type Props = {
   content: string;
   tags: string[];
+  suggestedTags: SuggestedTag[];
   isOpened: boolean;
   isLoading: boolean;
   isPublic: boolean;
@@ -46,10 +48,8 @@ type Props = {
 
 export type SuggestedCategory = CategoryId;
 
-export type SuggestedEntity = {
-  value: string;
-  relevance: number;
-  categories: SuggestedCategory[];
+export type SuggestedEntity = SuggestedTag & {
+  // categories: SuggestedCategory[];
   isChecked: boolean;
 };
 
@@ -58,6 +58,7 @@ const mockedEntities = ['Music', 'Film', 'Book', 'Art', 'Game', 'Technology'];
 export const SettingModal: FC<Props> = ({
   content,
   tags = [],
+  suggestedTags = [],
   isOpened = false,
   isLoading = false,
   isPublic,
@@ -74,6 +75,7 @@ export const SettingModal: FC<Props> = ({
   const [suggestedEntities, setSuggestedEntities] = useState<SuggestedEntity[]>(
     []
   );
+  const [isGettingTags, setIsGettingTags] = useState(false);
 
   const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 
@@ -82,6 +84,7 @@ export const SettingModal: FC<Props> = ({
   ) => {
     try {
       e.preventDefault();
+      setIsGettingTags(true);
 
       const body = new FormData();
       body.append('content', content);
@@ -106,6 +109,8 @@ export const SettingModal: FC<Props> = ({
         setSuggestedCategories(data?.result?.categories ?? []);
         setSuggestedEntities(data?.result?.entities ?? []);
       }
+
+      setIsGettingTags(false);
     } catch (e) {
       console.error(e);
     }
@@ -129,10 +134,28 @@ export const SettingModal: FC<Props> = ({
           <TagSelector
             tags={[...tags, ...mockedEntities]}
             selectedTags={selectedEntities}
-            suggestedTags={suggestedEntities}
+            suggestedTags={
+              suggestedEntities.length > 0
+                ? suggestedEntities
+                : suggestedTags.map((t) => ({ ...t, isChecked: false }))
+            }
             setSelectedTags={setSelectedEntities}
           />
+          <p>
+            <Button
+              isRolling={isGettingTags}
+              disabled={isGettingTags}
+              onClick={(e) => getTags(e)}
+            >
+              <IconRotate />
+            </Button>
+          </p>
         </div>
+        {showEntityCard && (
+          <div className={containerBodyStyle}>
+            <CategorySelector selectedCategories={suggestedCategories} />
+          </div>
+        )}
         <div className={headerStyle}>
           <Heading level="partial">公開設定</Heading>
         </div>
@@ -169,24 +192,12 @@ export const SettingModal: FC<Props> = ({
               </div>
             </div>
           </div>
-          {showEntityCard && (
-            <div>
-              <CategorySelector selectedCategories={suggestedCategories} />
-              {suggestedEntities.length > 0 && (
-                <>
-                  <h2>Entities</h2>
-                </>
-              )}
-
-              <hr />
-              <Button onClick={(e) => getTags(e)}>エンティティを取得</Button>
-            </div>
-          )}
           <Button
             name="status"
             value="published"
             disabled={isLoading}
             isLoading={isLoading}
+            isWide
             color="success"
           >
             {label}

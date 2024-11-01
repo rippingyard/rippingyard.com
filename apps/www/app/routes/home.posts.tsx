@@ -90,6 +90,8 @@ export default function Index() {
           <Button
             ref={ref}
             isLoading={isLoading}
+            isWide
+            isGhost
             onClick={() => loadMore(query)}
           >
             もっと読む

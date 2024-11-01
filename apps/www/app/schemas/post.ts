@@ -5,6 +5,10 @@ import { DocumentReferenceSchema } from '~/utils/schema';
 
 const PostStatusSchema = z.enum(['published', 'drafted']);
 const PostTypeSchema = z.enum(['article', 'note', 'log']);
+const SuggestedTagSchema = z.object({
+  value: z.string(),
+  relevance: z.number(),
+});
 
 export const PostSchema = z.object({
   id: z.string(),
@@ -29,11 +33,13 @@ export const PostSchema = z.object({
   items: z.any().refine(DocumentReferenceSchema).array(),
   type: PostTypeSchema,
   status: PostStatusSchema,
+  suggestedTags: SuggestedTagSchema.array(),
 });
 
 export type Post = z.infer<typeof PostSchema>;
 export type PostType = z.infer<typeof PostTypeSchema>;
 export type PostStatus = z.infer<typeof PostStatusSchema>;
+export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 
 export type PostAsSearchResult = Pick<
   Post,

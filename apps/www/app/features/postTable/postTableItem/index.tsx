@@ -4,6 +4,7 @@ import { FC, useMemo } from 'react';
 
 import { Link } from '~/components/Link';
 import { summaryWithoutTitleStyle } from '~/components/PostItem/PostItemLine/style.css';
+import { PostTags } from '~/components/PostTags';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
@@ -16,6 +17,7 @@ import {
   headingStyle,
   imageStyle,
   summaryStyle,
+  tagContainerStyle,
 } from './style.css';
 
 type Props = {
@@ -55,6 +57,11 @@ export const PostTableItem: FC<Props> = ({ post }) => {
       {hasThumbnail && (
         <div className={imageStyle}>
           <img src={thumbnail} />
+        </div>
+      )}
+      {post?.tags && (
+        <div className={tagContainerStyle}>
+          <PostTags tags={post?.tags || []} />
         </div>
       )}
       <div className={footerStyle}>

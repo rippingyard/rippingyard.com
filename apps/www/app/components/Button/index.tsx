@@ -8,21 +8,34 @@ import {
   disabledStyle,
   ghostButtonStyle,
   loadingStyle,
+  rollingButtonStyle,
   squareButtonStyle,
   successButtonStyle,
+  wideButtonStyle,
 } from './style.css';
 
 type Props = ComponentPropsWithRef<'button'> & {
   isLoading?: boolean;
   color?: 'default' | 'success';
+  isWide?: boolean;
   isGhost?: boolean;
   isSquare?: boolean;
+  isRolling?: boolean;
   children: ReactNode;
 };
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
   (
-    { children, isLoading, color, isGhost = false, isSquare = false, ...props },
+    {
+      children,
+      isLoading,
+      color,
+      isGhost = false,
+      isSquare = false,
+      isWide = false,
+      isRolling = false,
+      ...props
+    },
     ref
   ) => {
     const className = clsx(
@@ -31,6 +44,8 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       color === 'success' && successButtonStyle,
       isGhost && ghostButtonStyle,
       isSquare && squareButtonStyle,
+      isWide && wideButtonStyle,
+      isRolling && rollingButtonStyle,
       props?.disabled && disabledStyle
     );
 
