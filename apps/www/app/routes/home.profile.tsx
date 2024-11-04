@@ -6,6 +6,7 @@ import {
   MetaFunction,
   json,
 } from '@vercel/remix';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { typeToFlattenedError, ZodError } from 'zod';
 
@@ -15,6 +16,7 @@ import { useUserFormData } from '~/hooks/form/useUserFormData';
 import { useSaveUser } from '~/hooks/save/useSaveUser.server';
 import { getMe } from '~/middlewares/session.server';
 import { User } from '~/schemas/user';
+import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async ({
   request,
@@ -122,8 +124,8 @@ export default function Main() {
   }, [data?.errors]);
 
   return (
-    <>
+    <main className={clsx(containerStyle, edgeStyle)}>
       <ProfileEditor user={me} errors={errors} />
-    </>
+    </main>
   );
 }

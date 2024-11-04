@@ -106,6 +106,7 @@ export const ProfileEditor: FC<Props> = ({
           value="published"
           disabled={isLoading}
           isLoading={isLoading}
+          isWide
           color="success"
         >
           更新
