@@ -27,7 +27,6 @@ export const Preview: FC<Props> = ({
   onRemoveImage,
   onUpload,
 }) => {
-  console.log('file', file);
   if (!file || !file?.url) return;
 
   return (
@@ -49,7 +48,8 @@ export const Preview: FC<Props> = ({
           <Button
             color="success"
             isLoading={isUploading}
-            isSquare={true}
+            isSquare
+            isWide
             onClick={onUpload}
           >
             <IconUpload />
