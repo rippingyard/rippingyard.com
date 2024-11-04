@@ -2,8 +2,6 @@ name: "Chromatic"
 
 on:
   push:
-    tags-ignore:
-      - "bot"
 
 jobs:
   chromatic:
