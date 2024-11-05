@@ -27,7 +27,7 @@ jobs:
         with:
           version: 8.9.0
       - name: Functions - Set firebase env to Develop
-        uses: w9jds/firebase-action@v13.15.2
+        uses: w9jds/firebase-action@v13.24.0
         with:
           args: functions:config:set runtime.env="develop" algolia.appid="${{ secrets.ALGOLIA_APPID_DEV }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_DEV }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_DEV }}" --project default
         env:
@@ -35,7 +35,7 @@ jobs:
       - name: Functions - Build for develop
         run: pnpm install && cd apps/functions && pnpm build
       - name: Functions - Deploy to develop
-        uses: w9jds/firebase-action@v13.15.2
+        uses: w9jds/firebase-action@v13.24.0
         with:
           args: deploy --only functions,firestore:rules --project default
         env:
