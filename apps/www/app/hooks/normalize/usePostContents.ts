@@ -21,11 +21,14 @@ export const usePostContents = (str: string, options: Options = {}) => {
 
   const { blocks: contentBlocks } = useContentBlocks(str);
   const hasTitleBlock = useMemo(
-    () => contentBlocks && contentBlocks[0].type === 'heading',
+    () =>
+      contentBlocks &&
+      contentBlocks[0].type === 'heading' &&
+      contentBlocks[0].attrs?.level === 1,
     [contentBlocks]
   );
 
-  const headings = useMemo(() => getHeadingTags(str) || [], [str]);
+  const headings = useMemo(() => getHeadingTags(str, 1) || [], [str]);
   const hasHeadingTag = useMemo(
     () => headings.length > 0 && headings[0] !== '',
     [headings]
@@ -40,7 +43,7 @@ export const usePostContents = (str: string, options: Options = {}) => {
     [alt, titleLength, str]
   );
 
-  const content = useMemo(() => (str ? removeTitle(str) : ''), [str]);
+  const content = useMemo(() => (str ? removeTitle(str, 1) : ''), [str]);
   const summary = useMemo(
     () => getSummary(content, summaryLength),
     [content, summaryLength]

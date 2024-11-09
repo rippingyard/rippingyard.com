@@ -70,6 +70,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       post.publishedAt as unknown as TimestampType,
       'YYYY年MM月DD日の記録'
     ),
+    // level: 1,
   });
   const summary = getSummary(post.content, 340);
   const thumbnail = getThumbnailFromText(post.content);

@@ -86,6 +86,9 @@ describe('getTitle', () => {
   it('2つ目以降のタイトルタグでも問題ない', () => {
     expect(getMainTitle(`<p>これはタイトルではない</p>${html}`)).toBe('');
   });
+  it('タイトルとして認識されるのは<h1>タグのみ', () => {
+    expect(getMainTitle('<h3>h3タグです</h3>')).toBe('');
+  });
   it('タイトルは「タ」（文字数制限は無視）', () => {
     expect(getTitle(html, { titleLength: 1 })).toBe('タイトル');
   });
