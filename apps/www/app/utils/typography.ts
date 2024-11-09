@@ -12,27 +12,32 @@ export const nl2br = (str: string): string => {
   return str.replace(/\n/g, '<br/>');
 };
 
-export const removeHtmlTags = (str: string) => {
-  return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '');
+export const removeHtmlTags = (str: string) =>
+  str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '');
+
+export const removeTitle = (str: string, level?: number) => {
+  if (!str) return '';
+  return str.replace(titlePattern(level), '');
 };
 
-export const removeTitle = (str: string) => {
-  if (!str) return '';
-  return str.replace(/<h.(?: .+?)?>.*?<\/h.>/g, '');
-};
+const titlePattern = (level?: number) =>
+  new RegExp(
+    level ? `<h${level}?>.*?</h${level}>` : '<h.(?: .+?)?>.*?</h.>',
+    'g'
+  );
 
 export const removeMainTitle = (str: string) => {
   if (!str) return '';
-  return str.replace(/^<h.(?: .+?)?>.*?<\/h.>/g, '');
+  return str.replace(titlePattern(1), '');
 };
 
 export const hasTitle = (str: string): boolean => {
   if (!str) return false;
-  return /<h.(?: .+?)?>.*?<\/h.>/.test(str);
+  return titlePattern(1).test(str);
 };
 
-export const getHeadingTags = (str: string) => {
-  return str?.match(/<h.(?: .+?)?>.*?<\/h.>/)?.map((s) => removeHtmlTags(s));
+export const getHeadingTags = (str: string, level?: number) => {
+  return str?.match(titlePattern(level))?.map((s) => removeHtmlTags(s));
 };
 
 export const getI18nName = (
@@ -93,11 +98,12 @@ type TitleParams = Partial<{
   alt: string;
   titleLength: number;
   withoutSummary: boolean;
+  level?: number;
 }>;
 
 export const getTitle = (str: string, options: TitleParams = {}) => {
-  const { alt, titleLength = 140, withoutSummary = false } = options;
-  const headings = getHeadingTags(str);
+  const { alt, titleLength = 140, withoutSummary = false, level } = options;
+  const headings = getHeadingTags(str, level);
   if (headings) {
     return decodeEntities(headings[0]);
   } else {
@@ -108,7 +114,7 @@ export const getTitle = (str: string, options: TitleParams = {}) => {
 
 export const getMainTitle = (str: string, options: TitleParams = {}) =>
   str.match(/^<h[1-6]/)
-    ? getTitle(str, { ...options, withoutSummary: true })
+    ? getTitle(str, { level: 1, ...options, withoutSummary: true })
     : '';
 
 export const getSummary = (str: string, length = 140) => {

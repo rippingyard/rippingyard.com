@@ -100,13 +100,13 @@ function App() {
   return (
     <html lang={lang} className={clsx(bodyStyle, themeClass)}>
       <head>
-        <Env env={env} />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
           content="width=device-width,initial-scale=1,viewport-fit=cover"
         />
+        <Env env={env} />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="ripping yard" />
         <meta property="fb:app_id" content="374907709233344" />
