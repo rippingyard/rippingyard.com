@@ -1,5 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, type LoaderFunctionArgs } from '@vercel/remix';
+import { json, MetaFunction, type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -44,6 +44,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const after = url.searchParams.get('after');
   const startAfter = after ? Timestamp.fromMillis(parseInt(after)) : undefined;
 
+  const canonicalUrl = new URL(tag, request.url).toString();
+
   if (startAfter) {
     args.startAfter = startAfter;
   }
@@ -53,7 +55,31 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   return json({
     items,
     tag,
+    canonicalUrl,
   });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data) return [];
+  const { tag, canonicalUrl } = data;
+
+  const summary = `${tag}についての記事一覧です。`;
+  const htmlTitle = `[Tag] ${tag} - rippingyard`;
+  const image = '/images/ogimage.png';
+
+  return [
+    { title: htmlTitle },
+    { tagName: 'link', rel: 'canonical', href: canonicalUrl },
+    { name: 'description', content: summary },
+    { property: 'og:title', content: htmlTitle },
+    { property: 'og:description', content: summary },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:image', content: image },
+    { name: 'twitter:title', content: htmlTitle },
+    { name: 'twitter:description', content: summary },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:card', content: 'summary' },
+  ];
 };
 
 export default function Index() {
