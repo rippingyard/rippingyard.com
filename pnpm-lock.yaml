@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       chromatic:
-        specifier: ^11.10.4
-        version: 11.10.4
+        specifier: ^11.18.1
+        version: 11.18.1
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -8009,8 +8009,8 @@ packages:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
 
-  /chromatic@11.10.4:
-    resolution: {integrity: sha512-nfgDpW5gQ4FtgV1lZXXfqLjONKDCh2K4vwI3dbZrtU1ObOL9THyAzpIdnK9LRcNSeisDLX+XFCryfMg1Ql2U2g==}
+  /chromatic@11.18.1:
+    resolution: {integrity: sha512-hkNT9vA6K9+PnE/khhZYBnRCOm8NonaQDs7RZ8YHFo7/lh1b/x/uFMkTjWjaj/mkM6QOR/evu5VcZMtcaauSlw==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
