@@ -18,7 +18,7 @@
     "functions:watch": "./apps/functions/node_modules/.bin/tsc --watch"
   },
   "devDependencies": {
-    "chromatic": "^11.10.4",
+    "chromatic": "^11.18.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-nuxt": "^4.0.0",
