@@ -23,6 +23,7 @@ import {
   containerBodyStyle,
   containerStyle,
   headerStyle,
+  retrivalErrorStyle,
   statusItemDescriptionStyle,
   statusItemLabelStyle,
   statusItemSelectedStyle,
@@ -76,6 +77,7 @@ export const SettingModal: FC<Props> = ({
     []
   );
   const [isGettingTags, setIsGettingTags] = useState(false);
+  const [tagRetrivalError, setTagRetrivalError] = useState('');
 
   const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 
@@ -85,6 +87,7 @@ export const SettingModal: FC<Props> = ({
     try {
       e.preventDefault();
       setIsGettingTags(true);
+      setTagRetrivalError('');
 
       const body = new FormData();
       body.append('content', content);
@@ -109,11 +112,13 @@ export const SettingModal: FC<Props> = ({
         setSuggestedCategories(data?.result?.categories ?? []);
         setSuggestedEntities(data?.result?.entities ?? []);
       }
-
-      setIsGettingTags(false);
     } catch (e) {
       console.error(e);
+      setTagRetrivalError(
+        'タグの取得に失敗しました。時間を置くか、文字数を減らして試してみてください'
+      );
     }
+    setIsGettingTags(false);
   };
 
   const onChangeStatus = useCallback(
@@ -150,6 +155,9 @@ export const SettingModal: FC<Props> = ({
               <IconRotate />
             </Button>
           </p>
+          {tagRetrivalError && (
+            <p className={retrivalErrorStyle}>{tagRetrivalError}</p>
+          )}
         </div>
         {showEntityCard && (
           <div className={containerBodyStyle}>

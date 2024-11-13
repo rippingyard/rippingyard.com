@@ -17,6 +17,11 @@ export const headerStyle = style({
 
 export const containerBodyStyle = style({});
 
+export const retrivalErrorStyle = style({
+  fontSize: rootVars.font.size.small,
+  color: vars.color.warning,
+});
+
 export const statusSelectorStyle = style({
   display: 'flex',
   gap: 16,
