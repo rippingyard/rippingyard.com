@@ -305,8 +305,8 @@ importers:
         specifier: ^8.2.9
         version: 8.2.9(storybook@8.2.9)(vitest@1.6.0)
       '@storybook/addon-links':
-        specifier: ^8.2.9
-        version: 8.2.9(react@18.3.1)(storybook@8.2.9)
+        specifier: ^8.4.4
+        version: 8.4.4(react@18.3.1)(storybook@8.2.9)
       '@storybook/addon-onboarding':
         specifier: ^8.2.9
         version: 8.2.9(react@18.3.1)(storybook@8.2.9)
@@ -5136,11 +5136,11 @@ packages:
       - vitest
     dev: true
 
-  /@storybook/addon-links@8.2.9(react@18.3.1)(storybook@8.2.9):
-    resolution: {integrity: sha512-RhJzUNdDb7lbliwXb64HMwieIeJ+OQ2Ditue1vmSox6NsSd+pshR+okHpAyoP1+fW+dahNENwAS2Kt2QiI78FA==}
+  /@storybook/addon-links@8.4.4(react@18.3.1)(storybook@8.2.9):
+    resolution: {integrity: sha512-hqTv06fPq9k5GUZD8JR49ANw5sBg8EYAsuCNoSd9OwVSBO/3y53HrMA0NCILUK8hnupPvtBuKXXoHmHes9R+1g==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.2.9
+      storybook: ^8.4.4
     peerDependenciesMeta:
       react:
         optional: true
