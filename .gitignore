@@ -2,7 +2,8 @@
 .turbo
 
 # storybook
-build-storybook.log
+*storybook.log
+.storybook/build
 
 # node_modules
 node_modules
