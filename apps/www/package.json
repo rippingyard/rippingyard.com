@@ -21,7 +21,7 @@
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
     "@remix-run/serve": "^2.11.2",
-    "@tiptap/extension-floating-menu": "^2.6.4",
+    "@tiptap/extension-floating-menu": "^2.10.1",
     "@tiptap/extension-highlight": "^2.6.4",
     "@tiptap/extension-image": "^2.6.4",
     "@tiptap/extension-link": "^2.6.4",
