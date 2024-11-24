@@ -80,6 +80,11 @@ service cloud.firestore {
       allow create: if isPostingMine();
       allow update, delete: if isMine();
     }
+    match /caches/{document=**} {
+      allow read;
+      allow create;
+      allow update, delete;
+    }
     match /{document=**} {
       allow read: if false
       allow write: if false
