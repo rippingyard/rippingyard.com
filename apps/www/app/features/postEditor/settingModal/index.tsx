@@ -11,7 +11,6 @@ import {
 
 import { IconRotate } from '~/assets/icons/Rotate';
 import { Button } from '~/components/Button';
-// import { FormInput } from '~/components/FormInput';
 import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
@@ -36,6 +35,7 @@ import { TagSelector } from './tagSelector';
 type Props = {
   content: string;
   tags: string[];
+  myTags: string[];
   suggestedTags: SuggestedTag[];
   isOpened: boolean;
   isLoading: boolean;
@@ -60,6 +60,7 @@ export const SettingModal: FC<Props> = ({
   content,
   tags = [],
   suggestedTags = [],
+  myTags = [],
   isOpened = false,
   isLoading = false,
   isPublic,
@@ -137,7 +138,7 @@ export const SettingModal: FC<Props> = ({
         </div>
         <div className={containerBodyStyle}>
           <TagSelector
-            tags={[...tags, ...mockedEntities]}
+            tags={[...tags, ...mockedEntities, ...myTags]}
             selectedTags={selectedEntities}
             suggestedTags={
               suggestedEntities.length > 0

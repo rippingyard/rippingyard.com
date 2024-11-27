@@ -7,7 +7,7 @@
 
 import { Post } from '~/schemas/post';
 
-type WhereOp = '==' | 'in' | 'array-contains-any';
+type WhereOp = '==' | 'in' | '!=' | 'array-contains-any';
 type WhereValue =
   | string
   | number

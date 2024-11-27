@@ -1,5 +1,5 @@
 ﻿import clsx from 'clsx';
-import { Dispatch, FC, SetStateAction, useCallback } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { ComboBox } from '~/components/ComboBox';
@@ -20,6 +20,8 @@ export const TagSelector: FC<Props> = ({
   suggestedTags = [],
   setSelectedTags,
 }) => {
+  const uniqueTags = useMemo(() => [...new Set(tags)], [tags]);
+
   const onSelectEntity = useCallback(
     (tag: string) => {
       const index = selectedTags.findIndex((t) => t === tag);
@@ -34,7 +36,7 @@ export const TagSelector: FC<Props> = ({
 
   return (
     <>
-      <ComboBox entities={tags} onSelectItem={onSelectEntity} />
+      <ComboBox tags={uniqueTags} onSelectItem={onSelectEntity} />
       {selectedTags.length > 0 && (
         <ul className={tagListStyle}>
           {selectedTags.map((tag, i) => (
