@@ -10,7 +10,7 @@ const onSelectItem = (entity: string) => console.log('entity', entity);
 
 describe('<ComboBox />', () => {
   it('初期段階ではリストが表示されていない', async () => {
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     expect(screen.queryByRole('list')).not.toBeTruthy();
     expect(screen.queryAllByRole('listitem')).toHaveLength(0);
@@ -18,7 +18,7 @@ describe('<ComboBox />', () => {
   it('「House」と入力すると一件の候補が表示される', async () => {
     const user = userEvent.setup();
 
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     await user.type(screen.getByRole('textbox'), 'House');
 
@@ -28,7 +28,7 @@ describe('<ComboBox />', () => {
   it('「App」と入力すると二件の候補が表示される', async () => {
     const user = userEvent.setup();
 
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     await user.type(screen.getByRole('textbox'), 'App');
 
@@ -38,7 +38,7 @@ describe('<ComboBox />', () => {
   it('「App」と入力して二度下キーを叩くと、二つ目の候補が選択されている', async () => {
     const user = userEvent.setup();
 
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     await user.type(screen.getByRole('textbox'), 'App');
     await user.keyboard('[ArrowDown>2]');
@@ -53,7 +53,7 @@ describe('<ComboBox />', () => {
   it('「 House」と入力すると、半角スペースを取り除いた候補が表示される', async () => {
     const user = userEvent.setup();
 
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     await user.type(screen.getByRole('textbox'), ' House');
 
@@ -63,7 +63,7 @@ describe('<ComboBox />', () => {
   it('「House 」と入力すると、半角スペースを取り除いた候補が表示される', async () => {
     const user = userEvent.setup();
 
-    render(<ComboBox entities={entities} onSelectItem={onSelectItem} />);
+    render(<ComboBox tags={entities} onSelectItem={onSelectItem} />);
 
     await user.type(screen.getByRole('textbox'), 'House ');
 
