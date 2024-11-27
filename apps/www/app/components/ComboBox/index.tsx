@@ -10,11 +10,11 @@ import {
 import { FormInput } from '../FormInput';
 
 type Props = {
-  entities: string[];
+  tags: string[];
   onSelectItem: (entity: string) => void;
 };
 
-export const ComboBox: FC<Props> = ({ entities = [], onSelectItem }) => {
+export const ComboBox: FC<Props> = ({ tags = [], onSelectItem }) => {
   const [hits, setHits] = useState<string[]>([]);
   const [index, setIndex] = useState<number>(-1);
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -25,14 +25,14 @@ export const ComboBox: FC<Props> = ({ entities = [], onSelectItem }) => {
 
       const hitItems: string[] = !value
         ? []
-        : entities.filter((entity) => new RegExp(value, 'i').test(entity));
+        : tags.filter((tag) => new RegExp(value, 'i').test(tag));
 
       if (value && !hitItems.includes(value)) hitItems.push(value);
 
       setHits(hitItems);
       setIndex(-1);
     },
-    [entities]
+    [tags]
   );
 
   const onClick = useCallback(

@@ -1,4 +1,9 @@
-﻿import { useActionData, useLocation, useNavigate } from '@remix-run/react';
+﻿import {
+  useActionData,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from '@remix-run/react';
 import { json, redirect } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type {
@@ -13,6 +18,7 @@ import { useEffect } from 'react';
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
+import { useMyTags } from '~/hooks/fetch/useMyTags.server.ts';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
@@ -44,9 +50,12 @@ export const loader: LoaderFunction = async ({
       });
     }
 
+    const myTags = await useMyTags({ uid });
+
     return json({
       title,
       canonicalUrl,
+      myTags,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     });
   } catch (e) {
@@ -109,6 +118,7 @@ export default function Main() {
   const navigate = useNavigate();
   const postLink = usePostLink();
   const { pathname } = useLocation();
+  const { myTags } = useLoaderData<typeof loader>();
   const { clearCachedContent } = useCachedContent();
 
   const result = useActionData<typeof action>();
@@ -125,7 +135,7 @@ export default function Main() {
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
-      <PostEditor />
+      <PostEditor myTags={myTags} />
     </main>
   );
 }
