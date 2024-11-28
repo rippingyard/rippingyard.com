@@ -31,7 +31,7 @@
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.3.10",
     "@nestjs/passport": "^10.0.3",
-    "@nestjs/platform-express": "^10.3.10",
+    "@nestjs/platform-express": "^10.4.11",
     "algoliasearch": "^4.23.3",
     "axios": "^1.7.4",
     "cors": "^2.8.5",
