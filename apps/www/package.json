@@ -51,7 +51,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.2.25",
+    "@chromatic-com/storybook": "^3.2.2",
     "@remix-run/dev": "^2.11.2",
     "@remix-run/eslint-config": "^2.10.3",
     "@storybook/addon-essentials": "^8.4.6",
