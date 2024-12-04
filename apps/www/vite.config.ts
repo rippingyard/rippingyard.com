@@ -21,6 +21,9 @@ export default defineConfig({
       remix({
         presets: [vercelPreset()],
         ignoredRouteFiles: ['**/.*'],
+        future: {
+          v3_routeConfig: true,
+        },
       }),
     tsconfigPaths(),
   ],
