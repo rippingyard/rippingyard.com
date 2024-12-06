@@ -1,5 +1,5 @@
 ﻿import { Link } from '@remix-run/react';
-import { SerializeFrom } from '@vercel/remix';
+import clsx from 'clsx';
 import { FC } from 'react';
 
 import { Article } from '~/components/Article';
@@ -17,7 +17,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post: SerializeFrom<Post>;
+  post: Post;
   permalink?: string;
 };
 
@@ -35,7 +35,7 @@ export const PostListItemDetail: FC<Props> = ({
     <div className={containerStyle}>
       {(hasTitleBlock && (
         <>
-          <div className={`${articleStyle} ${headingStyle}`}>
+          <div className={clsx(articleStyle, headingStyle)}>
             <h1>
               <Link to={permalink} prefetch="viewport">
                 {title}

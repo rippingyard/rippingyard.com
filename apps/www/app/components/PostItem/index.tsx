@@ -1,5 +1,4 @@
-﻿import { SerializeFrom } from '@vercel/remix';
-import { FC } from 'react';
+﻿import { FC } from 'react';
 
 import { Post } from '~/schemas/post';
 
@@ -9,7 +8,7 @@ import { PostItemLine } from './PostItemLine';
 export type ItemMode = 'detail' | 'list';
 
 export const PostItem: FC<{
-  post: SerializeFrom<Post>;
+  post: Post;
   mode?: ItemMode;
   permalink?: string;
 }> = ({ post, mode = 'list', permalink }) => {

@@ -1,5 +1,4 @@
-﻿import { SerializeFrom } from '@vercel/remix';
-import clsx from 'clsx';
+﻿import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 
 import { Link } from '~/components/Link';
@@ -21,7 +20,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post: SerializeFrom<Post>;
+  post: Post;
 };
 
 export const PostTableItem: FC<Props> = ({ post }) => {
