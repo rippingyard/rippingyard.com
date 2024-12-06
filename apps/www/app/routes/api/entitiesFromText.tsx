@@ -1,15 +1,11 @@
-﻿// import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import {
+﻿import {
   ActionFunction,
   json,
   LoaderFunctionArgs,
   redirect,
 } from '@vercel/remix';
 import OpenAI from 'openai';
-// import { useEffect, useState } from 'react';
 
-// import { Button } from '~/components/Button';
-// import { FormTextarea } from '~/components/FormTextarea';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
 export const config = {
@@ -75,55 +71,3 @@ export const action: ActionFunction = async ({ request }) => {
     throw e;
   }
 };
-
-// export default function Index() {
-//   const { content } = useLoaderData<typeof loader>();
-//   const data = useActionData<typeof action>();
-
-//   console.log('data', data);
-
-//   return (
-//     <Form method="POST">
-//       {data?.result && (
-//         <>
-//           {data?.result?.categories.length > 0 && (
-//             <div>
-//               <h2>Categories</h2>
-//               <ul>
-//                 {data?.result?.categories.map((category: string) => (
-//                   <li>{category}</li>
-//                 ))}
-//               </ul>
-//             </div>
-//           )}
-
-//           {data?.result?.entities.length > 0 && (
-//             <div>
-//               <h2>Entities</h2>
-//               <ul>
-//                 {data?.result?.entities.map(
-//                   (entity: {
-//                     value: string;
-//                     relevance: number;
-//                     categories: string[];
-//                   }) =>
-//                     entity.relevance > 0.5 && (
-//                       <li>
-//                         <h3>{entity?.value}</h3>
-//                         <p>
-//                           {entity?.relevance} / {entity?.categories.join(', ')}
-//                         </p>
-//                       </li>
-//                     )
-//                 )}
-//               </ul>
-//             </div>
-//           )}
-//         </>
-//       )}
-
-//       <FormTextarea name="content" defaultValue={data?.content || content} />
-//       <Button>送信</Button>
-//     </Form>
-//   );
-// }

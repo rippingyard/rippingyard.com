@@ -1,4 +1,6 @@
-﻿import { FC } from 'react';
+﻿import clsx from 'clsx';
+import { FC } from 'react';
+
 import { logoStyle } from './style.css';
 
 export const LogoType: FC<{
@@ -10,7 +12,7 @@ export const LogoType: FC<{
       width="171.605"
       height="69.108"
       viewBox="0 0 171.605 69.108"
-      className={`${logoStyle} ${style || ''}`}
+      className={clsx(logoStyle, style)}
     >
       <path
         id="svg_textlogo"
