@@ -1,5 +1,4 @@
 ﻿import { Link } from '@remix-run/react';
-import clsx from 'clsx';
 import { FC } from 'react';
 
 import { Article } from '~/components/Article';
@@ -7,7 +6,6 @@ import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { Post } from '~/schemas/post';
-import { articleStyle } from '~/styles/article.css';
 
 import {
   containerStyle,
@@ -35,13 +33,11 @@ export const PostListItemDetail: FC<Props> = ({
     <div className={containerStyle}>
       {(hasTitleBlock && (
         <>
-          <div className={clsx(articleStyle, headingStyle)}>
-            <h1>
-              <Link to={permalink} prefetch="viewport">
-                {title}
-              </Link>
-            </h1>
-          </div>
+          <h1 className={headingStyle}>
+            <Link to={permalink} prefetch="viewport">
+              {title}
+            </Link>
+          </h1>
           <Article text={content} />
         </>
       )) || (

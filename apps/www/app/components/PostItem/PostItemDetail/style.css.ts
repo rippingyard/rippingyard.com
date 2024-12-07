@@ -14,7 +14,16 @@ export const contentWithNoTitleStyle = style({
   borderRadius: rootVars.border.radius.normal,
 });
 
-export const headingStyle = style({});
+export const headingStyle = style({
+  outline: 'none',
+  // lineHeight: 1.8,
+  overflow: 'hidden',
+  paddingBottom: 25,
+  fontSize: rootVars.font.size['xxx-large'],
+  lineHeight: 1.4,
+  fontWeight: rootVars.font.weight.bold,
+  paddingTop: rootVars.font.size['xxx-large'],
+});
 
 globalStyle(`${headingStyle} a`, {
   textDecoration: 'none',
