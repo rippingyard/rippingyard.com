@@ -35,7 +35,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route('/tool/entitiesFromText', 'routes/api/entitiesFromText.tsx');
 
     // Sitemap
-    route('/sitemaps.xml', 'routes/sitemaps/index.tsx');
+    route('/sitemap.xml', 'routes/sitemaps/index.tsx');
     route('/sitemaps/posts.xml', 'routes/sitemaps/posts/index.tsx');
     route('/sitemaps/posts/:year.xml', 'routes/sitemaps/posts/$year.tsx');
     route('/sitemaps/seeds.xml', 'routes/sitemaps/seeds.tsx');
