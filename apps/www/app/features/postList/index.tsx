@@ -1,5 +1,4 @@
-﻿import { SerializeFrom } from '@vercel/remix';
-import { FC, memo } from 'react';
+﻿import { FC, memo } from 'react';
 
 import { type ItemMode, PostItem } from '~/components/PostItem';
 import { Post } from '~/schemas/post';
@@ -7,7 +6,7 @@ import { Post } from '~/schemas/post';
 import { containerStyle, itemStyle } from './style.css';
 
 type Props = {
-  posts: SerializeFrom<Post>[];
+  posts: Post[];
   mode?: ItemMode;
 };
 

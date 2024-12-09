@@ -1,5 +1,4 @@
-﻿import { SerializeFrom } from '@remix-run/node';
-import { FC, useCallback, useMemo, useState } from 'react';
+﻿import { FC, useCallback, useMemo, useState } from 'react';
 
 import { Table, TableItem } from '~/components/Table';
 import { TimestampType } from '~/hooks/normalize/useDate';
@@ -34,7 +33,7 @@ const columns = [
   },
 ];
 
-export const PostTable: FC<{ posts: SerializeFrom<Post>[] }> = ({ posts }) => {
+export const PostTable: FC<{ posts: Post[] }> = ({ posts }) => {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const isCheckedAll = useMemo(

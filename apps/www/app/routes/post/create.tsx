@@ -52,12 +52,12 @@ export const loader: LoaderFunction = async ({
 
     const myTags = await useMyTags({ uid });
 
-    return json({
+    return {
       title,
       canonicalUrl,
       myTags,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });
@@ -82,9 +82,9 @@ export const action: ActionFunction = async ({ request }) => {
 
     console.log('saved!', post);
 
-    return json({
+    return {
       post,
-    });
+    };
   } catch (e) {
     console.error(e);
     return json(e, {

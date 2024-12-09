@@ -1,5 +1,4 @@
 ﻿import { useSubmit } from '@remix-run/react';
-import { json } from '@vercel/remix';
 import { useCallback } from 'react';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
@@ -17,7 +16,7 @@ const links: MenuItem[] = [
 ];
 
 export const loader = async () => {
-  return json({});
+  return {};
 };
 
 export default function Index() {

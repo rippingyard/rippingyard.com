@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({
   request,
   params,
 }: LoaderFunctionArgs) => {
-  const { postId } = params;
+  const { id: postId } = params;
 
   const canEditPost = useCanEditPost();
 
@@ -46,14 +46,14 @@ export const loader: LoaderFunction = async ({
 
     const myTags = await useMyTags({ uid });
 
-    return json({
+    return {
       post,
       action,
       title,
       canonicalUrl,
       myTags,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const savePost = useSavePost();
 
   try {
-    const { postId } = params;
+    const { id: postId } = params;
     if (!postId) throw new Error();
 
     const { post } = await usePost(postId, request);
@@ -93,9 +93,9 @@ export const action: ActionFunction = async ({ request, params }) => {
       isPublic: isPublic !== undefined ? isPublic : post.isPublic,
     });
 
-    return json({
+    return {
       post: newPost,
-    });
+    };
   } catch (e) {
     console.error(e);
     return json(e, {
