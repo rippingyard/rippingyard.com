@@ -1,4 +1,3 @@
-import { SerializeFrom } from '@remix-run/node';
 import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 
@@ -12,7 +11,7 @@ import {
 } from './style.css';
 
 export const PostHeader: FC<{
-  post: SerializeFrom<Post>;
+  post: Post;
 }> = ({ post }) => {
   const isShown = useMemo(
     () => !post.isPublic || post.status === 'drafted',

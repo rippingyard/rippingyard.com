@@ -1,5 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, type LoaderFunctionArgs } from '@vercel/remix';
+import { type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -39,9 +39,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const { data: items } = await usePosts(args);
 
-  return json({
+  return {
     items,
-  });
+  };
 };
 
 export default function Index() {
@@ -69,7 +69,7 @@ export default function Index() {
   const query = useMemo(() => {
     const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
     if (!lastPublishedAt) return;
-    return `?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
+    return `posts?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
   }, [sortedPosts]);
 
   useEffect(() => {

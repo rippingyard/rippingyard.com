@@ -1,6 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
+import type { LoaderFunction, LoaderFunctionArgs } from '@vercel/remix';
 import type { MetaFunction } from '@vercel/remix';
 import { Suspense, useMemo } from 'react';
 
@@ -25,15 +24,18 @@ import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader: LoaderFunction = async ({
+  params,
+  request,
+}: LoaderFunctionArgs) => {
   try {
-    const { postId } = params;
+    const { id } = params;
     const canEditPost = useCanEditPost();
     const postLink = usePostLink();
 
-    if (!postId) throw new Error();
+    if (!id) throw new Error();
 
-    const { post } = await usePost(postId, request);
+    const { post } = await usePost(id, request);
     if (!post) throw new Error();
 
     const { data: nextPosts } = await usePosts({
@@ -47,14 +49,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
     const { user: owner } = await useUser(post?.owner?.id || '');
 
-    return json({
+    return {
       post,
       owner,
       nextPosts,
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });

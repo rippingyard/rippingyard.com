@@ -1,12 +1,11 @@
 ﻿import { useFetcher } from '@remix-run/react';
-import { SerializeFrom } from '@vercel/remix';
 import { useCallback, useEffect, useState } from 'react';
 
 import { CACHE_KEYS, cacheItems, getCachedItems } from '../cache/useCache';
 
 type Props<T> = {
   key?: CACHE_KEYS | string;
-  initialItems: SerializeFrom<T>[];
+  initialItems: T[];
 };
 
 export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
@@ -35,7 +34,7 @@ export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
     if (!fetcher.data || fetcher.state !== 'idle') return;
     const newItems = fetcher.data.items;
     if (newItems.length === 0) return setIsCompleted(true);
-    setItems((prevItems) => [...prevItems, ...newItems] as SerializeFrom<T>[]);
+    setItems((prevItems) => [...prevItems, ...newItems] as T[]);
   }, [fetcher.data, fetcher.state]);
 
   useEffect(() => {

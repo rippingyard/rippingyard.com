@@ -14,7 +14,10 @@ export default function handleRequest(
   remixContext: EntryContext
   // loadContext: AppLoadContext
 ) {
-  return isBotRequest(request.headers.get('user-agent'))
+  const prohibitOutOfOrderStreaming =
+    isBotRequest(request.headers.get('user-agent')) || remixContext.isSpaMode;
+
+  return prohibitOutOfOrderStreaming
     ? handleBotRequest(
         request,
         responseStatusCode,
@@ -40,11 +43,6 @@ function isBotRequest(userAgent: string | null) {
   // isbot >= 3.8.0, >4
   if ('isbot' in isbotModule && typeof isbotModule.isbot === 'function') {
     return isbotModule.isbot(userAgent);
-  }
-
-  // isbot < 3.8.0
-  if ('default' in isbotModule && typeof isbotModule.default === 'function') {
-    return isbotModule.default(userAgent);
   }
 
   return false;

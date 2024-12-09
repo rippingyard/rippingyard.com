@@ -1,12 +1,10 @@
-﻿import { SerializeFrom } from '@vercel/remix';
-
-export enum CACHE_KEYS {
+﻿export enum CACHE_KEYS {
   PUBLIC_POSTS = 'publicPosts',
 }
 
 type CacheObject<T> = {
   expired: number;
-  items: SerializeFrom<T>[];
+  items: T[];
 };
 
 const cacheItems = <T>(
@@ -24,7 +22,7 @@ const cacheItems = <T>(
   );
 };
 
-const getCachedItems = <T>(key: string): SerializeFrom<T>[] => {
+const getCachedItems = <T>(key: string): T[] => {
   if (typeof sessionStorage === 'undefined') return [];
   const cache = sessionStorage.getItem(key);
   if (!cache) return [];

@@ -1,4 +1,4 @@
-﻿import { LoaderFunctionArgs, json } from '@remix-run/node';
+﻿import { LoaderFunctionArgs } from '@remix-run/node';
 
 import { useUser } from '~/hooks/fetch/useUser.server';
 
@@ -12,9 +12,9 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
     if (!user) throw new Error();
 
-    return json({
+    return {
       user,
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });

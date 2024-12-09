@@ -1,5 +1,4 @@
 ﻿import { Link } from '@remix-run/react';
-import { SerializeFrom } from '@vercel/remix';
 import { FC, memo, useMemo } from 'react';
 
 import { usePostLink } from '~/hooks/link/usePostLink';
@@ -18,7 +17,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post: SerializeFrom<Post>;
+  post: Post;
   permalink?: string;
 };
 
