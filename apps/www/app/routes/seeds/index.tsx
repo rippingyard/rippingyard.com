@@ -1,5 +1,4 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -13,9 +12,9 @@ import { Seed } from '~/schemas/seed';
 import { containerStyle } from '~/styles/container.css';
 
 export const loader: LoaderFunction = async () => {
-  return json({
+  return {
     seeds: await useSeeds(),
-  });
+  };
 };
 
 export const meta: MetaFunction<typeof loader> = () => {

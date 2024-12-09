@@ -1,5 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import type { LoaderFunctionArgs } from '@vercel/remix';
+import type { LoaderFunction, LoaderFunctionArgs } from '@vercel/remix';
 import type { MetaFunction } from '@vercel/remix';
 import { Suspense, useMemo } from 'react';
 
@@ -24,10 +24,12 @@ import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader: LoaderFunction = async ({
+  params,
+  request,
+}: LoaderFunctionArgs) => {
   try {
     const { id } = params;
-    console.log('postId', params);
     const canEditPost = useCanEditPost();
     const postLink = usePostLink();
 
