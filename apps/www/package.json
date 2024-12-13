@@ -38,7 +38,7 @@
     "compressorjs": "^1.2.1",
     "dayjs": "^1.11.12",
     "destyle.css": "^4.0.0",
-    "firebase": "^10.12.5",
+    "firebase": "^11.1.0",
     "firebase-admin": "^12.3.1",
     "instantsearch.js": "^4.74.1",
     "isbot": "^5.1.16",
