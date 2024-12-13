@@ -12,6 +12,7 @@ const baseButtonStyle: ComplexStyleRule = {
   borderRadius: rootVars.border.radius.large,
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: 8,
   textAlign: 'center',
   padding: '16px 48px',
