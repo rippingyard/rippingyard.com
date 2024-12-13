@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  withRouter,
-  //   reactRouterParameters,
-} from 'storybook-addon-remix-react-router';
 
+// import {
+//   withRouter,
+//   //   reactRouterParameters,
+// } from 'storybook-addon-remix-react-router';
 import { Layout } from '.';
+import { RemixStub } from '../../../.storybook/RemixStub';
 
 // import { fn } from '@storybook/test';
 
@@ -17,7 +18,7 @@ const meta: Meta<typeof Layout> = {
     layout: 'centered',
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
+  //   tags: ['autodocs'],
   // // More on argTypes: https://storybook.js.org/docs/api/argtypes
   // argTypes: {
   //   // backgroundColor: { control: 'color' },
@@ -32,7 +33,14 @@ type Story = StoryObj<typeof Layout>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  decorators: [withRouter],
+  // decorators: [withRouter],
+  decorators: [
+    (Story) => (
+      <RemixStub>
+        <Story />
+      </RemixStub>
+    ),
+  ],
   //   parameters: {
   //     reactRouter: reactRouterParameters({
   //       routing: { path: '/' },

@@ -7,6 +7,7 @@ import {
   buttonStyle,
   disabledStyle,
   ghostButtonStyle,
+  loadingIconStyle,
   loadingStyle,
   rollingButtonStyle,
   squareButtonStyle,
@@ -51,7 +52,12 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
 
     return (
       <button ref={ref} {...props} className={className}>
-        {(isLoading && <IconLoader />) || children}
+        {isLoading && (
+          <div className={loadingIconStyle}>
+            <IconLoader />
+          </div>
+        )}
+        <div>{children}</div>
       </button>
     );
   }

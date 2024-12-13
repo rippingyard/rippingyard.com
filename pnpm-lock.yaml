@@ -396,7 +396,7 @@ importers:
         version: 8.4.6(prettier@3.3.3)
       storybook-addon-remix-react-router:
         specifier: ^3.0.2
-        version: 3.0.2(@storybook/blocks@8.4.6)(@storybook/channels@8.4.6)(@storybook/components@8.4.6)(@storybook/core-events@8.4.6)(@storybook/manager-api@8.4.6)(@storybook/preview-api@8.4.6)(@storybook/theming@8.4.6)(react-dom@18.3.1)(react-router-dom@6.26.1)(react@18.3.1)
+        version: 3.0.2(@storybook/blocks@8.4.6)(@storybook/channels@8.4.6)(@storybook/components@8.4.6)(@storybook/core-events@8.4.6)(@storybook/manager-api@8.4.6)(@storybook/preview-api@8.4.6)(@storybook/theming@8.4.6)(react-dom@18.3.1)(react-router-dom@6.28.0)(react@18.3.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -15878,7 +15878,7 @@ packages:
       internal-slot: 1.0.7
     dev: true
 
-  /storybook-addon-remix-react-router@3.0.2(@storybook/blocks@8.4.6)(@storybook/channels@8.4.6)(@storybook/components@8.4.6)(@storybook/core-events@8.4.6)(@storybook/manager-api@8.4.6)(@storybook/preview-api@8.4.6)(@storybook/theming@8.4.6)(react-dom@18.3.1)(react-router-dom@6.26.1)(react@18.3.1):
+  /storybook-addon-remix-react-router@3.0.2(@storybook/blocks@8.4.6)(@storybook/channels@8.4.6)(@storybook/components@8.4.6)(@storybook/core-events@8.4.6)(@storybook/manager-api@8.4.6)(@storybook/preview-api@8.4.6)(@storybook/theming@8.4.6)(react-dom@18.3.1)(react-router-dom@6.28.0)(react@18.3.1):
     resolution: {integrity: sha512-vSr7o+TYs2JY4m/elZm28UnLKeK/GQwmNnXWEnR5FyZ8Kcz1S1fPhsdWUjMEU9wRiAMjJwmEHiTtpjbZ4/b0mg==}
     peerDependencies:
       '@storybook/blocks': ^8.0.0
@@ -15908,7 +15908,7 @@ packages:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-inspector: 6.0.2(react@18.3.1)
-      react-router-dom: 6.26.1(react-dom@18.3.1)(react@18.3.1)
+      react-router-dom: 6.28.0(react-dom@18.3.1)(react@18.3.1)
     dev: true
 
   /storybook@8.4.6(prettier@3.3.3):

@@ -9,9 +9,12 @@ import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
 const baseButtonStyle: ComplexStyleRule = {
-  borderRadius: 999,
+  borderRadius: rootVars.border.radius.large,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
   textAlign: 'center',
-  padding: 16,
+  padding: '16px 48px',
   // boxShadow: `0 0 2px 0 ${vars.color.neutral}`,
   transition: '0.04s',
   lineHeight: 1,
@@ -64,10 +67,12 @@ globalStyle(`${ghostButtonStyle}:hover`, {
 
 export const loadingStyle = style({
   cursor: 'not-allowed',
+  opacity: 0.6,
+  padding: '16px 48px 16px 25px',
 });
 
 globalStyle(`${loadingStyle}:hover`, {
-  backgroundColor: 'inherit',
+  backgroundColor: vars.color.shadow,
 });
 
 export const disabledStyle = style({});
@@ -78,4 +83,8 @@ globalStyle(`button:disabled.${disabledStyle}`, {
 
 export const squareButtonStyle = style({
   borderRadius: 0,
+});
+
+export const loadingIconStyle = style({
+  display: 'block',
 });
