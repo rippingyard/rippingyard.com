@@ -1,6 +1,7 @@
 ﻿import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
+import { rootVars } from '~/styles/vars.css';
 import { zIndex } from '~/utils/style';
 
 export const containerStyle = style({
@@ -17,6 +18,7 @@ export const entitiesContainerStyle = style({
 
 export const entityStyle = style({
   padding: 8,
+  fontSize: rootVars.font.size['x-small'],
   border: `1px solid ${vars.color.shadow}`,
   borderTop: 0,
   cursor: 'pointer',
@@ -26,5 +28,5 @@ export const entityStyle = style({
 });
 
 export const focusedEntityStyle = style({
-  backgroundColor: vars.color.primary,
+  backgroundColor: vars.color.highlight,
 });

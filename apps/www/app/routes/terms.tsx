@@ -1,5 +1,4 @@
 ﻿import { useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LoaderFunction, MetaFunction } from '@vercel/remix';
 
@@ -15,11 +14,11 @@ export const loader: LoaderFunction = async ({
     const title = '利用規約';
     const canonicalUrl = new URL('terms', request.url).toString();
 
-    return json({
+    return {
       title,
       canonicalUrl,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });

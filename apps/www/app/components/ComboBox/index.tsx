@@ -15,6 +15,7 @@ type Props = {
 };
 
 export const ComboBox: FC<Props> = ({ tags = [], onSelectItem }) => {
+  const [entity, setEntity] = useState('');
   const [hits, setHits] = useState<string[]>([]);
   const [index, setIndex] = useState<number>(-1);
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -29,6 +30,7 @@ export const ComboBox: FC<Props> = ({ tags = [], onSelectItem }) => {
 
       if (value && !hitItems.includes(value)) hitItems.push(value);
 
+      setEntity(value);
       setHits(hitItems);
       setIndex(-1);
     },
@@ -57,14 +59,14 @@ export const ComboBox: FC<Props> = ({ tags = [], onSelectItem }) => {
       if (key === 'arrowup') setIndex(index > 0 ? index - 1 : hits.length - 1);
 
       if (key === 'enter') {
-        if (hits[index]) onSelectItem(hits[index]);
+        onSelectItem(hits[index] ?? entity);
         setIndex(-1);
         setHits([]);
       }
 
       e.preventDefault();
     },
-    [hits, index, isTyping, onSelectItem]
+    [entity, hits, index, isTyping, onSelectItem]
   );
 
   return (
