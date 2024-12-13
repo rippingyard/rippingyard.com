@@ -13,7 +13,7 @@ const rotate = keyframes({
 const baseLoaderStyle: ComplexStyleRule = {
   animation: `${rotate} 1s ease-in-out infinite`,
   lineHeight: 1,
-  width: 24,
+  width: 16,
 };
 
 export const loaderStyle = style(baseLoaderStyle);
@@ -25,7 +25,6 @@ globalStyle(`${loaderStyle} .loading__front`, {
   strokeWidth: 1,
   // stroke-miterlimit: 10,
   strokeDasharray: '65% 295%',
-
   stroke: '#111',
 });
 

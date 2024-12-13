@@ -87,6 +87,7 @@
     "prettier": "^3.3.3",
     "remix-development-tools": "^4.2.2",
     "storybook": "^8.4.6",
+    "storybook-addon-remix-react-router": "^3.0.2",
     "typescript": "^5.5.4",
     "vite": "^5.4.6",
     "vite-tsconfig-paths": "^5.0.1",
