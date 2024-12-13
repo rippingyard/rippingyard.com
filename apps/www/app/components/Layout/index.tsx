@@ -23,7 +23,7 @@ import { LogoType } from '../LogoType';
 
 export const Layout: FC<
   ComponentPropsWithoutRef<'div'> & { isAuthenticated: boolean }
-> = ({ children, isAuthenticated }) => {
+> = ({ children, isAuthenticated = false }) => {
   const [isOpened, setIsOpened] = useState(false);
   const { state } = useNavigation();
 
