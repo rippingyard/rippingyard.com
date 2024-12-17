@@ -1,12 +1,11 @@
-﻿import { useLoaderData } from '@remix-run/react';
-import { json, redirect } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
+﻿import dayjs from 'dayjs';
 import type {
+  LoaderFunctionArgs,
   ActionFunction,
   LoaderFunction,
   MetaFunction,
-} from '@vercel/remix';
-import dayjs from 'dayjs';
+} from 'react-router';
+import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
@@ -28,11 +27,11 @@ export const loader: LoaderFunction = async ({
 
     if (uid) return redirect('/');
 
-    return json({
+    return {
       title,
       canonicalUrl,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });
@@ -46,7 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
     const uid = formData.get('uid') as string;
     const tokenFromForm = formData.get('token') as string;
 
-    if (!tokenFromForm) return json({});
+    if (!tokenFromForm) return {};
 
     const session = await getSession(request.headers.get('Cookie'));
     const token = await getAuthToken(tokenFromForm);
@@ -57,7 +56,7 @@ export const action: ActionFunction = async ({ request }) => {
     session.set('role', user?.role || 'stranger');
     session.set('authenticatedAt', dayjs().valueOf());
 
-    return json(
+    return data(
       {},
       {
         headers: {

@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+import destyle from 'destyle.css?url';
 import {
   Links,
   Meta,
@@ -7,10 +9,10 @@ import {
   ScrollRestoration,
   useLoaderData,
   useRouteError,
-} from '@remix-run/react';
-import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
-import clsx from 'clsx';
-import destyle from 'destyle.css?url';
+  data,
+  LoaderFunctionArgs,
+  type LinksFunction,
+} from 'react-router';
 
 import { Env } from './components/Env';
 import { Heading } from './components/Heading';
@@ -49,7 +51,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const lang = 'ja'; //TODO: i18n対応
 
-  return json(
+  return data(
     {
       isAuthenticated,
       gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',

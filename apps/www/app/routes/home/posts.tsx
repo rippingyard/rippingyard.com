@@ -1,8 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Await, useLoaderData, type LoaderFunctionArgs } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { Loading } from '~/features/loading';
@@ -47,9 +46,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const { data: items } = await usePosts(args);
 
-  return json({
+  return {
     items,
-  });
+  };
 };
 
 export default function Index() {

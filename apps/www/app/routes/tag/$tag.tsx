@@ -1,8 +1,8 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, MetaFunction, type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { MetaFunction, type LoaderFunctionArgs } from 'react-router';
+import { Await, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
@@ -52,11 +52,11 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const { data: items } = await usePosts(args);
 
-  return json({
+  return {
     items,
     tag,
     canonicalUrl,
-  });
+  };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

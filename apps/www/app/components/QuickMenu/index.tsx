@@ -1,6 +1,6 @@
-﻿import { Link } from '@remix-run/react';
-import { RemixLinkProps } from '@remix-run/react/dist/components';
+﻿import { RemixLinkProps } from '@remix-run/react/dist/components';
 import { FC, RefAttributes } from 'react';
+import { Link } from 'react-router';
 
 import {
   containerStyle,

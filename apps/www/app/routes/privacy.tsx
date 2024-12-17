@@ -1,6 +1,6 @@
-﻿import { useLoaderData } from '@remix-run/react';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type { LoaderFunction, MetaFunction } from '@vercel/remix';
+﻿import type { LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunction, MetaFunction } from 'react-router';
+import { useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { LastUpdates } from '~/components/LastUpdates';

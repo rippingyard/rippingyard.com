@@ -1,11 +1,10 @@
-﻿import { json } from '@remix-run/node';
+﻿import algoliasearch from 'algoliasearch/lite';
+import { useLoaderData } from 'react-router';
 import type {
   LoaderFunction,
   LoaderFunctionArgs,
   MetaFunction,
-} from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import algoliasearch from 'algoliasearch/lite';
+} from 'react-router';
 
 import { SearchForm } from '~/components/SearchForm';
 import { SearchResult } from '~/features/searchResult';
@@ -20,11 +19,11 @@ export const loader: LoaderFunction = async ({
   console.log('query', query);
 
   if (!query)
-    return json({
+    return {
       posts: [],
       title: '検索',
       canonicalUrl: new URL('search', request.url).toString(),
-    });
+    };
 
   const searchClient = algoliasearch(
     process.env.VITE_ALGOLIA_APPID!,
@@ -40,12 +39,12 @@ export const loader: LoaderFunction = async ({
   const title = `「${query}」の検索結果`;
   const canonicalUrl = new URL(`search?=${query}`, request.url).toString();
 
-  return json({
+  return {
     posts: hits,
     query: query || '',
     title,
     canonicalUrl,
-  });
+  };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

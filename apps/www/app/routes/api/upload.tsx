@@ -1,11 +1,10 @@
 ﻿import {
-  json,
   redirect,
   unstable_createMemoryUploadHandler,
   unstable_parseMultipartFormData,
 } from '@vercel/remix';
-import type { ActionFunction } from '@vercel/remix';
 import { getDownloadURL } from 'firebase-admin/storage';
+import { data, type ActionFunction } from 'react-router';
 
 import { useBucket } from '~/hooks/firebase/useBucket.server';
 import { getMe } from '~/middlewares/session.server';
@@ -38,16 +37,16 @@ export const action: ActionFunction = async ({ request }) => {
 
     const url = await getDownloadURL(handler);
 
-    return json({
+    return {
       url,
-    });
+    };
   } catch (e: unknown) {
     console.error('Upload error:', e);
     if (typeof e === 'object' && e !== null) {
       console.error('Error details:', JSON.stringify(e, null, 2));
     }
 
-    return json(
+    return data(
       {
         error: e,
       },

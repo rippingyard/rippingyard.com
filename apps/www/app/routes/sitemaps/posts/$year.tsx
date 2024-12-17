@@ -1,5 +1,4 @@
-﻿import type { LoaderFunctionArgs } from '@vercel/remix';
-import dayjs from 'dayjs';
+﻿import dayjs from 'dayjs';
 import {
   Timestamp,
   collection,
@@ -10,6 +9,7 @@ import {
   startAfter,
   where,
 } from 'firebase/firestore';
+import type { LoaderFunctionArgs } from 'react-router';
 
 import { useFirestore } from '~/hooks/firestore/useFirestore';
 import { Routes, buildSitemap } from '~/utils/sitemap';

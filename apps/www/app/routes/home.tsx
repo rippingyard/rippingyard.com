@@ -1,5 +1,5 @@
-﻿import { Outlet } from '@remix-run/react';
-import { json, redirect, type LoaderFunctionArgs } from '@vercel/remix';
+﻿import { Outlet } from 'react-router';
+import { redirect, type LoaderFunctionArgs } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
@@ -16,7 +16,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       },
     });
   }
-  return json({});
+  return {};
 };
 
 export default function Index() {

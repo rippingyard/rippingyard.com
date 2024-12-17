@@ -1,7 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import type { LoaderFunction, LoaderFunctionArgs } from '@vercel/remix';
-import type { MetaFunction } from '@vercel/remix';
-import { Suspense, useMemo } from 'react';
+﻿import { Suspense, useMemo } from 'react';
+import type { LoaderFunction, LoaderFunctionArgs } from 'react-router';
+import type { MetaFunction } from 'react-router';
+import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';

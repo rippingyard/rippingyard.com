@@ -1,12 +1,12 @@
-﻿import { Form, useActionData } from '@remix-run/react';
-import { ActionFunction, json } from '@vercel/remix';
-import OpenAI from 'openai';
+﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
+import { Form, useActionData } from 'react-router';
+import { ActionFunction } from 'react-router';
 
 import { Prompt } from '~/features/prompt';
 
 export const loader = async () => {
-  return json({});
+  return {};
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -35,13 +35,13 @@ export const action: ActionFunction = async ({ request }) => {
       // stream: true,
     });
 
-    return json({
+    return {
       chat,
       prompt,
-    });
+    };
   } catch (e) {
     console.error(e);
-    return json({});
+    return {};
   }
 };
 

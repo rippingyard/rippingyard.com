@@ -1,8 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type { LoaderFunction, MetaFunction } from '@vercel/remix';
-import { Suspense } from 'react';
+﻿import { Suspense } from 'react';
+import { Await, data, useLoaderData } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunction, MetaFunction } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
@@ -41,7 +40,7 @@ export const loader: LoaderFunction = async ({
     const path = useSeedLink(post.slug as string);
     const canonicalUrl = new URL(path, request.url).toString();
 
-    return json(
+    return data(
       { post, prevPost, nextPost, canonicalUrl },
       {
         headers: {

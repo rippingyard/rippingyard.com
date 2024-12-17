@@ -1,19 +1,19 @@
-﻿import {
-  useActionData,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from '@remix-run/react';
-import { json, redirect } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
+﻿import clsx from 'clsx';
+import { Timestamp } from 'firebase-admin/firestore';
+import { useEffect } from 'react';
 import type {
   ActionFunction,
   LoaderFunction,
   MetaFunction,
-} from '@vercel/remix';
-import clsx from 'clsx';
-import { Timestamp } from 'firebase-admin/firestore';
-import { useEffect } from 'react';
+} from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
+import { data, redirect } from 'react-router';
+import {
+  useActionData,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
@@ -87,7 +87,7 @@ export const action: ActionFunction = async ({ request }) => {
     };
   } catch (e) {
     console.error(e);
-    return json(e, {
+    return data(e, {
       status: 400,
     });
   }

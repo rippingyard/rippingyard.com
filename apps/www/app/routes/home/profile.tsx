@@ -1,13 +1,13 @@
-﻿import { useActionData, useLoaderData } from '@remix-run/react';
+﻿import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+import { useActionData, useLoaderData } from 'react-router';
 import {
   ActionFunction,
+  data,
   LoaderFunction,
   LoaderFunctionArgs,
   MetaFunction,
-  json,
-} from '@vercel/remix';
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+} from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
 import { ProfileEditor } from '~/features/profileEditor';
@@ -33,11 +33,11 @@ export const loader: LoaderFunction = async ({
     console.log('uid', uid);
     if (!me) throw new Error('User Not Found');
 
-    return json({
+    return {
       me,
       title,
       canonicalUrl,
-    });
+    };
   } catch (e) {
     console.error('Not Found');
     throw e;
@@ -68,12 +68,12 @@ export const action: ActionFunction = async ({ request }) => {
 
     console.log('saved!', newUser);
 
-    return json({
+    return {
       me: newUser,
-    });
+    };
   } catch (e) {
     console.error(e);
-    return json(
+    return data(
       {
         errors: e,
       },
