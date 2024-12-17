@@ -4,14 +4,14 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix vite:build",
+    "build": "react-router build",
     "build:sb": "storybook build --output-dir .storybook/build",
-    "dev": "remix vite:dev",
+    "dev": "react-router dev",
     "dev:emulator": "FIRESTORE_EMULATOR_HOST=localhost:8080 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_STORAGE_EMULATOR_HOST=localhost:9199 remix vite:dev",
     "dev:all": "pnpm dev & pnpm sb",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "react-router-serve build/server/index.js",
     "test": "vitest",
-    "typecheck": "tsc",
+    "typecheck": "react-router typegen && tsc",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build --output-dir .storybook/build"
