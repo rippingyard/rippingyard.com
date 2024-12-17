@@ -1,4 +1,4 @@
-﻿import { vitePlugin as remix } from '@remix-run/dev';
+import { reactRouter } from '@react-router/dev/vite';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 // import { remixDevTools } from 'remix-development-tools/vite';
 import { vercelPreset } from '@vercel/remix/vite';
@@ -15,7 +15,7 @@ export default defineConfig({
     // remixDevTools(),
     vanillaExtractPlugin(),
     !isStorybook &&
-      remix({
+      reactRouter({
         presets: [vercelPreset()],
         ignoredRouteFiles: ['**/.*'],
         future: {

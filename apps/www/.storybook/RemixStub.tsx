@@ -1,4 +1,4 @@
-import { RemixBrowser } from '@remix-run/react';
+import { HydratedRouter } from 'react-router/dom';
 import React from 'react';
 
 export function RemixStub({ children }: { children: React.ReactNode }) {
@@ -30,5 +30,5 @@ export function RemixStub({ children }: { children: React.ReactNode }) {
     },
   };
 
-  return <RemixBrowser />;
+  return <HydratedRouter />;
 }

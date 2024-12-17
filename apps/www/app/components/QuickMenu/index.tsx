@@ -1,4 +1,4 @@
-﻿import { RemixLinkProps } from '@remix-run/react/dist/components';
+import { RemixLinkProps } from '@react-router/react/dist/components';
 import { FC, RefAttributes } from 'react';
 import { Link } from 'react-router';
 
