@@ -89,7 +89,7 @@
     "storybook": "^8.4.6",
     "storybook-addon-remix-react-router": "^3.0.2",
     "typescript": "^5.5.4",
-    "vite": "^5.4.6",
+    "vite": "^6.0.4",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^1.4.0"
   },
