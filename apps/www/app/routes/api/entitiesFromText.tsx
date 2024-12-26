@@ -57,10 +57,10 @@ export const action: ActionFunction = async ({ request }) => {
       console.log('result', result);
     }
 
-    return {
+    return Response.json({
       content,
       result,
-    };
+    });
   } catch (e) {
     console.error(e);
     throw e;

@@ -1,13 +1,10 @@
-﻿import {
-  redirect,
-  unstable_createMemoryUploadHandler,
-  unstable_parseMultipartFormData,
-} from '@vercel/remix';
+﻿import { parseFormData, FileUpload } from '@mjackson/form-data-parser';
 import { getDownloadURL } from 'firebase-admin/storage';
+import { redirect } from 'react-router';
 import { data, type ActionFunction } from 'react-router';
 
 import { useBucket } from '~/hooks/firebase/useBucket.server';
-import { getMe } from '~/middlewares/session.server';
+import { getMe, getSession } from '~/middlewares/session.server';
 
 export const action: ActionFunction = async ({ request }) => {
   try {
@@ -15,14 +12,11 @@ export const action: ActionFunction = async ({ request }) => {
 
     if (!uid) return redirect('/');
 
-    const form = await unstable_parseMultipartFormData(
-      request,
-      unstable_createMemoryUploadHandler({
-        maxPartSize: 12000000,
-      })
-    );
+    const form = await parseFormData(request, undefined, {
+      maxFileSize: 1024 * 1024 * 1, // 10MB
+    });
 
-    const file = form.get('file') as Blob;
+    const file = form.get('file') as FileUpload;
     const contentType = file.type;
     const filename = form.get('filename') as string;
 
@@ -37,14 +31,17 @@ export const action: ActionFunction = async ({ request }) => {
 
     const url = await getDownloadURL(handler);
 
-    return {
+    return Response.json({
       url,
-    };
+    });
   } catch (e: unknown) {
     console.error('Upload error:', e);
     if (typeof e === 'object' && e !== null) {
       console.error('Error details:', JSON.stringify(e, null, 2));
     }
+
+    const session = await getSession(request.headers.get('Cookie'));
+    session.flash('alertMessage', e as string);
 
     return data(
       {

@@ -13,13 +13,13 @@ const cacheItems = <T>(
   expired: number = 600000
 ): void => {
   if (typeof sessionStorage === 'undefined') return;
-  sessionStorage.setItem(
-    key,
-    JSON.stringify({
-      expired: Date.now() + expired,
-      items,
-    })
-  );
+  // sessionStorage.setItem(
+  //   key,
+  //   JSON.stringify({
+  //     expired: Date.now() + expired,
+  //     items,
+  //   })
+  // );
 };
 
 const getCachedItems = <T>(key: string): T[] => {

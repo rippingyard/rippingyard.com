@@ -30,7 +30,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const env: Env = {
     VITE_GA_ADSENSE_ID: adsenseId,
-    NODE_ENV: process.env.NODE_ENV,
+    NODE_ENV: process.env.NODE_ENV!,
     VITE_FIREBASE_API_KEY: process.env.VITE_FIREBASE_API_KEY!,
     VITE_FIREBASE_AUTH_DOMAIN: process.env.VITE_FIREBASE_AUTH_DOMAIN!,
     VITE_FIREBASE_DATABASE_URL: process.env.VITE_FIREBASE_DATABASE_URL!,

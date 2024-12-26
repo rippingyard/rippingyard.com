@@ -1,4 +1,4 @@
-﻿import { createCookieSessionStorage } from '@vercel/remix';
+﻿import { createCookieSessionStorage } from 'react-router';
 // import dayjs from 'dayjs';
 
 import { useFirebase } from '~/hooks/firebase/useFirebase.server';
@@ -67,6 +67,7 @@ const getMe = async (
 
     return { uid, role };
   } catch (e) {
+    console.log('e', e);
     return emptyValue;
   }
 };
