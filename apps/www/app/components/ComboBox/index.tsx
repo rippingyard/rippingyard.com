@@ -7,7 +7,7 @@ import {
   entityStyle,
   focusedEntityStyle,
 } from './style.css';
-import { FormInput } from '../FormInput';
+import { FormElasticInput } from '../FormElasticInput';
 
 type Props = {
   tags: string[];
@@ -71,12 +71,14 @@ export const ComboBox: FC<Props> = ({ tags = [], onSelectItem }) => {
 
   return (
     <div className={containerStyle}>
-      <FormInput
+      <FormElasticInput
         onFocus={(e) => onChange(e)}
         onChange={(e) => onChange(e)}
         onKeyDown={(e) => onKeyDown(e)}
         onCompositionStart={() => setIsTyping(true)}
         onCompositionEnd={() => setIsTyping(false)}
+        isTyping={isTyping}
+        placeholder="タグを入力"
       />
       {hits.length > 0 && (
         <ul className={entitiesContainerStyle}>

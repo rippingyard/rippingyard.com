@@ -11,17 +11,24 @@ export const containerStyle = style({
 
 export const entitiesContainerStyle = style({
   position: 'absolute',
-  top: 40,
-  backgroundColor: vars.color.background,
-  width: '100%',
+  top: 45,
+  backgroundColor: vars.color.shadow,
+  // border: `2px solid ${vars.color['neutral-40']}`,
+  borderRadius: rootVars.border.radius.normal,
+  width: 'fit-content',
+  minWidth: '100%',
+  maxWidth: 300,
+  overflow: 'hidden',
 });
 
 export const entityStyle = style({
-  padding: 8,
+  padding: '8px 12px',
   fontSize: rootVars.font.size['x-small'],
-  border: `1px solid ${vars.color.shadow}`,
+  fontWeight: rootVars.font.weight.bold,
+  // border: `1px solid ${vars.color.shadow}`,
   borderTop: 0,
   cursor: 'pointer',
+  whiteSpace: 'nowrap',
   ':hover': {
     backgroundColor: vars.color.highlight,
   },

@@ -1,9 +1,4 @@
-﻿import {
-  ComplexStyleRule,
-  globalStyle,
-  keyframes,
-  style,
-} from '@vanilla-extract/css';
+﻿import { ComplexStyleRule, globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
@@ -34,15 +29,6 @@ globalStyle(`${buttonStyle}:hover`, {
 
 export const wideButtonStyle = style({
   width: '100%',
-});
-
-const rotate = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-});
-
-export const rollingButtonStyle = style({
-  animation: `${rotate} 1s ease-in-out infinite`,
 });
 
 export const successButtonStyle = style({

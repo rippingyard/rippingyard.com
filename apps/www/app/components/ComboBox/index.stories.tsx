@@ -55,6 +55,12 @@ export const Default: Story = {
       'Xenon',
       'Year',
       'Zelda',
+      'アリゲーター',
+      '異世界',
+      'ウルトラマン',
+      '海老',
+      'オカリナ',
+      '怪物',
     ],
     onSelectItem: (entity: string) => {
       const index = entities.findIndex((e) => e === entity);

@@ -5,17 +5,30 @@ import { rootVars } from '~/styles/vars.css';
 import { size } from '~/utils/style';
 
 export const containerStyle = style({
-  // minWidth: '90vw',
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
   maxWidth: size('MAIN'),
+});
+
+export const containerBodyStyle = style({
   padding: 32,
   paddingTop: 8,
+  flexGrow: 1,
+  maxHeight: '80dvh',
+  overflowY: 'auto',
+});
+
+export const containerFootStyle = style({
+  flexGrow: 0,
+  width: '100%',
 });
 
 export const headerStyle = style({
   marginBottom: 16,
 });
 
-export const containerBodyStyle = style({});
+export const bodyStyle = style({});
 
 export const retrivalErrorStyle = style({
   fontSize: rootVars.font.size.small,
