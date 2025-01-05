@@ -1,5 +1,5 @@
 ﻿import clsx from 'clsx';
-import { ComponentPropsWithRef, FC } from 'react';
+import { ComponentPropsWithRef, FC, useRef } from 'react';
 
 import { boldStyle, borderStyle, headingStyle, inputStyle } from './style.css';
 
@@ -15,6 +15,8 @@ export const FormInput: FC<Props> = ({
   hasBorder = true,
   ...props
 }) => {
+  const ref = useRef<HTMLInputElement>(null);
+
   const className = clsx(
     inputStyle,
     isHeading && headingStyle,
@@ -22,5 +24,7 @@ export const FormInput: FC<Props> = ({
     hasBorder && borderStyle
   );
 
-  return <input autoComplete="true" {...props} className={className} />;
+  return (
+    <input autoComplete="false" ref={ref} {...props} className={className} />
+  );
 };

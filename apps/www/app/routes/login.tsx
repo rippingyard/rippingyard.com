@@ -28,11 +28,11 @@ export const loader: LoaderFunction = async ({
 
     if (uid) return redirect('/');
 
-    return json({
+    return {
       title,
       canonicalUrl,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
-    });
+    };
   } catch (e) {
     console.error(e);
     throw new Response('Not Found', { status: 404 });
