@@ -16,10 +16,13 @@ import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
 import { CategoryId } from '~/schemas/entity';
 import { PostStatus, SuggestedTag } from '~/schemas/post';
+import { animationRotateStyle } from '~/styles/animation.css';
 
 import { CategorySelector } from './categorySelector';
 import {
+  bodyStyle,
   containerBodyStyle,
+  containerFootStyle,
   containerStyle,
   headerStyle,
   retrivalErrorStyle,
@@ -133,80 +136,83 @@ export const SettingModal: FC<Props> = ({
   return (
     <Modal isOpened={isOpened} onClose={onClose}>
       <div className={containerStyle}>
-        <div className={headerStyle}>
-          <Heading level="partial">タグ</Heading>
-        </div>
         <div className={containerBodyStyle}>
-          <TagSelector
-            tags={[...tags, ...mockedEntities, ...myTags]}
-            selectedTags={selectedEntities}
-            suggestedTags={
-              suggestedEntities.length > 0
-                ? suggestedEntities
-                : suggestedTags.map((t) => ({ ...t, isChecked: false }))
-            }
-            setSelectedTags={setSelectedEntities}
-          />
-          <p>
-            <Button
-              isRolling={isGettingTags}
-              disabled={isGettingTags}
-              onClick={(e) => getTags(e)}
-            >
-              <IconRotate />
-            </Button>
-          </p>
-          {tagRetrivalError && (
-            <p className={retrivalErrorStyle}>{tagRetrivalError}</p>
+          <div className={headerStyle}>
+            <Heading level="partial">
+              <span style={{ marginRight: 8 }}>タグ</span>
+              <button disabled={isGettingTags} onClick={(e) => getTags(e)}>
+                <IconRotate
+                  className={clsx(isGettingTags && animationRotateStyle)}
+                />
+              </button>
+            </Heading>
+          </div>
+          <div className={bodyStyle}>
+            <TagSelector
+              tags={[...tags, ...mockedEntities, ...myTags]}
+              selectedTags={selectedEntities}
+              suggestedTags={
+                suggestedEntities.length > 0
+                  ? suggestedEntities
+                  : suggestedTags.map((t) => ({ ...t, isChecked: false }))
+              }
+              setSelectedTags={setSelectedEntities}
+            />
+            {tagRetrivalError && (
+              <p className={retrivalErrorStyle}>{tagRetrivalError}</p>
+            )}
+          </div>
+          {showEntityCard && (
+            <div className={bodyStyle}>
+              <CategorySelector selectedCategories={suggestedCategories} />
+            </div>
           )}
-        </div>
-        {showEntityCard && (
-          <div className={containerBodyStyle}>
-            <CategorySelector selectedCategories={suggestedCategories} />
+          <div className={headerStyle}>
+            <Heading level="partial">公開設定</Heading>
           </div>
-        )}
-        <div className={headerStyle}>
-          <Heading level="partial">公開設定</Heading>
-        </div>
-        <div className={containerBodyStyle}>
-          <div className={statusSelectorStyle}>
-            <div
-              className={clsx(
-                statusItemStyle,
-                isPublic && statusItemSelectedStyle
-              )}
-              onClick={() => onChangeStatus(true)}
-            >
-              <div className={statusRadioButtonStyle}>
-                <FormRadioButton checked={isPublic} />
+          <div className={bodyStyle}>
+            <div className={statusSelectorStyle}>
+              <div
+                className={clsx(
+                  statusItemStyle,
+                  isPublic && statusItemSelectedStyle
+                )}
+                onClick={() => onChangeStatus(true)}
+              >
+                <div className={statusRadioButtonStyle}>
+                  <FormRadioButton checked={isPublic} />
+                </div>
+                <div className={statusItemLabelStyle}>公開</div>
+                <div className={statusItemDescriptionStyle}>
+                  全世界に公開され、一覧や検索結果などにも表示されます
+                </div>
               </div>
-              <div className={statusItemLabelStyle}>公開</div>
-              <div className={statusItemDescriptionStyle}>
-                全世界に公開され、一覧や検索結果などにも表示されます
-              </div>
-            </div>
-            <div
-              className={clsx(
-                statusItemStyle,
-                !isPublic && statusItemSelectedStyle
-              )}
-              onClick={() => onChangeStatus(false)}
-            >
-              <div className={statusRadioButtonStyle}>
-                <FormRadioButton checked={!isPublic} />
-              </div>
-              <div className={statusItemLabelStyle}>非公開</div>
-              <div className={statusItemDescriptionStyle}>
-                非公開の記事として保存します
+              <div
+                className={clsx(
+                  statusItemStyle,
+                  !isPublic && statusItemSelectedStyle
+                )}
+                onClick={() => onChangeStatus(false)}
+              >
+                <div className={statusRadioButtonStyle}>
+                  <FormRadioButton checked={!isPublic} />
+                </div>
+                <div className={statusItemLabelStyle}>非公開</div>
+                <div className={statusItemDescriptionStyle}>
+                  非公開の記事として保存します
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        <div className={containerFootStyle}>
           <Button
             name="status"
             value="published"
             disabled={isLoading}
             isLoading={isLoading}
             isWide
+            isSquare
             color="success"
           >
             {label}
