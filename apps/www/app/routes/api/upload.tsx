@@ -1,12 +1,14 @@
 ﻿import { parseFormData, FileUpload } from '@mjackson/form-data-parser';
 import { getDownloadURL } from 'firebase-admin/storage';
 import { redirect } from 'react-router';
-import { data, type ActionFunction } from 'react-router';
+import { data } from 'react-router';
 
 import { useBucket } from '~/hooks/firebase/useBucket.server';
 import { getMe, getSession } from '~/middlewares/session.server';
 
-export const action: ActionFunction = async ({ request }) => {
+import { Route } from './+types/upload';
+
+export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const { uid } = await getMe(request);
 

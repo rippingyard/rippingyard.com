@@ -1,6 +1,5 @@
 ﻿import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import type { LoaderFunction, MetaFunction } from 'react-router';
 import { Await, useLoaderData } from 'react-router';
 
 import { Button } from '~/components/Button';
@@ -11,13 +10,13 @@ import { useSeeds } from '~/hooks/fetch/useSeeds';
 import { Seed } from '~/schemas/seed';
 import { containerStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async () => {
+export const loader = async () => {
   return {
     seeds: await useSeeds(),
   };
 };
 
-export const meta: MetaFunction<typeof loader> = () => {
+export const meta = () => {
   const title = 'Seeds - rippingyard';
   return [
     { title },

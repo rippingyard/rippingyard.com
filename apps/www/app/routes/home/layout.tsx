@@ -1,11 +1,13 @@
 ﻿import { Outlet } from 'react-router';
-import { redirect, type LoaderFunctionArgs } from 'react-router';
+import { redirect } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { wideContainerStyle } from '~/styles/container.css';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+import type { Route } from './+types/layout';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));

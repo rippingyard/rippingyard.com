@@ -1,19 +1,14 @@
 ﻿import algoliasearch from 'algoliasearch/lite';
 import { useLoaderData } from 'react-router';
-import type {
-  LoaderFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from 'react-router';
 
 import { SearchForm } from '~/components/SearchForm';
 import { SearchResult } from '~/features/searchResult';
 import { PostAsSearchResult } from '~/schemas/post';
 import { containerStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/search';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const query = url.searchParams.get('query');
   console.log('query', query);
@@ -47,7 +42,7 @@ export const loader: LoaderFunction = async ({
   };
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;

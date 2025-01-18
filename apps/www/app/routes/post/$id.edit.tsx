@@ -1,12 +1,6 @@
 ﻿import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from 'react-router';
-import type { LoaderFunctionArgs } from 'react-router';
 import { data, redirect } from 'react-router';
 import { useActionData, useLoaderData, useNavigate } from 'react-router';
 
@@ -22,10 +16,9 @@ import { useSavePost } from '~/hooks/save/useSavePost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-  params,
-}: LoaderFunctionArgs) => {
+import { Route } from './+types/$id.edit';
+
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const { id: postId } = params;
 
   const canEditPost = useCanEditPost();
@@ -60,7 +53,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action = async ({ request, params }: Route.ActionArgs) => {
   const savePost = useSavePost();
 
   try {
@@ -104,7 +97,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;

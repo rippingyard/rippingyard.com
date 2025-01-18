@@ -59,7 +59,7 @@ export default function Index() {
     isCompleted,
   } = useInifiniteItems<Post>({
     key,
-    initialItems: initialItems as Post[],
+    initialItems: initialItems as unknown as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

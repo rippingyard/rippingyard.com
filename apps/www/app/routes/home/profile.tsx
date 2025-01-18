@@ -1,13 +1,7 @@
 ﻿import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useActionData, useLoaderData } from 'react-router';
-import {
-  ActionFunction,
-  data,
-  LoaderFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from 'react-router';
+import { data } from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
 import { ProfileEditor } from '~/features/profileEditor';
@@ -18,9 +12,9 @@ import { getMe } from '~/middlewares/session.server';
 import { User } from '~/schemas/user';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import { Route } from './+types/profile';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
     const title = 'プロフィール編集';
     const canonicalUrl = new URL('home/profile', request.url).toString();
@@ -44,7 +38,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const saveUser = useSaveUser();
 
   try {
@@ -84,7 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;

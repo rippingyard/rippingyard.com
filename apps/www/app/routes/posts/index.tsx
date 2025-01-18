@@ -1,7 +1,6 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { type LoaderFunctionArgs } from 'react-router';
 import { Await, useLoaderData } from 'react-router';
 
 import { Button } from '~/components/Button';
@@ -19,7 +18,9 @@ import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+import { Route } from '../posts/+types/index';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
@@ -59,7 +60,7 @@ export default function Index() {
     isCompleted,
   } = useInifiniteItems<Post>({
     key,
-    initialItems: initialItems as Post[],
+    initialItems: initialItems as unknown as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

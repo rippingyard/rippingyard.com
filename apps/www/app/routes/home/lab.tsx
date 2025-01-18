@@ -1,15 +1,16 @@
 ﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
 import { Form, useActionData } from 'react-router';
-import { ActionFunction } from 'react-router';
 
 import { Prompt } from '~/features/prompt';
+
+import { Route } from './+types/lab';
 
 export const loader = async () => {
   return {};
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 

@@ -1,13 +1,15 @@
 ﻿import OpenAI from 'openai';
-import { ActionFunction, LoaderFunctionArgs, redirect } from 'react-router';
+import { redirect } from 'react-router';
 
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
+
+import type { Route } from './+types/entitiesFromText';
 
 export const config = {
   maxDuration: 30,
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));
@@ -24,7 +26,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 

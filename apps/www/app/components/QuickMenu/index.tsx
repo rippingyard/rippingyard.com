@@ -1,6 +1,5 @@
-import { RemixLinkProps } from '@react-router/react/dist/components';
 import { FC, RefAttributes } from 'react';
-import { Link } from 'react-router';
+import { Link, LinkProps } from 'react-router';
 
 import {
   containerStyle,
@@ -10,7 +9,7 @@ import {
   labelStyle,
 } from './style.css';
 
-export type MenuItem = RemixLinkProps &
+export type MenuItem = LinkProps &
   RefAttributes<HTMLAnchorElement> & {
     label: string;
     caption?: string;

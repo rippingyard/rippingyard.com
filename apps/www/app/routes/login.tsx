@@ -1,10 +1,4 @@
 ﻿import dayjs from 'dayjs';
-import type {
-  LoaderFunctionArgs,
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from 'react-router';
 import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
@@ -17,9 +11,9 @@ import {
   getMe,
 } from '~/middlewares/session.server';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/login';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
     const title = 'ログイン';
     const canonicalUrl = new URL('login', request.url).toString();
@@ -38,7 +32,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 
@@ -70,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;

@@ -1,7 +1,5 @@
 ﻿import { Suspense } from 'react';
 import { Await, data, useLoaderData } from 'react-router';
-import type { LoaderFunctionArgs } from 'react-router';
-import type { LoaderFunction, MetaFunction } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
@@ -15,10 +13,9 @@ import { articleSectionStyle } from '~/styles/section.css';
 import { seedToPost } from '~/utils/seed';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader: LoaderFunction = async ({
-  params,
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from '../seeds/+types/$slug';
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
     const { slug } = params;
 
@@ -54,7 +51,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   if (!data) return [];
   const { post, canonicalUrl } = data;
 

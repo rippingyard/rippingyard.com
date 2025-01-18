@@ -1,6 +1,4 @@
 ﻿import { Suspense, useMemo } from 'react';
-import type { LoaderFunction, LoaderFunctionArgs } from 'react-router';
-import type { MetaFunction } from 'react-router';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -24,10 +22,9 @@ import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader: LoaderFunction = async ({
-  params,
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/$id';
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
     const { id } = params;
     const canEditPost = useCanEditPost();
@@ -63,7 +60,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   if (!data) return [];
   const { post, canonicalUrl } = data;
 
