@@ -259,8 +259,8 @@ importers:
         specifier: ^4.74.1
         version: 4.74.1(algoliasearch@4.24.0)
       isbot:
-        specifier: ^5.1.16
-        version: 5.1.17
+        specifier: ^5.1.21
+        version: 5.1.21
       isomorphic-dompurify:
         specifier: ^2.2.0
         version: 2.14.0
@@ -9242,8 +9242,8 @@ packages:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
     dev: true
 
-  /isbot@5.1.17:
-    resolution: {integrity: sha512-/wch8pRKZE+aoVhRX/hYPY1C7dMCeeMyhkQLNLNlYAbGQn9bkvMB8fOUXNnk5I0m4vDYbBJ9ciVtkr9zfBJ7qA==}
+  /isbot@5.1.21:
+    resolution: {integrity: sha512-0q3naRVpENL0ReKHeNcwn/G7BDynp0DqZUckKyFtM9+hmpnPqgm8+8wbjiVZ0XNhq1wPQV28/Pb8Snh5adeUHA==}
     engines: {node: '>=18'}
     dev: false
 
