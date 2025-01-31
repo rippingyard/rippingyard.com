@@ -112,7 +112,7 @@ export default function Main() {
   console.log('data', data);
 
   useEffect(() => {
-    if (!data?.errors) return;
+    if (typeof data?.errors === 'undefined') return;
     console.log('data.errors', data.errors);
     setErrors(data.errors);
   }, [data?.errors]);
