@@ -1,6 +1,5 @@
 ﻿import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useActionData, useLoaderData } from 'react-router';
 import { data } from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
@@ -69,7 +68,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     console.error(e);
     return data(
       {
-        errors: e,
+        errors: e as typeToFlattenedError<User, string>,
       },
       {
         status: 400,
@@ -99,9 +98,8 @@ export const meta = ({ data }: Route.MetaArgs) => {
   ];
 };
 
-export default function Main() {
-  const { me } = useLoaderData<typeof loader>();
-  const data = useActionData<typeof action>();
+export default function Main({ loaderData, actionData }: Route.ComponentProps) {
+  const { me } = loaderData;
 
   const [errors, setErrors] = useState<typeToFlattenedError<User, string>>(
     new ZodError<User>([]).flatten()
@@ -109,13 +107,14 @@ export default function Main() {
 
   if (!me) return;
 
-  console.log('data', data);
+  console.log('actionData', actionData);
 
   useEffect(() => {
-    if (typeof data?.errors === 'undefined') return;
-    console.log('data.errors', data.errors);
-    setErrors(data.errors);
-  }, [data?.errors]);
+    if (typeof actionData === 'undefined') return;
+    if (typeof actionData?.errors === 'undefined') return;
+    console.log('data.errors', actionData.errors);
+    setErrors(actionData.errors);
+  }, [actionData?.errors]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
