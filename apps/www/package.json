@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "react-router build && node vercel/prepare.js",
+    "build": "react-router build && node vercel/setup.ts",
     "build:sb": "storybook build --output-dir .storybook/build",
     "dev:old": "react-router dev",
     "dev": "cross-env NODE_ENV=development node ./server/dev.ts",
