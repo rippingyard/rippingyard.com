@@ -7,8 +7,8 @@ import {
   buttonStyle,
   disabledStyle,
   ghostButtonStyle,
+  loadingIconStyle,
   loadingStyle,
-  rollingButtonStyle,
   squareButtonStyle,
   successButtonStyle,
   wideButtonStyle,
@@ -20,7 +20,6 @@ type Props = ComponentPropsWithRef<'button'> & {
   isWide?: boolean;
   isGhost?: boolean;
   isSquare?: boolean;
-  isRolling?: boolean;
   children: ReactNode;
 };
 
@@ -33,7 +32,6 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       isGhost = false,
       isSquare = false,
       isWide = false,
-      isRolling = false,
       ...props
     },
     ref
@@ -45,13 +43,17 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       isGhost && ghostButtonStyle,
       isSquare && squareButtonStyle,
       isWide && wideButtonStyle,
-      isRolling && rollingButtonStyle,
       props?.disabled && disabledStyle
     );
 
     return (
       <button ref={ref} {...props} className={className}>
-        {(isLoading && <IconLoader />) || children}
+        {isLoading && (
+          <div className={loadingIconStyle}>
+            <IconLoader />
+          </div>
+        )}
+        <div>{children}</div>
       </button>
     );
   }

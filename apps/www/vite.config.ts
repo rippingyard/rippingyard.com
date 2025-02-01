@@ -27,4 +27,7 @@ export default defineConfig({
       }),
     tsconfigPaths(),
   ],
+  optimizeDeps: {
+    include: ['@remix-run/react'], ///  <-- add @remix-run/react to optimized deps
+  },
 });

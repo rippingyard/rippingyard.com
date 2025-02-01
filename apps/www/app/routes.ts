@@ -7,7 +7,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route('/login', 'routes/login.tsx');
 
     // Home
-    route('/home', 'routes/home.tsx', () => {
+    route('/home', 'routes/home/layout.tsx', () => {
       route('', 'routes/home/index.tsx', { index: true });
       route('posts', 'routes/home/posts.tsx');
       route('profile', 'routes/home/profile.tsx');

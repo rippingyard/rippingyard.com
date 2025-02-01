@@ -36,10 +36,9 @@ export const TagSelector: FC<Props> = ({
 
   return (
     <>
-      <ComboBox tags={uniqueTags} onSelectItem={onSelectEntity} />
-      {selectedTags.length > 0 && (
-        <ul className={tagListStyle}>
-          {selectedTags.map((tag, i) => (
+      <ul className={tagListStyle}>
+        {selectedTags.length > 0 &&
+          selectedTags.map((tag, i) => (
             <li
               key={`selected-tag-${i}-${tag}`}
               className={clsx(entityItemStyle, checkedEntityStyle)}
@@ -49,8 +48,10 @@ export const TagSelector: FC<Props> = ({
               <input type="hidden" name="tag" value={tag} />
             </li>
           ))}
-        </ul>
-      )}
+        <li key="combobox" className={clsx(entityItemStyle)}>
+          <ComboBox tags={uniqueTags} onSelectItem={onSelectEntity} />
+        </li>
+      </ul>
       {suggestedTags.length > 0 && (
         <>
           <ul>
@@ -73,16 +74,14 @@ export const TagSelector: FC<Props> = ({
                   )
               )}
           </ul>
-          <ul>
-            {suggestedTags.map((suggestedTag, i) => (
-              <input
-                type="hidden"
-                name={'suggestedTag'}
-                value={JSON.stringify(suggestedTag)}
-                key={`suggested-tag-input-${i}-${suggestedTag.value}`}
-              />
-            ))}
-          </ul>
+          {suggestedTags.map((suggestedTag, i) => (
+            <input
+              type="hidden"
+              name={'suggestedTag'}
+              value={JSON.stringify(suggestedTag)}
+              key={`suggested-tag-input-${i}-${suggestedTag.value}`}
+            />
+          ))}
         </>
       )}
     </>

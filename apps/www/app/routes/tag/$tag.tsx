@@ -1,5 +1,5 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
-import { json, MetaFunction, type LoaderFunctionArgs } from '@vercel/remix';
+import { MetaFunction, type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -52,11 +52,11 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const { data: items } = await usePosts(args);
 
-  return json({
+  return {
     items,
     tag,
     canonicalUrl,
-  });
+  };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

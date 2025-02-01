@@ -1,17 +1,16 @@
-﻿import {
-  ComplexStyleRule,
-  globalStyle,
-  keyframes,
-  style,
-} from '@vanilla-extract/css';
+﻿import { ComplexStyleRule, globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
 const baseButtonStyle: ComplexStyleRule = {
-  borderRadius: 999,
+  borderRadius: rootVars.border.radius.large,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
   textAlign: 'center',
-  padding: 16,
+  padding: '16px 48px',
   // boxShadow: `0 0 2px 0 ${vars.color.neutral}`,
   transition: '0.04s',
   lineHeight: 1,
@@ -30,15 +29,6 @@ globalStyle(`${buttonStyle}:hover`, {
 
 export const wideButtonStyle = style({
   width: '100%',
-});
-
-const rotate = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-});
-
-export const rollingButtonStyle = style({
-  animation: `${rotate} 1s ease-in-out infinite`,
 });
 
 export const successButtonStyle = style({
@@ -64,10 +54,12 @@ globalStyle(`${ghostButtonStyle}:hover`, {
 
 export const loadingStyle = style({
   cursor: 'not-allowed',
+  opacity: 0.6,
+  padding: '16px 48px 16px 25px',
 });
 
 globalStyle(`${loadingStyle}:hover`, {
-  backgroundColor: 'inherit',
+  backgroundColor: vars.color.shadow,
 });
 
 export const disabledStyle = style({});
@@ -78,4 +70,8 @@ globalStyle(`button:disabled.${disabledStyle}`, {
 
 export const squareButtonStyle = style({
   borderRadius: 0,
+});
+
+export const loadingIconStyle = style({
+  display: 'block',
 });
