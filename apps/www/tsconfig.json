@@ -1,5 +1,5 @@
 {
-  "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["env.d.ts", ".react-router/types/**/*", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -19,7 +19,8 @@
       "~/*": ["./app/*"]
     },
 
-    "types": ["@remix-run/node", "vite/client"],
+    "types": ["@react-router/node", "vite/client"],
+    "rootDirs": [".", "./.react-router/types"],
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true

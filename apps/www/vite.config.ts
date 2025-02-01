@@ -1,33 +1,23 @@
-﻿import { vitePlugin as remix } from '@remix-run/dev';
-import { installGlobals } from '@remix-run/node';
+import { reactRouter } from '@react-router/dev/vite';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-// import { remixDevTools } from 'remix-development-tools/vite';
-import { vercelPreset } from '@vercel/remix/vite';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-const isStorybook = process.argv[1]?.includes('storybook');
+// const isStorybook = process.argv[1]?.includes('storybook');
 
-installGlobals();
-
-export default defineConfig({
+export default defineConfig(({ isSsrBuild, command }) => ({
   server: {
     port: 3334,
   },
-  plugins: [
-    // remixDevTools(),
-    vanillaExtractPlugin(),
-    !isStorybook &&
-      remix({
-        presets: [vercelPreset()],
-        ignoredRouteFiles: ['**/.*'],
-        future: {
-          v3_routeConfig: true,
-        },
-      }),
-    tsconfigPaths(),
-  ],
-  optimizeDeps: {
-    include: ['@remix-run/react'], ///  <-- add @remix-run/react to optimized deps
+  build: {
+    rollupOptions: isSsrBuild
+      ? {
+          input: './server/app.ts',
+        }
+      : undefined,
   },
-});
+  ssr: {
+    noExternal: command === 'build' ? true : undefined,
+  },
+  plugins: [vanillaExtractPlugin(), reactRouter(), tsconfigPaths()],
+}));

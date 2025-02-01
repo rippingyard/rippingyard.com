@@ -1,11 +1,12 @@
-﻿import { json } from '@vercel/remix';
-import type { ActionFunction } from '@vercel/remix';
+﻿import { data } from 'react-router';
 
 import { getSession, destroySession } from '~/middlewares/session.server';
 
-export const action: ActionFunction = async ({ request }) => {
+import type { Route } from './+types/logout';
+
+export const action = async ({ request }: Route.ActionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
-  return json(
+  return data(
     {},
     {
       headers: {

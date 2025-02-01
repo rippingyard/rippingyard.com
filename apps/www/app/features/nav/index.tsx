@@ -1,6 +1,6 @@
-﻿import { useSubmit } from '@remix-run/react';
-import clsx from 'clsx';
+﻿import clsx from 'clsx';
 import { FC, useCallback, useMemo } from 'react';
+import { useSubmit } from 'react-router';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
 import { clearCachedItems } from '~/hooks/cache/useCache';

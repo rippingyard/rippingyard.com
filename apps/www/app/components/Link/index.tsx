@@ -1,6 +1,6 @@
-﻿import { Link as ReactLink } from '@remix-run/react';
-import clsx from 'clsx';
+﻿import clsx from 'clsx';
 import { ComponentProps, ComponentPropsWithRef, FC } from 'react';
+import { Link as ReactLink } from 'react-router';
 
 import {
   boldStyle,
