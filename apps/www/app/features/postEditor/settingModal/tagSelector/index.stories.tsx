@@ -28,17 +28,17 @@ type Story = StoryObj<typeof TagSelector>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    entities: [
+    suggestedTags: [
       {
         value: 'かすってるタグ',
         relevance: 0.6,
-        categories: ['film'],
+        // categories: ['film'],
         isChecked: true,
       },
       {
         value: 'ばっちりのタグ',
         relevance: 0.9,
-        categories: ['film'],
+        // categories: ['film'],
         isChecked: false,
       },
     ],

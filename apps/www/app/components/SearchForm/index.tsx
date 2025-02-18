@@ -1,5 +1,5 @@
-﻿import { Form } from '@remix-run/react';
-import { FC } from 'react';
+﻿import { FC } from 'react';
+import { Form } from 'react-router';
 
 import { IconSearch } from '~/assets/icons/Search';
 

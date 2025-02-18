@@ -1,12 +1,5 @@
-﻿import { useLoaderData } from '@remix-run/react';
-import { json, redirect } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from '@vercel/remix';
-import dayjs from 'dayjs';
+﻿import dayjs from 'dayjs';
+import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
@@ -18,9 +11,9 @@ import {
   getMe,
 } from '~/middlewares/session.server';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/login';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
     const title = 'ログイン';
     const canonicalUrl = new URL('login', request.url).toString();
@@ -39,14 +32,14 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 
     const uid = formData.get('uid') as string;
     const tokenFromForm = formData.get('token') as string;
 
-    if (!tokenFromForm) return json({});
+    if (!tokenFromForm) return {};
 
     const session = await getSession(request.headers.get('Cookie'));
     const token = await getAuthToken(tokenFromForm);
@@ -57,7 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
     session.set('role', user?.role || 'stranger');
     session.set('authenticatedAt', dayjs().valueOf());
 
-    return json(
+    return data(
       {},
       {
         headers: {
@@ -71,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;

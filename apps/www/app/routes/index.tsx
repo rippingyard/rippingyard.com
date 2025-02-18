@@ -1,8 +1,8 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { type LoaderFunctionArgs } from 'react-router';
+import { Await, useLoaderData } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
@@ -59,7 +59,7 @@ export default function Index() {
     isCompleted,
   } = useInifiniteItems<Post>({
     key,
-    initialItems: initialItems as Post[],
+    initialItems: initialItems as unknown as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

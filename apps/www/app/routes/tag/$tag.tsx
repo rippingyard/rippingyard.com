@@ -1,8 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { MetaFunction, type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Await, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
@@ -20,7 +19,9 @@ import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+import type { Route } from '../tag/+types/$tag';
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { tag } = params;
   if (!tag) throw new Error();
 
@@ -59,7 +60,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   };
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   if (!data) return [];
   const { tag, canonicalUrl } = data;
 
@@ -96,7 +97,7 @@ export default function Index() {
     isCompleted,
   } = useInifiniteItems<Post>({
     key,
-    initialItems: initialItems as Post[],
+    initialItems: initialItems as unknown as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

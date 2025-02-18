@@ -1,19 +1,13 @@
-﻿import {
+﻿import clsx from 'clsx';
+import { Timestamp } from 'firebase-admin/firestore';
+import { useEffect } from 'react';
+import { data, redirect } from 'react-router';
+import {
   useActionData,
   useLoaderData,
   useLocation,
   useNavigate,
-} from '@remix-run/react';
-import { json, redirect } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from '@vercel/remix';
-import clsx from 'clsx';
-import { Timestamp } from 'firebase-admin/firestore';
-import { useEffect } from 'react';
+} from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
@@ -26,9 +20,9 @@ import { useSavePost } from '~/hooks/save/useSavePost.server';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/create';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const canCreatePost = useCanCreatePost();
 
   try {
@@ -64,7 +58,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const savePost = useSavePost();
 
   try {
@@ -87,13 +81,13 @@ export const action: ActionFunction = async ({ request }) => {
     };
   } catch (e) {
     console.error(e);
-    return json(e, {
+    return data(e, {
       status: 400,
     });
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;
