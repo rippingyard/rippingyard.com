@@ -36,4 +36,9 @@ export const rootVars = createGlobalTheme(':root', {
   avatar: {
     size: '120px',
   },
+  size: {
+    billboard: {
+      height: 'calc(100vh - 120px)',
+    },
+  },
 });

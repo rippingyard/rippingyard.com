@@ -2,18 +2,18 @@
 
 import { Post } from '~/schemas/post';
 
-import { PostListItemDetail } from './PostItemDetail';
+import { PostItemDetail } from './PostItemDetail';
+import { PostItemHero } from './PostItemHero';
 import { PostItemLine } from './PostItemLine';
 
-export type ItemMode = 'detail' | 'list';
+export type ItemMode = 'hero' | 'detail' | 'list';
 
 export const PostItem: FC<{
   post: Post;
   mode?: ItemMode;
   permalink?: string;
-}> = ({ post, mode = 'list', permalink }) => {
-  if (mode === 'detail')
-    return <PostListItemDetail post={post} permalink={permalink} />;
-
-  return <PostItemLine post={post} permalink={permalink} />;
+}> = ({ mode = 'list', ...args }) => {
+  if (mode === 'hero') return <PostItemHero {...args} />;
+  if (mode === 'detail') return <PostItemDetail {...args} />;
+  return <PostItemLine {...args} />;
 };

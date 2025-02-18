@@ -4,6 +4,8 @@
   FIXED_NAV = 180,
   MODAL = 60,
   COVER = 20,
+  NORMAL = 0,
+  BACKGROUND = -1,
 }
 
 enum WIDTH {

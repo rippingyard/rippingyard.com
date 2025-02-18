@@ -1,22 +1,18 @@
 ﻿import { Await, useLoaderData } from '@remix-run/react';
 import { type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
-import { Suspense, useEffect, useMemo, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { Suspense, useMemo } from 'react';
 
-import { Button } from '~/components/Button';
-import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
+import { TopBillboard } from '~/features/topBillboard';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
-import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
-import { containerStyle } from '~/styles/container.css';
-import { toMicroseconds } from '~/utils/date';
+import { containerStyle, wideContainerStyle } from '~/styles/container.css';
 import { sortPosts } from '~/utils/post';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -37,67 +33,62 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     args.startAfter = startAfter;
   }
 
-  const { data: items } = await usePosts(args);
+  const { data: articles } = await usePosts({
+    ...args,
+    where: [
+      {
+        key: 'type',
+        val: 'article',
+      },
+    ],
+  });
+  const { data: notes } = await usePosts({
+    ...args,
+    where: [
+      {
+        key: 'type',
+        val: 'note',
+      },
+    ],
+  });
 
   return {
-    items,
+    notes,
+    articles,
   };
 };
 
 export default function Index() {
-  const key = CACHE_KEYS.PUBLIC_POSTS;
+  const { notes, articles: initialArticles } = useLoaderData<typeof loader>();
 
-  const { items: initialItems } = useLoaderData<typeof loader>();
-  const [canAutoload] = useState(true);
+  const { items: articles } = useInifiniteItems<Post>({
+    key: CACHE_KEYS.PUBLIC_ARTICLES,
+    initialItems: initialArticles as Post[],
+  });
 
-  const { ref, inView } = useInView();
+  const sortedArticles = useMemo(() => sortPosts(articles), [articles]);
 
-  const {
-    items: posts,
-    state,
-    loadMore,
-    isCompleted,
-  } = useInifiniteItems<Post>({
-    key,
-    initialItems: initialItems as Post[],
+  const { items: posts } = useInifiniteItems<Post>({
+    key: CACHE_KEYS.PUBLIC_NOTES,
+    initialItems: notes as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);
 
-  const isLoading = useMemo(() => state === 'loading', [state]);
-
-  const query = useMemo(() => {
-    const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
-    if (!lastPublishedAt) return;
-    return `posts?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
-  }, [sortedPosts]);
-
-  useEffect(() => {
-    if (!canAutoload || !inView || state !== 'idle' || !query) return;
-    loadMore(query);
-  }, [canAutoload, inView, loadMore, query, state]);
-
   return (
     <>
-      <Heading>Posts</Heading>
-      <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
+      <Suspense fallback={<Loading />}>
+        <Await resolve={sortedArticles}>
+          <div className={wideContainerStyle}>
+            <TopBillboard posts={sortedArticles} />
+          </div>
+        </Await>
+        <main className={containerStyle}>
+          <Await resolve={sortedPosts}>
             <PostList posts={sortedPosts} mode="detail" />
-            {!isCompleted && query && (
-              <Button
-                ref={ref}
-                isLoading={isLoading}
-                isWide
-                isGhost
-                onClick={() => loadMore(query)}
-              >
-                もっと読む
-              </Button>
-            )}
           </Await>
-        </Suspense>
-      </main>
+        </main>
+      </Suspense>
     </>
   );
 }
