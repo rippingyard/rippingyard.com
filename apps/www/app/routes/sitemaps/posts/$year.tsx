@@ -1,5 +1,4 @@
-﻿import type { LoaderFunctionArgs } from '@vercel/remix';
-import dayjs from 'dayjs';
+﻿import dayjs from 'dayjs';
 import {
   Timestamp,
   collection,
@@ -14,7 +13,9 @@ import {
 import { useFirestore } from '~/hooks/firestore/useFirestore';
 import { Routes, buildSitemap } from '~/utils/sitemap';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+import { Route } from '../+types/seeds';
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
   const { year } = params;
   if (!year) {
     throw new Error();

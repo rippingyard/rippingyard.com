@@ -1,14 +1,8 @@
-﻿import { useActionData, useLoaderData, useNavigate } from '@remix-run/react';
-import { json, redirect } from '@vercel/remix';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from '@vercel/remix';
-import clsx from 'clsx';
+﻿import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
+import { data, redirect } from 'react-router';
+import { useActionData, useLoaderData, useNavigate } from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
@@ -22,10 +16,9 @@ import { useSavePost } from '~/hooks/save/useSavePost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-  params,
-}: LoaderFunctionArgs) => {
+import { Route } from './+types/$id.edit';
+
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const { id: postId } = params;
 
   const canEditPost = useCanEditPost();
@@ -60,7 +53,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action = async ({ request, params }: Route.ActionArgs) => {
   const savePost = useSavePost();
 
   try {
@@ -98,13 +91,13 @@ export const action: ActionFunction = async ({ request, params }) => {
     };
   } catch (e) {
     console.error(e);
-    return json(e, {
+    return data(e, {
       status: 400,
     });
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;
@@ -135,7 +128,8 @@ export default function Main() {
   useEffect(() => {
     if (!result?.post) return;
     clearCachedItems();
-    return navigate(postLink(result.post.id));
+    navigate(postLink(result.post.id));
+    return;
   }, [navigate, postLink, result]);
 
   return (

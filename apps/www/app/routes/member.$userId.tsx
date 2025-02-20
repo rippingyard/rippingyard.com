@@ -1,4 +1,4 @@
-﻿import { LoaderFunctionArgs } from '@remix-run/node';
+﻿import { LoaderFunctionArgs } from 'react-router';
 
 import { useUser } from '~/hooks/fetch/useUser.server';
 
