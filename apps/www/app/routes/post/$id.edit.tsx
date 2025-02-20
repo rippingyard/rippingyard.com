@@ -128,7 +128,8 @@ export default function Main() {
   useEffect(() => {
     if (!result?.post) return;
     clearCachedItems();
-    return navigate(postLink(result.post.id));
+    navigate(postLink(result.post.id));
+    return;
   }, [navigate, postLink, result]);
 
   return (

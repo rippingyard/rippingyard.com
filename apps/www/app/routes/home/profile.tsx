@@ -1,6 +1,6 @@
 ﻿import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { data } from 'react-router';
+import { data, redirect } from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
 import { ProfileEditor } from '~/features/profileEditor';
@@ -61,9 +61,11 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
     console.log('saved!', newUser);
 
-    return {
-      me: newUser,
-    };
+    redirect('/profile');
+
+    // return {
+    //   me: newUser,
+    // };
   } catch (e) {
     console.error(e);
     return data(
@@ -114,7 +116,7 @@ export default function Main({ loaderData, actionData }: Route.ComponentProps) {
     if (typeof actionData?.errors === 'undefined') return;
     console.log('data.errors', actionData.errors);
     setErrors(actionData.errors);
-  }, [actionData?.errors]);
+  }, [actionData]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
