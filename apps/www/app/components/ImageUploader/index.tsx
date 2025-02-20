@@ -72,8 +72,8 @@ export const ImageUploader: FC<Props> = ({
     setIsUploading(false);
   };
 
-  const onUpdateFile = (file: ResizedImage) => {
-    setFile(file);
+  const onUpdateFile = (resizedImage: ResizedImage) => {
+    setFile(resizedImage);
   };
 
   const removeImage = () => {

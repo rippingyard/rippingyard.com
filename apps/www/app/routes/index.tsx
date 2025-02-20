@@ -1,7 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { type LoaderFunctionArgs } from '@vercel/remix';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useMemo } from 'react';
+import { type LoaderFunctionArgs } from 'react-router';
+import { Await, useLoaderData } from 'react-router';
 
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';

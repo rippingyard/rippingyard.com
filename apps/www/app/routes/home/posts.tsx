@@ -1,8 +1,7 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import { type LoaderFunctionArgs } from '@vercel/remix';
-import { Timestamp } from 'firebase-admin/firestore';
+﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Await, useLoaderData } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { Loading } from '~/features/loading';
@@ -17,7 +16,9 @@ import { Post } from '~/schemas/post';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+import { Route } from './+types/posts';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
 
   if (!uid) throw new Error('You have to login');
@@ -64,7 +65,7 @@ export default function Index() {
     loadMore,
     isCompleted,
   } = useInifiniteItems<Post>({
-    initialItems: initialItems as Post[],
+    initialItems: initialItems as unknown as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

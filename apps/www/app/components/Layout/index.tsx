@@ -1,11 +1,11 @@
-﻿import { Link, useNavigation } from '@remix-run/react';
-import {
+﻿import {
   ComponentPropsWithoutRef,
   FC,
   useCallback,
   useEffect,
   useState,
 } from 'react';
+import { Link, useNavigation } from 'react-router';
 
 import { Nav } from '~/features/nav';
 

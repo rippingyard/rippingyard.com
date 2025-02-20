@@ -1,7 +1,5 @@
-﻿import { Await, useLoaderData } from '@remix-run/react';
-import type { LoaderFunction, LoaderFunctionArgs } from '@vercel/remix';
-import type { MetaFunction } from '@vercel/remix';
-import { Suspense, useMemo } from 'react';
+﻿import { Suspense, useMemo } from 'react';
+import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
@@ -24,10 +22,9 @@ import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
-export const loader: LoaderFunction = async ({
-  params,
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/$id';
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
     const { id } = params;
     const canEditPost = useCanEditPost();
@@ -63,7 +60,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   if (!data) return [];
   const { post, canonicalUrl } = data;
 

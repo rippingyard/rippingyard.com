@@ -1,5 +1,5 @@
-﻿import { useFetcher } from '@remix-run/react';
-import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
+import { useFetcher } from 'react-router';
 
 import { CACHE_KEYS, cacheItems, getCachedItems } from '../cache/useCache';
 

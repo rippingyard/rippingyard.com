@@ -1,13 +1,6 @@
-﻿import { useActionData, useLoaderData } from '@remix-run/react';
-import {
-  ActionFunction,
-  LoaderFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-  json,
-} from '@vercel/remix';
-import clsx from 'clsx';
+﻿import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { data, redirect } from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
 import { ProfileEditor } from '~/features/profileEditor';
@@ -18,9 +11,9 @@ import { getMe } from '~/middlewares/session.server';
 import { User } from '~/schemas/user';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import { Route } from './+types/profile';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
     const title = 'プロフィール編集';
     const canonicalUrl = new URL('home/profile', request.url).toString();
@@ -44,7 +37,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: Route.ActionArgs) => {
   const saveUser = useSaveUser();
 
   try {
@@ -68,14 +61,16 @@ export const action: ActionFunction = async ({ request }) => {
 
     console.log('saved!', newUser);
 
-    return {
-      me: newUser,
-    };
+    redirect('/profile');
+
+    // return {
+    //   me: newUser,
+    // };
   } catch (e) {
     console.error(e);
-    return json(
+    return data(
       {
-        errors: e,
+        errors: e as typeToFlattenedError<User, string>,
       },
       {
         status: 400,
@@ -84,7 +79,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   const { title, canonicalUrl } = data;
 
   const htmlTitle = `${title} - rippingyard`;
@@ -105,9 +100,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export default function Main() {
-  const { me } = useLoaderData<typeof loader>();
-  const data = useActionData<typeof action>();
+export default function Main({ loaderData, actionData }: Route.ComponentProps) {
+  const { me } = loaderData;
 
   const [errors, setErrors] = useState<typeToFlattenedError<User, string>>(
     new ZodError<User>([]).flatten()
@@ -115,13 +109,14 @@ export default function Main() {
 
   if (!me) return;
 
-  console.log('data', data);
+  console.log('actionData', actionData);
 
   useEffect(() => {
-    if (!data?.errors) return;
-    console.log('data.errors', data.errors);
-    setErrors(data.errors);
-  }, [data?.errors]);
+    if (typeof actionData === 'undefined') return;
+    if (typeof actionData?.errors === 'undefined') return;
+    console.log('data.errors', actionData.errors);
+    setErrors(actionData.errors);
+  }, [actionData]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>

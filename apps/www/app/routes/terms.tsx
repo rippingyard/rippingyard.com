@@ -1,15 +1,13 @@
-﻿import { useLoaderData } from '@remix-run/react';
-import type { LoaderFunctionArgs } from '@vercel/remix';
-import type { LoaderFunction, MetaFunction } from '@vercel/remix';
+﻿import { useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
 import { LastUpdates } from '~/components/LastUpdates';
 import { articleStyle } from '~/styles/article.css';
 import { containerStyle } from '~/styles/container.css';
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderFunctionArgs) => {
+import type { Route } from './+types/terms';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
     const title = '利用規約';
     const canonicalUrl = new URL('terms', request.url).toString();
@@ -25,7 +23,7 @@ export const loader: LoaderFunction = async ({
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: Route.MetaArgs) => {
   // if (!data) return [];
   const { title, canonicalUrl } = data;
 

@@ -16,7 +16,8 @@ export const seedToPost = (seed: Seed): Post => {
     type: 'article',
     isPublic: true,
     isDeleted: false,
-    entities: [],
+    tags: [],
+    suggestedTags: [],
     items: [],
   };
 };

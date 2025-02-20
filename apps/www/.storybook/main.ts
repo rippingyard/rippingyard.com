@@ -8,7 +8,6 @@ const config: StorybookConfig = {
     builder: '@storybook/builder-vite',
   },
   addons: [
-    // '@storybook/addon-onboarding',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     // '@chromatic-com/storybook',
@@ -17,7 +16,11 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {},
+    options: {
+      builder: {
+        viteConfigPath: 'vite.storybook.config.ts',
+      },
+    },
   },
   docs: {
     autodocs: 'tag',

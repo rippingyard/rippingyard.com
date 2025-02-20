@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import {
+  reactRouterParameters,
+  withRouter,
+} from 'storybook-addon-remix-react-router';
 
-// import {
-//   withRouter,
-//   //   reactRouterParameters,
-// } from 'storybook-addon-remix-react-router';
 import { Layout } from '.';
-import { RemixStub } from '../../../.storybook/RemixStub';
 
 // import { fn } from '@storybook/test';
 
@@ -33,19 +32,13 @@ type Story = StoryObj<typeof Layout>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  // decorators: [withRouter],
-  decorators: [
-    (Story) => (
-      <RemixStub>
-        <Story />
-      </RemixStub>
-    ),
-  ],
-  //   parameters: {
-  //     reactRouter: reactRouterParameters({
-  //       routing: { path: '/' },
-  //     }),
-  //   },
+  decorators: [withRouter],
+  // decorators: [(Story) => <Story />],
+  parameters: {
+    reactRouter: reactRouterParameters({
+      routing: { path: '/' },
+    }),
+  },
   args: {
     children: <p>TEST</p>,
   },
