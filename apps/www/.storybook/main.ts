@@ -8,12 +8,11 @@ const config: StorybookConfig = {
     builder: '@storybook/builder-vite',
   },
   addons: [
-    // '@storybook/addon-onboarding',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     // '@chromatic-com/storybook',
     '@storybook/addon-interactions',
-    // 'storybook-addon-remix-react-router',
+    'storybook-addon-remix-react-router',
   ],
   framework: {
     name: '@storybook/react-vite',
