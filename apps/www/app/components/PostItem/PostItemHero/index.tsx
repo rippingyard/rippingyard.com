@@ -1,7 +1,6 @@
-﻿import { Link } from '@remix-run/react';
-import { FC } from 'react';
+﻿import { FC } from 'react';
+import { Link } from 'react-router';
 
-import { Article } from '~/components/Article';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
