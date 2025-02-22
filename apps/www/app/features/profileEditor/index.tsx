@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { FormField } from '~/components/FormField';
 import { FormInput } from '~/components/FormInput';
 import { Wysiwyg } from '~/components/Wysiwyg';
-import { User } from '~/schemas/user';
+import { SerializedUser } from '~/schemas/user';
 
 import { AvatarEditor } from './avatarEditor';
 import {
@@ -20,8 +20,8 @@ import {
 } from './style.css';
 
 type Props = {
-  user: User;
-  errors?: typeToFlattenedError<User, string>;
+  user: SerializedUser;
+  errors?: typeToFlattenedError<SerializedUser, string>;
   action?: string;
 };
 

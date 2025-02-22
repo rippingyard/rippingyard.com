@@ -1,6 +1,7 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
+import { SerializedTimestamp } from '~/utils/date';
 import { DocumentReferenceSchema } from '~/utils/schema';
 
 const PostStatusSchema = z.enum(['published', 'drafted']);
@@ -40,6 +41,25 @@ export type Post = z.infer<typeof PostSchema>;
 export type PostType = z.infer<typeof PostTypeSchema>;
 export type PostStatus = z.infer<typeof PostStatusSchema>;
 export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
+
+export type SerializedPost = Omit<
+  Post,
+  | 'owner'
+  | 'collaborators'
+  | 'items'
+  | 'parent'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'publishedAt'
+> & {
+  items?: unknown[];
+  collaborators?: unknown[];
+  owner: unknown;
+  parent?: unknown;
+  createdAt: SerializedTimestamp;
+  updatedAt: SerializedTimestamp;
+  publishedAt: SerializedTimestamp;
+};
 
 export type PostAsSearchResult = Pick<
   Post,

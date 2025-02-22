@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { Post, PostStatus, PostType } from '~/schemas/post';
+import { PostStatus, PostType, SerializedPost } from '~/schemas/post';
 import { getMainTitle, removeMainTitle } from '~/utils/typography';
 
 import { SettingModal } from './settingModal';
@@ -20,7 +20,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post?: Post;
+  post?: SerializedPost;
   action?: string;
   myTags: string[];
 };

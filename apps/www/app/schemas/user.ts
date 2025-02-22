@@ -1,6 +1,8 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
+import { SerializedTimestamp } from '~/utils/date';
+
 const RoleSchema = z.enum([
   'lord',
   'mayor',
@@ -25,3 +27,8 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 export type Role = z.infer<typeof RoleSchema>;
+
+export type SerializedUser = Omit<User, 'createdAt' | 'updatedAt'> & {
+  createdAt: SerializedTimestamp;
+  updatedAt: SerializedTimestamp;
+};

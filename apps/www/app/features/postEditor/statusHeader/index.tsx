@@ -3,7 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
-import { Post } from '~/schemas/post';
+import { SerializedPost } from '~/schemas/post';
 
 import {
   containerStyle,
@@ -13,7 +13,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post?: Post;
+  post?: SerializedPost;
   hasTitle: boolean;
   setHasTitle: Dispatch<SetStateAction<boolean>>;
 };
