@@ -1,4 +1,4 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+﻿import { DocumentReference, Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 import { SerializedTimestamp } from '~/utils/date';
@@ -28,7 +28,7 @@ export const PostSchema = z.object({
     })
     .optional(),
   owner: z.any().refine(DocumentReferenceSchema).optional(),
-  collaborators: z.any().refine(DocumentReferenceSchema).optional(),
+  collaborators: z.any().refine(DocumentReferenceSchema).array().optional(),
   parent: z.any().refine(DocumentReferenceSchema).optional(),
   tags: z.string().array(),
   items: z.any().refine(DocumentReferenceSchema).array(),
@@ -42,6 +42,8 @@ export type PostType = z.infer<typeof PostTypeSchema>;
 export type PostStatus = z.infer<typeof PostStatusSchema>;
 export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 
+type SerializedDocumentReference = Pick<DocumentReference, 'id'>;
+
 export type SerializedPost = Omit<
   Post,
   | 'owner'
@@ -52,10 +54,10 @@ export type SerializedPost = Omit<
   | 'updatedAt'
   | 'publishedAt'
 > & {
-  items?: unknown[];
-  collaborators?: unknown[];
-  owner: unknown;
-  parent?: unknown;
+  items?: SerializedDocumentReference[];
+  collaborators?: SerializedDocumentReference[];
+  owner?: SerializedDocumentReference;
+  parent?: SerializedDocumentReference;
   createdAt: SerializedTimestamp;
   updatedAt: SerializedTimestamp;
   publishedAt: SerializedTimestamp;

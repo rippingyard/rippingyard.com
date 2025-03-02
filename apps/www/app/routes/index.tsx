@@ -14,7 +14,7 @@ import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '~/schemas/post';
+import { Post, SerializedPost } from '~/schemas/post';
 import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
@@ -57,9 +57,9 @@ export default function Index() {
     state,
     loadMore,
     isCompleted,
-  } = useInifiniteItems<Post>({
+  } = useInifiniteItems<SerializedPost>({
     key,
-    initialItems: initialItems as unknown as Post[],
+    initialItems: initialItems as unknown as SerializedPost[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);

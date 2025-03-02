@@ -21,3 +21,14 @@ export const toMicroseconds = (times: TimestampType) => {
   // console.log('typeof Timestamp', toDate);
   return toDate(times).valueOf();
 };
+
+export const msToSerializedTimestamp = (ms: number): SerializedTimestamp => {
+  return {
+    seconds: Math.round(ms / 1000),
+    nanoseconds: 0,
+    toDate: undefined,
+    toMillis: undefined,
+    isEqual: undefined,
+    valueOf: undefined,
+  };
+};

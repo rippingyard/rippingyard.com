@@ -5,7 +5,7 @@ import { Article } from '~/components/Article';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import { Post } from '~/schemas/post';
+import { SerializedPost } from '~/schemas/post';
 
 import {
   containerStyle,
@@ -15,7 +15,7 @@ import {
 } from './style.css';
 
 type Props = {
-  post: Post;
+  post: SerializedPost;
   permalink?: string;
 };
 

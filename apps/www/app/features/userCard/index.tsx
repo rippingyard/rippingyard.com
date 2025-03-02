@@ -1,7 +1,7 @@
 ﻿import { FC, memo } from 'react';
 
 import { Avatar } from '~/components/Avatar';
-import { User } from '~/schemas/user';
+import { SerializedUser } from '~/schemas/user';
 
 import {
   containerStyle,
@@ -11,7 +11,7 @@ import {
   sideStyle,
 } from './style.css';
 
-const UserCardComponent: FC<{ user?: User }> = ({ user }) => {
+const UserCardComponent: FC<{ user?: SerializedUser }> = ({ user }) => {
   if (!user) return;
 
   return (

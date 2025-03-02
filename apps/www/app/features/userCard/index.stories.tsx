@@ -1,5 +1,7 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
-import { Timestamp } from 'firebase-admin/firestore';
+// import { Timestamp } from 'firebase-admin/firestore';
+
+import { SerializedTimestamp } from '~/utils/date';
 
 import { UserCard } from '.';
 
@@ -36,8 +38,8 @@ export const Default: Story = {
       avatar: 'https://placehold.jp/180x180.png',
       isBanned: false,
       isDeleted: false,
-      createdAt: undefined as unknown as Timestamp,
-      updatedAt: undefined as unknown as Timestamp,
+      createdAt: undefined as unknown as SerializedTimestamp,
+      updatedAt: undefined as unknown as SerializedTimestamp,
     },
   },
 };

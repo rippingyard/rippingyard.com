@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 
-import { Post } from '~/schemas/post';
+import { SerializedPost } from '~/schemas/post';
 
 import {
   containerStyle,
@@ -11,7 +11,7 @@ import {
 } from './style.css';
 
 export const PostHeader: FC<{
-  post: Post;
+  post: SerializedPost;
 }> = ({ post }) => {
   const isShown = useMemo(
     () => !post.isPublic || post.status === 'drafted',
