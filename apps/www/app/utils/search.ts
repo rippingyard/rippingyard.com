@@ -1,4 +1,4 @@
-﻿import dayjs from 'dayjs';
+﻿﻿﻿import dayjs from 'dayjs';
 import { Timestamp } from 'firebase-admin/firestore';
 
 import { Post, PostAsSearchResult } from '~/schemas/post';
@@ -15,7 +15,15 @@ export const hitToPost = (item: PostAsSearchResult): Post => {
     type: item.type,
     isPublic: item.isPublic,
     isDeleted: item.isDeleted,
-    entities: [],
+    tags: [], // 検索結果にタグ情報がない場合は空配列を設定
     items: [],
+    // Post型で必須のsuggestedTagsプロパティを追加
+    suggestedTags: [], // デフォルトは空配列
+    // オプショナルだがよく使われるプロパティ
+    count: {
+      favorite: 0,
+      bookmark: 0,
+      pageview: 0,
+    },
   };
 };

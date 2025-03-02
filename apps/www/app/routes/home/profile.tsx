@@ -1,5 +1,5 @@
-﻿import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+﻿﻿﻿import clsx from 'clsx';
+import { useEffect, useMemo, useState } from 'react';
 import { data, redirect } from 'react-router';
 import { typeToFlattenedError, ZodError } from 'zod';
 
@@ -10,6 +10,7 @@ import { useSaveUser } from '~/hooks/save/useSaveUser.server';
 import { getMe } from '~/middlewares/session.server';
 import { User } from '~/schemas/user';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
+import { normalizeTimestamps } from '~/utils/timestamp';
 
 import { Route } from './+types/profile';
 
@@ -101,13 +102,20 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main({ loaderData, actionData }: Route.ComponentProps) {
-  const { me } = loaderData;
+  const { me: rawMe } = loaderData;
+
+  // Userデータ中のTimestampを正規化
+  const normalizedUser = useMemo(() => {
+    if (!rawMe) return undefined;
+    return normalizeTimestamps(rawMe as Record<string, unknown>) as User;
+  }, [rawMe]);
 
   const [errors, setErrors] = useState<typeToFlattenedError<User, string>>(
     new ZodError<User>([]).flatten()
   );
 
-  if (!me) return;
+  // ユーザーデータがない場合は何も表示しない
+  if (!normalizedUser) return null;
 
   console.log('actionData', actionData);
 
@@ -120,7 +128,7 @@ export default function Main({ loaderData, actionData }: Route.ComponentProps) {
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
-      <ProfileEditor user={me} errors={errors} />
+      <ProfileEditor user={normalizedUser} errors={errors} />
     </main>
   );
 }

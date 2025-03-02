@@ -1,4 +1,4 @@
-﻿import clsx from 'clsx';
+﻿﻿import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
@@ -117,7 +117,7 @@ export default function Main() {
 
   const result = useActionData<typeof action>();
   useEffect(() => {
-    if (!result?.post) return;
+    if (!result?.post || !result.post.id) return;
 
     clearCachedContent(pathname);
     clearCachedItems();

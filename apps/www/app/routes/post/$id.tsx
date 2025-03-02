@@ -1,4 +1,4 @@
-﻿import { Suspense, useMemo } from 'react';
+﻿﻿import { Suspense, useMemo } from 'react';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -18,8 +18,11 @@ import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { getMe } from '~/middlewares/session.server';
+import { Post } from '~/schemas/post';
+import { User } from '~/schemas/user';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
+import { normalizeTimestamps } from '~/utils/timestamp';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -44,7 +47,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
-    const { user: owner } = await useUser(post?.owner?.id || '');
+    // ownerIDがあれば所有者情報を取得
+    let owner = undefined;
+    if (post?.owner?.id) {
+      const { user } = await useUser(post.owner.id);
+      owner = user;
+    }
 
     return {
       post,
@@ -93,8 +101,34 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main() {
-  const { post, owner, nextPosts, canEditPost } =
-    useLoaderData<typeof loader>();
+  const {
+    post: rawPost,
+    owner: rawOwner,
+    nextPosts: rawNextPosts,
+    canEditPost,
+  } = useLoaderData<typeof loader>();
+
+  // Timestamp型プロパティを正規化
+  const post = useMemo(
+    () => normalizeTimestamps(rawPost as Record<string, unknown>) as Post,
+    [rawPost]
+  );
+
+  const owner = useMemo(
+    () =>
+      rawOwner
+        ? (normalizeTimestamps(rawOwner as Record<string, unknown>) as User)
+        : undefined,
+    [rawOwner]
+  );
+
+  const nextPosts = useMemo(
+    () =>
+      rawNextPosts.map(
+        (p) => normalizeTimestamps(p as Record<string, unknown>) as Post
+      ),
+    [rawNextPosts]
+  );
 
   const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
   const editLink = usePostEditLink(post.id);

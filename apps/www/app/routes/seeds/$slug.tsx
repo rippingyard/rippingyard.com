@@ -1,4 +1,4 @@
-﻿import { Suspense } from 'react';
+﻿﻿﻿import { Suspense, useMemo } from 'react';
 import { Await, data, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -8,9 +8,11 @@ import { PostItem } from '~/components/PostItem';
 import { Loading } from '~/features/loading';
 import { useSeeds } from '~/hooks/fetch/useSeeds';
 import { useSeedLink } from '~/hooks/link/useSeedLink';
+import { Post } from '~/schemas/post';
 import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
 import { seedToPost } from '~/utils/seed';
+import { normalizeTimestamps } from '~/utils/timestamp';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from '../seeds/+types/$slug';
@@ -79,7 +81,29 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main() {
-  const { post, nextPost, prevPost } = useLoaderData<typeof loader>();
+  const {
+    post: rawPost,
+    nextPost: rawNextPost,
+    prevPost: rawPrevPost,
+  } = useLoaderData<typeof loader>();
+
+  // タイムスタンプ正規化
+  const post = useMemo(
+    () => normalizeTimestamps(rawPost as Record<string, unknown>) as Post,
+    [rawPost]
+  );
+
+  // TODO: ここもうちょっとどうにかしたいな
+  const prevPost = useMemo(() => {
+    if (!rawPrevPost) return undefined;
+    return normalizeTimestamps(rawPrevPost as Record<string, unknown>) as Post;
+  }, [rawPrevPost]);
+
+  const nextPost = useMemo(() => {
+    if (!rawNextPost) return undefined;
+    return normalizeTimestamps(rawNextPost as Record<string, unknown>) as Post;
+  }, [rawNextPost]);
+
   return (
     <>
       <Heading>Seed</Heading>
