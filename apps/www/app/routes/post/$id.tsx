@@ -1,4 +1,4 @@
-﻿﻿import { Suspense, useMemo } from 'react';
+﻿﻿﻿import { Suspense, useMemo } from 'react';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -22,7 +22,7 @@ import { Post } from '~/schemas/post';
 import { User } from '~/schemas/user';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
-import { normalizeTimestamps } from '~/utils/timestamp';
+import { adaptFirestoreData } from '~/utils/firestore-adapter';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -108,16 +108,16 @@ export default function Main() {
     canEditPost,
   } = useLoaderData<typeof loader>();
 
-  // Timestamp型プロパティを正規化
+  // シリアライズされたタイムスタンプを復元
   const post = useMemo(
-    () => normalizeTimestamps(rawPost as Record<string, unknown>) as Post,
+    () => adaptFirestoreData<Record<string, unknown>>(rawPost) as Post,
     [rawPost]
   );
 
   const owner = useMemo(
     () =>
       rawOwner
-        ? (normalizeTimestamps(rawOwner as Record<string, unknown>) as User)
+        ? (adaptFirestoreData<Record<string, unknown>>(rawOwner) as User)
         : undefined,
     [rawOwner]
   );
@@ -125,7 +125,7 @@ export default function Main() {
   const nextPosts = useMemo(
     () =>
       rawNextPosts.map(
-        (p) => normalizeTimestamps(p as Record<string, unknown>) as Post
+        (p) => adaptFirestoreData<Record<string, unknown>>(p) as Post
       ),
     [rawNextPosts]
   );

@@ -1,85 +1,191 @@
 import { Timestamp } from 'firebase-admin/firestore';
 
 /**
- * FirestoreのTimestampをシリアライズ可能な形式に変換する
- * React Router v7ではデータのシリアライズ時にメソッドが失われるため、
- * 必要なデータをオブジェクトとして抽出する
+ * サーバーサイド用: Timestampをシリアライズのためにシンプルなオブジェクトに変換
+ * 関数をプロパティとして持たないようにする
  */
-export const normalizeTimestamp = (timestamp: Timestamp) => {
-  if (!timestamp) return timestamp;
+export const serializeTimestamp = (timestamp: Timestamp | null | undefined) => {
+  if (!timestamp) return null;
 
-  // すでに変換済みかチェック
-  if (typeof timestamp.toDate === 'undefined') {
+  // すでにシリアライズ済みかチェック
+  if (typeof timestamp.toDate !== 'function') {
+    return timestamp;
+  }
+
+  // シンプルな値のみを持つオブジェクトを返す
+  return {
+    _type: 'timestamp',
+    seconds: timestamp.seconds,
+    nanoseconds: timestamp.nanoseconds,
+  };
+};
+
+// タイムスタンプのシリアライズ形式の型定義
+interface SerializedTimestamp {
+  _type: 'timestamp';
+  seconds: number;
+  nanoseconds: number;
+}
+
+// タイムスタンプの復元形式の型定義
+interface DeserializedTimestamp {
+  seconds: number;
+  nanoseconds: number;
+  toDate: () => Date;
+  toMillis: () => number;
+  isEqual: (
+    other: { seconds?: number; nanoseconds?: number } | null | undefined
+  ) => boolean;
+  toString: () => string;
+}
+
+/**
+ * クライアントサイド用: シリアライズされたタイムスタンプを使いやすい形式に復元
+ */
+export const deserializeTimestamp = (
+  obj: unknown
+): DeserializedTimestamp | unknown => {
+  if (!obj) return null;
+
+  // タイプガードでタイムスタンプデータかチェック
+  const isSerializedTimestamp = (obj: unknown): obj is SerializedTimestamp =>
+    typeof obj === 'object' &&
+    obj !== null &&
+    '_type' in obj &&
+    (obj as any)._type === 'timestamp' &&
+    'seconds' in obj &&
+    'nanoseconds' in obj;
+
+  if (isSerializedTimestamp(obj)) {
     return {
-      seconds: timestamp.seconds,
-      nanoseconds: timestamp.nanoseconds,
-      // メソッドを追加
-      toDate: () => new Date(timestamp.seconds * 1000),
+      seconds: obj.seconds,
+      nanoseconds: obj.nanoseconds,
+      // タイムスタンプの便利メソッドを追加
+      toDate: () => new Date(obj.seconds * 1000),
       toMillis: () =>
-        timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000),
+        obj.seconds * 1000 + Math.floor(obj.nanoseconds / 1000000),
       isEqual: (
         other: { seconds?: number; nanoseconds?: number } | null | undefined
       ) =>
-        timestamp.seconds === other?.seconds &&
-        timestamp.nanoseconds === other?.nanoseconds,
-      valueOf: () => `${timestamp.seconds}.${timestamp.nanoseconds}`,
+        obj.seconds === other?.seconds &&
+        obj.nanoseconds === other?.nanoseconds,
+      toString: () => new Date(obj.seconds * 1000).toISOString(),
     };
   }
 
-  return timestamp;
+  return obj;
 };
 
 /**
- * オブジェクトの中のTimestampフィールドを全て正規化する
+ * サーバーサイド用: オブジェクト内のTimestampをシリアライズ可能な形式に変換
  */
-export const normalizeTimestamps = <T extends Record<string, unknown>>(
-  obj: T,
+export const serializeTimestamps = <T extends Record<string, unknown>>(
+  obj: Readonly<T>,
   visited: WeakSet<object> = new WeakSet()
-): T => {
+): Record<string, unknown> => {
   if (!obj || typeof obj !== 'object') return obj;
 
   // 循環参照を検出して無限再帰を防止
   if (visited.has(obj)) {
-    return obj; // 既に処理したオブジェクトは再処理しない
+    return obj;
   }
 
-  // 処理中のオブジェクトを記録
   visited.add(obj);
+  // イミュータブルに扱うために新しいオブジェクトを作成
+  const result: Record<string, unknown> = { ...obj };
 
-  // 元のオブジェクトを変更しないよう、コピーを作成
-  const result = { ...obj } as Record<string, unknown>;
-
-  // Timestampフィールドを検出して変換
+  // オブジェクトの各プロパティを処理
   Object.keys(result).forEach((key) => {
     const value = result[key];
+    if (!value) return;
 
-    // nullやundefinedはスキップ
-    if (value == null) return;
-
-    // TimestampかTimestamp互換オブジェクトの場合
-    if (
+    // Timestamp型かチェック
+    const isTimestamp =
       typeof value === 'object' &&
-      'seconds' in value &&
-      'nanoseconds' in value
-    ) {
-      result[key] = normalizeTimestamp(value as unknown as Timestamp);
+      value !== null &&
+      (value instanceof Timestamp ||
+        ('seconds' in value &&
+          'nanoseconds' in value &&
+          typeof (value as Record<string, unknown>).toDate === 'function'));
+
+    // Timestamp型の場合
+    if (isTimestamp) {
+      result[key] = serializeTimestamp(value as unknown as Timestamp);
     }
-    // ネストされたオブジェクトの場合は再帰的に処理
+    // ネストされたオブジェクトの場合
     else if (typeof value === 'object' && !Array.isArray(value)) {
-      result[key] = normalizeTimestamps(
+      result[key] = serializeTimestamps(
         value as Record<string, unknown>,
         visited
       );
     }
-    // 配列の場合は各要素を処理
+    // 配列の場合
     else if (Array.isArray(value)) {
       result[key] = value.map((item) =>
         item && typeof item === 'object'
-          ? normalizeTimestamps(item as Record<string, unknown>, visited)
+          ? serializeTimestamps(item as Record<string, unknown>, visited)
           : item
       );
     }
   });
 
+  return result;
+};
+
+/**
+ * クライアントサイド用: シリアライズされたタイムスタンプを含むオブジェクトを復元
+ */
+export const deserializeTimestamps = <T>(
+  obj: T,
+  visited: WeakSet<object> = new WeakSet()
+): T => {
+  if (!obj || typeof obj !== 'object') return obj;
+
+  if (visited.has(obj as object)) {
+    return obj;
+  }
+
+  visited.add(obj as object);
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) =>
+      item && typeof item === 'object'
+        ? deserializeTimestamps(item, visited)
+        : item
+    ) as unknown as T;
+  }
+
+  // イミュータブルに扱うために新しいオブジェクトを作成
+  const result: Record<string, unknown> = {
+    ...(obj as Record<string, unknown>),
+  };
+
+  Object.keys(result).forEach((key) => {
+    const value = result[key];
+    if (!value) return;
+
+    // シリアライズされたタイムスタンプかチェック
+    const isSerializedTimestamp =
+      typeof value === 'object' &&
+      value !== null &&
+      '_type' in value &&
+      (value as any)._type === 'timestamp' &&
+      'seconds' in value &&
+      'nanoseconds' in value;
+
+    // シリアライズされたTimestamp型の場合
+    if (isSerializedTimestamp) {
+      result[key] = deserializeTimestamp(value);
+    }
+    // ネストされたオブジェクトの場合
+    else if (typeof value === 'object') {
+      result[key] = deserializeTimestamps(value, visited);
+    }
+  });
+
   return result as unknown as T;
 };
+
+// 後方互換性のために古い関数名をエクスポート
+export const normalizeTimestamp = serializeTimestamp;
+export const normalizeTimestamps = serializeTimestamps;
