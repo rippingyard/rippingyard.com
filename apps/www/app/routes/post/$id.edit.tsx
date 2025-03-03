@@ -1,4 +1,4 @@
-﻿import clsx from 'clsx';
+﻿﻿﻿import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
@@ -14,7 +14,9 @@ import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
 import { getMe } from '~/middlewares/session.server';
+import { Post } from '~/schemas/post';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
+import { normalizeTimestamps } from '~/utils/timestamp';
 
 import { Route } from './+types/$id.edit';
 
@@ -118,23 +120,40 @@ export const meta = ({ data }: Route.MetaArgs) => {
   ];
 };
 
+// ActionDataの型を定義
+type ActionData =
+  | { post: Post } // 成功時
+  | string // エラー時のメッセージ
+  | undefined; // アクションが実行されていない場合
+
 export default function Main() {
   const { post, action, myTags } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const postLink = usePostLink();
 
-  const result = useActionData<typeof action>();
+  // ActionDataの型を明示的に指定
+  const result = useActionData() as ActionData;
 
   useEffect(() => {
-    if (!result?.post) return;
+    // エラーチェック - resultがstring型やundefinedでないこと、かつpostプロパティを持つことを確認
+    if (!result || typeof result === 'string' || !('post' in result)) return;
+
     clearCachedItems();
-    navigate(postLink(result.post.id));
+
+    if (result.post && result.post.id) {
+      navigate(postLink(result.post.id));
+    }
     return;
   }, [navigate, postLink, result]);
 
+  // post型のTimestampプロパティを正規化して渡す
+  const normalizedPost = post
+    ? (normalizeTimestamps(post as Record<string, unknown>) as Post)
+    : undefined;
+
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
-      <PostEditor post={post} action={action} myTags={myTags} />
+      <PostEditor post={normalizedPost} action={action} myTags={myTags} />
     </main>
   );
 }

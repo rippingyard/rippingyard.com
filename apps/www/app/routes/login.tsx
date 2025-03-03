@@ -1,4 +1,4 @@
-﻿import dayjs from 'dayjs';
+﻿﻿import dayjs from 'dayjs';
 import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
@@ -10,6 +10,7 @@ import {
   getAuthToken,
   getMe,
 } from '~/middlewares/session.server';
+import { Role } from '~/schemas/user';
 
 import type { Route } from './+types/login';
 
@@ -43,11 +44,19 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
     const session = await getSession(request.headers.get('Cookie'));
     const token = await getAuthToken(tokenFromForm);
-    const { user } = await useUser(uid);
+
+    // uidが空でないことを確認してからユーザー情報を取得
+    let role: Role = 'stranger';
+    if (uid) {
+      const { user } = await useUser(uid);
+      if (user) {
+        role = user.role;
+      }
+    }
 
     session.set('token', token);
     session.set('uid', uid);
-    session.set('role', user?.role || 'stranger');
+    session.set('role', role);
     session.set('authenticatedAt', dayjs().valueOf());
 
     return data(
