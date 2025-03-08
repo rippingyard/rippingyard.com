@@ -9,6 +9,8 @@ import { Link, useNavigation } from 'react-router';
 
 import { Nav } from '~/features/nav';
 
+import { PostDialogButton } from './PostDialogButton';
+import { PostModal } from './PostModal';
 import {
   containerStyle,
   headerContainerStyle,
@@ -25,6 +27,8 @@ export const Layout: FC<
   ComponentPropsWithoutRef<'div'> & { isAuthenticated: boolean }
 > = ({ children, isAuthenticated = false }) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
+
   const { state } = useNavigation();
 
   const toggleNav = useCallback(() => setIsOpened(!isOpened), [isOpened]);
@@ -48,6 +52,11 @@ export const Layout: FC<
       </header>
       {children}
       <Nav isOpened={isOpened} isAuthenticated={isAuthenticated} />
+      <PostModal isOpen={isPosting} onClose={() => setIsPosting(false)} />
+      <PostDialogButton
+        isAuthenticated={isAuthenticated}
+        onClick={() => setIsPosting(true)}
+      />
     </div>
   );
 };
