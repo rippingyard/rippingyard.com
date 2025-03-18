@@ -45,6 +45,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { uid } = await getMe(request);
   const isAuthenticated = !!uid;
 
+  const currentUrl = request.url;
+  const uriObject = URL.parse(currentUrl);
+  const pathname = uriObject?.pathname || '';
+
+  const isWriting = /^\/post\/create|^\/post\/(.*)\/edit|^\/home\/profile/.test(
+    pathname
+  );
+
   const session = await getSession(request.headers.get('Cookie'));
   const infoMessage = session.get('infoMessage');
   const alertMessage = session.get('alertMessage');
@@ -54,6 +62,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return data(
     {
       isAuthenticated,
+      isWriting,
       gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
       adsenseId,
       env,
@@ -88,6 +97,7 @@ export const meta: MetaFunction = () => [
 function App() {
   const {
     isAuthenticated,
+    isWriting,
     gtagId,
     adsenseId,
     lang = 'ja',
@@ -116,7 +126,7 @@ function App() {
         <Links />
       </head>
       <body className={clsx(bodyStyle, themeClass)}>
-        <Layout isAuthenticated={isAuthenticated}>
+        <Layout isAuthenticated={isAuthenticated} isWriting={isWriting}>
           <Outlet />
         </Layout>
         <Snackbar info={infoMessage} alert={alertMessage} />

@@ -30,6 +30,7 @@ export const Adsense: FC<Props> = ({ slot }) => {
   const isTest = useMemo(() => process.env.NODE_ENV === 'development', []);
 
   useEffect(() => {
+    if (!w?.env.VITE_GA_ADSENSE_ID) return;
     if (show) return;
     if (typeof window === 'undefined') return;
     if (!(window as WindowWithEnv)?.adsbygoogle) return;

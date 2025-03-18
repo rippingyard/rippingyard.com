@@ -31,6 +31,12 @@ export const wideButtonStyle = style({
   width: '100%',
 });
 
+export const blurButtonStyle = style({
+  backgroundColor: vars.color['shadow-60'],
+  WebkitBackdropFilter: 'blur(12px)',
+  backdropFilter: 'blur(12px)',
+});
+
 export const successButtonStyle = style({
   backgroundColor: vars.color.primary,
   // boxShadow: `0 0 2px 0 ${vars.color.primary}`,
