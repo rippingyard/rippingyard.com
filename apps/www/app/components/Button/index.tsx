@@ -4,6 +4,7 @@ import { ComponentPropsWithRef, ReactNode, forwardRef } from 'react';
 import { IconLoader } from '~/assets/icons/Loader';
 
 import {
+  blurButtonStyle,
   buttonStyle,
   disabledStyle,
   ghostButtonStyle,
@@ -20,6 +21,7 @@ type Props = ComponentPropsWithRef<'button'> & {
   isWide?: boolean;
   isGhost?: boolean;
   isSquare?: boolean;
+  isBlur?: boolean;
   children: ReactNode;
 };
 
@@ -32,6 +34,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       isGhost = false,
       isSquare = false,
       isWide = false,
+      isBlur = false,
       ...props
     },
     ref
@@ -43,6 +46,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
       isGhost && ghostButtonStyle,
       isSquare && squareButtonStyle,
       isWide && wideButtonStyle,
+      isBlur && blurButtonStyle,
       props?.disabled && disabledStyle
     );
 

@@ -122,7 +122,7 @@ export default function Main() {
     clearCachedContent(pathname);
     clearCachedItems();
 
-    const permalink = postLink(result.post.id);
+    const permalink = postLink(result.post.id!);
 
     navigate(permalink);
   }, [clearCachedContent, navigate, pathname, postLink, result]);
