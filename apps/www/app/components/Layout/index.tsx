@@ -24,8 +24,11 @@ import { Logo } from '../Logo';
 import { LogoType } from '../LogoType';
 
 export const Layout: FC<
-  ComponentPropsWithoutRef<'div'> & { isAuthenticated: boolean }
-> = ({ children, isAuthenticated = false }) => {
+  ComponentPropsWithoutRef<'div'> & {
+    isAuthenticated: boolean;
+    isWriting?: boolean;
+  }
+> = ({ children, isAuthenticated = false, isWriting = false }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
@@ -53,10 +56,12 @@ export const Layout: FC<
       {children}
       <Nav isOpened={isOpened} isAuthenticated={isAuthenticated} />
       <PostModal isOpen={isPosting} onClose={() => setIsPosting(false)} />
-      <PostDialogButton
-        isAuthenticated={isAuthenticated}
-        onClick={() => setIsPosting(true)}
-      />
+      {!isWriting && (
+        <PostDialogButton
+          isAuthenticated={isAuthenticated}
+          onClick={() => setIsPosting(true)}
+        />
+      )}
     </div>
   );
 };
