@@ -9,6 +9,7 @@ import { toDate } from '~/utils/date';
 
 import {
   groupContainerStyle,
+  labelContainerStyle,
   labelStyle,
   listItemStyle,
   listStyle,
@@ -62,8 +63,10 @@ export const DailyPostList: FC<Props> = memo(
       <>
         {Object.keys(dailyPosts).map((date) => (
           <div className={groupContainerStyle}>
-            <div className={labelStyle}>
-              <DateLabel date={dailyPosts[date].date} />
+            <div className={labelContainerStyle}>
+              <div className={labelStyle}>
+                <DateLabel date={dailyPosts[date].date} />
+              </div>
             </div>
             <ul className={listStyle}>
               {dailyPosts[date].posts.map((post) => (
