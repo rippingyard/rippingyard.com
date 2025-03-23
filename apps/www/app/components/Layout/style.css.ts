@@ -2,11 +2,11 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
-import { mediaQuery, zIndex } from '~/utils/style';
+import { HEADER_HEIGHT, mediaQuery, zIndex } from '~/utils/style';
 
 export const containerStyle = style({
   height: '100%',
-  paddingTop: 66,
+  paddingTop: HEADER_HEIGHT,
   // paddingBottom: 100,
 });
 

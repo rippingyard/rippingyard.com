@@ -1,11 +1,13 @@
 ﻿import { style } from '@vanilla-extract/css';
 
-import { mediaQuery } from '~/utils/style';
+import { HEADER_HEIGHT, mediaQuery } from '~/utils/style';
 
 export const containerStyle = style({});
 
 export const groupContainerStyle = style({
   display: 'flex',
+  position: 'relative',
+  marginBottom: 32,
   gap: 32,
   '@media': {
     [mediaQuery('TB')]: {
@@ -14,9 +16,20 @@ export const groupContainerStyle = style({
   },
 });
 
-export const labelStyle = style({
-  // width: 100,
+export const labelContainerStyle = style({
+  width: 80,
   flexShrink: 0,
+  position: 'relative',
+  '@media': {
+    [mediaQuery('TB')]: {
+      width: 60,
+    },
+  },
+});
+
+export const labelStyle = style({
+  position: 'sticky',
+  top: HEADER_HEIGHT - 3,
 });
 
 export const listStyle = style({
