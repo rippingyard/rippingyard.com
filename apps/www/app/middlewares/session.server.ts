@@ -38,6 +38,7 @@ const getAuthToken = async (idToken: string) => {
   const decodedToken = await adminAuth.verifyIdToken(idToken);
 
   if (new Date().getTime() / 1000 - decodedToken.auth_time > 5 * 60) {
+    // TODO: ここでsession cookieをクリアする必要がある
     throw new Error('Recent sign in required');
   }
   const expiresIn = SESSION_AGE * 1000;
