@@ -1,5 +1,4 @@
 ﻿import { createCookieSessionStorage } from 'react-router';
-// import dayjs from 'dayjs';
 
 import { useFirebase } from '~/hooks/firebase/useFirebase.server';
 import { Role } from '~/schemas/user';
@@ -38,7 +37,6 @@ const getAuthToken = async (idToken: string) => {
   const decodedToken = await adminAuth.verifyIdToken(idToken);
 
   if (new Date().getTime() / 1000 - decodedToken.auth_time > 5 * 60) {
-    // TODO: ここでsession cookieをクリアする必要がある
     throw new Error('Recent sign in required');
   }
   const expiresIn = SESSION_AGE * 1000;
@@ -68,7 +66,7 @@ const getMe = async (
 
     return { uid, role };
   } catch (e) {
-    console.log('e', e);
+    console.error('e', e);
     return emptyValue;
   }
 };

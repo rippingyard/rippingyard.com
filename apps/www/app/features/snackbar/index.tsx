@@ -30,8 +30,7 @@ export const Snackbar: FC<Props> = ({ info, alert }) => {
         !message && hiddenStyle,
       ])}
       onClick={() => setMessage('')}
-    >
-      {message}
-    </div>
+      dangerouslySetInnerHTML={{ __html: message }}
+    />
   );
 };
