@@ -57,6 +57,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const infoMessage = session.get('infoMessage');
   const alertMessage = session.get('alertMessage');
 
+  // Authが切れてしまった場合、tokenをクリアする
+  if (!isAuthenticated) session.unset('token');
+
   const lang = 'ja'; //TODO: i18n対応
 
   return data(
