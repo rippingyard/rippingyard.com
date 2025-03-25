@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { useFetcher, useNavigate } from 'react-router';
+import { useFetcher } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { Modal } from '~/components/Modal';
 import { WysiwygComment } from '~/components/Wysiwyg/comment';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { usePostLink } from '~/hooks/link/usePostLink';
 import { Post, PostStatus } from '~/schemas/post';
 
 import { bodyStyle, containerStyle, footerStyle } from './style.css';
@@ -23,8 +22,6 @@ export const PostModal: FC<Props> = ({ post, isOpen = false, onClose }) => {
   const pathname = 'log';
 
   const { Form, data } = useFetcher();
-  const navigate = useNavigate();
-  const postLink = usePostLink();
 
   const { setCachedContent, getCachedContent, clearCachedContent } =
     useCachedContent();
@@ -61,11 +58,11 @@ export const PostModal: FC<Props> = ({ post, isOpen = false, onClose }) => {
     console.log('data.post', data.post);
     clearCachedContent(pathname);
 
-    const permalink = postLink(data.post.id!);
-    navigate(permalink);
+    // const permalink = postLink(data.post.id!);
+    // navigate(permalink);
 
     onClose();
-  }, [clearCachedContent, data, navigate, onClose, postLink]);
+  }, [clearCachedContent, data?.post, onClose]);
 
   return (
     <Modal isOpened={isOpen} onClose={onClose}>

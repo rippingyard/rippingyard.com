@@ -2,12 +2,7 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
-import {
-  useActionData,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from 'react-router';
+import { useLoaderData, useLocation, useNavigate } from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
@@ -60,11 +55,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const savePost = useSavePost();
+  const postLink = usePostLink();
 
   try {
     const { uid } = await getMe(request);
 
     if (!uid) throw new Error('Unauthenticated');
+
+    const session = await getSession(request.headers.get('Cookie'));
 
     const formData = await usePostFormData(request);
 
@@ -76,9 +74,23 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
     console.log('saved!', post);
 
-    return {
-      post,
-    };
+    const permalink = postLink(post.id!);
+
+    session.flash(
+      'infoMessage',
+      `<a href="${permalink}">記事を投稿しました</a>`
+    );
+
+    return data(
+      {
+        post,
+      },
+      {
+        headers: {
+          'Set-Cookie': await commitSession(session),
+        },
+      }
+    );
   } catch (e) {
     console.error(e);
     return data(e, {
@@ -108,24 +120,23 @@ export const meta = ({ data }: Route.MetaArgs) => {
   ];
 };
 
-export default function Main() {
+export default function Main({ actionData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const postLink = usePostLink();
   const { pathname } = useLocation();
   const { myTags } = useLoaderData<typeof loader>();
   const { clearCachedContent } = useCachedContent();
 
-  const result = useActionData<typeof action>();
   useEffect(() => {
-    if (!result?.post) return;
+    if (!actionData?.post) return;
 
     clearCachedContent(pathname);
     clearCachedItems();
 
-    const permalink = postLink(result.post.id!);
+    const permalink = postLink(actionData.post.id!);
 
     navigate(permalink);
-  }, [clearCachedContent, navigate, pathname, postLink, result]);
+  }, [clearCachedContent, navigate, pathname, postLink, actionData]);
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>

@@ -1,5 +1,4 @@
 ﻿import { createCookieSessionStorage } from 'react-router';
-// import dayjs from 'dayjs';
 
 import { useFirebase } from '~/hooks/firebase/useFirebase.server';
 import { Role } from '~/schemas/user';
