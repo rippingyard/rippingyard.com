@@ -1,26 +1,18 @@
-﻿import { useDropZone } from '@reactuses/core';
-import FloatingMenu from '@tiptap/extension-floating-menu';
+﻿import FloatingMenu from '@tiptap/extension-floating-menu';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import {
-  ComponentPropsWithRef,
-  FC,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import { ComponentPropsWithRef, FC, useCallback, useRef } from 'react';
 
-import { ImageUploader } from '~/components/ImageUploader';
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
 import { BubbleMenu } from './BubbleMenu';
 import { SimpleFloatingMenu } from './FloatingMenu/simple';
-import { containerStyle, modalStyle, wrapperStyle } from './style.css';
+import { containerStyle, wrapperStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -34,8 +26,6 @@ export const WysiwygComment: FC<Props> = ({
   onUpdate,
 }) => {
   const dzRef = useRef(null);
-
-  const [showImageUploader, setShowImageUploader] = useState<boolean>(false);
 
   const extensions: AnyExtension[] = [
     StarterKit,
@@ -72,10 +62,6 @@ export const WysiwygComment: FC<Props> = ({
     [editor]
   );
 
-  const isOverDropZone = useDropZone(dzRef, (files) => {
-    console.log('files', files);
-  });
-
   if (!editor) return;
 
   return (
@@ -87,18 +73,9 @@ export const WysiwygComment: FC<Props> = ({
       <SimpleFloatingMenu
         editor={editor}
         canUploadImage={!!uploadpath}
-        showImageUploader={setShowImageUploader}
+        onUploaded={onUploadedImage}
       />
       <BubbleMenu editor={editor} />
-      {uploadpath && (showImageUploader || isOverDropZone) && (
-        <div className={modalStyle}>
-          <ImageUploader
-            uploadpath={uploadpath}
-            onUploaded={onUploadedImage}
-            onClose={() => setShowImageUploader(false)}
-          />
-        </div>
-      )}
     </div>
   );
 };

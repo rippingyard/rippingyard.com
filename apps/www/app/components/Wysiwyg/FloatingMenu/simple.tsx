@@ -1,5 +1,6 @@
 ﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
-import { Dispatch, FC, SetStateAction } from 'react';
+import axios from 'axios';
+import { FC, useCallback, useRef } from 'react';
 
 import { IconHeading } from '~/assets/icons/Heading';
 import { IconHorizontalLine } from '~/assets/icons/HorizontalLine';
@@ -13,27 +14,83 @@ import { simpleButtonStyle, containerStyle } from './style.css';
 type Props = {
   editor: Editor;
   canUploadImage?: boolean;
-  showImageUploader: Dispatch<SetStateAction<boolean>>;
+  onUploaded: (params: { url: string }) => void;
 };
 
 export const SimpleFloatingMenu: FC<Props> = ({
   editor,
   canUploadImage = true,
-  showImageUploader,
+  onUploaded,
 }) => {
+  const endpoint = '/upload';
+  const fileInput = useRef<HTMLInputElement | null>(null);
+
+  const upload = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('UPLOAD!', e.target.files);
+      e.preventDefault();
+
+      if (!e.target.files || e.target.files.length < 1) return;
+
+      const file = e.target.files[0];
+      if (!file) return;
+
+      try {
+        const body = new FormData();
+        body.append('filename', 'test.jpg'); // TODO!
+        body.append('file', file);
+
+        const { data } = await axios<
+          { filename: string; file: File },
+          {
+            data: {
+              url: string;
+            };
+          }
+        >({
+          url: endpoint,
+          data: body,
+          method: 'POST',
+        });
+
+        console.log('data', data);
+
+        const { url } = data;
+
+        onUploaded({
+          url,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [onUploaded]
+  );
+
   return (
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
         {canUploadImage && (
-          <button
-            className={simpleButtonStyle}
-            onClick={(e) => {
-              e.preventDefault();
-              showImageUploader(true);
-            }}
-          >
-            <IconImage />
-          </button>
+          <>
+            <button
+              className={simpleButtonStyle}
+              onClick={(e) => {
+                e.preventDefault();
+                if (!fileInput?.current) return;
+                fileInput.current.click();
+              }}
+            >
+              <IconImage />
+            </button>
+            <input
+              type="file"
+              name="file"
+              ref={fileInput}
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={upload}
+            />
+          </>
         )}
         <button
           className={simpleButtonStyle}
