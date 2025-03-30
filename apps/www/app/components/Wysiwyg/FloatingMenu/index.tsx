@@ -1,4 +1,5 @@
 ﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
+import clsx from 'clsx';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 import { IconCode } from '~/assets/icons/Code';
@@ -10,23 +11,36 @@ import { IconListOl } from '~/assets/icons/ListOl';
 import { IconParagraph } from '~/assets/icons/Paragraph';
 import { IconQuoteRight } from '~/assets/icons/QuoteRight';
 
-import { containerStyle, labelStyle } from './style.css';
+import {
+  buttonStyle,
+  containerStyle,
+  hiddenLabelStyle,
+  labelStyle as labelNormalStyle,
+} from './style.css';
 
 type Props = {
   editor: Editor;
   canUploadImage?: boolean;
+  view?: 'normal' | 'simple';
   showImageUploader: Dispatch<SetStateAction<boolean>>;
 };
 
 export const FloatingMenu: FC<Props> = ({
   editor,
   canUploadImage = true,
+  view = 'normal',
   showImageUploader,
 }) => {
+  const labelStyle = clsx([
+    labelNormalStyle,
+    view !== 'normal' && hiddenLabelStyle,
+  ]);
+
   return (
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
         <button
+          className={buttonStyle}
           onClick={(e) => {
             e.preventDefault();
             editor.chain().focus().setNode('paragraph').run();
@@ -35,6 +49,7 @@ export const FloatingMenu: FC<Props> = ({
           <IconParagraph /> <span className={labelStyle}>段落</span>
         </button>
         <button
+          className={buttonStyle}
           onClick={(e) => {
             e.preventDefault();
             editor.chain().focus().setNode('heading', { level: 2 }).run();
@@ -47,7 +62,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().setNode('heading', { level: 3 }).run();
           }}
-          className={labelStyle}
+          className={buttonStyle}
         >
           <IconHeading /> 中見出し
         </button>
@@ -56,7 +71,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().setNode('heading', { level: 4 }).run();
           }}
-          className={labelStyle}
+          className={buttonStyle}
         >
           <IconHeading /> 小見出し
         </button>
@@ -66,6 +81,7 @@ export const FloatingMenu: FC<Props> = ({
               e.preventDefault();
               showImageUploader(true);
             }}
+            className={buttonStyle}
           >
             <IconImage /> <span className={labelStyle}>画像</span>
           </button>
@@ -75,6 +91,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().toggleBulletList().run();
           }}
+          className={buttonStyle}
         >
           <IconList /> <span className={labelStyle}>リスト</span>
         </button>
@@ -83,6 +100,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().toggleOrderedList().run();
           }}
+          className={buttonStyle}
         >
           <IconListOl /> <span className={labelStyle}>数字リスト</span>
         </button>
@@ -91,6 +109,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().setHorizontalRule().run();
           }}
+          className={buttonStyle}
         >
           <IconHorizontalLine /> <span className={labelStyle}>分割線</span>
         </button>
@@ -99,6 +118,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().setBlockquote().run();
           }}
+          className={buttonStyle}
         >
           <IconQuoteRight /> <span className={labelStyle}>引用</span>
         </button>
@@ -107,6 +127,7 @@ export const FloatingMenu: FC<Props> = ({
             e.preventDefault();
             editor.chain().focus().setCodeBlock().run();
           }}
+          className={buttonStyle}
         >
           <IconCode /> <span className={labelStyle}>コード</span>
         </button>
