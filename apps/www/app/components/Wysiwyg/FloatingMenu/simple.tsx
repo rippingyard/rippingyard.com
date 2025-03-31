@@ -1,5 +1,5 @@
 ﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
-import axios from 'axios';
+import dayjs from 'dayjs';
 import { FC, useCallback, useRef } from 'react';
 
 import { IconHeading } from '~/assets/icons/Heading';
@@ -8,6 +8,8 @@ import { IconImage } from '~/assets/icons/Image';
 import { IconList } from '~/assets/icons/List';
 import { IconListOl } from '~/assets/icons/ListOl';
 import { IconQuoteRight } from '~/assets/icons/QuoteRight';
+import { useUploadImage } from '~/hooks/save/useUploadImage';
+import { resizeImage } from '~/utils/image';
 
 import { simpleButtonStyle, containerStyle } from './style.css';
 
@@ -22,10 +24,12 @@ export const SimpleFloatingMenu: FC<Props> = ({
   canUploadImage = true,
   onUploaded,
 }) => {
-  const endpoint = '/upload';
+  const now = dayjs();
+  const uploadpath = `posts/${now.format('YYYY/MM')}/`;
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const { uploadImage } = useUploadImage({ uploadpath });
 
-  const upload = useCallback(
+  const onUploadImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       console.log('UPLOAD!', e.target.files);
       e.preventDefault();
@@ -36,35 +40,16 @@ export const SimpleFloatingMenu: FC<Props> = ({
       if (!file) return;
 
       try {
-        const body = new FormData();
-        body.append('filename', 'test.jpg'); // TODO!
-        body.append('file', file);
+        const resizedImage = await resizeImage(file);
 
-        const { data } = await axios<
-          { filename: string; file: File },
-          {
-            data: {
-              url: string;
-            };
-          }
-        >({
-          url: endpoint,
-          data: body,
-          method: 'POST',
-        });
+        const { url } = await uploadImage({ file: resizedImage });
 
-        console.log('data', data);
-
-        const { url } = data;
-
-        onUploaded({
-          url,
-        });
+        onUploaded({ url });
       } catch (e) {
         console.error(e);
       }
     },
-    [onUploaded]
+    [onUploaded, uploadImage]
   );
 
   return (
@@ -88,7 +73,7 @@ export const SimpleFloatingMenu: FC<Props> = ({
               ref={fileInput}
               style={{ display: 'none' }}
               accept="image/*"
-              onChange={upload}
+              onChange={onUploadImage}
             />
           </>
         )}

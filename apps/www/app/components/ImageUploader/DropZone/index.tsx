@@ -34,10 +34,7 @@ export const DropZone: FC<Props> = ({ onUpdate, onClose }) => {
         setIsResizing(true);
         const originalFile = files[0];
 
-        const resizedImage = await resizeImage(originalFile, {
-          width: 1700,
-          height: 1700,
-        });
+        const resizedImage = await resizeImage(originalFile);
 
         if (!resizedImage) return;
 
