@@ -1,8 +1,6 @@
-﻿import axios from 'axios';
-import dayjs from 'dayjs';
-import { FC, useMemo, useState } from 'react';
+﻿import { FC, useState } from 'react';
 
-import { getExt } from '~/utils/file';
+import { useUploadImage } from '~/hooks/save/useUploadImage';
 import { ResizedImage } from '~/utils/image';
 
 import { DropZone } from './DropZone';
@@ -20,49 +18,21 @@ export const ImageUploader: FC<Props> = ({
   onUploaded,
   onClose,
 }) => {
-  const endpoint = '/upload';
-
   const [file, setFile] = useState<ResizedImage>();
   const [isUploading, setIsUploading] = useState(false);
-
-  const filename = useMemo(() => {
-    if (!file) return;
-    const ext = getExt(file.file);
-    if (!ext) return;
-    const now = dayjs();
-    return `${uploadpath}${now.unix()}.${ext}`;
-  }, [file, uploadpath]);
+  const { uploadImage } = useUploadImage({ uploadpath });
 
   const onUploadImage = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (!filename || !file) return;
+    if (!file) return;
     event.preventDefault();
     try {
       setIsUploading(true);
 
-      const body = new FormData();
-      body.append('filename', filename);
-      body.append('file', file?.file);
+      const { url } = await uploadImage({ file });
 
-      const { data } = await axios<
-        { filename: string; file: File },
-        {
-          data: {
-            url: string;
-          };
-        }
-      >({
-        url: endpoint,
-        data: body,
-        method: 'POST',
-      });
-
-      const { url } = data;
-
-      onUploaded({
-        url,
-      });
+      onUploaded({ url });
 
       setFile(undefined);
     } catch (e) {

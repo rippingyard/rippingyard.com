@@ -40,7 +40,7 @@ export const ProfileEditor: FC<Props> = ({
   const [profile, setProfile] = useState(user.profile || '');
   const [avatar, setAvatar] = useState(user.avatar || '');
 
-  const uploadpath = `users/${user.uid}`;
+  const uploadpath = `users/${user.uid}/`;
 
   const onUpdateProfile = useCallback((content: string) => {
     setProfile(content);

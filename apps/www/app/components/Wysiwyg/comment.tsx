@@ -5,11 +5,13 @@ import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import { ComponentPropsWithRef, FC, useRef } from 'react';
+import { ComponentPropsWithRef, FC, useCallback, useRef } from 'react';
 
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
+import { BubbleMenu } from './BubbleMenu';
+import { SimpleFloatingMenu } from './FloatingMenu/simple';
 import { containerStyle, wrapperStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
@@ -52,6 +54,14 @@ export const WysiwygComment: FC<Props> = ({
     immediatelyRender: false,
   });
 
+  const onUploadedImage = useCallback(
+    ({ url }: { url: string }) => {
+      if (!editor || !url) return;
+      editor.chain().focus().setImage({ src: url }).run();
+    },
+    [editor]
+  );
+
   if (!editor) return;
 
   return (
@@ -60,6 +70,12 @@ export const WysiwygComment: FC<Props> = ({
         editor={editor}
         className={clsx(articleStyle, containerStyle)}
       />
+      <SimpleFloatingMenu
+        editor={editor}
+        canUploadImage={!!uploadpath}
+        onUploaded={onUploadedImage}
+      />
+      <BubbleMenu editor={editor} />
     </div>
   );
 };

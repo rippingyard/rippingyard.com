@@ -22,12 +22,13 @@ export const resizeImage = (
   if (!image) return Promise.reject();
 
   return new Promise((resolve, reject) => {
-    const { width = 2000, height = 2000, quality = 1.0 } = params;
+    const { width = 1700, height = 1700, quality = 0.9 } = params;
 
     new Compressor(image, {
       quality,
       width,
       height,
+      convertSize: 500000,
       success: (blob) => {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
