@@ -5,14 +5,14 @@ import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import { ComponentPropsWithRef, FC, useCallback, useRef } from 'react';
+import { ComponentPropsWithRef, FC, useCallback, useState } from 'react';
 
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
 import { BubbleMenu } from './BubbleMenu';
 import { SimpleFloatingMenu } from './FloatingMenu/simple';
-import { containerStyle, wrapperStyle } from './style.css';
+import { containerStyle, errorStyle, wrapperStyle } from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -25,7 +25,7 @@ export const WysiwygComment: FC<Props> = ({
   uploadpath,
   onUpdate,
 }) => {
-  const dzRef = useRef(null);
+  const [error, setError] = useState('');
 
   const extensions: AnyExtension[] = [
     StarterKit,
@@ -62,10 +62,14 @@ export const WysiwygComment: FC<Props> = ({
     [editor]
   );
 
+  const onError = useCallback((error: string) => {
+    setError(error);
+  }, []);
+
   if (!editor) return;
 
   return (
-    <div ref={dzRef} className={wrapperStyle}>
+    <div className={wrapperStyle}>
       <EditorContent
         editor={editor}
         className={clsx(articleStyle, containerStyle)}
@@ -74,8 +78,12 @@ export const WysiwygComment: FC<Props> = ({
         editor={editor}
         canUploadImage={!!uploadpath}
         onUploaded={onUploadedImage}
+        onError={onError}
       />
       <BubbleMenu editor={editor} />
+      <p onClick={() => onError('')} className={errorStyle}>
+        {error}
+      </p>
     </div>
   );
 };

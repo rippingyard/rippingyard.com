@@ -17,12 +17,14 @@ type Props = {
   editor: Editor;
   canUploadImage?: boolean;
   onUploaded: (params: { url: string }) => void;
+  onError: (message: string) => void;
 };
 
 export const SimpleFloatingMenu: FC<Props> = ({
   editor,
   canUploadImage = true,
   onUploaded,
+  onError,
 }) => {
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
@@ -47,9 +49,10 @@ export const SimpleFloatingMenu: FC<Props> = ({
         onUploaded({ url });
       } catch (e) {
         console.error(e);
+        onError((e as { message: string }).message);
       }
     },
-    [onUploaded, uploadImage]
+    [onError, onUploaded, uploadImage]
   );
 
   return (

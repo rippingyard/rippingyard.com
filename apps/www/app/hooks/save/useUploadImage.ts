@@ -17,7 +17,7 @@ export const useUploadImage = ({
     const now = dayjs();
 
     const ext = getExt(file.file);
-    if (!ext) throw new Error();
+    if (!ext) throw new Error('不正なファイルです');
 
     const filename = `${uploadpath}${now.unix()}.${ext}`;
 
