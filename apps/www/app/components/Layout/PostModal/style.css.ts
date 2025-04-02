@@ -2,12 +2,18 @@ import { style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
+import { mediaQuery } from '~/utils/style';
 
 export const containerStyle = style({
-  width: '80vw',
+  width: '95vw',
   maxWidth: 680,
   padding: 25,
   paddingBottom: 12,
+  '@media': {
+    [mediaQuery('TB')]: {
+      padding: 12,
+    },
+  },
 });
 
 export const bodyStyle = style({

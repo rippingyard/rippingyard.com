@@ -7,12 +7,18 @@ import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import { ComponentPropsWithRef, FC, useCallback, useState } from 'react';
 
+import { IconLoader } from '~/assets/icons/Loader';
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
 import { BubbleMenu } from './BubbleMenu';
 import { SimpleFloatingMenu } from './FloatingMenu/simple';
-import { containerStyle, errorStyle, wrapperStyle } from './style.css';
+import {
+  containerStyle,
+  errorStyle,
+  loadingStyle,
+  wrapperStyle,
+} from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -26,6 +32,7 @@ export const WysiwygComment: FC<Props> = ({
   onUpdate,
 }) => {
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const extensions: AnyExtension[] = [
     StarterKit,
@@ -62,6 +69,10 @@ export const WysiwygComment: FC<Props> = ({
     [editor]
   );
 
+  const onLoading = useCallback((value: boolean) => {
+    setIsLoading(value);
+  }, []);
+
   const onError = useCallback((error: string) => {
     setError(error);
   }, []);
@@ -78,12 +89,20 @@ export const WysiwygComment: FC<Props> = ({
         editor={editor}
         canUploadImage={!!uploadpath}
         onUploaded={onUploadedImage}
+        onLoading={onLoading}
         onError={onError}
       />
       <BubbleMenu editor={editor} />
-      <p onClick={() => onError('')} className={errorStyle}>
-        {error}
-      </p>
+      {error && (
+        <p onClick={() => onError('')} className={errorStyle}>
+          {error}
+        </p>
+      )}
+      {isLoading && (
+        <p className={loadingStyle}>
+          <IconLoader />
+        </p>
+      )}
     </div>
   );
 };

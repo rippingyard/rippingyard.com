@@ -17,6 +17,7 @@ type Props = {
   editor: Editor;
   canUploadImage?: boolean;
   onUploaded: (params: { url: string }) => void;
+  onLoading: (value: boolean) => void;
   onError: (message: string) => void;
 };
 
@@ -24,6 +25,7 @@ export const SimpleFloatingMenu: FC<Props> = ({
   editor,
   canUploadImage = true,
   onUploaded,
+  onLoading,
   onError,
 }) => {
   const now = dayjs();
@@ -42,6 +44,7 @@ export const SimpleFloatingMenu: FC<Props> = ({
       if (!file) return;
 
       try {
+        onLoading(true);
         const resizedImage = await resizeImage(file);
 
         const { url } = await uploadImage({ file: resizedImage });
@@ -50,9 +53,11 @@ export const SimpleFloatingMenu: FC<Props> = ({
       } catch (e) {
         console.error(e);
         onError((e as { message: string }).message);
+      } finally {
+        onLoading(false);
       }
     },
-    [onError, onUploaded, uploadImage]
+    [onError, onLoading, onUploaded, uploadImage]
   );
 
   return (
