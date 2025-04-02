@@ -38,9 +38,15 @@ export const hiddenLabelStyle = style({
 
 export const simpleButtonStyle = style({
   border: `3px solid ${vars.color['neutral']}`,
-  padding: '3px 18px',
+  padding: '3px 15px',
   marginRight: 5,
   borderRadius: rootVars.border.radius.large,
   lineHeight: 1,
   fontSize: rootVars.font.size['x-small'],
+  '@media': {
+    [mediaQuery('TB')]: {
+      padding: '3px 10px',
+      borderWidth: 2,
+    },
+  },
 });

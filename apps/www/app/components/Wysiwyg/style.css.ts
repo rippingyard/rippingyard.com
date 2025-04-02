@@ -34,3 +34,10 @@ export const errorStyle = style({
     cursor: 'pointer',
   },
 });
+
+export const loadingStyle = style({
+  position: 'absolute',
+  bottom: 5,
+  left: 0,
+  fontSize: rootVars.font.size['small'],
+});
