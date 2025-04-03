@@ -1,6 +1,6 @@
-﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
+﻿﻿import { Editor, FloatingMenu as TipTapFloatingMenu } from '@tiptap/react';
 import dayjs from 'dayjs';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useCallback } from 'react';
 
 import { IconHeading } from '~/assets/icons/Heading';
 import { IconHorizontalLine } from '~/assets/icons/HorizontalLine';
@@ -30,60 +30,71 @@ export const SimpleFloatingMenu: FC<Props> = ({
 }) => {
   const now = dayjs();
   const uploadpath = `posts/${now.format('YYYY/MM')}/`;
-  const fileInput = useRef<HTMLInputElement | null>(null);
   const { uploadImage } = useUploadImage({ uploadpath });
 
-  const onUploadImage = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('UPLOAD!', e.target.files);
-      e.preventDefault();
+  // ファイル選択処理をハンドルする新しい関数
+  const handleFileButtonClick = useCallback(async () => {
+    return new Promise<void>((resolve) => {
+      // input要素を新規作成
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
 
-      if (!e.target.files || e.target.files.length < 1) return;
+      // ファイル選択後の処理
+      input.onchange = async (e) => {
+        const target = e.target as HTMLInputElement;
+        if (!target.files || target.files.length < 1) {
+          resolve();
+          return;
+        }
 
-      const file = e.target.files[0];
-      if (!file) return;
+        const file = target.files[0];
+        if (!file) {
+          resolve();
+          return;
+        }
 
-      try {
-        onLoading(true);
-        const resizedImage = await resizeImage(file);
+        try {
+          onLoading(true);
+          const resizedImage = await resizeImage(file);
+          const { url } = await uploadImage({ file: resizedImage });
+          onUploaded({ url });
+        } catch (e) {
+          console.error(e);
+          onError((e as { message: string }).message);
+        } finally {
+          onLoading(false);
+          resolve();
+        }
+      };
 
-        const { url } = await uploadImage({ file: resizedImage });
+      // Safariでのキャンセル操作を検知するため
+      setTimeout(() => {
+        if (document.body.contains(input)) {
+          document.body.removeChild(input);
+          resolve();
+        }
+      }, 1000);
 
-        onUploaded({ url });
-      } catch (e) {
-        console.error(e);
-        onError((e as { message: string }).message);
-      } finally {
-        onLoading(false);
-      }
-    },
-    [onError, onLoading, onUploaded, uploadImage]
-  );
+      // DOM追加とクリック
+      document.body.appendChild(input);
+      input.click();
+    });
+  }, [onError, onLoading, onUploaded, uploadImage]);
 
   return (
     <TipTapFloatingMenu editor={editor}>
       <div className={containerStyle}>
         {canUploadImage && (
-          <>
-            <button
-              className={simpleButtonStyle}
-              onClick={(e) => {
-                e.preventDefault();
-                if (!fileInput?.current) return;
-                fileInput.current.click();
-              }}
-            >
-              <IconImage />
-            </button>
-            <input
-              type="file"
-              name="file"
-              ref={fileInput}
-              style={{ display: 'none' }}
-              accept="image/*"
-              onChange={onUploadImage}
-            />
-          </>
+          <button
+            className={simpleButtonStyle}
+            onClick={(e) => {
+              e.preventDefault();
+              handleFileButtonClick();
+            }}
+          >
+            <IconImage />
+          </button>
         )}
         <button
           className={simpleButtonStyle}
