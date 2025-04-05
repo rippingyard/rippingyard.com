@@ -1,4 +1,4 @@
-﻿import OpenAI from 'openai';
+﻿﻿﻿import OpenAI from 'openai';
 import { redirect } from 'react-router';
 
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
@@ -6,7 +6,7 @@ import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import type { Route } from './+types/entitiesFromText';
 
 export const config = {
-  maxDuration: 30,
+  maxDuration: 60,
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
@@ -29,42 +29,136 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
-
     const content = formData.get('content') as string;
+
     const openai = new OpenAI({
       apiKey: process.env.VITE_OPENAI_APIKEY,
       organization: process.env.VITE_OPENAI_ORGANIZATION_ID,
       project: process.env.VITE_OPENAI_PROJECT_ID,
     });
 
+    // スレッドとメッセージの作成
     const thread = await openai.beta.threads.create();
     await openai.beta.threads.messages.create(thread.id, {
       role: 'user',
       content,
     });
 
-    const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
-      assistant_id: process.env.VITE_OPENAI_ENTITY_ASSISTANT as string,
-    });
+    // ストリーミング用のTransformStream
+    const stream = new TransformStream();
+    const writer = stream.writable.getWriter();
+    const encoder = new TextEncoder();
 
-    if (run.status !== 'completed') throw new Error(run.status);
-
-    const messages = await openai.beta.threads.messages.list(run.thread_id);
-
-    let result = {};
-    for (const message of messages.data.reverse()) {
-      if (message.role !== 'assistant') continue;
-      if (message.content[0].type !== 'text') continue;
-      result = JSON.parse(message.content[0].text.value);
-      console.log('result', result);
-    }
-
-    return Response.json({
+    // 空のデータで初期化
+    const initialData = {
       content,
-      result,
+      result: {
+        categories: [],
+        entities: [],
+      },
+    };
+
+    writer.write(encoder.encode(`data: ${JSON.stringify(initialData)}\n\n`));
+
+    // 非同期でRunを作成して処理
+    (async () => {
+      try {
+        // Runの作成
+        const run = await openai.beta.threads.runs.create(thread.id, {
+          assistant_id: process.env.VITE_OPENAI_ENTITY_ASSISTANT as string,
+        });
+
+        // ステータスをポーリングして進捗を送信
+        let status = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+
+        while (
+          status.status !== 'completed' &&
+          status.status !== 'failed' &&
+          status.status !== 'cancelled'
+        ) {
+          // 定期的にステータスを更新
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          status = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+
+          // 処理中のステータスを送信
+          const progressData = {
+            content,
+            status: status.status,
+            progress: true,
+          };
+          writer.write(
+            encoder.encode(`data: ${JSON.stringify(progressData)}\n\n`)
+          );
+        }
+
+        if (status.status === 'completed') {
+          const messages = await openai.beta.threads.messages.list(
+            run.thread_id
+          );
+
+          let result = {};
+          for (const message of messages.data.reverse()) {
+            if (message.role !== 'assistant') continue;
+            if (message.content[0].type !== 'text') continue;
+            result = JSON.parse(message.content[0].text.value);
+            console.log('result', result);
+            break;
+          }
+
+          // 最終結果を送信
+          const finalData = {
+            content,
+            result,
+            completed: true,
+          };
+          writer.write(
+            encoder.encode(`data: ${JSON.stringify(finalData)}\n\n`)
+          );
+        } else {
+          // エラー状態を送信
+          const errorData = {
+            content,
+            error: `処理が完了しませんでした: ${status.status}`,
+            completed: true,
+          };
+          writer.write(
+            encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`)
+          );
+        }
+      } catch (error: unknown) {
+        console.error('Stream processing error:', error);
+        // エラー状態を送信
+        const errorData = {
+          content,
+          error: `処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          completed: true,
+        };
+        writer.write(encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`));
+      } finally {
+        writer.close();
+      }
+    })();
+
+    // ストリームレスポンスを返す
+    return new Response(stream.readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+      },
     });
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
-    throw e;
+    return new Response(
+      JSON.stringify({
+        error: e instanceof Error ? e.message : 'Unknown error',
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 };

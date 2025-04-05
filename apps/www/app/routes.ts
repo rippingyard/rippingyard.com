@@ -32,7 +32,12 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
 
     // API
     route('/upload', 'routes/api/upload.tsx');
-    route('/tool/entitiesFromText', 'routes/api/entitiesFromText.tsx');
+    route(
+      '/api/entitiesFromText/stream',
+      'routes/api/entitiesFromText/stream.tsx'
+    );
+    route('/api/entitiesFromText/sse', 'routes/api/entitiesFromText/sse.tsx');
+    route('/api/entitiesFromText', 'routes/api/entitiesFromText/index.tsx');
 
     // Sitemap
     route('/sitemap.xml', 'routes/sitemaps/index.tsx');
