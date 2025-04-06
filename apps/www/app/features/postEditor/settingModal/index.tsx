@@ -15,6 +15,7 @@ import { Button } from '~/components/Button';
 import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
+import { ServerMessage, ServerStatus } from '~/routes/api/entitiesFromText/sse';
 import { CategoryId } from '~/schemas/entity';
 import { PostStatus, SuggestedTag } from '~/schemas/post';
 import { animationRotateStyle } from '~/styles/animation.css';
@@ -27,6 +28,7 @@ import {
   containerStyle,
   headerStyle,
   retrivalErrorStyle,
+  retrivalMessageStyle,
   statusItemDescriptionStyle,
   statusItemLabelStyle,
   statusItemSelectedStyle,
@@ -57,19 +59,6 @@ export type SuggestedEntity = SuggestedTag & {
   // categories: SuggestedCategory[];
   isChecked: boolean;
 };
-
-// サーバーからのレスポンスの型定義
-interface ServerMessage {
-  content: string;
-  status?: string;
-  result?: {
-    categories: SuggestedCategory[];
-    entities: SuggestedEntity[];
-  };
-  progress?: boolean;
-  error?: string;
-  completed?: boolean;
-}
 
 const mockedEntities = ['Music', 'Film', 'Book', 'Art', 'Game', 'Technology'];
 
@@ -111,11 +100,18 @@ export const SettingModal: FC<Props> = ({
     };
   }, []);
 
+  const statusLabel = (status?: ServerStatus) => {
+    if (!status) return '';
+    if (status === 'in_progress') return '処理中';
+    if (status === 'completed') return '完了';
+    return status;
+  };
+
   // サーバーからのメッセージを処理する関数
   const handleServerMessage = (data: ServerMessage) => {
     // 進捗状況の更新
     if (data.progress) {
-      setTagRetrivalStatus(`処理中: ${data.status}`);
+      setTagRetrivalStatus(statusLabel(data.status));
       return;
     }
 
@@ -286,12 +282,12 @@ export const SettingModal: FC<Props> = ({
               setSelectedTags={setSelectedEntities}
             />
             {isGettingTags && tagRetrivalStatus && (
-              <p style={{ fontSize: '0.8rem', color: '#666', margin: '8px 0' }}>
-                {tagRetrivalStatus}
-              </p>
+              <p className={retrivalMessageStyle}>{tagRetrivalStatus}</p>
             )}
             {tagRetrivalError && (
-              <p className={retrivalErrorStyle}>{tagRetrivalError}</p>
+              <p className={clsx(retrivalMessageStyle, retrivalErrorStyle)}>
+                {tagRetrivalError}
+              </p>
             )}
           </div>
           {showEntityCard && (

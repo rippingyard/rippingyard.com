@@ -30,8 +30,12 @@ export const headerStyle = style({
 
 export const bodyStyle = style({});
 
+export const retrivalMessageStyle = style({
+  fontSize: rootVars.font.size['x-small'],
+  color: vars.color.neutral,
+});
+
 export const retrivalErrorStyle = style({
-  fontSize: rootVars.font.size.small,
   color: vars.color.warning,
 });
 

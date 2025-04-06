@@ -1,11 +1,47 @@
 import OpenAI from 'openai';
-import { redirect } from 'react-router';
+import { data, redirect } from 'react-router';
 
+import {
+  SuggestedCategory,
+  SuggestedEntity,
+} from '~/features/postEditor/settingModal';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
 export const config = {
   maxDuration: 60,
 };
+
+export type ServerStatus =
+  | 'in_progress'
+  | 'completed'
+  | 'queued'
+  | 'requires_action'
+  | 'cancelling'
+  | 'cancelled'
+  | 'failed'
+  | 'incomplete'
+  | 'expired';
+
+export interface ServerMessage {
+  content: string;
+  status?: ServerStatus;
+  result?: {
+    categories: SuggestedCategory[];
+    entities: SuggestedEntity[];
+  };
+  progress?: boolean;
+  error?: string;
+  completed?: boolean;
+}
+
+const wait = async (msec = 1000) => {
+  await new Promise((resolve) => setTimeout(resolve, msec));
+};
+
+const logContent = (content: string = '') => content.substring(0, 100) + '...'; // ログ用に省略
+
+const formatData = (dataObject: ServerMessage) =>
+  `data: ${JSON.stringify(dataObject)}\n\n`;
 
 export const loader = async ({ request }: { request: Request }) => {
   // 認証チェック
@@ -51,14 +87,7 @@ export const action = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
   const content = formData.get('content') as string;
 
-  if (!content) {
-    return new Response(JSON.stringify({ error: 'Content is required' }), {
-      status: 400,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  }
+  if (!content) return data({ error: 'Content is required' }, { status: 400 });
 
   // ストリーミング用のTransformStream
   const stream = new TransformStream();
@@ -66,15 +95,17 @@ export const action = async ({ request }: { request: Request }) => {
   const encoder = new TextEncoder();
 
   // 空のデータで初期化
-  const initialData = {
-    content: content.substring(0, 100) + '...', // 長いcontentのログを防ぐために省略
-    result: {
-      categories: [],
-      entities: [],
-    },
-  };
-
-  writer.write(encoder.encode(`data: ${JSON.stringify(initialData)}\n\n`));
+  writer.write(
+    encoder.encode(
+      formatData({
+        content: logContent(content), // 長いcontentのログを防ぐために省略
+        result: {
+          categories: [],
+          entities: [],
+        },
+      })
+    )
+  );
 
   // 非同期でOpenAI処理を開始
   (async () => {
@@ -106,17 +137,18 @@ export const action = async ({ request }: { request: Request }) => {
         status.status !== 'cancelled'
       ) {
         // 定期的にステータスを更新
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await wait();
         status = await openai.beta.threads.runs.retrieve(thread.id, run.id);
 
         // 処理中のステータスを送信
-        const progressData = {
-          content: content.substring(0, 100) + '...', // ログ用に省略
-          status: status.status,
-          progress: true,
-        };
         writer.write(
-          encoder.encode(`data: ${JSON.stringify(progressData)}\n\n`)
+          encoder.encode(
+            formatData({
+              content: logContent(content), // ログ用に省略
+              status: status.status,
+              progress: true,
+            })
+          )
         );
       }
 
@@ -133,30 +165,39 @@ export const action = async ({ request }: { request: Request }) => {
         }
 
         // 最終結果を送信
-        const finalData = {
-          content: content.substring(0, 100) + '...', // ログ用に省略
-          result,
-          completed: true,
-        };
-        writer.write(encoder.encode(`data: ${JSON.stringify(finalData)}\n\n`));
+        writer.write(
+          encoder.encode(
+            formatData({
+              content: logContent(content), // ログ用に省略
+              result: result as ServerMessage['result'],
+              completed: true,
+            })
+          )
+        );
       } else {
         // エラー状態を送信
-        const errorData = {
-          content: content.substring(0, 100) + '...', // ログ用に省略
-          error: `処理が完了しませんでした: ${status.status}`,
-          completed: true,
-        };
-        writer.write(encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`));
+        writer.write(
+          encoder.encode(
+            formatData({
+              content: logContent(content), // ログ用に省略
+              error: `処理が完了しませんでした: ${status.status}`,
+              completed: true,
+            })
+          )
+        );
       }
     } catch (error: unknown) {
       console.error('Stream processing error:', error);
       // エラー状態を送信
-      const errorData = {
-        content: content.substring(0, 100) + '...', // ログ用に省略
-        error: `処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        completed: true,
-      };
-      writer.write(encoder.encode(`data: ${JSON.stringify(errorData)}\n\n`));
+      writer.write(
+        encoder.encode(
+          formatData({
+            content: logContent(content), // ログ用に省略
+            error: `処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            completed: true,
+          })
+        )
+      );
     } finally {
       writer.close();
     }
