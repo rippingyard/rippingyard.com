@@ -20,15 +20,23 @@ export const removeTitle = (str: string, level?: number) => {
   return str.replace(titlePattern(level), '');
 };
 
-const titlePattern = (level?: number) =>
+const titlePattern = (level?: number, isFirst: boolean = false) =>
   new RegExp(
     level ? `<h${level}?>.*?</h${level}>` : '<h.(?: .+?)?>.*?</h.>',
-    'g'
+    !isFirst ? 'g' : ''
   );
 
 export const removeMainTitle = (str: string) => {
   if (!str) return '';
-  return str.replace(titlePattern(1), '');
+  return str.replace(titlePattern(1, true), '');
+};
+
+export const removeMainTitles = (str: string) => {
+  if (!str) return '';
+  let result: string = str;
+  result = str.replace(titlePattern(1, true), '');
+  result = str.replace(titlePattern(2, true), '');
+  return result;
 };
 
 export const hasTitle = (str: string): boolean => {
@@ -98,6 +106,7 @@ type TitleParams = Partial<{
   alt: string;
   titleLength: number;
   withoutSummary: boolean;
+  withoutSubtitle: boolean;
   level?: number;
 }>;
 
@@ -116,6 +125,17 @@ export const getMainTitle = (str: string, options: TitleParams = {}) =>
   str.match(/^<h[1-6]/)
     ? getTitle(str, { level: 1, ...options, withoutSummary: true })
     : '';
+
+export const getSubTitle = (str: string, options: TitleParams = {}) => {
+  const { alt, titleLength = 140, withoutSubtitle = false } = options;
+  const headings = getHeadingTags(str, 2);
+  if (headings) {
+    return decodeEntities(headings[0]);
+  } else {
+    if (withoutSubtitle) return '';
+    return alt ?? getSummary(str, titleLength);
+  }
+};
 
 export const getSummary = (str: string, length = 140) => {
   str = removeTitle(str);

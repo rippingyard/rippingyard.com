@@ -16,6 +16,7 @@ export const headerStyle = style({
 
 export const headerTitleStyle = style({
   // marginBottom: 16,
+  borderBottom: `1px solid ${vars.color.shadow}`,
 });
 
 export const bodyStyle = style({

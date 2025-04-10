@@ -7,7 +7,11 @@ import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
 import { Post, PostStatus, PostType } from '~/schemas/post';
-import { getMainTitle, removeMainTitle } from '~/utils/typography';
+import {
+  getMainTitle,
+  getSubTitle,
+  removeMainTitles,
+} from '~/utils/typography';
 
 import { SettingModal } from './settingModal';
 import { StatusHeader } from './statusHeader';
@@ -37,7 +41,7 @@ export const PostEditor: FC<Props> = ({
   const [isSettingOpened, setIsSettingOpened] = useState(false);
 
   const [html, setHtml] = useState<string>(
-    removeMainTitle(post?.content || cache || '')
+    removeMainTitles(post?.content || cache || '')
   );
 
   const isLoading = useMemo(
@@ -53,10 +57,19 @@ export const PostEditor: FC<Props> = ({
     () =>
       getMainTitle(content, {
         alt: '',
+        withoutSubtitle: true,
       }),
     [content]
   );
-  const contentBody = useMemo(() => removeMainTitle(content), [content]);
+  const subtitle = useMemo(
+    () =>
+      getSubTitle(content, {
+        alt: '',
+        withoutSubtitle: true,
+      }),
+    [content]
+  );
+  const contentBody = useMemo(() => removeMainTitles(content), [content]);
 
   const [hasTitle, setHasTitle] = useState(!!title);
 
@@ -97,8 +110,17 @@ export const PostEditor: FC<Props> = ({
               <FormTextarea
                 name="title"
                 defaultValue={title}
+                placeholder="タイトルを入力"
                 isBold
                 isHeading
+                isNoBorder
+              />
+              <FormTextarea
+                name="subtitle"
+                defaultValue={subtitle}
+                placeholder="サブタイトルを入力"
+                isBold
+                isNoBorder
               />
             </div>
           )}

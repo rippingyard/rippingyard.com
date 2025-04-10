@@ -27,3 +27,7 @@ export const headingStyle = style({
 export const boldStyle = style({
   fontWeight: rootVars.font.weight.bold,
 });
+
+export const noBorderStyle = style({
+  border: 'none',
+});

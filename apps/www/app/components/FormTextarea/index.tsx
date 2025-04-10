@@ -9,18 +9,25 @@ import {
 
 import { useTextarea } from '~/hooks/ui/useTextarea';
 
-import { boldStyle, headingStyle, textareaStyle } from './style.css';
+import {
+  boldStyle,
+  headingStyle,
+  noBorderStyle,
+  textareaStyle,
+} from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   rows?: number;
   isHeading?: boolean;
   isBold?: boolean;
+  isNoBorder?: boolean;
 };
 
 export const FormTextarea: FC<Props> = ({
   rows,
   isHeading = false,
   isBold = false,
+  isNoBorder = false,
   ...props
 }) => {
   const ref = useRef<HTMLTextAreaElement | null>(null);
@@ -38,7 +45,8 @@ export const FormTextarea: FC<Props> = ({
   const className = clsx(
     textareaStyle,
     isHeading && headingStyle,
-    isBold && boldStyle
+    isBold && boldStyle,
+    isNoBorder && noBorderStyle
   );
 
   return (
