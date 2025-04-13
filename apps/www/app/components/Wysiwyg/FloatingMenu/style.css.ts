@@ -11,14 +11,13 @@ globalStyle('.tippy-box', {
   zIndex: `${zIndex('COVER')} !important`,
 });
 
-globalStyle(`${containerStyle} button`, {
+export const buttonStyle = style({
   padding: 5,
-  borderRadius: 3,
   lineHeight: 1,
   fontSize: rootVars.font.size['xx-small'],
 });
 
-globalStyle(`${containerStyle} button:hover`, {
+globalStyle(`${buttonStyle} &:hover`, {
   cursor: 'pointer',
   backgroundColor: vars.color.secondry,
 });
@@ -27,6 +26,27 @@ export const labelStyle = style({
   '@media': {
     [mediaQuery('TB')]: {
       display: 'none',
+    },
+  },
+});
+
+export const hiddenLabelStyle = style({
+  display: 'none',
+});
+
+/** For Simple */
+
+export const simpleButtonStyle = style({
+  border: `3px solid ${vars.color['neutral']}`,
+  padding: '3px 15px',
+  marginRight: 5,
+  borderRadius: rootVars.border.radius.large,
+  lineHeight: 1,
+  fontSize: rootVars.font.size['x-small'],
+  '@media': {
+    [mediaQuery('TB')]: {
+      padding: '3px 10px',
+      borderWidth: 2,
     },
   },
 });

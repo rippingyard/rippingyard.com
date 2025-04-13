@@ -1,6 +1,5 @@
 ﻿import { globalStyle, style } from '@vanilla-extract/css';
 
-import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
 export const containerStyle = style({
@@ -8,10 +7,10 @@ export const containerStyle = style({
 });
 
 export const contentWithNoTitleStyle = style({
-  padding: 16,
-  paddingBottom: 0,
-  background: vars.color.highlight,
-  borderRadius: rootVars.border.radius.normal,
+  padding: 0,
+  // paddingBottom: 0,
+  // background: vars.color.highlight,
+  // borderRadius: rootVars.border.radius.normal,
 });
 
 export const headingStyle = style({

@@ -1,10 +1,15 @@
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useMemo } from 'react';
-import { Await, useLoaderData } from 'react-router';
+import { Await, useLoaderData, useNavigate } from 'react-router';
 
+import { Button } from '~/components/Button';
+import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
-import { PostList } from '~/features/postList';
 import { TopBillboard } from '~/features/topBillboard';
+// import { Button } from '~/components/Button';
+// import { Heading } from '~/components/Heading';
+// import { DailyPostList } from '~/features/dailyPostList';
+// import { Loading } from '~/features/loading';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
@@ -60,6 +65,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function Index() {
+  const navigate = useNavigate();
   const { notes, articles: initialArticles } = useLoaderData<typeof loader>();
 
   const { items: articles } = useInifiniteItems<Post>({
@@ -86,7 +92,26 @@ export default function Index() {
         </Await>
         <main className={containerStyle}>
           <Await resolve={sortedPosts}>
-            <PostList posts={sortedPosts} mode="detail" />
+            <DailyPostList posts={sortedPosts} mode="detail" />
+            <Button isWide onClick={() => navigate('posts')}>
+              もっと読む
+            </Button>
+            {/* <Heading>Posts</Heading>
+      <main className={containerStyle}>
+        <Suspense fallback={<Loading />}>
+          <Await resolve={posts}>
+            <DailyPostList posts={sortedPosts} mode="detail" />
+            {!isCompleted && query && (
+              <Button
+                ref={ref}
+                isLoading={isLoading}
+                isWide
+                isGhost
+                onClick={() => loadMore(query)}
+              >
+                もっと読む
+              </Button>
+            )} */}
           </Await>
         </main>
       </Suspense>

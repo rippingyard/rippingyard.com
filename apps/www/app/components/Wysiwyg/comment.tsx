@@ -5,12 +5,20 @@ import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import { ComponentPropsWithRef, FC, useRef } from 'react';
+import { ComponentPropsWithRef, FC, useCallback, useState } from 'react';
 
+import { IconLoader } from '~/assets/icons/Loader';
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
-import { containerStyle, wrapperStyle } from './style.css';
+import { BubbleMenu } from './BubbleMenu';
+import { SimpleFloatingMenu } from './FloatingMenu/simple';
+import {
+  containerStyle,
+  errorStyle,
+  loadingStyle,
+  wrapperStyle,
+} from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -23,7 +31,8 @@ export const WysiwygComment: FC<Props> = ({
   uploadpath,
   onUpdate,
 }) => {
-  const dzRef = useRef(null);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const extensions: AnyExtension[] = [
     StarterKit,
@@ -52,14 +61,48 @@ export const WysiwygComment: FC<Props> = ({
     immediatelyRender: false,
   });
 
+  const onUploadedImage = useCallback(
+    ({ url }: { url: string }) => {
+      if (!editor || !url) return;
+      editor.chain().focus().setImage({ src: url }).run();
+    },
+    [editor]
+  );
+
+  const onLoading = useCallback((value: boolean) => {
+    setIsLoading(value);
+  }, []);
+
+  const onError = useCallback((error: string) => {
+    setError(error);
+  }, []);
+
   if (!editor) return;
 
   return (
-    <div ref={dzRef} className={wrapperStyle}>
+    <div className={wrapperStyle}>
       <EditorContent
         editor={editor}
         className={clsx(articleStyle, containerStyle)}
       />
+      <SimpleFloatingMenu
+        editor={editor}
+        canUploadImage={!!uploadpath}
+        onUploaded={onUploadedImage}
+        onLoading={onLoading}
+        onError={onError}
+      />
+      <BubbleMenu editor={editor} />
+      {error && (
+        <p onClick={() => onError('')} className={errorStyle}>
+          {error}
+        </p>
+      )}
+      {isLoading && (
+        <p className={loadingStyle}>
+          <IconLoader />
+        </p>
+      )}
     </div>
   );
 };

@@ -20,3 +20,5 @@ enum MEDIA_QUERY {
 export const size = (width: keyof typeof WIDTH) => WIDTH[width];
 export const zIndex = (layer: keyof typeof LAYER) => LAYER[layer];
 export const mediaQuery = (type: keyof typeof MEDIA_QUERY) => MEDIA_QUERY[type];
+
+export const HEADER_HEIGHT = 66;
