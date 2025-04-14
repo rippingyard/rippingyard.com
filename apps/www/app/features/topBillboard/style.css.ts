@@ -3,7 +3,7 @@
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
-const BORDER_SIZE = 4;
+const BORDER_SIZE = 12;
 
 export const containerStyle = style({
   boxSizing: 'content-box',

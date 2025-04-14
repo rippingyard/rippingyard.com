@@ -1,4 +1,4 @@
-﻿import { globalStyle, style } from '@vanilla-extract/css';
+﻿﻿import { globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
@@ -11,14 +11,16 @@ export const containerStyle = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'stretch',
   textAlign: 'left',
-  backgroundColor: vars.color.primary,
+  backgroundColor: vars.color.background,
 });
 
 export const contentWithNoTitleStyle = style({
   padding: 16,
   paddingBottom: 0,
+  fontSize: rootVars.font.size['x-large'],
+  fontWeight: rootVars.font.weight.bold,
   // background: vars.color.highlight,
   borderRadius: rootVars.border.radius.normal,
 });
@@ -27,9 +29,13 @@ export const contentStyle = style({
   zIndex: zIndex('COVER'),
   padding: 32,
   width: '100%',
-  // height: '40%',
-  // flexGrow: 2,
-  backgroundColor: vars.color.primary,
+  flexShrink: 0, // コンテンツが縮まないようにする
+  backgroundColor: vars.color.background,
+  boxSizing: 'border-box',
+});
+
+export const contentWithBorderStyle = style({
+  borderTop: `1px dashed ${vars.color.neutral}`,
 });
 
 export const headingStyle = style({
@@ -58,30 +64,15 @@ export const footerStyle = style({
 });
 
 export const imageStyle = style({
-  // position: 'absolute',
+  boxSizing: 'border-box',
   top: 0,
   left: 0,
   width: '100%',
-  height: 'fit-content',
-  flexShrink: 0,
   zIndex: zIndex('NORMAL'),
-  // selectors: {
-  //   '&::after': {
-  //     content: '',
-  //     display: 'block',
-  //     position: 'absolute',
-  //     top: 0,
-  //     left: 0,
-  //     width: '100%',
-  //     height: '100%',
-  //     // display: 'flex',
-  //     // justifyContent: 'center',
-  //     // alignItems: 'center',
-  //     // textAlign: 'center',
-  //     WebkitBackdropFilter: 'sepia(90%)',
-  //     backdropFilter: 'brightness(140%) blur(4px)',
-  //   },
-  // },
+  flexGrow: 1, // 余ったスペースを全て使う
+  flexShrink: 1, // 必要に応じて縮む
+  minHeight: 0, // flexboxの子要素が正しく縮むために必要
+  backgroundColor: '#111',
 });
 
 globalStyle(`${imageStyle} > img`, {

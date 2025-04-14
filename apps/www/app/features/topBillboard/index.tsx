@@ -4,7 +4,7 @@ import { Columns } from '~/components/Columns';
 import { Post } from '~/schemas/post';
 
 import { containerStyle } from './style.css';
-import { SubscribeBanner } from './subscribeBanner';
+// import { SubscribeBanner } from './subscribeBanner';
 import { HeroArticles } from '../heroArticles';
 
 type Props = {
@@ -18,9 +18,9 @@ export const TopBillboard: FC<Props> = ({ posts = [] }) => {
         columns={[
           {
             component: <HeroArticles posts={posts} label="Latest Articles" />,
-            width: '60%',
+            width: '100%',
           },
-          { component: <SubscribeBanner />, width: '40%' },
+          // { component: <SubscribeBanner />, width: '40%' },
         ]}
       />
     </div>

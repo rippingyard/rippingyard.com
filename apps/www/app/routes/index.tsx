@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useMemo } from 'react';
 import { Await, useLoaderData, useNavigate } from 'react-router';
@@ -16,7 +17,11 @@ import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
-import { containerStyle, wideContainerStyle } from '~/styles/container.css';
+import {
+  containerStyle,
+  edgeStyle,
+  wideContainerStyle,
+} from '~/styles/container.css';
 import { sortPosts } from '~/utils/post';
 
 import type { Route } from './+types/index';
@@ -53,7 +58,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     where: [
       {
         key: 'type',
-        val: 'note',
+        val: 'log',
       },
     ],
   });
@@ -86,7 +91,7 @@ export default function Index() {
     <>
       <Suspense fallback={<Loading />}>
         <Await resolve={sortedArticles}>
-          <div className={wideContainerStyle}>
+          <div className={clsx(wideContainerStyle, edgeStyle)}>
             <TopBillboard posts={sortedArticles} />
           </div>
         </Await>
@@ -96,22 +101,6 @@ export default function Index() {
             <Button isWide onClick={() => navigate('posts')}>
               もっと読む
             </Button>
-            {/* <Heading>Posts</Heading>
-      <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
-            <DailyPostList posts={sortedPosts} mode="detail" />
-            {!isCompleted && query && (
-              <Button
-                ref={ref}
-                isLoading={isLoading}
-                isWide
-                isGhost
-                onClick={() => loadMore(query)}
-              >
-                もっと読む
-              </Button>
-            )} */}
           </Await>
         </main>
       </Suspense>

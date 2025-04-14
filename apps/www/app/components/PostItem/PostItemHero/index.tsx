@@ -1,14 +1,17 @@
-﻿import { FC } from 'react';
+﻿import clsx from 'clsx';
+import { FC } from 'react';
 import { Link } from 'react-router';
 
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { Post } from '~/schemas/post';
+import { getSummary } from '~/utils/typography';
 
 import {
   containerStyle,
   contentStyle,
+  contentWithBorderStyle,
   contentWithNoTitleStyle,
   footerStyle,
   headingStyle,
@@ -25,7 +28,7 @@ export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
 
   const { title, summary, thumbnail, hasThumbnail, hasTitleBlock } =
     usePostContents(post.content, {
-      summaryLength: 60,
+      summaryLength: 120,
     });
   const permalink = overwriteLink || postLink(post.id);
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
@@ -37,7 +40,9 @@ export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
           <img src={thumbnail} />
         </div>
       )}
-      <div className={contentStyle}>
+      <div
+        className={clsx(contentStyle, hasThumbnail && contentWithBorderStyle)}
+      >
         {(hasTitleBlock && (
           <>
             <h1 className={headingStyle}>
@@ -45,11 +50,11 @@ export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
                 {title}
               </Link>
             </h1>
-            <p>{summary}</p>
+            <p>{getSummary(summary, 80)}</p>
           </>
         )) || (
           <div className={contentWithNoTitleStyle}>
-            <p>{summary}</p>
+            <p>{(hasThumbnail && getSummary(summary, 80)) || summary}</p>
           </div>
         )}
         <div className={footerStyle}>

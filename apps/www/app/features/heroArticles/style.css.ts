@@ -75,7 +75,7 @@ export const labelStyle = style({
   top: 0,
   fontSize: rootVars.font.size['x-small'],
   // fontWeight: rootVars.font.weight.bold,
-  padding: 12,
+  padding: '6px 18px 18px 6px',
   lineHeight: 1,
   color: vars.color.background,
   backgroundColor: vars.color.neutral,
