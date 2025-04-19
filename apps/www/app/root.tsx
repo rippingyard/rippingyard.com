@@ -122,6 +122,16 @@ function App() {
         />
         <Env env={env} />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Oswald&family=Ultra&display=swap"
+          rel="stylesheet"
+        />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="ripping yard" />
         <meta property="fb:app_id" content="374907709233344" />

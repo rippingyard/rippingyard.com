@@ -19,7 +19,7 @@ type Props = {
   permalink?: string;
 };
 
-export const PostListItemDetail: FC<Props> = ({
+export const PostItemDetail: FC<Props> = ({
   post,
   permalink: overwriteLink,
 }) => {

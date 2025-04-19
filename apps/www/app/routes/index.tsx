@@ -1,25 +1,28 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
-import { Suspense, useEffect, useMemo, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { type LoaderFunctionArgs } from 'react-router';
-import { Await, useLoaderData } from 'react-router';
+import clsx from 'clsx';
+import { Timestamp } from 'firebase-admin/firestore';
+import { Suspense, useMemo } from 'react';
+import { Await, useLoaderData, useNavigate } from 'react-router';
 
 import { Button } from '~/components/Button';
-import { Heading } from '~/components/Heading';
 import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
+import { TopBillboard } from '~/features/topBillboard';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
-import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
 import { Post } from '~/schemas/post';
-import { containerStyle } from '~/styles/container.css';
-import { toMicroseconds } from '~/utils/date';
+import {
+  containerStyle,
+  edgeStyle,
+  wideContainerStyle,
+} from '~/styles/container.css';
 import { sortPosts } from '~/utils/post';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+import type { Route } from './+types/index';
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
   const args: Omit<QueryParams<Post>, 'collection'> = {
     limit: 12,
@@ -37,67 +40,66 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     args.startAfter = startAfter;
   }
 
-  const { data: items } = await usePosts(args);
+  const { data: articles } = await usePosts({
+    ...args,
+    where: [
+      {
+        key: 'type',
+        val: 'article',
+      },
+    ],
+  });
+  const { data: logs } = await usePosts({
+    ...args,
+    where: [
+      {
+        key: 'type',
+        val: 'log',
+      },
+    ],
+  });
 
   return {
-    items,
+    logs,
+    articles,
   };
 };
 
 export default function Index() {
-  const key = CACHE_KEYS.PUBLIC_POSTS;
+  const navigate = useNavigate();
+  const { logs, articles: initialArticles } = useLoaderData<typeof loader>();
 
-  const { items: initialItems } = useLoaderData<typeof loader>();
-  const [canAutoload] = useState(true);
+  const { items: articles } = useInifiniteItems<Post>({
+    key: CACHE_KEYS.PUBLIC_ARTICLES,
+    initialItems: initialArticles as unknown[] as Post[],
+  });
 
-  const { ref, inView } = useInView();
+  const sortedArticles = useMemo(() => sortPosts(articles), [articles]);
 
-  const {
-    items: posts,
-    state,
-    loadMore,
-    isCompleted,
-  } = useInifiniteItems<Post>({
-    key,
-    initialItems: initialItems as unknown as Post[],
+  const { items: posts } = useInifiniteItems<Post>({
+    key: CACHE_KEYS.PUBLIC_NOTES,
+    initialItems: logs as unknown[] as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);
 
-  const isLoading = useMemo(() => state === 'loading', [state]);
-
-  const query = useMemo(() => {
-    const lastPublishedAt = sortedPosts[sortedPosts.length - 1]?.publishedAt;
-    if (!lastPublishedAt) return;
-    return `posts?index&after=${toMicroseconds(lastPublishedAt as unknown as TimestampType)}`;
-  }, [sortedPosts]);
-
-  useEffect(() => {
-    if (!canAutoload || !inView || state !== 'idle' || !query) return;
-    loadMore(query);
-  }, [canAutoload, inView, loadMore, query, state]);
-
   return (
     <>
-      <Heading>Posts</Heading>
-      <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
+      <Suspense fallback={<Loading />}>
+        <Await resolve={sortedArticles}>
+          <div className={clsx(wideContainerStyle, edgeStyle)}>
+            <TopBillboard posts={sortedArticles} />
+          </div>
+        </Await>
+        <main className={containerStyle}>
+          <Await resolve={sortedPosts}>
             <DailyPostList posts={sortedPosts} mode="detail" />
-            {!isCompleted && query && (
-              <Button
-                ref={ref}
-                isLoading={isLoading}
-                isWide
-                isGhost
-                onClick={() => loadMore(query)}
-              >
-                もっと読む
-              </Button>
-            )}
+            <Button isWide onClick={() => navigate('posts')}>
+              もっと読む
+            </Button>
           </Await>
-        </Suspense>
-      </main>
+        </main>
+      </Suspense>
     </>
   );
 }

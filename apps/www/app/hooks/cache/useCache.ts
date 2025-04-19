@@ -1,5 +1,7 @@
 ﻿export enum CACHE_KEYS {
   PUBLIC_POSTS = 'publicPosts',
+  PUBLIC_NOTES = 'publicNotes',
+  PUBLIC_ARTICLES = 'publicArticles',
 }
 
 type CacheObject<T> = {

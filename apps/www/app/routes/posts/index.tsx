@@ -5,8 +5,8 @@ import { Await, useLoaderData } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
-import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
@@ -84,7 +84,7 @@ export default function Index() {
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
           <Await resolve={posts}>
-            <PostList posts={sortedPosts} mode="detail" />
+            <DailyPostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
                 ref={ref}

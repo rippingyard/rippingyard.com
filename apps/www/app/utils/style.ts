@@ -4,6 +4,8 @@
   FIXED_NAV = 180,
   MODAL = 60,
   COVER = 20,
+  NORMAL = 0,
+  BACKGROUND = -1,
 }
 
 enum WIDTH {
@@ -16,7 +18,7 @@ enum MEDIA_QUERY {
 }
 
 export const size = (width: keyof typeof WIDTH) => WIDTH[width];
-export const zIndex = (layer: keyof typeof LAYER) => LAYER[layer];
+export const zIndex = (layer: keyof typeof LAYER) => LAYER[layer] as number;
 export const mediaQuery = (type: keyof typeof MEDIA_QUERY) => MEDIA_QUERY[type];
 
 export const HEADER_HEIGHT = 66;

@@ -60,6 +60,7 @@ export const logoLinkStyle = style({
 });
 
 export const menuButtonStyle = style({
+  fontFamily: rootVars.font.family.rich,
   fontSize: rootVars.font.size.small,
   textTransform: 'uppercase',
   ':hover': {

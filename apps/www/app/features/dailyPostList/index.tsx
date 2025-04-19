@@ -62,7 +62,7 @@ export const DailyPostList: FC<Props> = memo(
     return (
       <>
         {Object.keys(dailyPosts).map((date) => (
-          <div className={groupContainerStyle}>
+          <div className={groupContainerStyle} key={`date_${date}`}>
             <div className={labelContainerStyle}>
               <div className={labelStyle}>
                 <DateLabel date={dailyPosts[date].date} />

@@ -7,6 +7,7 @@ export const rootVars = createGlobalTheme(':root', {
       normal:
         "'Source Sans Pro', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif",
       serif: 'serif',
+      rich: "'Oswald', sans-serif",
     },
     size: {
       base: '18px',
@@ -35,5 +36,10 @@ export const rootVars = createGlobalTheme(':root', {
   },
   avatar: {
     size: '120px',
+  },
+  size: {
+    billboard: {
+      height: 'calc(100vh - 120px)',
+    },
   },
 });
