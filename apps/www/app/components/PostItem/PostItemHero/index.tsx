@@ -16,6 +16,7 @@ import {
   footerStyle,
   headingStyle,
   imageStyle,
+  summaryStyle,
 } from './style.css';
 
 type Props = {
@@ -36,33 +37,35 @@ export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
   return (
     <div className={containerStyle}>
       {hasThumbnail && (
-        <div className={imageStyle}>
+        <Link to={permalink} prefetch="viewport" className={imageStyle}>
           <img src={thumbnail} />
+        </Link>
+      )}
+      {summary && (
+        <div
+          className={clsx(contentStyle, hasThumbnail && contentWithBorderStyle)}
+        >
+          {(hasTitleBlock && (
+            <>
+              <h1 className={headingStyle}>
+                <Link to={permalink} prefetch="viewport">
+                  {title}
+                </Link>
+              </h1>
+              <p className={summaryStyle}>{getSummary(summary, 80)}</p>
+            </>
+          )) || (
+            <div className={contentWithNoTitleStyle}>
+              <p>{(hasThumbnail && getSummary(summary, 80)) || summary}</p>
+            </div>
+          )}
+          <div className={footerStyle}>
+            <Link to={permalink} prefetch="viewport">
+              {publishdate}
+            </Link>
+          </div>
         </div>
       )}
-      <div
-        className={clsx(contentStyle, hasThumbnail && contentWithBorderStyle)}
-      >
-        {(hasTitleBlock && (
-          <>
-            <h1 className={headingStyle}>
-              <Link to={permalink} prefetch="viewport">
-                {title}
-              </Link>
-            </h1>
-            <p>{getSummary(summary, 80)}</p>
-          </>
-        )) || (
-          <div className={contentWithNoTitleStyle}>
-            <p>{(hasThumbnail && getSummary(summary, 80)) || summary}</p>
-          </div>
-        )}
-        <div className={footerStyle}>
-          <Link to={permalink} prefetch="viewport">
-            {publishdate}
-          </Link>
-        </div>
-      </div>
     </div>
   );
 };

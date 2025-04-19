@@ -6,6 +6,7 @@ type Props = {
   columns: {
     component: ReactNode;
     width?: string;
+    name: string;
   }[];
 };
 
@@ -14,7 +15,11 @@ export const Columns: FC<Props> = ({ columns = [] }) => {
   return (
     <div className={containerStyle}>
       {columns.map((column) => (
-        <div className={columnStyle} style={{ width: column.width || '50%' }}>
+        <div
+          className={columnStyle}
+          style={{ width: column.width || '50%' }}
+          key={`column-${column.key}`}
+        >
           {column.component}
         </div>
       ))}

@@ -13,6 +13,7 @@ import {
   labelStyle,
   pagerContainerStyle,
   pagerItemStyle,
+  selectedPagerItemStyle,
 } from './style.css';
 
 type Props = {
@@ -28,18 +29,19 @@ export const HeroArticles: FC<Props> = memo(({ posts = [], label }) => {
       <div className={frameStyle}>
         <div className={headerStyle}>
           {label && <h2 className={labelStyle}>{label}</h2>}
-          <ul className={pagerContainerStyle}>
-            {posts.map((post, i) => (
-              <li
-                key={post.id}
-                className={pagerItemStyle}
-                onClick={() => setIndex(i)}
-              >
-                {(index === i && <>⚫︎</>) || <>⚪︎</>}
-              </li>
-            ))}
-          </ul>
         </div>
+        <ul className={pagerContainerStyle}>
+          {posts.map((post, i) => (
+            <li
+              key={post.id}
+              className={clsx(
+                pagerItemStyle,
+                index === i && selectedPagerItemStyle
+              )}
+              onClick={() => setIndex(i)}
+            />
+          ))}
+        </ul>
         <ul className={containerStyle}>
           {posts.map((post, i) => (
             <li

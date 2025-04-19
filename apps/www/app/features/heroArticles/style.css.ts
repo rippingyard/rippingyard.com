@@ -57,23 +57,45 @@ export const itemStyle = style({
 });
 
 export const pagerContainerStyle = style({
-  // display: 'none',
-  // position: 'absolute',
-  textAlign: 'right',
-  bottom: 0,
   width: '100%',
+  display: 'flex',
+  justifyContent: 'stretch',
+  position: 'absolute',
+  // textAlign: 'right',
+  bottom: 0,
+  zIndex: zIndex('COVER') + 10,
+  gap: 4,
+  height: 16,
+  padding: '0 4px',
 });
 
 export const pagerItemStyle = style({
-  display: 'inline-block',
+  display: 'block',
   cursor: 'pointer',
+  position: 'relative',
+  width: '100%',
+  bottom: 0,
+  height: 8,
+  marginTop: 8,
+  backgroundColor: vars.color.neutral,
+  borderRadius: `${rootVars.border.radius.sharp} ${rootVars.border.radius.sharp} 0 0`,
+  transition: '0.12s ease-out',
+  ':hover': {
+    height: 16,
+    marginTop: 0,
+  },
+});
+
+export const selectedPagerItemStyle = style({
+  backgroundColor: vars.color.secondry,
 });
 
 export const labelStyle = style({
+  fontFamily: rootVars.font.family.rich,
   position: 'absolute',
   left: 0,
   top: 0,
-  fontSize: rootVars.font.size['x-small'],
+  fontSize: rootVars.font.size.large,
   // fontWeight: rootVars.font.weight.bold,
   padding: '6px 18px 18px 6px',
   lineHeight: 1,

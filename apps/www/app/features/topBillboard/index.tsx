@@ -19,8 +19,9 @@ export const TopBillboard: FC<Props> = ({ posts = [] }) => {
           {
             component: <HeroArticles posts={posts} label="Latest Articles" />,
             width: '100%',
+            name: 'last-article',
           },
-          // { component: <SubscribeBanner />, width: '40%' },
+          // { component: <SubscribeBanner />, width: '40%', name: 'subscribe' },
         ]}
       />
     </div>

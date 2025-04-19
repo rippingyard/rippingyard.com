@@ -17,8 +17,8 @@ export const containerStyle = style({
 });
 
 export const contentWithNoTitleStyle = style({
-  padding: 16,
-  paddingBottom: 0,
+  // padding: 16,
+  // paddingBottom: 0,
   fontSize: rootVars.font.size['x-large'],
   fontWeight: rootVars.font.weight.bold,
   // background: vars.color.highlight,
@@ -40,13 +40,11 @@ export const contentWithBorderStyle = style({
 
 export const headingStyle = style({
   outline: 'none',
-  // lineHeight: 1.8,
   overflow: 'hidden',
-  // paddingBottom: 25,
   fontSize: rootVars.font.size['x-large'],
   lineHeight: 1.4,
   fontWeight: rootVars.font.weight.bold,
-  // paddingTop: rootVars.font.size['xxx-large'],
+  marginBottom: 8,
 });
 
 globalStyle(`${headingStyle} a`, {
@@ -59,8 +57,13 @@ globalStyle(`${headingStyle} a:hover`, {
   cursor: 'pointer',
 });
 
+export const summaryStyle = style({
+  fontSize: rootVars.font.size['x-small'],
+});
+
 export const footerStyle = style({
-  fontSize: rootVars.font.size.small,
+  paddingTop: 8,
+  fontSize: rootVars.font.size['xx-small'],
 });
 
 export const imageStyle = style({

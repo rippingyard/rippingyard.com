@@ -7,10 +7,6 @@ import { Button } from '~/components/Button';
 import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
 import { TopBillboard } from '~/features/topBillboard';
-// import { Button } from '~/components/Button';
-// import { Heading } from '~/components/Heading';
-// import { DailyPostList } from '~/features/dailyPostList';
-// import { Loading } from '~/features/loading';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
@@ -53,7 +49,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       },
     ],
   });
-  const { data: notes } = await usePosts({
+  const { data: logs } = await usePosts({
     ...args,
     where: [
       {
@@ -64,14 +60,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   });
 
   return {
-    notes,
+    logs,
     articles,
   };
 };
 
 export default function Index() {
   const navigate = useNavigate();
-  const { notes, articles: initialArticles } = useLoaderData<typeof loader>();
+  const { logs, articles: initialArticles } = useLoaderData<typeof loader>();
 
   const { items: articles } = useInifiniteItems<Post>({
     key: CACHE_KEYS.PUBLIC_ARTICLES,
@@ -82,7 +78,7 @@ export default function Index() {
 
   const { items: posts } = useInifiniteItems<Post>({
     key: CACHE_KEYS.PUBLIC_NOTES,
-    initialItems: notes as unknown[] as Post[],
+    initialItems: logs as unknown[] as Post[],
   });
 
   const sortedPosts = useMemo(() => sortPosts(posts), [posts]);
