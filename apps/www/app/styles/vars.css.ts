@@ -1,6 +1,8 @@
 ﻿/* eslint-disable quotes */
 import { createGlobalTheme } from '@vanilla-extract/css';
 
+import { mediaQuery } from '~/utils/style';
+
 export const rootVars = createGlobalTheme(':root', {
   font: {
     family: {
@@ -40,6 +42,7 @@ export const rootVars = createGlobalTheme(':root', {
   size: {
     billboard: {
       height: 'calc(100vh - 120px)',
+      minHeight: 'calc(100vh - 112px)',
     },
   },
 });

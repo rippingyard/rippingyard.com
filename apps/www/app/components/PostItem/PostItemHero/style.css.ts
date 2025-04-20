@@ -2,7 +2,7 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
-import { zIndex } from '~/utils/style';
+import { mediaQuery, zIndex } from '~/utils/style';
 
 export const containerStyle = style({
   // padding: 32,
@@ -32,6 +32,11 @@ export const contentStyle = style({
   flexShrink: 0, // コンテンツが縮まないようにする
   backgroundColor: vars.color.background,
   boxSizing: 'border-box',
+  '@media': {
+    [mediaQuery('TB')]: {
+      padding: 16,
+    },
+  },
 });
 
 export const contentWithBorderStyle = style({
