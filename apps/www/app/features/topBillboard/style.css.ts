@@ -2,6 +2,7 @@
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
+import { mediaQuery } from '~/utils/style';
 
 const BORDER_SIZE = 12;
 
@@ -10,4 +11,10 @@ export const containerStyle = style({
   width: `calc(100vw - 48px - ${BORDER_SIZE * 2}px)`,
   height: rootVars.size.billboard.height,
   border: `${BORDER_SIZE}px solid ${vars.color.neutral}`,
+  '@media': {
+    [mediaQuery('SP')]: {
+      width: `calc(100vw - 32px - ${BORDER_SIZE * 2}px)`,
+      // height: rootVars.size.billboard.minHeight,
+    },
+  },
 });

@@ -18,7 +18,7 @@ export const Columns: FC<Props> = ({ columns = [] }) => {
         <div
           className={columnStyle}
           style={{ width: column.width || '50%' }}
-          key={`column-${column.key}`}
+          key={`column-${column.name}`}
         >
           {column.component}
         </div>
