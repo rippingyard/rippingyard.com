@@ -26,7 +26,7 @@ export const QuickMenu: FC<{
       <ul className={containerStyle}>
         {links.map(({ label, caption, ...props }, i) => (
           <li className={itemStyle} key={`${prefix}-${i}`}>
-            <Link prefetch="render" {...props}>
+            <Link prefetch="viewport" {...props}>
               <h3 className={itemLabelStyle}>{label}</h3>
               {caption && <p className={itemCaptionStyle}>{caption}</p>}
             </Link>
