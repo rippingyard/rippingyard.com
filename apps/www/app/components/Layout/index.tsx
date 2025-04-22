@@ -7,6 +7,7 @@
 } from 'react';
 import { Link, useNavigation } from 'react-router';
 
+import { IconLoader } from '~/assets/icons/Loader';
 import { Nav } from '~/features/nav';
 
 import { PostDialogButton } from './PostDialogButton';
@@ -32,7 +33,8 @@ export const Layout: FC<
   const [isOpened, setIsOpened] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
-  const { state } = useNavigation();
+  const { state, location } = useNavigation();
+  const isNavigating = Boolean(location);
 
   const toggleNav = useCallback(() => setIsOpened(!isOpened), [isOpened]);
 
@@ -48,6 +50,7 @@ export const Layout: FC<
             <Logo style={logoStyle} />
             <LogoType style={logoTypeStyle} />
           </Link>
+          {isNavigating && <IconLoader />}
           <button className={menuButtonStyle} onClick={toggleNav}>
             Menu
           </button>

@@ -196,11 +196,11 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       '@react-router/node':
-        specifier: ^7.3.0
-        version: 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+        specifier: ^7.5.1
+        version: 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       '@react-router/serve':
-        specifier: ^7.3.0
-        version: 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+        specifier: ^7.5.1
+        version: 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       '@reactuses/core':
         specifier: ^5.0.23
         version: 5.0.23(react@18.3.1)
@@ -293,11 +293,11 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(react@18.3.1)(storybook@8.4.6)
       '@react-router/dev':
-        specifier: ^7.3.0
-        version: 7.3.0(@react-router/serve@7.3.0)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
+        specifier: ^7.5.1
+        version: 7.5.1(@react-router/serve@7.5.1)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
       '@react-router/remix-routes-option-adapter':
-        specifier: ^7.3.0
-        version: 7.3.0(@react-router/dev@7.3.0)(typescript@5.5.4)
+        specifier: ^7.5.1
+        version: 7.5.1(@react-router/dev@7.5.1)(typescript@5.5.4)
       '@storybook/addon-essentials':
         specifier: ^8.4.6
         version: 8.4.6(@types/react@18.3.3)(storybook@8.4.6)
@@ -354,7 +354,7 @@ importers:
         version: 4.0.17(vite@5.4.6)
       '@vercel/react-router':
         specifier: ^1.0.2
-        version: 1.0.2(@react-router/dev@7.3.0)(@react-router/node@7.3.0)(isbot@5.1.21)(react-dom@18.3.1)(react@18.3.1)
+        version: 1.0.2(@react-router/dev@7.5.1)(@react-router/node@7.5.1)(isbot@5.1.21)(react-dom@18.3.1)(react@18.3.1)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.3.1(vite@5.4.6)
@@ -2735,16 +2735,16 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     requiresBuild: true
 
-  /@react-router/dev@7.3.0(@react-router/serve@7.3.0)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6):
-    resolution: {integrity: sha512-k9eWulu3FyJ2swN/RftgFAQviaRT4vMwE4COQ6WUCVQryQsru/ZK/dhw5YjZLPp1V+QieijigPxK4e7Pz4cOrg==}
+  /@react-router/dev@7.5.1(@react-router/serve@7.5.1)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6):
+    resolution: {integrity: sha512-enQC69I4olCLhudnJMHkoKKMqn8YQ8ceJOwIFX1Vsl1CBOd5Cfra2Pzdf8QDi2nRLqyE8kVKNJiCMaryB4ZGBQ==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
-      '@react-router/serve': ^7.3.0
-      react-router: ^7.3.0
+      '@react-router/serve': ^7.5.1
+      react-router: ^7.5.1
       typescript: ^5.1.0
       vite: ^5.1.0 || ^6.0.0
-      wrangler: ^3.28.2
+      wrangler: ^3.28.2 || ^4.0.0
     peerDependenciesMeta:
       '@react-router/serve':
         optional: true
@@ -2762,8 +2762,8 @@ packages:
       '@babel/traverse': 7.25.1
       '@babel/types': 7.25.0
       '@npmcli/package-json': 4.0.1
-      '@react-router/node': 7.3.0(react-router@7.3.0)(typescript@5.5.4)
-      '@react-router/serve': 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/node': 7.5.1(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/serve': 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       arg: 5.0.2
       babel-dead-code-elimination: 1.0.8
       chokidar: 4.0.2
@@ -2798,27 +2798,27 @@ packages:
       - terser
     dev: true
 
-  /@react-router/express@7.3.0(express@4.21.1)(react-router@7.3.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-wAv020Wfwj6mW62NC8JQ6rlY1cJgeg+hRCFV2gcx5vxUfjH/tCFBRN4Rujo9WLFfRCwCEeilFqiuwBKeODDBsw==}
+  /@react-router/express@7.5.1(express@4.21.1)(react-router@7.3.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-OYlWCnpi4WoKCtK3LQkan6EhDEKyzZ8dZa0JMkm36+A88sp1OS8okmW18k0Aok50gPEUCdeVO1v/Pw5j32TmHw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       express: ^4.17.1 || ^5
-      react-router: 7.3.0
+      react-router: 7.5.1
       typescript: ^5.1.0
     peerDependenciesMeta:
       typescript:
         optional: true
     dependencies:
-      '@react-router/node': 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/node': 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       express: 4.21.1
       react-router: 7.3.0(react-dom@18.3.1)(react@18.3.1)
       typescript: 5.5.4
 
-  /@react-router/node@7.3.0(react-router@7.3.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-Vhww6DH0cVusO2yGhZuKmboGvFHuYOeIYEW0gpf0gFshbU0tR7MNAnOZS2Cud48hxVUSrEtgl0Kbs5BN+RQKJg==}
+  /@react-router/node@7.5.1(react-router@7.3.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-A7HoNAN3ic2fgbGu9jqVZGgk6Pnpwo6MVKvfpneyz5cLJrB3xZlUeNGJ5mZ4T+dVRMAL0yEjxXhDOWZO7P/vSg==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      react-router: 7.3.0
+      react-router: 7.5.1
       typescript: ^5.1.0
     peerDependenciesMeta:
       typescript:
@@ -2831,29 +2831,29 @@ packages:
       typescript: 5.5.4
       undici: 6.19.4
 
-  /@react-router/remix-routes-option-adapter@7.3.0(@react-router/dev@7.3.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-OXfgYhtou7ZBoDos0rcL4Bk+l/vsrgcExvFpoQlnkkXnidLpp89OrJQfGdHsrB2o5eKZTn022ME43OdvjqJEBA==}
+  /@react-router/remix-routes-option-adapter@7.5.1(@react-router/dev@7.5.1)(typescript@5.5.4):
+    resolution: {integrity: sha512-OrDlmIxDM7b7PxpTJ5UyvrFnAwL9tvI8izqm6uvqlXxyIfWVt9i/RJiyFCs89VWHqtW24LtVgDPof7y0+DL5ew==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@react-router/dev': ^7.3.0
+      '@react-router/dev': ^7.5.1
       typescript: ^5.1.0
     peerDependenciesMeta:
       typescript:
         optional: true
     dependencies:
-      '@react-router/dev': 7.3.0(@react-router/serve@7.3.0)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
+      '@react-router/dev': 7.5.1(@react-router/serve@7.5.1)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
       typescript: 5.5.4
     dev: true
 
-  /@react-router/serve@7.3.0(react-router@7.3.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-NGW8FRDghV6F04nki4dnL+sS8NHgbWkeQTtnGTIdTtPw2CaHOP7nsfJNJcetoSTw8xQjZWMDCbJfWYzSYeTF/g==}
+  /@react-router/serve@7.5.1(react-router@7.3.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-4xpBX9jY3Lu0AvuIf70IzcZoZjat0PXHapck9rbMhkZThXpY1wsIeN5qLrcj5OfQZmvP9aLC7wyw33Mzkx5elQ==}
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
-      react-router: 7.3.0
+      react-router: 7.5.1
     dependencies:
-      '@react-router/express': 7.3.0(express@4.21.1)(react-router@7.3.0)(typescript@5.5.4)
-      '@react-router/node': 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/express': 7.5.1(express@4.21.1)(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/node': 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       compression: 1.7.4
       express: 4.21.1
       get-port: 5.1.1
@@ -4460,7 +4460,7 @@ packages:
       server-only: 0.0.1
     dev: false
 
-  /@vercel/react-router@1.0.2(@react-router/dev@7.3.0)(@react-router/node@7.3.0)(isbot@5.1.21)(react-dom@18.3.1)(react@18.3.1):
+  /@vercel/react-router@1.0.2(@react-router/dev@7.5.1)(@react-router/node@7.5.1)(isbot@5.1.21)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-DydjsjWCYiFNR18/KzxiDM8uJzt6iJJ4nNpma49+fGN5wo09APm+866wHQ/xuvUPpT+/ET4UzIa9tPBupuWS7Q==}
     peerDependencies:
       '@react-router/dev': '7'
@@ -4469,8 +4469,8 @@ packages:
       react: '>=18'
       react-dom: '>=18'
     dependencies:
-      '@react-router/dev': 7.3.0(@react-router/serve@7.3.0)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
-      '@react-router/node': 7.3.0(react-router@7.3.0)(typescript@5.5.4)
+      '@react-router/dev': 7.5.1(@react-router/serve@7.5.1)(react-router@7.3.0)(typescript@5.5.4)(vite@5.4.6)
+      '@react-router/node': 7.5.1(react-router@7.3.0)(typescript@5.5.4)
       '@vercel/static-config': 3.0.0
       isbot: 5.1.21
       react: 18.3.1
