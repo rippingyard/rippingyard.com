@@ -1,4 +1,4 @@
-﻿import { style } from '@vanilla-extract/css';
+﻿import { globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
@@ -43,6 +43,16 @@ export const logoStyle = style({
   height: 20,
   marginRight: 8,
   marginBottom: 11,
+});
+
+globalStyle(`${logoStyle} > .inner`, {
+  fill: vars.color.background,
+});
+
+export const openLogoStyle = style({});
+
+globalStyle(`${logoStyle}${openLogoStyle} > .inner`, {
+  fill: vars.color.secondry,
 });
 
 export const logoTypeStyle = style({

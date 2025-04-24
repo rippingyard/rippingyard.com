@@ -55,12 +55,9 @@ export const PostTable: FC<{ posts: Post[] }> = ({ posts }) => {
   );
 
   const onClickAllCheckbox = useCallback(() => {
-    console.log(isCheckedAll);
     const newCheckedItems = isCheckedAll ? [] : posts.map((post) => post.id);
     setCheckedItems(newCheckedItems);
   }, [isCheckedAll, posts]);
-
-  console.log('checkedItems', checkedItems);
 
   const meta = useMemo(() => {
     return {

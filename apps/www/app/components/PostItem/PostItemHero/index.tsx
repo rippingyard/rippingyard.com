@@ -1,5 +1,5 @@
 ﻿import clsx from 'clsx';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Link } from 'react-router';
 
 import { usePostLink } from '~/hooks/link/usePostLink';
@@ -24,15 +24,22 @@ type Props = {
   permalink?: string;
 };
 
+const SUMMARY_LENGTH = 240;
+
 export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
   const postLink = usePostLink();
 
   const { title, summary, thumbnail, hasThumbnail, hasTitleBlock } =
     usePostContents(post.content, {
-      summaryLength: 120,
+      summaryLength: SUMMARY_LENGTH,
     });
   const permalink = overwriteLink || postLink(post.id);
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
+
+  const dynamicSummary = useMemo(
+    () => getSummary(summary, (hasThumbnail && 80) || SUMMARY_LENGTH),
+    [hasThumbnail, summary]
+  );
 
   return (
     <div className={containerStyle}>
@@ -52,11 +59,13 @@ export const PostItemHero: FC<Props> = ({ post, permalink: overwriteLink }) => {
                   {title}
                 </Link>
               </h1>
-              <p className={summaryStyle}>{getSummary(summary, 80)}</p>
+              <p className={summaryStyle}>{dynamicSummary}</p>
             </>
           )) || (
             <div className={contentWithNoTitleStyle}>
-              <p>{(hasThumbnail && getSummary(summary, 80)) || summary}</p>
+              <Link to={permalink} prefetch="viewport">
+                <p>{dynamicSummary}</p>
+              </Link>
             </div>
           )}
           <div className={footerStyle}>

@@ -1,14 +1,17 @@
-﻿import { FC } from 'react';
+﻿import clsx from 'clsx';
+import { FC } from 'react';
 
 import { loaderStyle } from './style.css';
 
 const r = 32;
 
-export const IconLoader: FC = () => {
+export const IconLoader: FC<{
+  style?: string;
+}> = ({ style }) => {
   return (
     <svg
       version="1.1"
-      className={loaderStyle}
+      className={clsx(loaderStyle, style)}
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
