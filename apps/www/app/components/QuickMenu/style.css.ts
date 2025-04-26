@@ -1,4 +1,4 @@
-﻿import { style } from '@vanilla-extract/css';
+﻿import { globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
@@ -7,12 +7,17 @@ export const containerStyle = style({});
 
 export const itemStyle = style({
   lineHeight: 1.4,
-  padding: 12,
+
   borderRadius: rootVars.border.radius.sharp,
   ':hover': {
     backgroundColor: vars.color.neutral,
     color: vars.color.background,
   },
+});
+
+globalStyle(`${itemStyle} > a`, {
+  display: 'block',
+  padding: 12,
 });
 
 export const itemLabelStyle = style({

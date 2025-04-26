@@ -4,6 +4,7 @@ import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
 
 export const containerStyle = style({
+  width: '100%',
   listStyle: 'none',
   margin: 0,
   padding: 0,

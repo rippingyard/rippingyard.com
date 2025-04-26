@@ -7,6 +7,8 @@ import { getTitle } from '~/utils/typography';
 
 import { PostTableDate } from './postTableDate';
 import { PostTableItem } from './postTableItem';
+import { PostTableStatus } from './postTableStatus';
+import { PostTableType } from './postTableType';
 
 const columns = [
   // {
@@ -27,9 +29,14 @@ const columns = [
     label: 'コンテンツ',
   },
   {
+    key: 'type',
+    label: '投稿タイプ',
+    width: 100,
+  },
+  {
     key: 'status',
     label: '公開設定',
-    width: 60,
+    width: 100,
   },
 ];
 
@@ -82,7 +89,8 @@ export const PostTable: FC<{ posts: Post[] }> = ({ posts }) => {
             id: post.id,
             title,
             content: <PostTableItem post={post} />,
-            status: post.status,
+            status: <PostTableStatus status={post.status} />,
+            type: <PostTableType type={post.type} />,
             publishDate: (
               <PostTableDate
                 timestamp={post.publishedAt as unknown as TimestampType}

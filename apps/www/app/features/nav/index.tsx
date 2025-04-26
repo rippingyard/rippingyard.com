@@ -6,6 +6,7 @@ import { MenuItem, QuickMenu } from '~/components/QuickMenu';
 import { clearCachedItems } from '~/hooks/cache/useCache';
 import { usePreventScroll } from '~/hooks/ui/usePreventScroll';
 
+import { NavFooter } from './navFooter';
 import { containerStyle, openStyle, wrapperStyle } from './style.css';
 
 const authedLinks: MenuItem[] = [
@@ -59,7 +60,7 @@ export const Nav: FC<Props> = ({
     <div className={clsx(wrapperStyle, isOpened && openStyle)}>
       <div className={containerStyle}>
         <QuickMenu links={links} prefix="nav" />
-        {isAuthenticated && <span onClick={onLogout}>ログアウト</span>}
+        <NavFooter isAuthenticated={isAuthenticated} onLogout={onLogout} />
       </div>
     </div>
   );
