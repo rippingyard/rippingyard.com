@@ -1,4 +1,5 @@
-﻿import {
+﻿import clsx from 'clsx';
+import {
   ComponentPropsWithoutRef,
   FC,
   useCallback,
@@ -20,6 +21,7 @@ import {
   logoStyle,
   logoTypeStyle,
   menuButtonStyle,
+  openLogoStyle,
 } from './style.css';
 import { Logo } from '../Logo';
 import { LogoType } from '../LogoType';
@@ -47,10 +49,11 @@ export const Layout: FC<
       <header className={headerContainerStyle}>
         <div className={headerInnerStyle}>
           <Link to="/" className={logoLinkStyle}>
-            <Logo style={logoStyle} />
+            {(isNavigating && <IconLoader style={logoStyle} />) || (
+              <Logo style={clsx(logoStyle, isOpened && openLogoStyle)} />
+            )}
             <LogoType style={logoTypeStyle} />
           </Link>
-          {isNavigating && <IconLoader />}
           <button className={menuButtonStyle} onClick={toggleNav}>
             Menu
           </button>
