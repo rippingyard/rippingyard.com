@@ -1,4 +1,4 @@
-﻿import { globalStyle, style } from '@vanilla-extract/css';
+﻿import { style } from '@vanilla-extract/css';
 
 import { rootVars } from '~/styles/vars.css';
 
@@ -7,7 +7,7 @@ export const containerStyle = style({
 });
 
 export const headingStyle = style({
-  fontSize: rootVars.font.size.large,
+  fontSize: rootVars.font.size['x-large'],
   fontWeight: rootVars.font.weight.bold,
   marginBottom: 8,
   lineHeight: 1.6,
@@ -22,28 +22,6 @@ export const footerStyle = style({
 export const summaryStyle = style({
   fontSize: rootVars.font.size.small,
   marginBottom: 8,
-});
-
-export const imageStyle = style({
-  flexShrink: 0,
-  width: 210,
-  height: 140,
-  borderRadius: rootVars.border.radius.large,
-  overflow: 'hidden',
-  marginBottom: 8,
-  // '@media': {
-  //   [mediaQuery('SP')]: {
-  //     borderRadius: rootVars.border.radius.normal,
-  //     height: 140,
-  //     width: '100%',
-  //   },
-  // },
-});
-
-globalStyle(`${imageStyle} > img`, {
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
 });
 
 export const tagContainerStyle = style({

@@ -8,17 +8,10 @@ import { getTitle } from '~/utils/typography';
 import { PostTableDate } from './postTableDate';
 import { PostTableItem } from './postTableItem';
 import { PostTableStatus } from './postTableStatus';
+import { PostTableThumbnail } from './postTableThumbnail';
 import { PostTableType } from './postTableType';
 
 const columns = [
-  // {
-  //   key: 'id',
-  //   label: 'ID',
-  // },
-  // {
-  //   key: 'title',
-  //   label: 'タイトル',
-  // },
   {
     key: 'publishDate',
     label: '公開日',
@@ -27,6 +20,10 @@ const columns = [
   {
     key: 'content',
     label: 'コンテンツ',
+  },
+  {
+    key: 'thumbnail',
+    label: '画像',
   },
   {
     key: 'type',
@@ -83,12 +80,12 @@ export const PostTable: FC<{ posts: Post[] }> = ({ posts }) => {
         const title = getTitle(post.content, {
           titleLength: 80,
         });
-
         return {
           value: {
             id: post.id,
             title,
             content: <PostTableItem post={post} />,
+            thumbnail: <PostTableThumbnail post={post} />,
             status: <PostTableStatus status={post.status} />,
             type: <PostTableType type={post.type} />,
             publishDate: (

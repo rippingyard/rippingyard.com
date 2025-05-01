@@ -9,18 +9,10 @@ export const frameContainer = createContainer();
 export const frameStyle = style({
   containerName: frameContainer,
   containerType: 'inline-size',
-  // width: 'calc(100vw - 48px)',
   width: '100%',
   height: rootVars.size.billboard.height,
   overflow: 'hidden',
   position: 'relative',
-  // scrollSnapType: 'x mandatory',
-  // scrollBehavior: 'smooth',
-  // selectors: {
-  //   '&::-webkit-scrollbar': {
-  //     display: 'none',
-  //   },
-  // },
 });
 
 export const headerStyle = style({
