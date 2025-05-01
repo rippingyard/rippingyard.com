@@ -1,5 +1,6 @@
 ﻿import { FC, memo, ReactNode } from 'react';
 
+import * as styles from './style.css';
 import {
   checkboxContainerStyle,
   containerStyle,
@@ -32,13 +33,11 @@ type Props = {
 };
 
 export const Table: FC<Props> = memo(({ columns, items = [], meta = {} }) => {
-  console.log('items', items);
-
   const { checkbox } = meta;
 
   return (
     <table className={containerStyle}>
-      <thead>
+      <thead className={styles.header}>
         {checkbox && (
           <th className={thStyle}>
             <FormCheckbox

@@ -25,34 +25,32 @@ export const HeroArticles: FC<Props> = memo(({ posts = [], label }) => {
   const [index, setIndex] = useState<number>(0);
 
   return (
-    <>
-      <div className={frameStyle}>
-        <div className={headerStyle}>
-          {label && <h2 className={labelStyle}>{label}</h2>}
-        </div>
-        <ul className={pagerContainerStyle}>
-          {posts.map((post, i) => (
-            <li
-              key={post.id}
-              className={clsx(
-                pagerItemStyle,
-                index === i && selectedPagerItemStyle
-              )}
-              onClick={() => setIndex(i)}
-            />
-          ))}
-        </ul>
-        <ul className={containerStyle}>
-          {posts.map((post, i) => (
-            <li
-              key={post.id}
-              className={clsx(itemStyle, index !== i && invisibleStyle)}
-            >
-              <PostItem post={post} mode="hero" />
-            </li>
-          ))}
-        </ul>
+    <div className={frameStyle}>
+      <div className={headerStyle}>
+        {label && <h2 className={labelStyle}>{label}</h2>}
       </div>
-    </>
+      <ul className={pagerContainerStyle}>
+        {posts.map((post, i) => (
+          <li
+            key={post.id}
+            className={clsx(
+              pagerItemStyle,
+              index === i && selectedPagerItemStyle
+            )}
+            onClick={() => setIndex(i)}
+          />
+        ))}
+      </ul>
+      <ul className={containerStyle}>
+        {posts.map((post, i) => (
+          <li
+            key={post.id}
+            className={clsx(itemStyle, index !== i && invisibleStyle)}
+          >
+            <PostItem post={post} mode="hero" />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 });
