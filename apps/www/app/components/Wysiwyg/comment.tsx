@@ -1,6 +1,5 @@
 ﻿import FloatingMenu from '@tiptap/extension-floating-menu';
 import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -8,6 +7,7 @@ import clsx from 'clsx';
 import { ComponentPropsWithRef, FC, useCallback, useState } from 'react';
 
 import { IconLoader } from '~/assets/icons/Loader';
+import { useImageEditor } from '~/hooks/ui/useImageEditor';
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
@@ -50,7 +50,7 @@ export const WysiwygComment: FC<Props> = ({
     }),
   ];
 
-  if (uploadpath) extensions.push(Image);
+  if (uploadpath) extensions.push(useImageEditor({ uploadpath }));
 
   const editor = useEditor({
     extensions,

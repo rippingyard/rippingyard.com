@@ -1,7 +1,6 @@
 ﻿import { useDropZone } from '@reactuses/core';
 import FloatingMenu from '@tiptap/extension-floating-menu';
 import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -15,6 +14,7 @@ import {
 } from 'react';
 
 import { ImageUploader } from '~/components/ImageUploader';
+import { useImageEditor } from '~/hooks/ui/useImageEditor';
 import { articleStyle } from '~/styles/article.css';
 import { zIndex } from '~/utils/style';
 
@@ -49,7 +49,7 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     }),
   ];
 
-  if (uploadpath) extensions.push(Image);
+  if (uploadpath) extensions.push(useImageEditor({ uploadpath }));
 
   const editor = useEditor({
     extensions,
