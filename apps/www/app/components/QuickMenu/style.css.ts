@@ -10,8 +10,8 @@ export const itemStyle = style({
 
   borderRadius: rootVars.border.radius.sharp,
   ':hover': {
-    backgroundColor: vars.color.neutral,
-    color: vars.color.background,
+    backgroundColor: vars.color['neutral-20'],
+    // color: vars.color.background,
   },
 });
 

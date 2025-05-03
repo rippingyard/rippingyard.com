@@ -7,7 +7,7 @@ import { clearCachedItems } from '~/hooks/cache/useCache';
 import { usePreventScroll } from '~/hooks/ui/usePreventScroll';
 
 import { NavFooter } from './navFooter';
-import { containerStyle, openStyle, wrapperStyle } from './style.css';
+import * as styles from './style.css';
 
 const authedLinks: MenuItem[] = [
   { to: '/', label: 'Top', caption: 'トップ' },
@@ -57,8 +57,8 @@ export const Nav: FC<Props> = ({
   }, [submit]);
 
   return (
-    <div className={clsx(wrapperStyle, isOpened && openStyle)}>
-      <div className={containerStyle}>
+    <div className={clsx(styles.wrapper, isOpened && styles.open)}>
+      <div className={styles.container}>
         <QuickMenu links={links} prefix="nav" />
         <NavFooter isAuthenticated={isAuthenticated} onLogout={onLogout} />
       </div>
