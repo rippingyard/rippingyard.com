@@ -17,54 +17,54 @@ export const useImageEditor = ({ uploadpath }: { uploadpath: string }) => {
         new Plugin({
           props: {
             handleDOMEvents: {
-              drop(view, event) {
-                console.log('event', event);
-                console.log('view', view);
+              // drop(view, event) {
+              //   console.log('event', event);
+              //   console.log('view', view);
 
-                try {
-                  const hasFiles =
-                    event.dataTransfer &&
-                    event.dataTransfer.files &&
-                    event.dataTransfer.files.length;
+              //   try {
+              //     const hasFiles =
+              //       event.dataTransfer &&
+              //       event.dataTransfer.files &&
+              //       event.dataTransfer.files.length;
 
-                  if (!hasFiles) return;
+              //     if (!hasFiles) return;
 
-                  const images = getImages(event.dataTransfer.files);
+              //     const images = getImages(event.dataTransfer.files);
 
-                  if (images.length === 0) return;
+              //     if (images.length === 0) return;
 
-                  event.preventDefault();
+              //     event.preventDefault();
 
-                  const { schema } = view.state;
-                  const coordinates = view.posAtCoords({
-                    left: event.clientX,
-                    top: event.clientY,
-                  });
+              //     const { schema } = view.state;
+              //     const coordinates = view.posAtCoords({
+              //       left: event.clientX,
+              //       top: event.clientY,
+              //     });
 
-                  images.forEach((image) => {
-                    const reader = new FileReader();
-                    reader.onload = async () => {
-                      const resizedImage = await resizeImage(image);
-                      const uploadedImage = await uploadImage({
-                        file: resizedImage,
-                      });
+              //     images.forEach((image) => {
+              //       const reader = new FileReader();
+              //       reader.onload = async () => {
+              //         const resizedImage = await resizeImage(image);
+              //         const uploadedImage = await uploadImage({
+              //           file: resizedImage,
+              //         });
 
-                      const node = schema.nodes.image.create({
-                        src: uploadedImage.url,
-                      });
-                      const transaction = view.state.tr.insert(
-                        coordinates?.pos as number,
-                        node
-                      );
-                      view.dispatch(transaction);
-                    };
+              //         const node = schema.nodes.image.create({
+              //           src: uploadedImage.url,
+              //         });
+              //         const transaction = view.state.tr.insert(
+              //           coordinates?.pos as number,
+              //           node
+              //         );
+              //         view.dispatch(transaction);
+              //       };
 
-                    reader.readAsDataURL(image);
-                  });
-                } catch (e) {
-                  console.error(e);
-                }
-              },
+              //       reader.readAsDataURL(image);
+              //     });
+              //   } catch (e) {
+              //     console.error(e);
+              //   }
+              // },
               paste(view, event) {
                 console.log('event', event);
                 console.log('view', view);

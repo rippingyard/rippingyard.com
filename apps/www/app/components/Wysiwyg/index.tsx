@@ -9,6 +9,7 @@ import {
   ComponentPropsWithRef,
   FC,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -68,9 +69,12 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     [editor]
   );
 
-  const isOverDropZone = useDropZone(dzRef, (files) => {
-    console.log('files', files);
-  });
+  const isOverDropZone = useDropZone(dzRef);
+
+  useEffect(() => {
+    if (!isOverDropZone) return;
+    setShowImageUploader(true);
+  }, [isOverDropZone]);
 
   if (!editor) return;
 
@@ -86,7 +90,7 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
         showImageUploader={setShowImageUploader}
       />
       <BubbleMenu editor={editor} />
-      {uploadpath && (showImageUploader || isOverDropZone) && (
+      {uploadpath && showImageUploader && (
         <div className={modalStyle}>
           <ImageUploader
             uploadpath={uploadpath}

@@ -22,7 +22,7 @@
     "@mjackson/form-data-parser": "^0.5.1",
     "@react-router/node": "^7.5.1",
     "@react-router/serve": "^7.5.1",
-    "@reactuses/core": "^5.0.23",
+    "@reactuses/core": "^6.0.2",
     "@tiptap/extension-floating-menu": "^2.11.9",
     "@tiptap/extension-highlight": "^2.11.9",
     "@tiptap/extension-image": "^2.11.9",
