@@ -29,6 +29,7 @@ export const resizeImage = async (
   params: {
     width?: number;
     height?: number;
+    maxWidth?: number;
     quality?: number;
     minQuality?: number;
     targetSize?: number;
@@ -44,12 +45,10 @@ export const resizeImage = async (
   if (!image) return Promise.reject();
 
   return new Promise((resolve, reject) => {
-    const { width = 1700, height = 1700, quality = 0.9 } = params;
-
     new Compressor(image, {
-      quality,
-      width,
-      height,
+      quality: 0.9,
+      maxWidth: 1700,
+      ...params,
       convertSize: 500000,
       success: (blob) => {
         const reader = new FileReader();

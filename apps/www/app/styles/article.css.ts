@@ -158,7 +158,7 @@ globalStyle(`${articleStyle} .caption`, {
 
 globalStyle(`${articleStyle} img`, {
   display: 'block',
-  margin: '0 auto 25px',
+  margin: '0 0 25px',
   maxWidth: '100%',
   height: 'auto',
   borderRadius: rootVars.border.radius.normal,

@@ -14,6 +14,7 @@ import {
   useState,
 } from 'react';
 
+import { IconLoader } from '~/assets/icons/Loader';
 import { ImageUploader } from '~/components/ImageUploader';
 import { useImageEditor } from '~/hooks/ui/useImageEditor';
 import { articleStyle } from '~/styles/article.css';
@@ -21,7 +22,12 @@ import { zIndex } from '~/utils/style';
 
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu as FloatingMenuComponent } from './FloatingMenu';
-import { containerStyle, modalStyle, wrapperStyle } from './style.css';
+import {
+  containerStyle,
+  loadingStyle,
+  modalStyle,
+  wrapperStyle,
+} from './style.css';
 
 type Props = ComponentPropsWithRef<'textarea'> & {
   content: string;
@@ -33,6 +39,7 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
   const dzRef = useRef(null);
 
   const [showImageUploader, setShowImageUploader] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const extensions: AnyExtension[] = [
     StarterKit,
@@ -50,7 +57,14 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
     }),
   ];
 
-  if (uploadpath) extensions.push(useImageEditor({ uploadpath }));
+  if (uploadpath)
+    extensions.push(
+      useImageEditor({
+        uploadpath,
+        onLoading: () => setIsLoading(true),
+        onLoaded: () => setIsLoading(false),
+      })
+    );
 
   const editor = useEditor({
     extensions,
@@ -98,6 +112,11 @@ export const Wysiwyg: FC<Props> = ({ content, uploadpath, onUpdate }) => {
             onClose={() => setShowImageUploader(false)}
           />
         </div>
+      )}
+      {isLoading && (
+        <p className={loadingStyle}>
+          <IconLoader />
+        </p>
       )}
     </div>
   );

@@ -5,12 +5,21 @@ import { resizeImage } from '~/utils/image';
 
 import { useUploadImage } from '../save/useUploadImage';
 
+type Props = {
+  uploadpath: string;
+  onLoading?: () => void;
+  onLoaded?: () => void;
+};
+
 const getImages = (files: FileList) =>
   !files ? [] : Array.from(files).filter((file) => /image/i.test(file.type));
 
-export const useImageEditor = ({ uploadpath }: { uploadpath: string }) => {
+export const useImageEditor = ({
+  uploadpath,
+  onLoading = () => undefined,
+  onLoaded = () => undefined,
+}: Props) => {
   const { uploadImage } = useUploadImage({ uploadpath });
-
   return Image.extend({
     addProseMirrorPlugins() {
       return [
@@ -38,6 +47,8 @@ export const useImageEditor = ({ uploadpath }: { uploadpath: string }) => {
                     const reader = new FileReader();
 
                     reader.onload = async () => {
+                      onLoading();
+
                       const resizedImage = await resizeImage(image);
                       const uploadedImage = await uploadImage({
                         file: resizedImage,
@@ -49,6 +60,8 @@ export const useImageEditor = ({ uploadpath }: { uploadpath: string }) => {
                       const transaction =
                         view.state.tr.replaceSelectionWith(node);
                       view.dispatch(transaction);
+
+                      onLoaded(); // ファイル一個にしか対応していないことに注意
                     };
 
                     reader.readAsDataURL(image);
