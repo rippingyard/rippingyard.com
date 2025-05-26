@@ -1,5 +1,5 @@
 {
-  "name": "rippingyard.com",
+  "name": "www",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -9,6 +9,7 @@
     "dev": "react-router dev",
     "dev:emulator": "FIRESTORE_EMULATOR_HOST=localhost:8080 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_STORAGE_EMULATOR_HOST=localhost:9199 remix vite:dev",
     "dev:all": "pnpm dev & pnpm sb",
+    "deploy": "pnpm build && wrangler deploy",
     "start": "react-router-serve build/server/index.js",
     "test": "vitest",
     "typecheck": "react-router typegen && tsc",
@@ -91,7 +92,8 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.6",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "wrangler": "^4.16.1"
   },
   "engines": {
     "node": "22"
