@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "turbo run dev --filter=./apps/www",
+    "dev:cf": "turbo run dev --filter=./apps/cloudflare",
     "dev:emulator": "turbo run dev:emulator",
     "build:sb": "turbo run build:sb --filter=./apps/www",
+    "build:cf": "turbo run build:sb --filter=./apps/cloudflare",
     "build-storybook": "npm run build:sb",
     "sb": "turbo run sb",
     "test": "turbo run test --filter=./apps/www",
