@@ -37,8 +37,8 @@ export const previewImageStyle = style({
   position: 'relative',
   display: 'block',
   padding: 0,
-  marginLeft: 'auto',
-  marginRight: 'auto',
+  marginLeft: 'auto !important',
+  marginRight: 'auto !important',
   marginBottom: '0 !important',
   '@container': {
     [mediaQuery('SP')]: {
