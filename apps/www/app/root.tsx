@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import destyle from 'destyle.css?url';
+import { useMemo } from 'react';
 import {
   Links,
   Meta,
@@ -8,12 +9,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useRouteError,
   data,
   LoaderFunctionArgs,
   type LinksFunction,
+  isRouteErrorResponse,
 } from 'react-router';
 
+import { Route } from './+types/root';
 import { Env } from './components/Env';
 import { Heading } from './components/Heading';
 import { Layout } from './components/Layout';
@@ -150,12 +152,32 @@ function App() {
   );
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError() as {
-    message?: string;
-    data?: string;
-  };
-  console.error(error);
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  const message = useMemo(() => {
+    if (isRouteErrorResponse(error)) {
+      return (
+        <>
+          <Heading>
+            {error.status} {error.statusText}
+          </Heading>
+          <main className={containerStyle}>{error.data}</main>
+        </>
+      );
+    } else if (error instanceof Error) {
+      return (
+        <div>
+          <Heading>Error</Heading>
+          <main className={containerStyle}>
+            <p>{error.message}</p>
+            <p>The stack trace is:</p>
+            <pre>{error.stack}</pre>
+          </main>
+        </div>
+      );
+    } else {
+      return <Heading>Unknown Error</Heading>;
+    }
+  }, [error]);
 
   const lang = 'ja';
 
@@ -175,12 +197,7 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body className={clsx(bodyStyle, themeClass)}>
-        <Layout isAuthenticated={false}>
-          <Heading>Error</Heading>
-          <main className={containerStyle}>
-            <h2>{error?.message || error?.data || 'Error'}</h2>
-          </main>
-        </Layout>
+        <Layout isAuthenticated={false}>{message}</Layout>
         <Scripts />
       </body>
     </html>
