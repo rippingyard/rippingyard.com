@@ -1,5 +1,5 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 
 import { articleStyle } from '~/styles/article.css';
 
@@ -21,7 +21,7 @@ const meta: Meta<typeof Modal> = {
   //   // backgroundColor: { control: 'color' },
   // },
   // // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClose: fn() },
+  // args: { onClose: fn() },
 };
 
 export default meta;
