@@ -32,6 +32,11 @@ export type QueryParams<T> = {
   collection: string;
   myId?: string;
   where?: WhereParams;
+  findNearest?: {
+    vector: number[];
+    limit?: number;
+    distanceMeasure?: 'COSINE' | 'EUCLIDEAN' | 'DOT_PRODUCT';
+  };
   limit?: number;
   startAfter?: string | number | Timestamp;
   orderBy?: OrderBy;

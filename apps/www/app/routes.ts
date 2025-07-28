@@ -18,6 +18,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route('/posts', 'routes/posts/index.tsx');
     route('/post/:id', 'routes/post/$id.tsx');
     route('/post/:id/edit', 'routes/post/$id.edit.tsx');
+    route('/post/:id/related', 'routes/post/$id.related.tsx');
     route('/post/create', 'routes/post/create.tsx');
 
     // Tag

@@ -19,6 +19,9 @@
   },
   "dependencies": {
     "@ctrl/react-adsense": "^1.7.0",
+    "@langchain/anthropic": "^0.3.24",
+    "@langchain/core": "^0.3.66",
+    "@langchain/openai": "^0.6.3",
     "@mjackson/form-data-parser": "^0.5.1",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
@@ -44,6 +47,7 @@
     "instantsearch.js": "^4.74.1",
     "isbot": "^5.1.21",
     "isomorphic-dompurify": "^2.2.0",
+    "langchain": "^0.3.30",
     "openai": "^4.55.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -88,6 +92,17 @@
     "vite": "^5.4.6",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^1.4.0"
+  },
+  "resolutions": {
+    "@langchain/core": "^0.3.66"
+  },
+  "overrides": {
+    "@langchain/core": "^0.3.66"
+  },
+  "pnpm": {
+    "overrides": {
+      "@langchain/core": "^0.3.66"
+    }
   },
   "engines": {
     "node": "22"
