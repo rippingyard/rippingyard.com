@@ -225,6 +225,9 @@ importers:
       '@tiptap/extension-link':
         specifier: ^2.11.9
         version: 2.11.9(@tiptap/core@2.11.9)(@tiptap/pm@2.11.9)
+      '@tiptap/extension-placeholder':
+        specifier: ^3.0.7
+        version: 3.0.7(@tiptap/extensions@3.0.7)
       '@tiptap/html':
         specifier: ^2.11.9
         version: 2.11.9(@tiptap/core@2.11.9)(@tiptap/pm@2.11.9)
@@ -3620,6 +3623,14 @@ packages:
       '@tiptap/core': 2.11.9(@tiptap/pm@2.11.9)
     dev: false
 
+  /@tiptap/extension-placeholder@3.0.7(@tiptap/extensions@3.0.7):
+    resolution: {integrity: sha512-f4oV4/ZNtOE1mbnJMzsBO1PmmbB9kfW4kEujDvDitn3YSWXfr5EW83vVwriaFnc4FY6RTId3wgsAV7U3tSYHyA==}
+    peerDependencies:
+      '@tiptap/extensions': ^3.0.7
+    dependencies:
+      '@tiptap/extensions': 3.0.7(@tiptap/core@2.11.9)(@tiptap/pm@2.11.9)
+    dev: false
+
   /@tiptap/extension-strike@2.11.9(@tiptap/core@2.11.9):
     resolution: {integrity: sha512-YFZ/Mjv/wA13oO8wEK4DVw6zSuYfEz4NLF6EA2mMo8N6UUSrBFEWiGE3pHBysIwcRXTaUzzGoYN+lohbmpHwBQ==}
     peerDependencies:
@@ -3642,6 +3653,16 @@ packages:
       '@tiptap/core': ^2.7.0
     dependencies:
       '@tiptap/core': 2.11.9(@tiptap/pm@2.11.9)
+    dev: false
+
+  /@tiptap/extensions@3.0.7(@tiptap/core@2.11.9)(@tiptap/pm@2.11.9):
+    resolution: {integrity: sha512-GkXX5l7Q/543BKsC14j8M3qT+75ILb7138zy7cZoHm/s1ztV1XTknpEswBZIRZA9n6qq+Wd9g5qkbR879s6xhA==}
+    peerDependencies:
+      '@tiptap/core': ^3.0.7
+      '@tiptap/pm': ^3.0.7
+    dependencies:
+      '@tiptap/core': 2.11.9(@tiptap/pm@2.11.9)
+      '@tiptap/pm': 2.11.9
     dev: false
 
   /@tiptap/html@2.11.9(@tiptap/core@2.11.9)(@tiptap/pm@2.11.9):

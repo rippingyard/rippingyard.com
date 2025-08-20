@@ -1,5 +1,10 @@
 ﻿import { Document } from '@langchain/core/documents';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { JsonOutputParser } from '@langchain/core/output_parsers';
+import {
+  ChatPromptTemplate,
+  HumanMessagePromptTemplate,
+  SystemMessagePromptTemplate,
+} from '@langchain/core/prompts';
 import { ChatOpenAI } from '@langchain/openai';
 import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
 import { Suspense, useMemo } from 'react';
@@ -27,23 +32,23 @@ import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 import type { Route } from './+types/$id';
 
 // GPTに渡すテンプレート
-const promptTemplate = `
+const systemPromptTemplate = `
 あなたは優秀なアシスタントです。
-以下の本文と関連項目を参考に、質問に答えてください。
+ユーザーから本文と関連項目が入力されるので、それを参考に質問に答えてください。
+返り値は、JSONフォーマットになります。
+言語は、本文の言語に合わせてください。
 
---------
-# 本文
+質問文:
+1. 本文を要約してください（summary）
+2. 関連項目と照らし合わせて、この著者の次に興味を抱きそうな芸術作品（映画、音楽、文学など）を最大10件提案してください（items[]）。itemは、それぞれ、名称（name）、ジャンル（genre）、80字程度の簡単な説明文（description）をプロパティとするオブジェクトになります。
+3. 関連項目と照らし合わせて、この著者が関心を持っていそうな内容を、最大20個程度のタグとして提案してください（tags[]）
+`;
+
+const humanPromptTemplate = `# 本文
 {content}
 
 # 関連項目
-{context}
---------
-
-質問文:
-1. 本文を要約してください
-2. 関連項目と照らし合わせて、この著者の次に興味を抱きそうな芸術作品（映画、音楽、文学など）を最大10件提案してください
-3. 関連項目と照らし合わせて、この著者が関心を持っていそうな内容を、最大20個程度のタグとして提案してください
-`;
+{context}`;
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
@@ -70,9 +75,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const { data: nearestPosts } = await useNearestPosts(post.content, {
       limit: 16,
     });
-    console.log('nearestPosts', nearestPosts);
-
-    const prompt = ChatPromptTemplate.fromTemplate(promptTemplate);
+    // console.log('nearestPosts', nearestPosts);
 
     // OpenAIのChat APIを使ったLLMを生成
     const llm = new ChatOpenAI({
@@ -87,11 +90,34 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       .map((p) => new Document({ pageContent: p.content }));
 
     // LangChainを使って、質問に対する回答を取得
+    const prompt = ChatPromptTemplate.fromMessages([
+      SystemMessagePromptTemplate.fromTemplate(systemPromptTemplate),
+      HumanMessagePromptTemplate.fromTemplate(humanPromptTemplate),
+    ]);
+
+    const parser = new JsonOutputParser<{
+      summary: string;
+      items: {
+        name: string;
+        genre: string;
+        description: string;
+      }[];
+      tags: string[];
+    }>();
+    console.log('parser', parser);
+    // .asTool({
+    //   name: '',
+    //   schema: z.string()
+    // });
+    // const instructions = parser.getFormatInstructions();
+    // console.log('instruction', instructions);
+
     const documentChain = await createStuffDocumentsChain({ llm, prompt });
-    const answer = await documentChain.invoke({
+    const org = await documentChain.invoke({
       content: post.content,
       context: documents,
     });
+    const answer = await parser.invoke(org);
 
     return {
       post,
@@ -155,7 +181,24 @@ export default function Main() {
         <Suspense fallback={<Loading />}>
           <Await resolve={post}>
             <section className={articleSectionStyle}>
-              <p>{answer}</p>
+              <p>要約：{answer.summary}</p>
+              <div>
+                関連項目：
+                <ul>
+                  {answer?.items.map((item) => (
+                    <li>
+                      <h3>
+                        {item.name} - {item.genre}
+                      </h3>
+                      <p>{item.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                タグ：
+                <ul>{answer?.tags.map((tag) => <li>{tag}</li>)}</ul>
+              </div>
 
               <PostHeader post={post} />
               {post?.tags && (
