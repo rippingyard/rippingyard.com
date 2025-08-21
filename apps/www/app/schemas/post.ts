@@ -34,6 +34,7 @@ export const PostSchema = z.object({
   type: PostTypeSchema,
   status: PostStatusSchema,
   suggestedTags: SuggestedTagSchema.array(),
+  vector: z.any().optional(),
 });
 
 export type Post = z.infer<typeof PostSchema>;

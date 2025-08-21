@@ -1,6 +1,7 @@
 ﻿import FloatingMenu from '@tiptap/extension-floating-menu';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
+import { Placeholder } from '@tiptap/extension-placeholder';
 import { useEditor, EditorContent, AnyExtension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
@@ -38,6 +39,9 @@ export const WysiwygComment: FC<Props> = ({
     StarterKit,
     Link,
     Highlight,
+    Placeholder.configure({
+      placeholder: '今日は何がありましたか？',
+    }),
     FloatingMenu.configure({
       tippyOptions: {
         maxWidth: 'none',

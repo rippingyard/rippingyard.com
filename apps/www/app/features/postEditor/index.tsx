@@ -60,7 +60,7 @@ export const PostEditor: FC<Props> = ({
 
   const [hasTitle, setHasTitle] = useState(!!title);
 
-  const [type] = useState<PostType>('article');
+  const [type] = useState<PostType>(post?.type ?? 'article');
   const [isPublic, setIsPublic] = useState<boolean>(post?.isPublic ?? true);
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'published');
 

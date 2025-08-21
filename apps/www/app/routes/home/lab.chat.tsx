@@ -1,11 +1,7 @@
-﻿import clsx from 'clsx';
-import OpenAI from 'openai';
+﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
 import { Form, useActionData } from 'react-router';
 
-import { Button } from '~/components/Button';
-import { FormInput } from '~/components/FormInput';
-import { Heading } from '~/components/Heading';
 import { Prompt } from '~/features/prompt';
 
 import { Route } from './+types/lab';
@@ -18,9 +14,15 @@ export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 
-    const interest = formData.get('interest') as string;
+    const prompt = formData.get('prompt') as string;
+    const rawMessages = formData.getAll('messages') as string[];
 
-    console.log('interest', interest);
+    const messages = rawMessages.map(
+      (str) =>
+        JSON.parse(str) as OpenAI.Chat.Completions.ChatCompletionMessageParam
+    );
+
+    console.log('messages', messages);
 
     const openai = new OpenAI({
       apiKey: process.env.VITE_OPENAI_APIKEY,
@@ -29,19 +31,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
     });
 
     const chat = await openai.chat.completions.create({
-      messages: [
-        {
-          content: `ユーザーが今興味のあることは以下です。${interest}`,
-          role: 'user',
-        },
-      ],
-      model: 'gpt-4o',
+      messages: [...messages, { role: 'user', content: prompt }],
+      model: 'gpt-3.5-turbo',
       // stream: true,
     });
 
     return {
       chat,
-      // prompt,
+      prompt,
     };
   } catch (e) {
     console.error(e);
@@ -49,8 +46,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 };
 
-export default function Index({ actionData: data }: Route.ComponentProps) {
-  // const data = useActionData<typeof action>();
+export default function Index() {
+  const data = useActionData<typeof action>();
   const [messages, setMessages] = useState<
     OpenAI.Chat.Completions.ChatCompletionMessageParam[]
   >([]);
@@ -79,28 +76,7 @@ export default function Index({ actionData: data }: Route.ComponentProps) {
 
   return (
     <Form method="POST">
-      <Heading level="partial">今、あなたの興味あることはなんですか？</Heading>
-      <FormInput name="interest" />
-      <Button>送信</Button>
-      <hr />
-      <ul>
-        {messages.map((message, index) => (
-          <li
-            key={`chat-item-${index}`}
-            // className={clsx([
-            //   itemStyle,
-            //   message.role === 'user' ? userStyle : assistantStyle,
-            // ])}
-          >
-            {`${message.content}`}
-            <input
-              type="hidden"
-              name="messages"
-              value={JSON.stringify(message)}
-            />
-          </li>
-        ))}
-      </ul>
+      <Prompt messages={messages} />
     </Form>
   );
 }

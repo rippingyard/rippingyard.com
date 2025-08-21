@@ -1,5 +1,6 @@
 ﻿import {
   DocumentData,
+  FieldValue,
   Query,
   QueryDocumentSnapshot,
 } from 'firebase-admin/firestore';
@@ -47,6 +48,13 @@ export const useQuery = async <T>(
     if (args?.startAfter) {
       q = q.startAfter(args?.startAfter);
     }
+  }
+
+  if (args?.findNearest) {
+    q = q.findNearest('vector', FieldValue.vector(args?.findNearest.vector), {
+      limit: args?.findNearest?.limit || 5,
+      distanceMeasure: args?.findNearest?.distanceMeasure || 'COSINE',
+    });
   }
 
   const snapshots = await q.get();

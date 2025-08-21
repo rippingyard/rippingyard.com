@@ -37,8 +37,8 @@ export const hiddenLabelStyle = style({
 /** For Simple */
 
 export const simpleButtonStyle = style({
-  border: `3px solid ${vars.color['neutral']}`,
-  padding: '3px 15px',
+  border: `2px solid ${vars.color['neutral']}`,
+  padding: '2px 15px',
   marginRight: 5,
   borderRadius: rootVars.border.radius.large,
   lineHeight: 1,
@@ -48,5 +48,9 @@ export const simpleButtonStyle = style({
       padding: '3px 10px',
       borderWidth: 2,
     },
+  },
+  ':hover': {
+    backgroundColor: vars.color.neutral,
+    color: vars.color.background,
   },
 });

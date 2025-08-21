@@ -1,4 +1,4 @@
-﻿import { style } from '@vanilla-extract/css';
+﻿import { globalStyle, style } from '@vanilla-extract/css';
 
 import { vars } from '~/styles/theme.css';
 import { rootVars } from '~/styles/vars.css';
@@ -8,6 +8,29 @@ export const wrapperStyle = style({
   height: '100%',
   position: 'relative',
 });
+
+globalStyle('.tiptap.ProseMirror', {
+  minHeight: '60dvh',
+});
+
+globalStyle(
+  '.tiptap:not(.ProseMirror-focused) p.is-editor-empty:first-child::before',
+  {
+    color: vars.color['neutral-40'],
+    content: 'attr(data-placeholder)',
+    float: 'left',
+    height: 0,
+    // 'pointer-events': 'none',
+  }
+);
+
+// .tiptap p.is-editor-empty:first-child::before {
+//   color: #adb5bd;
+//   content: attr(data-placeholder);
+//   float: left;
+//   height: 0;
+//   pointer-events: none;
+// }
 
 export const containerStyle = style({
   outline: 'none',

@@ -5,7 +5,7 @@ import { rootVars } from '~/styles/vars.css';
 
 export const textboxStyle = style({
   boxSizing: 'border-box',
-  textAlign: 'center',
+  textAlign: 'left',
   padding: '2px 6px',
   border: `2px solid ${vars.color['neutral-40']}`,
   borderRadius: rootVars.border.radius.normal,

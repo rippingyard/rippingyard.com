@@ -1,4 +1,5 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+﻿import { OpenAIEmbeddings } from '@langchain/openai';
+import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
 import { Post, PostSchema } from '~/schemas/post';
@@ -61,6 +62,12 @@ const savePost = async (
 
     const oldPost = (await postDoc.get()).data() as Partial<Post>;
 
+    // Embedding
+    const embeddings = new OpenAIEmbeddings({
+      apiKey: import.meta.env.VITE_OPENAI_APIKEY,
+    });
+    const vector = await embeddings.embedQuery(contentBody);
+
     const post: Partial<Post> = {
       slug: '',
       status: 'drafted',
@@ -76,6 +83,7 @@ const savePost = async (
       content,
       tags,
       suggestedTags,
+      vector: FieldValue.vector(vector),
       updatedAt: Timestamp.now(),
     };
 
