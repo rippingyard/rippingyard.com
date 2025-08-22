@@ -51,7 +51,7 @@ export const syncPost = async (
         publishedAt: dayjs(post.publishedAt.toDate()).unix(),
         updatedAt: dayjs(post.updatedAt.toDate()).unix(),
         owner: post.owner?.id,
-        entities: post.entities,
+        tags: post.tags || [],
         ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
       });
       console.log('Index result', post.owner);
