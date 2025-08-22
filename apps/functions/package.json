@@ -6,6 +6,9 @@
   "private": true,
   "main": "dist/main.js",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "20"
+  },
   "scripts": {
     "dev": "tsc --watch",
     "dev:emulator": "firebase emulators:start --inspect-functions 9229",
