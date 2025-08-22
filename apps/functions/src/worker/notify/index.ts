@@ -1,5 +1,5 @@
 ﻿import * as functions from 'firebase-functions';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { User } from '../../types/user';
 import { Activity } from '../../types/activity';
 import { Notification } from '../../types/notification';

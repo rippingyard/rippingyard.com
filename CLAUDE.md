@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Rules
 
 - 基本的には、日本語で受け答えしてください
+- ファイルのフォーマット修正は、prettierなど、IDEの設定に任せてください
 
 ## Project Overview
 

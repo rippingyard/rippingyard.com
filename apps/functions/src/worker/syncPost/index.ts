@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { pick } from 'lodash';
 import { save as saveIndex } from '../../helper/saveIndex';
 import { Post } from '../../types/post';
