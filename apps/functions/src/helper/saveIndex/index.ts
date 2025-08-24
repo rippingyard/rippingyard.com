@@ -11,13 +11,17 @@ function init(indexName: string) {
   return client.initIndex(indexName);
 }
 
-export async function save(indexName: string, object: PostAsSearchResult) {
+async function save<T>(indexName: 'posts', object: T) {
   console.log('save a document', object);
 
   const index = init(indexName);
   if (!index) return;
 
   await index.saveObject(object);
+}
+
+export async function savePostIndex(payload: PostAsSearchResult) {
+  await save<PostAsSearchResult>('posts', payload);
 }
 
 export async function destroy(indexName: string, id: string) {

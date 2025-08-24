@@ -1,11 +1,11 @@
-import { DocumentData, Timestamp } from 'firebase-admin/firestore';
-import { z } from 'zod';
+import { DocumentData, Timestamp } from "firebase-admin/firestore";
+import { z } from "zod";
 
-import { DocumentReferenceSchema } from './utils';
-import { SimpleUser } from './user';
+import { DocumentReferenceSchema } from "./utils";
+import { SimpleUser } from "./user";
 
-const PostStatusSchema = z.enum(['published', 'drafted']);
-const PostTypeSchema = z.enum(['article', 'note', 'log']);
+const PostStatusSchema = z.enum(["published", "drafted"]);
+const PostTypeSchema = z.enum(["article", "note", "log"]);
 const SuggestedTagSchema = z.object({
   value: z.string(),
   relevance: z.number(),
@@ -45,35 +45,14 @@ export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 
 export type PostAsSearchResult = Pick<
   Post,
-  | 'type'
-  | 'content'
-  | 'isDeleted'
-  | 'isPublic'
-  | 'status'
+  "type" | "content" | "isDeleted" | "isPublic" | "status" | "tags"
 > & {
   title: string;
   body: string;
   image: string;
+  owner?: string;
   createdAt: number;
   publishedAt: number;
   updatedAt: number;
   objectID: string;
-};
-
-// Functions用の簡易型（後方互換性のため）
-export type SimplePost = {
-  id: string;
-  content: string;
-  contentOriginal: string;
-  createdAt: Timestamp;
-  publishedAt: Timestamp;
-  updatedAt: Timestamp;
-  type: string;
-  owner?: SimpleUser | DocumentData | null;
-  isPublic: boolean;
-  isDeleted: boolean;
-  tags: string[];
-  items: DocumentData[];
-  status: 'published' | 'draft';
-  sociallink?: string;
 };

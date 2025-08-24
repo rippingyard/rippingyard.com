@@ -1,5 +1,5 @@
-﻿import * as functions from 'firebase-functions';
-import { Secret } from '../../types/secret';
+﻿import { Secret } from '@rippingyard/schemas';
+import * as functions from 'firebase-functions';
 
 export const scanSecret = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
