@@ -35,15 +35,23 @@ jobs:
         run: pnpm install
       - name: Schemas - Build for production
         working-directory: packages/schemas
-        run: pnpm build
+        run: |
+          pnpm build
+          echo "Schemas build output:"
+          ls -la dist/ | head -10
       - name: Utils - Build for production
         working-directory: packages/utils
-        run: pnpm build
-      - name: Link local packages
-        working-directory: apps/functions
         run: |
-          echo "Installing functions dependencies with local packages"
-          pnpm install
+          pnpm build
+          echo "Utils build output:"
+          ls -la dist/ | head -10
+      - name: Debug package paths
+        run: |
+          echo "Checking packages directory structure:"
+          ls -la packages/schemas/dist/ | head -5 || echo "schemas/dist not found"
+          ls -la packages/utils/dist/ | head -5 || echo "utils/dist not found"
+          echo "Checking functions node_modules:"
+          ls -la apps/functions/node_modules/@rippingyard/ 2>/dev/null || echo "@rippingyard not found in node_modules"
       - name: Functions - Build for production
         working-directory: apps/functions
         run: |

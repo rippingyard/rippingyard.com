@@ -13,6 +13,12 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@rippingyard/schemas": ["../../packages/schemas/dist/index"],
+      "@rippingyard/schemas/*": ["../../packages/schemas/dist/*"],
+      "@rippingyard/utils": ["../../packages/utils/dist/index"],
+      "@rippingyard/utils/*": ["../../packages/utils/dist/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
