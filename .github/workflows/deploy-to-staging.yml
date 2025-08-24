@@ -42,6 +42,11 @@ jobs:
       - name: Utils - Build for develop
         working-directory: packages/utils
         run: pnpm build
+      - name: Link local packages
+        working-directory: apps/functions
+        run: |
+          echo "Installing functions dependencies with local packages"
+          pnpm install
       - name: Functions - Build for develop
         working-directory: apps/functions
         run: |
