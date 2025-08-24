@@ -45,6 +45,8 @@ jobs:
       - name: Functions - Build for develop
         working-directory: apps/functions
         run: pnpm build
+      - name: Verify build output
+        run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to develop
         uses: w9jds/firebase-action@v13.15.2
         with:

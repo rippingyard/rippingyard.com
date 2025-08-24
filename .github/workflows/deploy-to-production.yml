@@ -42,6 +42,8 @@ jobs:
       - name: Functions - Build for production
         working-directory: apps/functions
         run: pnpm build
+      - name: Verify build output
+        run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to production
         uses: w9jds/firebase-action@master
         with:
