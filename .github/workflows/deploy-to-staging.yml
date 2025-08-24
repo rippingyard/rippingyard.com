@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "apps/functions/**"
+      - "packages/utils/**"
       - "package.json"
 jobs:
   build:
@@ -32,8 +33,14 @@ jobs:
           args: functions:config:set runtime.env="develop" algolia.appid="${{ secrets.ALGOLIA_APPID_DEV }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_DEV }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_DEV }}" --project default
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install
+      - name: Utils - Build for develop
+        working-directory: packages/utils
+        run: pnpm build
       - name: Functions - Build for develop
-        run: pnpm install && cd apps/functions && pnpm build
+        working-directory: apps/functions
+        run: pnpm build
       - name: Functions - Deploy to develop
         uses: w9jds/firebase-action@v13.15.2
         with:
