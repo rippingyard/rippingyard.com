@@ -92,6 +92,9 @@ importers:
       dayjs:
         specifier: ^1.11.12
         version: 1.11.12
+      dompurify:
+        specifier: ^3.2.3
+        version: 3.2.6
       firebase:
         specifier: ^10.12.5
         version: 10.12.5
@@ -107,9 +110,15 @@ importers:
       html-metadata:
         specifier: ^1.7.1
         version: 1.7.1
+      isomorphic-dompurify:
+        specifier: ^2.2.0
+        version: 2.14.0
       joi:
         specifier: ^17.6.0
         version: 17.13.3
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1
       json-cyclic:
         specifier: ^1.0.2
         version: 1.0.2
