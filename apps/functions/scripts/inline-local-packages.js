@@ -119,6 +119,9 @@ function copyPackages() {
     fs.cpSync(utilsSource, utilsTarget, { recursive: true });
     console.log('✓ Copied utils package');
   }
+  
+  // Note: utilsパッケージの依存関係（dompurify, isomorphic-dompurify, jsdom）は
+  // functionsのpackage.jsonに直接追加されているので、Firebaseデプロイ時にnpmがインストールします
 }
 
 console.log('Inlining local package imports in dist directory...\n');
