@@ -45,25 +45,15 @@ jobs:
           pnpm build
           echo "Utils build output:"
           ls -la dist/ | head -10
-      - name: Copy built packages to functions node_modules
+      - name: Bundle local packages for deployment
+        working-directory: apps/functions
         run: |
-          echo "Creating @rippingyard directories in node_modules"
-          mkdir -p apps/functions/node_modules/@rippingyard/schemas/dist
-          mkdir -p apps/functions/node_modules/@rippingyard/utils/dist
-          
-          echo "Copying schemas package"
-          cp -r packages/schemas/dist/* apps/functions/node_modules/@rippingyard/schemas/dist/
-          cp packages/schemas/package.json apps/functions/node_modules/@rippingyard/schemas/
-          
-          echo "Copying utils package"
-          cp -r packages/utils/dist/* apps/functions/node_modules/@rippingyard/utils/dist/
-          cp packages/utils/package.json apps/functions/node_modules/@rippingyard/utils/
-          
-          echo "Verifying copied files:"
-          ls -la apps/functions/node_modules/@rippingyard/schemas/ | head -5
-          ls -la apps/functions/node_modules/@rippingyard/utils/ | head -5
-          echo "Checking dist/cjs directory:"
-          ls -la apps/functions/node_modules/@rippingyard/utils/dist/cjs/ | head -5
+          echo "Bundling local packages..."
+          bash scripts/bundle-packages.sh
+          echo "Verifying bundled packages:"
+          ls -la node_modules/@rippingyard/ || echo "No @rippingyard directory"
+          ls -la node_modules/@rippingyard/schemas/ | head -5 || echo "schemas not found"
+          ls -la node_modules/@rippingyard/utils/ | head -5 || echo "utils not found"
       - name: Functions - Build for production
         working-directory: apps/functions
         run: |

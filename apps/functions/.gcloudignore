@@ -1,0 +1,29 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud.
+
+.gcloudignore
+.git
+.gitignore
+
+# Node.js dependencies - DON'T ignore node_modules for Firebase Functions
+# node_modules/
+
+# TypeScript source files (only need compiled JS)
+src/
+*.ts
+!*.d.ts
+
+# Development files
+.env
+.env.*
+.vscode/
+.idea/
+*.log
+coverage/
+.nyc_output/
+
+# Build artifacts we don't need
+tsconfig.json
+tsconfig.*.json
+jest.config.js
+.eslintrc.js
