@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "apps/functions/**"
+      - "packages/schemas/**"
       - "packages/utils/**"
       - "package.json"
 jobs:
@@ -32,6 +33,9 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Install dependencies
         run: pnpm install
+      - name: Schemas - Build for production
+        working-directory: packages/schemas
+        run: pnpm build
       - name: Utils - Build for production
         working-directory: packages/utils
         run: pnpm build

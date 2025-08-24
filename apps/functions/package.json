@@ -31,8 +31,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@rippingyard/schemas": "workspace:*",
-    "@rippingyard/utils": "workspace:*",
+    "@rippingyard/schemas": "file:../../packages/schemas",
+    "@rippingyard/utils": "file:../../packages/utils",
     "@hono/node-server": "^1.19.0",
     "algoliasearch": "^4.23.3",
     "axios": "^1.7.4",
