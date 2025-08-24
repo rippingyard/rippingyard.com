@@ -45,20 +45,12 @@ jobs:
           pnpm build
           echo "Utils build output:"
           ls -la dist/ | head -10
-      - name: Bundle local packages for deployment
-        working-directory: apps/functions
-        run: |
-          echo "Bundling local packages..."
-          bash scripts/bundle-packages.sh
-          echo "Verifying bundled packages:"
-          ls -la node_modules/@rippingyard/ || echo "No @rippingyard directory"
-          ls -la node_modules/@rippingyard/schemas/ | head -5 || echo "schemas not found"
-          ls -la node_modules/@rippingyard/utils/ | head -5 || echo "utils not found"
       - name: Functions - Build for production
         working-directory: apps/functions
         run: |
           rm -rf dist
           pnpm build
+          node scripts/inline-local-packages.js
       - name: Verify build output
         run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to production
