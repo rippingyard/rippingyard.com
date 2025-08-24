@@ -1,5 +1,5 @@
 ﻿import { getMe } from '~/middlewares/session.server';
-import { Post } from '~/schemas/post';
+import { Post } from '@rippingyard/schemas';
 
 import { useDoc } from '../firestore/useDoc.server';
 import { useCanEditPost } from '../permission/useCanEditPost.server';

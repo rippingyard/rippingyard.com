@@ -1,4 +1,4 @@
-﻿import { Post } from '~/schemas/post';
+﻿import { Post } from '@rippingyard/schemas';
 
 import { QueryParams, usePostCondition } from '../condition/usePostConditions';
 import { useQuery } from '../firestore/useQuery.server';

@@ -3,7 +3,8 @@ import dayjs from 'dayjs';
 import { pick } from 'lodash';
 import { save as saveIndex } from '../../helper/saveIndex';
 import { Post } from '../../types/post';
-import { getTitle, stripTags, removeTitle } from '../../helper/typography';
+import { getTitle, removeTitle } from '../../helper/typography';
+import { stripTags } from '@rippingyard/utils';
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,

@@ -1,4 +1,4 @@
-﻿import { Role } from '~/schemas/user';
+﻿import { Role } from '@rippingyard/schemas';
 import { isSuperUser, isAnonymous } from '~/utils/permission';
 
 const canCreatePost = (role: Role) => {

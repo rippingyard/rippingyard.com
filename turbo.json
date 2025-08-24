@@ -25,6 +25,15 @@
     },
     "clean": {
       "cache": false
+    },
+    "lint": {
+      "cache": false
+    },
+    "lint:fix": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false
     }
   }
 }

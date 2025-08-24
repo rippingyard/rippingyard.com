@@ -1,8 +1,8 @@
 ﻿import dayjs from 'dayjs';
 import { Timestamp } from 'firebase-admin/firestore';
 
-import { Post } from '~/schemas/post';
-import { Seed } from '~/schemas/seed';
+import { Post } from '@rippingyard/schemas';
+import { Seed } from '@rippingyard/schemas';
 
 export const seedToPost = (seed: Seed): Post => {
   return {

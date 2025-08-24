@@ -1,24 +1,6 @@
-﻿import algoliasearch from 'algoliasearch';
+﻿import { PostAsSearchResult } from '@rippingyard/schemas';
+import algoliasearch from 'algoliasearch';
 import * as functions from 'firebase-functions';
-
-interface SearchObject {
-  objectID: string;
-  title: string;
-  body: string;
-  content?: string | undefined;
-  type: string;
-  status: string;
-  image: string | null;
-  isDeleted: boolean;
-  isPublic: boolean;
-  collaborators?: string[];
-  entities?: string[] | null;
-  tokens?: string[] | null;
-  createdAt: number;
-  publishedAt: number;
-  updatedAt: number;
-  owner: string;
-}
 
 function init(indexName: string) {
   console.log('algolia setting', functions.config().algolia);
@@ -29,7 +11,7 @@ function init(indexName: string) {
   return client.initIndex(indexName);
 }
 
-export async function save(indexName: string, object: SearchObject) {
+export async function save(indexName: string, object: PostAsSearchResult) {
   console.log('save a document', object);
 
   const index = init(indexName);

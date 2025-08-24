@@ -1,8 +1,4 @@
-﻿import * as sanitizeHtml from 'sanitize-html';
-
-export const removeHtmlTags = (str: string) => {
-  return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '');
-};
+﻿import { removeHtmlTags } from '@rippingyard/utils';
 
 export const removeTitle = (str: string) => {
   if (!str) return '';
@@ -23,19 +19,4 @@ export const getTitle = (str: string | undefined, length = 32) => {
     ?.map((s) => removeHtmlTags(s));
   if (htag && htag[0] !== '') return htag[0];
   return getSummary(str, length);
-};
-
-export const stripTags = (content: string, linebreak = true) => {
-  if (linebreak) {
-    content = content.replace(/<\/p>/g, '</p>\n\n');
-    content = content.replace(/<br \/>/g, '\n\n');
-    content = content.replace(/<br\/>/g, '\n\n');
-    content = content.replace(/<br>/g, '\n\n');
-  }
-
-  return !content
-    ? ''
-    : sanitizeHtml(content, {
-        allowedTags: [],
-      });
 };

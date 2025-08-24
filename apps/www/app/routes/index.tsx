@@ -12,7 +12,7 @@ import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '~/schemas/post';
+import { Post } from '@rippingyard/schemas';
 import {
   containerStyle,
   edgeStyle,

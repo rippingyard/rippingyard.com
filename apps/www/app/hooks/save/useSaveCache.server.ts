@@ -1,7 +1,7 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
-import { Cache, CacheSchema } from '~/schemas/cache';
+import { Cache, CacheSchema } from '@rippingyard/schemas';
 
 import { useFirestore } from '../firestore/useFirestore.server';
 

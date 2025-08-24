@@ -3,7 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
-import { Post } from '~/schemas/post';
+import { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,

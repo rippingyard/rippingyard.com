@@ -2,7 +2,7 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ZodError, ZodIssue } from 'zod';
 
-import { Auth, AuthSchema } from '~/schemas/auth';
+import { Auth, AuthSchema } from '@rippingyard/schemas';
 
 import { useFirebase } from './useFirebase';
 

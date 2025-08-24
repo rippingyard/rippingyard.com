@@ -1,4 +1,3 @@
-﻿// import { Timestamp } from 'firebase/firestore';
 import { z } from 'zod';
 
 const SeedStatusSchema = z.enum(['published', 'drafted']);
@@ -17,9 +16,6 @@ const SeedSchema = z.object({
   image_id: z.string().nullable(),
   parent_id: z.string().nullable(),
   search_body: z.string().optional().nullable(),
-  // isPublic: z.boolean(),
-  // isDeleted: z.boolean(),
-  // owner: z.any().refine(DocumentReferenceSchema),
   type: SeedTypeSchema,
   user_id: z.number(),
   status: SeedStatusSchema,

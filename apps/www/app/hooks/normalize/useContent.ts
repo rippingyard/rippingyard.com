@@ -13,7 +13,6 @@ import {
 const renderWidgets = (content: string) => {
   if (!content) return '';
 
-  // const contentPlain = stripTags(content)
   const urls = extractUrls(content);
   if (!urls) return content;
 

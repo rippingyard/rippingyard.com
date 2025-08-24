@@ -5,10 +5,10 @@ import {
   getSummary,
   getThumbnailFromText,
   getTitle,
-  removeTitle,
 } from '~/utils/typography';
 
 import { useContentBlocks } from './useContentBlocks';
+import { removeTitle } from '@rippingyard/utils';
 
 type Options = {
   alt?: string;

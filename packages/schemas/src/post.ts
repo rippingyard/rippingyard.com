@@ -1,7 +1,8 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+import { DocumentData, Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
-import { DocumentReferenceSchema } from '~/utils/schema';
+import { DocumentReferenceSchema } from './utils';
+import { SimpleUser } from './user';
 
 const PostStatusSchema = z.enum(['published', 'drafted']);
 const PostTypeSchema = z.enum(['article', 'note', 'log']);
@@ -45,9 +46,6 @@ export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 export type PostAsSearchResult = Pick<
   Post,
   | 'type'
-  // | 'createdAt'
-  // | 'publishedAt'
-  // | 'updatedAt'
   | 'content'
   | 'isDeleted'
   | 'isPublic'
@@ -60,5 +58,22 @@ export type PostAsSearchResult = Pick<
   publishedAt: number;
   updatedAt: number;
   objectID: string;
-  // _highlightResult: unknown;
+};
+
+// Functions用の簡易型（後方互換性のため）
+export type SimplePost = {
+  id: string;
+  content: string;
+  contentOriginal: string;
+  createdAt: Timestamp;
+  publishedAt: Timestamp;
+  updatedAt: Timestamp;
+  type: string;
+  owner?: SimpleUser | DocumentData | null;
+  isPublic: boolean;
+  isDeleted: boolean;
+  tags: string[];
+  items: DocumentData[];
+  status: 'published' | 'draft';
+  sociallink?: string;
 };

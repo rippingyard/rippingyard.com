@@ -2,7 +2,7 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
-import { Post, PostSchema } from '~/schemas/post';
+import { Post, PostSchema } from '@rippingyard/schemas';
 
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';

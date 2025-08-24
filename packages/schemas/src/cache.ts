@@ -1,7 +1,7 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
-import { DocumentReferenceSchema } from '~/utils/schema';
+import { DocumentReferenceSchema } from './utils';
 
 export const CacheSchema = z.object({
   id: z.string(),

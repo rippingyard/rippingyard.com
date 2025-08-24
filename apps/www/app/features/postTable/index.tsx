@@ -2,7 +2,7 @@
 
 import { Table, TableItem } from '~/components/Table';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import { Post } from '~/schemas/post';
+import { Post } from '@rippingyard/schemas';
 import { getTitle } from '~/utils/typography';
 
 import { PostTableDate } from './postTableDate';
