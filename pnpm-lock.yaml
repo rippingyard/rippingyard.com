@@ -75,11 +75,11 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0(hono@4.9.4)
       '@rippingyard/schemas':
-        specifier: workspace:*
-        version: link:../../packages/schemas
+        specifier: file:../../packages/schemas
+        version: file:packages/schemas
       '@rippingyard/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
+        specifier: file:../../packages/utils
+        version: file:packages/utils
       algoliasearch:
         specifier: ^4.23.3
         version: 4.24.0
@@ -10119,7 +10119,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 16.18.104
+      '@types/node': 20.19.11
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -15876,4 +15876,31 @@ packages:
 
   /zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+    dev: false
+
+  file:packages/schemas:
+    resolution: {directory: packages/schemas, type: directory}
+    name: '@rippingyard/schemas'
+    dependencies:
+      firebase: 10.12.5
+      firebase-admin: 12.3.1
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - encoding
+      - supports-color
+    dev: false
+
+  file:packages/utils:
+    resolution: {directory: packages/utils, type: directory}
+    name: '@rippingyard/utils'
+    dependencies:
+      dompurify: 3.2.6
+      isomorphic-dompurify: 2.14.0
+      jsdom: 25.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
     dev: false
