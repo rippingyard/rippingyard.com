@@ -13,10 +13,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "paths": {
-      "@rippingyard/schemas": ["../../packages/schemas/src/index.ts"],
-      "@rippingyard/utils": ["../../packages/utils/src/index.ts"]
-    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

@@ -44,7 +44,9 @@ jobs:
         run: pnpm build
       - name: Functions - Build for develop
         working-directory: apps/functions
-        run: pnpm build
+        run: |
+          rm -rf dist
+          pnpm build
       - name: Verify build output
         run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to develop
