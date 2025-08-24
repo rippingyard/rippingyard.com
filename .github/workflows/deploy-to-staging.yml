@@ -48,13 +48,25 @@ jobs:
           pnpm build
           echo "Utils build output:"
           ls -la dist/ | head -10
-      - name: Debug package paths
+      - name: Copy built packages to functions node_modules
         run: |
-          echo "Checking packages directory structure:"
-          ls -la packages/schemas/dist/ | head -5 || echo "schemas/dist not found"
-          ls -la packages/utils/dist/ | head -5 || echo "utils/dist not found"
-          echo "Checking functions node_modules:"
-          ls -la apps/functions/node_modules/@rippingyard/ 2>/dev/null || echo "@rippingyard not found in node_modules"
+          echo "Creating @rippingyard directories in node_modules"
+          mkdir -p apps/functions/node_modules/@rippingyard/schemas/dist
+          mkdir -p apps/functions/node_modules/@rippingyard/utils/dist
+          
+          echo "Copying schemas package"
+          cp -r packages/schemas/dist/* apps/functions/node_modules/@rippingyard/schemas/dist/
+          cp packages/schemas/package.json apps/functions/node_modules/@rippingyard/schemas/
+          
+          echo "Copying utils package"
+          cp -r packages/utils/dist/* apps/functions/node_modules/@rippingyard/utils/dist/
+          cp packages/utils/package.json apps/functions/node_modules/@rippingyard/utils/
+          
+          echo "Verifying copied files:"
+          ls -la apps/functions/node_modules/@rippingyard/schemas/ | head -5
+          ls -la apps/functions/node_modules/@rippingyard/utils/ | head -5
+          echo "Checking dist/cjs directory:"
+          ls -la apps/functions/node_modules/@rippingyard/utils/dist/cjs/ | head -5
       - name: Functions - Build for develop
         working-directory: apps/functions
         run: |
