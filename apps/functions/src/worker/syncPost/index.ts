@@ -4,7 +4,7 @@ import { pick } from 'lodash';
 import { savePostIndex } from '../../helper/saveIndex';
 import { getTitle, removeTitle } from '../../helper/typography';
 import { stripTags } from '@rippingyard/utils';
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,

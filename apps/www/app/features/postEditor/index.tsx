@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { Post, PostStatus, PostType } from '@rippingyard/schemas';
+import type { Post, PostStatus, PostType } from '@rippingyard/schemas';
 import { getMainTitle } from '~/utils/typography';
 
 import { SettingModal } from './settingModal';

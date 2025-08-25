@@ -14,7 +14,7 @@ import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';

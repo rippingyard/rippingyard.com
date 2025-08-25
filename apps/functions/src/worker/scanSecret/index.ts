@@ -1,4 +1,4 @@
-﻿import { Secret } from '@rippingyard/schemas';
+﻿import type { Secret } from '@rippingyard/schemas';
 import * as functions from 'firebase-functions';
 
 export const scanSecret = async (

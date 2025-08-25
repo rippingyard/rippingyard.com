@@ -12,7 +12,7 @@ import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { useDocReference } from '~/hooks/firestore/useDocReference.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 

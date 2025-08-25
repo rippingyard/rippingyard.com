@@ -1,6 +1,6 @@
 ﻿import { FC } from 'react';
 
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 
 import { PostItemDetail } from './PostItemDetail';
 import { PostItemHero } from './PostItemHero';

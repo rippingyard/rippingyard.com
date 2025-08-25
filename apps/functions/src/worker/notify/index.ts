@@ -1,6 +1,6 @@
 ﻿import * as functions from 'firebase-functions';
 import dayjs from 'dayjs';
-import { Activity, Notification, User } from '@rippingyard/schemas';
+import type { Activity, Notification, User } from '@rippingyard/schemas';
 
 export async function notify(
   snapshot: FirebaseFirestore.DocumentSnapshot,

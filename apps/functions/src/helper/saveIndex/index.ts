@@ -1,4 +1,4 @@
-﻿import { PostAsSearchResult } from '@rippingyard/schemas';
+﻿import type { PostAsSearchResult } from '@rippingyard/schemas';
 import algoliasearch from 'algoliasearch';
 import * as functions from 'firebase-functions';
 

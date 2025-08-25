@@ -1,7 +1,7 @@
 ﻿import { FC, useMemo } from 'react';
 
 import { PostItem } from '~/components/PostItem';
-import { PostAsSearchResult } from '@rippingyard/schemas';
+import type { PostAsSearchResult } from '@rippingyard/schemas';
 import { hitToPost } from '~/utils/search';
 
 import { noResultStyle } from './style.css';

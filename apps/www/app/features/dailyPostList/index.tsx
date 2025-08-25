@@ -4,7 +4,7 @@ import { FC, memo, useMemo } from 'react';
 import { DateLabel } from '~/components/DateLabel';
 import { type ItemMode, PostItem } from '~/components/PostItem';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 import { toDate } from '~/utils/date';
 
 import {

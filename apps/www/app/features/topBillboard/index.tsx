@@ -1,7 +1,7 @@
 ﻿import { FC } from 'react';
 
 import { Columns } from '~/components/Columns';
-import { Post } from '@rippingyard/schemas';
+import type { Post } from '@rippingyard/schemas';
 
 import { containerStyle } from './style.css';
 // import { SubscribeBanner } from './subscribeBanner';

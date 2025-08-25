@@ -1,4 +1,4 @@
-﻿import { User } from '@rippingyard/schemas';
+﻿import type { User } from '@rippingyard/schemas';
 
 import { useDoc } from '../firestore/useDoc.server';
 

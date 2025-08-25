@@ -1,8 +1,7 @@
-import { DocumentData, Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 import { z } from "zod";
 
 import { DocumentReferenceSchema } from "./utils";
-import { SimpleUser } from "./user";
 
 const PostStatusSchema = z.enum(["published", "drafted"]);
 const PostTypeSchema = z.enum(["article", "note", "log"]);

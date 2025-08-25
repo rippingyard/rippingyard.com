@@ -8,7 +8,7 @@ import { useUser } from '~/hooks/fetch/useUser.server';
 import { useUserFormData } from '~/hooks/form/useUserFormData';
 import { useSaveUser } from '~/hooks/save/useSaveUser.server';
 import { getMe } from '~/middlewares/session.server';
-import { User } from '@rippingyard/schemas';
+import type { User } from '@rippingyard/schemas';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 import { Route } from './+types/profile';

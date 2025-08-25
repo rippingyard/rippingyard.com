@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 
 import { useStorage } from '~/hooks/firebase/useStorage';
-import { Seed } from '@rippingyard/schemas';
+import type { Seed } from '@rippingyard/schemas';
 import { Routes, buildSitemap } from '~/utils/sitemap';
 
 export const loader = async () => {

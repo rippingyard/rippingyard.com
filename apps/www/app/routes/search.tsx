@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router';
 
 import { SearchForm } from '~/components/SearchForm';
 import { SearchResult } from '~/features/searchResult';
-import { PostAsSearchResult } from '@rippingyard/schemas';
+import type { PostAsSearchResult } from '@rippingyard/schemas';
 import { containerStyle } from '~/styles/container.css';
 
 import type { Route } from './+types/search';
