@@ -1,12 +1,14 @@
-﻿import { DocumentData } from '@firebase/firestore-types';
-import { User } from './user';
+import { DocumentData } from 'firebase-admin/firestore';
+import { SimpleUser } from './user';
+
+export type NoticeLevel = 'info' | 'warn' | 'fatal';
 
 export type Notification = {
   id: string;
   createdAt: string | Date;
   updatedAt: string | Date;
   level: NoticeLevel;
-  owner?: User | DocumentData | null;
+  owner?: SimpleUser | DocumentData | null;
   message: string;
   image?: string;
   to?: string;
@@ -14,5 +16,3 @@ export type Notification = {
   targets: any[];
   payload?: any;
 };
-
-export type NoticeLevel = 'info' | 'warn' | 'fatal';

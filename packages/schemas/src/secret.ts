@@ -1,5 +1,4 @@
-﻿import { DocumentData } from '@firebase/firestore';
-import { Timestamp } from '@firebase/firestore-types';
+import { DocumentData, Timestamp } from 'firebase-admin/firestore';
 
 export type Secret = {
   id: string;

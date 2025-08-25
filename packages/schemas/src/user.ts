@@ -1,4 +1,4 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 const RoleSchema = z.enum([
@@ -25,3 +25,27 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 export type Role = z.infer<typeof RoleSchema>;
+
+// Functions用の簡易型（後方互換性のため）
+export type SimpleUser = {
+  id: string;
+  uid?: string;
+  displayName: string;
+  userName: string;
+  code?: string;
+  profile?: string;
+  avatar?: string;
+  follows?: any[];
+  followers?: any[];
+  createdAt: string | Date | Timestamp;
+  updatedAt: string | Date | Timestamp;
+};
+
+export type UserState = {
+  me: User | null;
+};
+
+export type LoginParams = {
+  email: string;
+  password: string;
+};

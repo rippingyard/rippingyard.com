@@ -1,7 +1,7 @@
 ﻿import { FC, memo } from 'react';
 
 import { type ItemMode, PostItem } from '~/components/PostItem';
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 import { containerStyle, itemStyle } from './style.css';
 

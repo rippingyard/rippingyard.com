@@ -1,6 +1,6 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 
-import { Cache } from '~/schemas/cache';
+import type { Cache } from '@rippingyard/schemas';
 
 import { useDoc } from '../firestore/useDoc.server';
 

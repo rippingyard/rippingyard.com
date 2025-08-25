@@ -5,7 +5,7 @@ import {
   withRouter,
 } from 'storybook-addon-remix-react-router';
 
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 import { HeroArticles } from '.';
 

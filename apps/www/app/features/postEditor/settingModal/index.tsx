@@ -16,8 +16,11 @@ import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
 import { ServerMessage, ServerStatus } from '~/routes/api/entitiesFromText/sse';
-import { CategoryId } from '~/schemas/entity';
-import { PostStatus, SuggestedTag } from '~/schemas/post';
+import type {
+  CategoryId,
+  PostStatus,
+  SuggestedTag,
+} from '@rippingyard/schemas';
 import { animationRotateStyle } from '~/styles/animation.css';
 
 import { CategorySelector } from './categorySelector';

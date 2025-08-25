@@ -1,43 +1,18 @@
-﻿import DOMPurify from 'isomorphic-dompurify';
-
-const sanitizeDOM = (source: string, config: DOMPurify.Config) => {
-  return DOMPurify.sanitize(source, config) as string;
-};
-
-export const nl2br = (str: string): string => {
-  if (!str) return '';
-  str = sanitizeDOM(str, {
-    ALLOWED_TAGS: [],
-  });
-  return str.replace(/\n/g, '<br/>');
-};
-
-export const removeHtmlTags = (str: string) =>
-  str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '');
-
-export const removeTitle = (str: string, level?: number) => {
-  if (!str) return '';
-  return str.replace(titlePattern(level), '');
-};
-
-const titlePattern = (level?: number) =>
-  new RegExp(
-    level ? `<h${level}?>.*?</h${level}>` : '<h.(?: .+?)?>.*?</h.>',
-    'g'
-  );
-
-export const removeMainTitle = (str: string) => {
-  if (!str) return '';
-  return str.replace(titlePattern(1), '');
-};
+﻿import {
+  findTitleTag,
+  removeHtmlTags,
+  removeTitle,
+  sanitizeDOM,
+  stripTags,
+} from '@rippingyard/utils';
 
 export const hasTitle = (str: string): boolean => {
   if (!str) return false;
-  return titlePattern(1).test(str);
+  return findTitleTag(1).test(str);
 };
 
 export const getHeadingTags = (str: string, level?: number) => {
-  return str?.match(titlePattern(level))?.map((s) => removeHtmlTags(s));
+  return str?.match(findTitleTag(level))?.map((s) => removeHtmlTags(s));
 };
 
 export const getI18nName = (
@@ -131,23 +106,6 @@ export const getTokens = (str: string) => {
 
 export const getLength = (str: string) => {
   return !str ? 0 : removeHtmlTags(str).length;
-};
-
-export const stripTags = (content: string, linebreak = true) => {
-  // if (!DOMPurify?.sanitize) return '';
-
-  if (linebreak) {
-    content = content.replace(/<\/p>/g, '</p>\n\n');
-    content = content.replace(/<br \/>/g, '\n\n');
-    content = content.replace(/<br\/>/g, '\n\n');
-    content = content.replace(/<br>/g, '\n\n');
-  }
-
-  return !content
-    ? ''
-    : sanitizeDOM(content, {
-        ALLOWED_TAGS: [],
-      });
 };
 
 export function extractFirstImage(content: string): string {

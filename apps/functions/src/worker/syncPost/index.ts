@@ -1,9 +1,10 @@
 import * as functions from 'firebase-functions';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { pick } from 'lodash';
-import { save as saveIndex } from '../../helper/saveIndex';
-import { Post } from '../../types/post';
-import { getTitle, stripTags, removeTitle } from '../../helper/typography';
+import { savePostIndex } from '../../helper/saveIndex';
+import { getTitle, removeTitle } from '../../helper/typography';
+import { stripTags } from '@rippingyard/utils';
+import type { Post } from '@rippingyard/schemas';
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
@@ -41,7 +42,7 @@ export const syncPost = async (
 
       // 全文検索登録
       console.log('start saving to index');
-      await saveIndex('posts', {
+      await savePostIndex({
         objectID: postId,
         title: getTitle(post.content),
         body: stripTags(removeTitle(post.content || '')),
@@ -51,7 +52,7 @@ export const syncPost = async (
         publishedAt: dayjs(post.publishedAt.toDate()).unix(),
         updatedAt: dayjs(post.updatedAt.toDate()).unix(),
         owner: post.owner?.id,
-        entities: post.entities,
+        tags: post.tags || [],
         ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
       });
       console.log('Index result', post.owner);

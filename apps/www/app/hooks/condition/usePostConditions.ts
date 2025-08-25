@@ -5,7 +5,7 @@
   Timestamp,
 } from 'firebase-admin/firestore';
 
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 type WhereOp = '==' | 'in' | '!=' | 'array-contains-any';
 type WhereValue =

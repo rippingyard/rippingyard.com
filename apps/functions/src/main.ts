@@ -1,14 +1,94 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { logger } from 'hono/logger';
+
+// Workers
 import { syncPost } from './worker/syncPost';
 import { notify } from './worker/notify';
 import { scanSecret } from './worker/scanSecret';
 
+// Initialize Firebase Admin
 admin.initializeApp(functions.config().firebase);
 const firestore = admin.firestore();
 
+// Initialize Hono app
+const app = new Hono();
+
+// Middleware
+app.use('*', logger());
+app.use(
+  '*',
+  cors({
+    origin: (origin) => origin || '*',
+    credentials: true,
+  }),
+);
+
+// Health check endpoint
+app.get('/health', (c) => {
+  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// API Routes (将来的にAPIエンドポイントを追加する場合はここに)
+app.get('/api/v1/status', (c) => {
+  return c.json({
+    service: 'rippingyard-functions',
+    version: '1.0.0',
+    environment: functions.config().runtime?.env || 'production',
+  });
+});
+
+// 404 handler
+app.notFound((c) => {
+  return c.json({ error: 'Not Found' }, 404);
+});
+
+// Error handler
+app.onError((err, c) => {
+  console.error(`${err}`);
+  return c.json({ error: 'Internal Server Error' }, 500);
+});
+
 /**
- * Workers
+ * HTTP Function - Hono app
+ */
+export const api = functions.https.onRequest(async (req, res) => {
+  // Create headers object
+  const headers = new Headers();
+  Object.entries(req.headers).forEach(([key, value]) => {
+    if (typeof value === 'string') {
+      headers.set(key, value);
+    } else if (Array.isArray(value)) {
+      headers.set(key, value.join(', '));
+    }
+  });
+
+  // Convert Firebase request to standard Request
+  const honoReq = new Request(`https://${req.headers.host}${req.url}`, {
+    method: req.method,
+    headers,
+    body: req.body ? JSON.stringify(req.body) : undefined,
+  });
+
+  const response = await app.fetch(honoReq);
+
+  // Set response headers
+  response.headers.forEach((value: string, key: string) => {
+    res.setHeader(key, value);
+  });
+
+  // Set status code
+  res.status(response.status);
+
+  // Send response body
+  const body = await response.text();
+  res.send(body);
+});
+
+/**
+ * Firestore Triggers - Workers
  */
 // onPostCreate
 export const onPostCreate = functions.firestore

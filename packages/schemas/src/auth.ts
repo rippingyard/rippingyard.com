@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 export const AuthSchema = z.object({
   email: z.string().email({ message: 'メールアドレスの形式ではありません。' }),

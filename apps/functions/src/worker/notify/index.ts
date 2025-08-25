@@ -1,8 +1,6 @@
 ﻿import * as functions from 'firebase-functions';
-import * as dayjs from 'dayjs';
-import { User } from '../../types/user';
-import { Activity } from '../../types/activity';
-import { Notification } from '../../types/notification';
+import dayjs from 'dayjs';
+import type { Activity, Notification, User } from '@rippingyard/schemas';
 
 export async function notify(
   snapshot: FirebaseFirestore.DocumentSnapshot,
@@ -46,7 +44,7 @@ export async function notify(
       params.to = `post/${activity.payload.id}`;
       params.message = `<strong>${user.displayName}</strong>が、記事を投稿しました`;
 
-      if (user.followers) params.targets = user.followers;
+      // if (user.followers) params.targets = user.followers;
       if (user.avatar) params.image = user.avatar;
 
       console.log('post:create', params);
@@ -61,7 +59,7 @@ export async function notify(
       await (params.owner as any).get().then((qs: any) => {
         user = qs.data();
       });
-      if (user.followers) params.targets = user.followers;
+      // if (user.followers) params.targets = user.followers;
 
       // 親記事があった場合
       if (activity.payload.parent) {
