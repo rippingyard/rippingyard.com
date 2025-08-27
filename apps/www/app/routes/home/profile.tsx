@@ -8,7 +8,7 @@ import { useUser } from '~/hooks/fetch/useUser.server';
 import { useUserFormData } from '~/hooks/form/useUserFormData';
 import { useSaveUser } from '~/hooks/save/useSaveUser.server';
 import { getMe } from '~/middlewares/session.server';
-import { User } from '~/schemas/user';
+import type { User } from '@rippingyard/schemas';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 import { Route } from './+types/profile';
@@ -80,7 +80,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';

@@ -1,7 +1,7 @@
 ﻿import dayjs from 'dayjs';
 import { Timestamp } from 'firebase-admin/firestore';
 
-import { Post, PostAsSearchResult } from '~/schemas/post';
+import type { Post, PostAsSearchResult } from '@rippingyard/schemas';
 
 export const hitToPost = (item: PostAsSearchResult): Post => {
   return {
@@ -15,7 +15,8 @@ export const hitToPost = (item: PostAsSearchResult): Post => {
     type: item.type,
     isPublic: item.isPublic,
     isDeleted: item.isDeleted,
-    entities: [],
+    tags: item?.tags,
+    suggestedTags: [],
     items: [],
   };
 };

@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { Modal } from '~/components/Modal';
 import { WysiwygComment } from '~/components/Wysiwyg/comment';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { Post, PostStatus } from '~/schemas/post';
+import type { Post, PostStatus } from '@rippingyard/schemas';
 
 import { bodyStyle, containerStyle, footerStyle } from './style.css';
 

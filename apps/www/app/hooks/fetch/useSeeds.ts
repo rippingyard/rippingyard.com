@@ -1,6 +1,6 @@
 ﻿import axios from 'axios';
 
-import { Seed } from '~/schemas/seed';
+import type { Seed } from '@rippingyard/schemas';
 
 import { useDownloadURL } from '../firebase/useDownloadURL';
 

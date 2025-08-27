@@ -1,0 +1,5 @@
+{
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm --filter @rippingyard/schemas build && pnpm --filter @rippingyard/utils build && pnpm --filter rippingyard.com test && pnpm --filter rippingyard.com build",
+  "outputDirectory": "apps/www/build"
+}

@@ -2,7 +2,7 @@
 import { FC, memo, useState } from 'react';
 
 import { PostItem } from '~/components/PostItem';
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,

@@ -1,0 +1,38 @@
+{
+  "name": "@rippingyard/utils",
+  "version": "1.0.0",
+  "description": "Utility functions for rippingyard",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc && tsc -p tsconfig.cjs.json",
+    "prepare": "pnpm build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dompurify": "^3.2.3",
+    "isomorphic-dompurify": "^2.2.0",
+    "jsdom": "^25.0.1"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.2.0",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2"
+  }
+}

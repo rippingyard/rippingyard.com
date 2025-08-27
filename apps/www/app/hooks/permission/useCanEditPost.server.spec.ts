@@ -1,6 +1,6 @@
 ﻿import { describe, it, expect } from 'vitest';
 
-import { Post } from '~/schemas/post';
+import { Post } from '@rippingyard/schemas';
 
 import { useCanEditPost } from './useCanEditPost.server';
 import { useDocReference } from '../firestore/useDocReference.server';

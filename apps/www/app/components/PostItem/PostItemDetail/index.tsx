@@ -5,7 +5,7 @@ import { Article } from '~/components/Article';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,

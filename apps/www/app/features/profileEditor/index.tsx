@@ -6,7 +6,7 @@ import { Button } from '~/components/Button';
 import { FormField } from '~/components/FormField';
 import { FormInput } from '~/components/FormInput';
 import { Wysiwyg } from '~/components/Wysiwyg';
-import { User } from '~/schemas/user';
+import type { User } from '@rippingyard/schemas';
 
 import { AvatarEditor } from './avatarEditor';
 import {

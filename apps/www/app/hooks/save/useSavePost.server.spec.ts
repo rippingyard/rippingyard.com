@@ -64,16 +64,16 @@ describe('useSavePost', () => {
   });
   describe('バリデーションエラー', () => {
     it('contentBodyが空の場合、エラーが返る', async () => {
-      const rejected = await expect(
+      await expect(
         savePost({
           ...payload,
           contentBody: '',
         })
-      ).rejects;
-      rejected.toThrowError();
-      rejected.toHaveProperty('fieldErrors.content', [
-        'String must contain at least 1 character(s)',
-      ]);
+      ).rejects.toMatchObject({
+        fieldErrors: {
+          content: ['String must contain at least 1 character(s)']
+        }
+      });
     });
     it('uidが空の場合、エラーが返る', async () => {
       const rejected = await expect(

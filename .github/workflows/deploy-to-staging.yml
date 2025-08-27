@@ -5,14 +5,16 @@ on:
     types: [opened, reopened, synchronize]
     branches: [main]
     paths:
-      - "apps/functions"
+      - "apps/functions/**"
+      - "packages/schemas/**"
+      - "packages/utils/**"
       - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22.x]
     steps:
       - name: Checkout from ${{ github.head_ref }}
         uses: actions/checkout@v4
@@ -32,8 +34,28 @@ jobs:
           args: functions:config:set runtime.env="develop" algolia.appid="${{ secrets.ALGOLIA_APPID_DEV }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_DEV }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_DEV }}" --project default
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install
+      - name: Schemas - Build for develop
+        working-directory: packages/schemas
+        run: |
+          pnpm build
+          echo "Schemas build output:"
+          ls -la dist/ | head -10
+      - name: Utils - Build for develop
+        working-directory: packages/utils
+        run: |
+          pnpm build
+          echo "Utils build output:"
+          ls -la dist/ | head -10
       - name: Functions - Build for develop
-        run: pnpm install && cd apps/functions && pnpm build
+        working-directory: apps/functions
+        run: |
+          rm -rf dist
+          pnpm build
+          node scripts/inline-local-packages.js
+      - name: Verify build output
+        run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to develop
         uses: w9jds/firebase-action@v13.15.2
         with:

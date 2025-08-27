@@ -2,7 +2,7 @@
 import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
-import { Post, PostSchema } from '~/schemas/post';
+import { type Post, PostSchema } from '@rippingyard/schemas';
 
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';
@@ -119,10 +119,11 @@ const savePost = async (
     // })
 
     return { post };
-  } catch (e) {
-    if (e instanceof ZodError) {
+  } catch (e: any) {
+    console.log('Error constructor name:', e?.constructor?.name);
+    console.log('Error name:', e?.name);
+    if (e instanceof ZodError || e?.name === 'ZodError') {
       const flattened = e.flatten();
-      console.log('flattened', flattened);
       throw flattened;
     }
 

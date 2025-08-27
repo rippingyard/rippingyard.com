@@ -8,7 +8,7 @@ import { PostTags } from '~/components/PostTags';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 import { getSummary } from '~/utils/typography';
 
 import {
