@@ -4,6 +4,7 @@ import type { Post } from '@rippingyard/schemas';
 
 import { QueryParams, usePostCondition } from '../condition/usePostConditions';
 import { useQuery } from '../firestore/useQuery.server';
+import { useEmbedding } from '../embedding/useEmbedding.server';
 
 export const useNearestPosts = async (
   content: string = '',
@@ -12,11 +13,8 @@ export const useNearestPosts = async (
   const { args: orgArgs, where } = usePostCondition(payload);
   const { limit, ...args } = orgArgs;
 
-  // Firestoreをベクトル検索
-  const embeddings = new OpenAIEmbeddings({
-    apiKey: import.meta.env.VITE_OPENAI_APIKEY,
-  });
-  const vector = await embeddings.embedQuery(content);
+  const { embedding } = useEmbedding();
+  const vector = await embedding(content);
 
   return await useQuery<Post>({
     collection: 'posts',
