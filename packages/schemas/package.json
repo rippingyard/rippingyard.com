@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && tsc && tsc -p tsconfig.cjs.json",
+    "prepare": "pnpm build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
