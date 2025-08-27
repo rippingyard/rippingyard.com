@@ -1,4 +1,5 @@
-import { DocumentData } from 'firebase/firestore';
+// DocumentDataは単純なオブジェクトとして扱う
+type DocumentData = Record<string, any>;
 
 export type Secret = {
   id: string;

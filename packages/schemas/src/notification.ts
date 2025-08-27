@@ -1,4 +1,5 @@
-import { DocumentData } from 'firebase/firestore';
+// DocumentDataは単純なオブジェクトとして扱う
+type DocumentData = Record<string, any>;
 import { SimpleUser } from './user';
 
 export type NoticeLevel = 'info' | 'warn' | 'fatal';

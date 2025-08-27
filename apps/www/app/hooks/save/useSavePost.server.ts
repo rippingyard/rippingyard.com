@@ -119,10 +119,11 @@ const savePost = async (
     // })
 
     return { post };
-  } catch (e) {
-    if (e instanceof ZodError) {
+  } catch (e: any) {
+    console.log('Error constructor name:', e?.constructor?.name);
+    console.log('Error name:', e?.name);
+    if (e instanceof ZodError || e?.name === 'ZodError') {
       const flattened = e.flatten();
-      console.log('flattened', flattened);
       throw flattened;
     }
 
