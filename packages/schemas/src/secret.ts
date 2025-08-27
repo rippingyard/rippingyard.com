@@ -1,11 +1,11 @@
-import { DocumentData, Timestamp } from 'firebase-admin/firestore';
+import { DocumentData } from 'firebase/firestore';
 
 export type Secret = {
   id: string;
   vendor: 'fcm' | 'twitter';
   owner: DocumentData;
   payload: any;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  expiredAt?: Timestamp;
+  createdAt: any; // Timestamp
+  updatedAt: any; // Timestamp
+  expiredAt?: any; // Timestamp
 };

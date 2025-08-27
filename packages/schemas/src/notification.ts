@@ -1,4 +1,4 @@
-import { DocumentData } from 'firebase-admin/firestore';
+import { DocumentData } from 'firebase/firestore';
 import { SimpleUser } from './user';
 
 export type NoticeLevel = 'info' | 'warn' | 'fatal';

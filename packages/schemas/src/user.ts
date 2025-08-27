@@ -1,5 +1,5 @@
-import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
+import { TimestampSchema } from './timestamp';
 
 const RoleSchema = z.enum([
   'lord',
@@ -19,8 +19,8 @@ export const UserSchema = z.object({
   role: RoleSchema,
   isBanned: z.boolean(),
   isDeleted: z.boolean(),
-  createdAt: z.instanceof(Timestamp),
-  updatedAt: z.instanceof(Timestamp),
+  createdAt: TimestampSchema,
+  updatedAt: TimestampSchema,
 });
 
 export type User = z.infer<typeof UserSchema>;
@@ -37,8 +37,8 @@ export type SimpleUser = {
   avatar?: string;
   follows?: any[];
   followers?: any[];
-  createdAt: string | Date | Timestamp;
-  updatedAt: string | Date | Timestamp;
+  createdAt: string | Date | any; // Timestamp
+  updatedAt: string | Date | any; // Timestamp
 };
 
 export type UserState = {

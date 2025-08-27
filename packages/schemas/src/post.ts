@@ -1,7 +1,7 @@
-import { Timestamp } from "firebase-admin/firestore";
 import { z } from "zod";
 
 import { DocumentReferenceSchema } from "./utils";
+import { TimestampSchema } from "./timestamp";
 
 const PostStatusSchema = z.enum(["published", "drafted"]);
 const PostTypeSchema = z.enum(["article", "note", "log"]);
@@ -13,9 +13,9 @@ const SuggestedTagSchema = z.object({
 export const PostSchema = z.object({
   id: z.string(),
   slug: z.string().optional(),
-  createdAt: z.instanceof(Timestamp),
-  publishedAt: z.instanceof(Timestamp),
-  updatedAt: z.instanceof(Timestamp),
+  createdAt: TimestampSchema,
+  publishedAt: TimestampSchema,
+  updatedAt: TimestampSchema,
   content: z.string().min(1),
   isPublic: z.boolean(),
   isDeleted: z.boolean(),

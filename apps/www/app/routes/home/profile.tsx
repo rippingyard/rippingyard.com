@@ -80,7 +80,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';

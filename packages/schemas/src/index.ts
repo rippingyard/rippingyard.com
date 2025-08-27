@@ -11,3 +11,4 @@ export * from './secret';
 
 // Utils
 export * from './utils';
+export * from './timestamp';

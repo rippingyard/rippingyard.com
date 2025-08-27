@@ -1,7 +1,7 @@
-import { Timestamp } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 import { DocumentReferenceSchema } from './utils';
+import { TimestampSchema } from './timestamp';
 
 export const categoryIds = [
   'film',
@@ -34,8 +34,8 @@ export const EntitySchema = z.object({
   thumbnailImage: z.string(),
   images: z.string().array(),
   entities: z.any().refine(DocumentReferenceSchema).array(),
-  createdAt: z.instanceof(Timestamp),
-  updatedAt: z.instanceof(Timestamp),
+  createdAt: TimestampSchema,
+  updatedAt: TimestampSchema,
   isDeleted: z.boolean(),
   status: EntityStatusSchema,
 });
