@@ -66,7 +66,9 @@ const savePost = async (
     const embeddings = new OpenAIEmbeddings({
       apiKey: import.meta.env.VITE_OPENAI_APIKEY,
     });
-    const vector = await embeddings.embedQuery(contentBody);
+    // トークン制限対策：最大2000文字に制限（日本語の場合、約4000-6000トークン相当）
+    const truncatedContent = contentBody.slice(0, 2000);
+    const vector = await embeddings.embedQuery(truncatedContent);
 
     const post: Partial<Post> = {
       slug: '',
