@@ -12,13 +12,14 @@ import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { getMe } from '~/middlewares/session.server';
-import type { Post } from '@rippingyard/schemas';
 import {
   containerStyle,
   edgeStyle,
   wideContainerStyle,
 } from '~/styles/container.css';
 import { sortPosts } from '~/utils/post';
+
+import type { Post } from '@rippingyard/schemas';
 
 import type { Route } from './+types/index';
 

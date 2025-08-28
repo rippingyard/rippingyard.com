@@ -1,5 +1,6 @@
-﻿import type { Post, Role } from '@rippingyard/schemas';
-import { isAnonymous, isSuperUser } from '~/utils/permission';
+﻿import { isAnonymous, isSuperUser } from '~/utils/permission';
+
+import type { Post, Role } from '@rippingyard/schemas';
 
 import { useDocReference } from '../firestore/useDocReference.server';
 

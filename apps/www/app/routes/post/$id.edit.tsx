@@ -1,8 +1,5 @@
-﻿import { HumanMessage } from '@langchain/core/messages';
-import { ChatOpenAI } from '@langchain/openai';
-import { OpenAIEmbeddings } from '@langchain/openai';
-import clsx from 'clsx';
-import { FieldValue, Timestamp } from 'firebase-admin/firestore';
+﻿import clsx from 'clsx';
+import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
 import { useActionData, useLoaderData, useNavigate } from 'react-router';
@@ -101,7 +98,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';

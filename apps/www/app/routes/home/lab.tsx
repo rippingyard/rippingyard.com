@@ -1,12 +1,10 @@
-﻿import clsx from 'clsx';
-import OpenAI from 'openai';
+﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
-import { Form, useActionData } from 'react-router';
+import { Form } from 'react-router';
 
 import { Button } from '~/components/Button';
 import { FormInput } from '~/components/FormInput';
 import { Heading } from '~/components/Heading';
-import { Prompt } from '~/features/prompt';
 
 import { Route } from './+types/lab';
 

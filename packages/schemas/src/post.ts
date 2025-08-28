@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { DocumentReferenceSchema } from "./utils";
-import { TimestampSchema } from "./timestamp";
+import { TimestampSchema } from './timestamp';
+import { DocumentReferenceSchema } from './utils';
 
-const PostStatusSchema = z.enum(["published", "drafted"]);
-const PostTypeSchema = z.enum(["article", "note", "log"]);
+const PostStatusSchema = z.enum(['published', 'drafted']);
+const PostTypeSchema = z.enum(['article', 'note', 'log']);
 const SuggestedTagSchema = z.object({
   value: z.string(),
   relevance: z.number(),
@@ -44,7 +44,7 @@ export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 
 export type PostAsSearchResult = Pick<
   Post,
-  "type" | "content" | "isDeleted" | "isPublic" | "status" | "tags"
+  'type' | 'content' | 'isDeleted' | 'isPublic' | 'status' | 'tags'
 > & {
   title: string;
   body: string;

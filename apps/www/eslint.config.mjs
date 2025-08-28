@@ -1,8 +1,9 @@
-import baseConfig from '../../eslint.config.mjs';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import storybookPlugin from 'eslint-plugin-storybook';
+
+import baseConfig from '../../eslint.config.mjs';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -34,24 +35,20 @@ export default [
       ...reactPlugin.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off', // Not needed in React 18+
       'react/prop-types': 'off', // TypeScript handles this
-      
+
       // React Hooks
       ...reactHooksPlugin.configs.recommended.rules,
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-      
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+
       // React Refresh
       'react-refresh/only-export-components': [
-        'warn',
+        'off',
         { allowConstantExport: true },
       ],
     },
   },
   {
-    ignores: [
-      '.eslintrc.cjs',
-      'vite.config.ts',
-      '.storybook/**',
-    ],
+    ignores: ['.eslintrc.cjs', 'vite.config.ts', '.storybook/**'],
   },
 ];

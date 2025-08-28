@@ -1,6 +1,7 @@
 ﻿import { FC, memo } from 'react';
 
 import { Avatar } from '~/components/Avatar';
+
 import type { User } from '@rippingyard/schemas';
 
 import {

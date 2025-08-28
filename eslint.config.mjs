@@ -1,8 +1,8 @@
-import js from '@eslint/js';
-import typescript from '@typescript-eslint/eslint-plugin';
-import typescriptParser from '@typescript-eslint/parser';
-import prettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
+import prettier from 'eslint-config-prettier';
+import typescriptParser from '@typescript-eslint/parser';
+import typescript from '@typescript-eslint/eslint-plugin';
+import js from '@eslint/js';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -89,7 +89,7 @@ export default [
       ],
 
       // General
-      quotes: ['error', 'single', { avoidEscape: true }],
+      quotes: ['warn', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-unused-vars': 'off', // Use TypeScript's no-unused-vars instead

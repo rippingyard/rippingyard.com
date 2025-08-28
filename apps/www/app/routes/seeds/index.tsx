@@ -7,8 +7,9 @@ import { Heading } from '~/components/Heading';
 import { Loading } from '~/features/loading';
 import { SeedList } from '~/features/seedList';
 import { useSeeds } from '~/hooks/fetch/useSeeds';
-import type { Seed } from '@rippingyard/schemas';
 import { containerStyle } from '~/styles/container.css';
+
+import type { Seed } from '@rippingyard/schemas';
 
 export const loader = async () => {
   return {
