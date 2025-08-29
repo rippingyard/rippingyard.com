@@ -24,6 +24,7 @@ import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
+import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
@@ -44,12 +45,10 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       return data;
     };
 
-    const fetchRelatedPosts = async () => {
-      const { data } = await useNearestPosts(post.content, {
+    const fetchRelatedPosts = async () =>
+      await useRelatedPosts(post, {
         limit: 12,
       });
-      return data.filter((datum) => datum.id !== id);
-    };
 
     const path = postLink(post.id);
     const canonicalUrl = new URL(path, request.url).toString();
