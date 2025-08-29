@@ -1,6 +1,7 @@
 ﻿import { FC } from 'react';
 
 import { usePostContents } from '~/hooks/normalize/usePostContents';
+
 import type { Post } from '@rippingyard/schemas';
 
 import * as styles from './style.css';

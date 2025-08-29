@@ -7,8 +7,9 @@ import { Errors } from '~/components/Errors';
 import { FormField } from '~/components/FormField';
 import { FormInput } from '~/components/FormInput';
 import { useLogin } from '~/hooks/firebase/useLogin';
-import type { Auth } from '@rippingyard/schemas';
 import { containerStyle } from '~/styles/container.css';
+
+import type { Auth } from '@rippingyard/schemas';
 
 export const Login: FC = () => {
   const [pending, setPending] = useState(false);

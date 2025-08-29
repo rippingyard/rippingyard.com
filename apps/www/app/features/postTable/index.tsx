@@ -2,8 +2,9 @@
 
 import { Table, TableItem } from '~/components/Table';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import type { Post } from '@rippingyard/schemas';
 import { getTitle } from '~/utils/typography';
+
+import type { Post } from '@rippingyard/schemas';
 
 import { PostTableDate } from './postTableDate';
 import { PostTableItem } from './postTableItem';

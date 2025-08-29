@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { TimestampSchema } from './timestamp';
 
 const RoleSchema = z.enum([

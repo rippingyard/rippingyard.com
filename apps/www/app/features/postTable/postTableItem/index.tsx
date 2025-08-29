@@ -8,8 +8,9 @@ import { PostTags } from '~/components/PostTags';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import type { Post } from '@rippingyard/schemas';
 import { getSummary } from '~/utils/typography';
+
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,
@@ -37,10 +38,10 @@ export const PostTableItem: FC<Props> = ({ post }) => {
 
   const buttonItems: ReactNode[] = useMemo(
     () => [
-      <Link to={permalink} target="_blank" size="x-small">
+      <Link to={permalink} target="_blank" size="x-small" key="buttons-detail">
         詳細
       </Link>,
-      <Link to={editLink} size="x-small">
+      <Link to={editLink} size="x-small" key="buttons-edit">
         編集
       </Link>,
     ],

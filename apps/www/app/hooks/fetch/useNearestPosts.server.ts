@@ -1,14 +1,14 @@
-﻿import { OpenAIEmbeddings } from '@langchain/openai';
-
-import type { Post } from '@rippingyard/schemas';
+﻿import type { Post } from '@rippingyard/schemas';
 
 import { QueryParams, usePostCondition } from '../condition/usePostConditions';
-import { useQuery } from '../firestore/useQuery.server';
 import { useEmbedding } from '../embedding/useEmbedding.server';
+import { useQuery } from '../firestore/useQuery.server';
+
+export type Payload = Omit<QueryParams<Post>, 'collection'>;
 
 export const useNearestPosts = async (
   content: string = '',
-  payload: Omit<QueryParams<Post>, 'collection'> = {}
+  payload: Payload = {}
 ) => {
   const { args: orgArgs, where } = usePostCondition(payload);
   const { limit, ...args } = orgArgs;

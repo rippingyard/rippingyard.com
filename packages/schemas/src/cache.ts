@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { DocumentReferenceSchema } from './utils';
 import { TimestampSchema } from './timestamp';
+import { DocumentReferenceSchema } from './utils';
 
 export const CacheSchema = z.object({
   id: z.string(),

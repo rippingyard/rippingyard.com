@@ -7,7 +7,7 @@ import { useLoaderData, useLocation, useNavigate } from 'react-router';
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { useMyTags } from '~/hooks/fetch/useMyTags.server.ts';
+import { useMyTags } from '~/hooks/fetch/useMyTags.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';

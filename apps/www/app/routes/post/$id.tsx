@@ -1,4 +1,4 @@
-﻿import { Suspense, useMemo } from 'react';
+﻿import { Suspense } from 'react';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -23,6 +23,7 @@ import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
+import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
@@ -35,21 +36,33 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const { post } = await usePost(id, request);
     if (!post) throw new Error();
 
-    const { data: nextPosts } = await usePosts({
-      limit: 5,
-      startAfter: post.publishedAt,
-    });
+    const fetchOwner = async () => {
+      const { user: owner } = await useUser(post?.owner?.id || '');
+      return owner;
+    };
+
+    const fetchLatestPosts = async () => {
+      const { data } = await usePosts({
+        limit: 9,
+        startAfter: post.publishedAt,
+      });
+      return data;
+    };
+
+    const fetchRelatedPosts = async () =>
+      await useRelatedPosts(post, {
+        limit: 12,
+      });
 
     const path = postLink(post.id);
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
-    const { user: owner } = await useUser(post?.owner?.id || '');
-
     return {
       post,
-      owner,
-      nextPosts,
+      owner: fetchOwner(),
+      latestPosts: fetchLatestPosts(),
+      relatedPosts: fetchRelatedPosts(),
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
@@ -93,51 +106,73 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main() {
-  const { post, owner, nextPosts, canEditPost } =
+  const { post, owner, latestPosts, canEditPost, relatedPosts } =
     useLoaderData<typeof loader>();
 
-  const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
   const editLink = usePostEditLink(post.id);
 
   return (
     <>
       <Heading>Post</Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={post}>
-            <section className={articleSectionStyle}>
-              <PostHeader post={post} />
-              <Article text={post.content} />
-              {owner && (
-                <div className={articleSectionStyle}>
-                  <UserCard user={owner} />
-                </div>
-              )}
-              <div className={articleSectionStyle}>
-                <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
-              </div>
-              {post?.tags && (
-                <div className={articleSectionStyle}>
-                  <PostTags tags={post?.tags || []} />
-                </div>
-              )}
+        <section className={articleSectionStyle}>
+          <PostHeader post={post} />
+          <article>
+            <Article text={post.content} />
+          </article>
+          <Suspense fallback={<Loading />}>
+            <Await
+              resolve={owner}
+              errorElement={<div>エラーが発生しました</div>}
+            >
+              {(owner) =>
+                owner && (
+                  <div className={articleSectionStyle}>
+                    <UserCard user={owner} />
+                  </div>
+                )
+              }
+            </Await>
+          </Suspense>
+          <div className={articleSectionStyle}>
+            <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+          </div>
+          {post?.tags && (
+            <div className={articleSectionStyle}>
+              <PostTags tags={post?.tags || []} />
+            </div>
+          )}
 
-              {canEditPost && (
-                <div className={articleFooterStyle}>
-                  <Link to={editLink} size="x-small" isButton isBold>
-                    編集
-                  </Link>
-                </div>
-              )}
-            </section>
-            {hasNext && (
-              <>
-                <Heading level="partial">もっと読む</Heading>
-                <PostList posts={nextPosts} />
-              </>
-            )}
-          </Await>
-        </Suspense>
+          {canEditPost && (
+            <div className={articleFooterStyle}>
+              <Link to={editLink} size="x-small" isButton isBold>
+                編集
+              </Link>
+            </div>
+          )}
+        </section>
+        <aside className={articleSectionStyle}>
+          <Heading level="partial">関連記事</Heading>
+          <Suspense fallback={<Loading />}>
+            <Await
+              resolve={relatedPosts}
+              errorElement={<div>エラーが発生しました</div>}
+            >
+              {(posts) => <PostList posts={posts} />}
+            </Await>
+          </Suspense>
+        </aside>
+        <aside className={articleSectionStyle}>
+          <Heading level="partial">もっと読む</Heading>
+          <Suspense fallback={<Loading />}>
+            <Await
+              resolve={latestPosts}
+              errorElement={<div>エラーが発生しました</div>}
+            >
+              {(posts) => <PostList posts={posts} />}
+            </Await>
+          </Suspense>
+        </aside>
       </main>
     </>
   );

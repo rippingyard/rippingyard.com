@@ -7,8 +7,9 @@ import {
   getTitle,
 } from '~/utils/typography';
 
-import { useContentBlocks } from './useContentBlocks';
 import { removeTitle } from '@rippingyard/utils';
+
+import { useContentBlocks } from './useContentBlocks';
 
 type Options = {
   alt?: string;

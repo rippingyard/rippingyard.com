@@ -1,6 +1,7 @@
 ﻿import { FC } from 'react';
 
 import { Columns } from '~/components/Columns';
+
 import type { Post } from '@rippingyard/schemas';
 
 import { containerStyle } from './style.css';

@@ -29,8 +29,6 @@ const saveCache = async (payload: Partial<CachePayload>) => {
 
     if (expiredAt !== undefined) cache.expiredAt = expiredAt;
 
-    console.log('newCache', cache);
-
     // Validation
     CacheSchema.parse(cache);
 

@@ -1,12 +1,11 @@
-﻿import { OpenAIEmbeddings } from '@langchain/openai';
-import { FieldValue, Timestamp } from 'firebase-admin/firestore';
+﻿import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
 import { type Post, PostSchema } from '@rippingyard/schemas';
 
+import { useEmbedding } from '../embedding/useEmbedding.server';
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';
-import { useEmbedding } from '../embedding/useEmbedding.server';
 
 type PostPayload = Pick<
   Post,

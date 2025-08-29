@@ -1,8 +1,9 @@
 ﻿import { FC, memo } from 'react';
 
 import { PostItem } from '~/components/PostItem';
-import type { Seed } from '@rippingyard/schemas';
 import { seedToPost } from '~/utils/seed';
+
+import type { Seed } from '@rippingyard/schemas';
 
 import { containerStyle, itemStyle } from './style.css';
 

@@ -6,8 +6,10 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import type { Post, PostStatus, PostType } from '@rippingyard/schemas';
 import { getMainTitle } from '~/utils/typography';
+
+import type { Post, PostStatus, PostType } from '@rippingyard/schemas';
+import { removeMainTitle } from '@rippingyard/utils';
 
 import { SettingModal } from './settingModal';
 import { StatusHeader } from './statusHeader';
@@ -18,7 +20,6 @@ import {
   headerStyle,
   headerTitleStyle,
 } from './style.css';
-import { removeMainTitle } from '@rippingyard/utils';
 
 type Props = {
   post?: Post;
