@@ -10,7 +10,6 @@ import { Loading } from '~/features/loading';
 import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
-import { useNearestPosts } from '~/hooks/fetch/useNearestPosts.server';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
@@ -37,6 +36,11 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const { post } = await usePost(id, request);
     if (!post) throw new Error();
 
+    const fetchOwner = async () => {
+      const { user: owner } = await useUser(post?.owner?.id || '');
+      return owner;
+    };
+
     const fetchLatestPosts = async () => {
       const { data } = await usePosts({
         limit: 9,
@@ -54,11 +58,9 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
-    const { user: owner } = await useUser(post?.owner?.id || '');
-
     return {
       post,
-      owner,
+      owner: fetchOwner(),
       latestPosts: fetchLatestPosts(),
       relatedPosts: fetchRelatedPosts(),
       canonicalUrl,
@@ -118,11 +120,20 @@ export default function Main() {
           <article>
             <Article text={post.content} />
           </article>
-          {owner && (
-            <div className={articleSectionStyle}>
-              <UserCard user={owner} />
-            </div>
-          )}
+          <Suspense fallback={<Loading />}>
+            <Await
+              resolve={owner}
+              errorElement={<div>エラーが発生しました</div>}
+            >
+              {(owner) =>
+                owner && (
+                  <div className={articleSectionStyle}>
+                    <UserCard user={owner} />
+                  </div>
+                )
+              }
+            </Await>
+          </Suspense>
           <div className={articleSectionStyle}>
             <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
           </div>
