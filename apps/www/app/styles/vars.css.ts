@@ -1,7 +1,4 @@
-﻿/* eslint-disable quotes */
-import { createGlobalTheme } from '@vanilla-extract/css';
-
-import { mediaQuery } from '~/utils/style';
+﻿import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const rootVars = createGlobalTheme(':root', {
   font: {
