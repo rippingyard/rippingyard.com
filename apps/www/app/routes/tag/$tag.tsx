@@ -1,12 +1,11 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Await, useLoaderData } from 'react-router';
+import { useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
-import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
@@ -122,8 +121,8 @@ export default function Index() {
         <IconTag /> {tag}
       </Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
+        {(sortedPosts.length > 0 && (
+          <>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
@@ -136,8 +135,8 @@ export default function Index() {
                 もっと読む
               </Button>
             )}
-          </Await>
-        </Suspense>
+          </>
+        )) || <p>記事が見つかりませんでした。</p>}
       </main>
     </>
   );

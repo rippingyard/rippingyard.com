@@ -23,6 +23,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
 
     // Tag
     route('/tag/:tag', 'routes/tag/$tag.tsx');
+    route('/tags/:tag', 'routes/tags/$tag.tsx'); //フォールバック
 
     // Search
     route('/search', 'routes/search.tsx');
