@@ -12,6 +12,7 @@ import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
@@ -23,7 +24,6 @@ import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
-import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {

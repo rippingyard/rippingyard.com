@@ -10,7 +10,7 @@ export default [
   ...baseConfig,
   ...storybookPlugin.configs['flat/recommended'],
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
+    files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
@@ -18,6 +18,18 @@ export default [
       },
       globals: {
         React: 'readonly',
+        console: 'readonly',
+        process: 'readonly',
+        document: 'readonly',
+        window: 'readonly',
+        Buffer: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        fetch: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
       },
     },
     plugins: {
@@ -49,6 +61,13 @@ export default [
     },
   },
   {
-    ignores: ['.eslintrc.cjs', 'vite.config.ts', '.storybook/**'],
+    ignores: [
+      '.eslintrc.cjs',
+      'vite.config.ts',
+      '.storybook/**',
+      '*.config.mjs',
+      '*.config.js',
+      '*.config.ts',
+    ],
   },
 ];

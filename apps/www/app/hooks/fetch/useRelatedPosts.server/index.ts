@@ -1,10 +1,12 @@
-import type { Post } from '@rippingyard/schemas';
-
-import { Payload, useNearestPosts } from '../useNearestPosts.server';
-import { useCache } from '../useCache.server';
-import { useSaveCache } from '~/hooks/save/useSaveCache.server';
 import dayjs from 'dayjs';
 import { Timestamp } from 'firebase-admin/firestore';
+
+import { useSaveCache } from '~/hooks/save/useSaveCache.server';
+
+import type { Post } from '@rippingyard/schemas';
+
+import { useCache } from '../useCache.server';
+import { Payload, useNearestPosts } from '../useNearestPosts.server';
 
 export const useRelatedPosts = async (
   post: Post,
