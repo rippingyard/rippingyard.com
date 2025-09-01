@@ -1,0 +1,10 @@
+{
+  "name": "@rippingyard/resources",
+  "version": "1.0.0",
+  "description": "Resources for rippingyard",
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "main": "./index.ts",
+  "license": "ISC"
+}

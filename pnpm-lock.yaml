@@ -422,6 +422,8 @@ importers:
         specifier: ^1.4.0
         version: 1.6.0
 
+  packages/resources: {}
+
   packages/schemas:
     dependencies:
       firebase:

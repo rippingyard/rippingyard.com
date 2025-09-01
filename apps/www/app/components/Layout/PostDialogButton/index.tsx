@@ -18,7 +18,7 @@ export const PostDialogButton: FC<Props> = ({
 
   return (
     <div className={containerStyle}>
-      <Button isBlur onClick={onClick}>
+      <Button isBlur isNoPadding size="xx-large" onClick={onClick}>
         <IconPen />
       </Button>
     </div>

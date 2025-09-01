@@ -8,13 +8,15 @@ import type { Post } from '@rippingyard/schemas';
 import { useCache } from '../useCache.server';
 import { Payload, useNearestPosts } from '../useNearestPosts.server';
 
+const VERSION = '0.1.0';
+
 export const useRelatedPosts = async (
   post: Post,
   payload: Payload = {}
 ): Promise<Post[]> => {
   if (!post) return [];
 
-  const cacheKey = `related-posts-${post.id}`;
+  const cacheKey = `related-posts-${VERSION}-${post.id}`;
   const cache = await useCache<Post[]>(cacheKey);
   const { saveCache } = useSaveCache();
 

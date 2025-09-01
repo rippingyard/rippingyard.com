@@ -20,11 +20,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     const canonicalUrl = new URL('home/profile', request.url).toString();
 
     const { uid } = await getMe(request);
-    console.log('uid', uid);
     if (!uid) throw new Error('You have to login');
 
     const { user: me } = await useUser(uid);
-    console.log('uid', uid);
     if (!me) throw new Error('User Not Found');
 
     return {
@@ -43,7 +41,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   try {
     const { uid } = await getMe(request);
-    console.log('uid on action', uid);
     if (!uid) throw new Error('Unauthenticated');
 
     const { user } = await useUser(uid);

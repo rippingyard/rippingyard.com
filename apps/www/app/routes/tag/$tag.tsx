@@ -1,17 +1,19 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Await, useLoaderData } from 'react-router';
+import { Await, useAsyncError, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { TagDescription } from '~/components/TagDescription';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useTagDescription } from '~/hooks/llm/useTagDescription.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
@@ -54,9 +56,15 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const { data: items } = await usePosts(args);
 
+  const { fetchTagDescription } = useTagDescription();
+
   return {
     items,
     tag,
+    description: fetchTagDescription(
+      tag,
+      items.map((i) => i.content)
+    ),
     canonicalUrl,
   };
 };
@@ -85,7 +93,11 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Index() {
-  const { items: initialItems, tag } = useLoaderData<typeof loader>();
+  const {
+    items: initialItems,
+    tag,
+    description,
+  } = useLoaderData<typeof loader>();
   const key = `${CACHE_KEYS.PUBLIC_POSTS}_${tag}`;
   const [canAutoload] = useState(true);
 
@@ -123,7 +135,14 @@ export default function Index() {
       </Heading>
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
+          <Await resolve={description} errorElement={<ReviewsError />}>
+            {(description) =>
+              description && <TagDescription description={description} />
+            }
+          </Await>
+        </Suspense>
+        {(sortedPosts.length > 0 && (
+          <>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
@@ -136,9 +155,14 @@ export default function Index() {
                 もっと読む
               </Button>
             )}
-          </Await>
-        </Suspense>
+          </>
+        )) || <p>記事が見つかりませんでした。</p>}
       </main>
     </>
   );
+}
+
+function ReviewsError() {
+  const error = useAsyncError() as Error;
+  return <div>Error loading reviews: {error?.message}</div>;
 }

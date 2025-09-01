@@ -6,7 +6,7 @@ import { renderToPipeableStream } from 'react-dom/server';
 import { ServerRouter } from 'react-router';
 import type { EntryContext } from 'react-router';
 
-export const streamTimeout = 5000;
+export const streamTimeout = 15000;
 
 export default function handleRequest(
   request: Request,
