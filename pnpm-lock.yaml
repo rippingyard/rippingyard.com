@@ -219,6 +219,9 @@ importers:
       '@reactuses/core':
         specifier: ^6.0.2
         version: 6.0.2(react@18.3.1)
+      '@rippingyard/resources':
+        specifier: workspace:*
+        version: link:../../packages/resources
       '@rippingyard/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -421,6 +424,8 @@ importers:
       vitest:
         specifier: ^1.4.0
         version: 1.6.0
+
+  packages/resources: {}
 
   packages/schemas:
     dependencies:

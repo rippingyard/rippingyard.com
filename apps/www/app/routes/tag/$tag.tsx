@@ -6,6 +6,7 @@ import { Await, useAsyncError, useLoaderData } from 'react-router';
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { TagDescription } from '~/components/TagDescription';
 import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
@@ -135,7 +136,9 @@ export default function Index() {
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
           <Await resolve={description} errorElement={<ReviewsError />}>
-            {(description) => description && <p>{description}</p>}
+            {(description) =>
+              description && <TagDescription description={description} />
+            }
           </Await>
         </Suspense>
         {(sortedPosts.length > 0 && (

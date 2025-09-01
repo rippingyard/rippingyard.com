@@ -16,7 +16,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@rippingyard/resources": ["../../packages/resources/*"]
     },
 
     "types": ["@react-router/node", "vite/client"],

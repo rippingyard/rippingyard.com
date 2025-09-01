@@ -20,6 +20,7 @@
     "react-router:reveal": "react-router reveal"
   },
   "dependencies": {
+    "@rippingyard/resources": "workspace:*",
     "@rippingyard/schemas": "workspace:*",
     "@rippingyard/utils": "workspace:*",
     "@ctrl/react-adsense": "^1.7.0",
