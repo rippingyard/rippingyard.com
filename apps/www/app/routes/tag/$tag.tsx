@@ -1,7 +1,7 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Await, useLoaderData } from 'react-router';
+import { Await, useAsyncError, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
@@ -60,7 +60,10 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   return {
     items,
     tag,
-    description: fetchTagDescription(tag),
+    description: fetchTagDescription(
+      tag,
+      items.map((i) => i.content)
+    ),
     canonicalUrl,
   };
 };
@@ -131,10 +134,7 @@ export default function Index() {
       </Heading>
       <main className={containerStyle}>
         <Suspense fallback={<Loading />}>
-          <Await
-            resolve={description}
-            errorElement={<p>エラーが発生しました</p>}
-          >
+          <Await resolve={description} errorElement={<ReviewsError />}>
             {(description) => description && <p>{description}</p>}
           </Await>
         </Suspense>
@@ -157,4 +157,9 @@ export default function Index() {
       </main>
     </>
   );
+}
+
+function ReviewsError() {
+  const error = useAsyncError() as Error;
+  return <div>Error loading reviews: {error?.message}</div>;
 }
