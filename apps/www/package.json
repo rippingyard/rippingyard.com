@@ -20,8 +20,6 @@
     "react-router:reveal": "react-router reveal"
   },
   "dependencies": {
-    "@rippingyard/schemas": "workspace:*",
-    "@rippingyard/utils": "workspace:*",
     "@ctrl/react-adsense": "^1.7.0",
     "@langchain/anthropic": "^0.3.24",
     "@langchain/core": "^0.3.66",
@@ -30,6 +28,9 @@
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
     "@reactuses/core": "^6.0.2",
+    "@rippingyard/resources": "workspace:^",
+    "@rippingyard/schemas": "workspace:*",
+    "@rippingyard/utils": "workspace:*",
     "@tiptap/extension-floating-menu": "^2.11.9",
     "@tiptap/extension-highlight": "^2.11.9",
     "@tiptap/extension-image": "^2.11.9",
@@ -49,6 +50,10 @@
     "firebase": "^10.12.5",
     "firebase-admin": "^12.3.1",
     "heic-convert": "^2.1.0",
+    "i18next": "^25.4.2",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-fs-backend": "^2.6.0",
+    "i18next-http-backend": "^3.0.2",
     "instantsearch.js": "^4.74.1",
     "isbot": "^5.1.21",
     "isomorphic-dompurify": "^2.2.0",
@@ -56,9 +61,11 @@
     "openai": "^4.55.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.7.3",
     "react-instantsearch": "^7.12.4",
     "react-intersection-observer": "^9.5.3",
     "react-router": "^7.7.1",
+    "remix-i18next": "^7.3.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

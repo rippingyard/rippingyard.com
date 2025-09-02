@@ -1,14 +1,21 @@
 import { createReadableStreamFromReadable } from '@react-router/node';
+import { createInstance } from 'i18next';
+import Backend from 'i18next-fs-backend';
 import { isbot } from 'isbot';
+import { resolve } from 'node:path';
 import { PassThrough } from 'node:stream';
 import type { RenderToPipeableStreamOptions } from 'react-dom/server';
 import { renderToPipeableStream } from 'react-dom/server';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { ServerRouter } from 'react-router';
 import type { EntryContext } from 'react-router';
 
+import i18n from './middlewares/i18n/i18n.server';
+import i18nextOptions from './middlewares/i18n/options';
+
 export const streamTimeout = 15000;
 
-export default function handleRequest(
+export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
@@ -17,6 +24,24 @@ export default function handleRequest(
   // If you have middleware enabled:
   // loadContext: unstable_RouterContextProvider
 ) {
+  const instance = createInstance();
+  const lng = await i18n.getLocale(request);
+  const ns = i18n.getRouteNamespaces(routerContext);
+
+  await instance
+    .use(initReactI18next)
+    .use(Backend)
+    .init({
+      ...i18nextOptions,
+      lng,
+      ns,
+      backend: {
+        loadPath: resolve(
+          '../../packages/resources/i18n/locales/{{lng}}/{{ns}}.json'
+        ),
+      },
+    });
+
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const userAgent = request.headers.get('user-agent');
@@ -29,7 +54,9 @@ export default function handleRequest(
         : 'onShellReady';
 
     const { pipe, abort } = renderToPipeableStream(
-      <ServerRouter context={routerContext} url={request.url} />,
+      <I18nextProvider i18n={instance}>
+        <ServerRouter context={routerContext} url={request.url} />
+      </I18nextProvider>,
       {
         [readyOption]() {
           shellRendered = true;

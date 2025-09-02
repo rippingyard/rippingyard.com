@@ -1,5 +1,6 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { Await, useAsyncError, useLoaderData } from 'react-router';
 
@@ -98,6 +99,7 @@ export default function Index() {
     tag,
     description,
   } = useLoaderData<typeof loader>();
+  const { t } = useTranslation('post');
   const key = `${CACHE_KEYS.PUBLIC_POSTS}_${tag}`;
   const [canAutoload] = useState(true);
 
@@ -152,7 +154,7 @@ export default function Index() {
                 isGhost
                 onClick={() => loadMore(query)}
               >
-                もっと読む
+                {t('readMore')}
               </Button>
             )}
           </>

@@ -1,10 +1,16 @@
 {
   "name": "@rippingyard/resources",
   "version": "1.0.0",
-  "description": "Resources for rippingyard",
-  "keywords": [],
-  "author": "",
+  "description": "Resources for rippingyard.com",
   "type": "module",
-  "main": "./index.ts",
-  "license": "ISC"
+  "exports": {
+    "./i18n/*": "./i18n/*",
+    "./i18n/locales/*": "./i18n/locales/*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
 }
