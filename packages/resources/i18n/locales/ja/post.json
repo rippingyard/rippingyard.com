@@ -1,0 +1,21 @@
+{
+  "post": "投稿",
+  "posts": "投稿一覧",
+  "newPost": "新規投稿",
+  "editPost": "投稿を編集",
+  "deletePost": "投稿を削除",
+  "publishPost": "投稿を公開",
+  "draftPost": "下書きとして保存",
+  "title": "タイトル",
+  "content": "内容",
+  "tags": "タグ",
+  "category": "カテゴリー",
+  "publishedAt": "公開日時",
+  "updatedAt": "更新日時",
+  "author": "著者",
+  "comment": "コメント",
+  "comments": "コメント",
+  "like": "いいね",
+  "share": "シェア",
+  "readMore": "続きを読む"
+}

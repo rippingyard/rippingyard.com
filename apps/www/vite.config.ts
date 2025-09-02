@@ -7,6 +7,12 @@ export default defineConfig({
   server: {
     port: 3334,
   },
+  ssr: {
+    noExternal: ['remix-i18next'],
+  },
+  optimizeDeps: {
+    exclude: ['i18next-fs-backend'],
+  },
   plugins: [
     // remixDevTools(),
     vanillaExtractPlugin(),

@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import destyle from 'destyle.css?url';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Links,
   Meta,
@@ -14,6 +15,7 @@ import {
   type LinksFunction,
   isRouteErrorResponse,
 } from 'react-router';
+import { useChangeLanguage } from 'remix-i18next/react';
 
 import { Route } from './+types/root';
 import { Env } from './components/Env';
@@ -22,12 +24,14 @@ import { Layout } from './components/Layout';
 import { Snackbar } from './features/snackbar';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
+import i18n from './middlewares/i18n/i18n.server';
 import { commitSession, getMe, getSession } from './middlewares/session.server';
 import { containerStyle } from './styles/container.css';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const locale = await i18n.getLocale(request);
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
 
   const env: Env = {
@@ -62,8 +66,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Authが切れてしまった場合、tokenをクリアする
   if (!isAuthenticated) session.unset('token');
 
-  const lang = 'ja'; //TODO: i18n対応
-
   return data(
     {
       isAuthenticated,
@@ -71,7 +73,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
       adsenseId,
       env,
-      lang,
+      locale,
       infoMessage,
       alertMessage,
     },
@@ -105,17 +107,24 @@ function App() {
     isWriting,
     gtagId,
     adsenseId,
-    lang = 'ja',
+    locale = 'ja',
     infoMessage = '',
     alertMessage = '',
     env,
   } = useLoaderData<typeof loader>();
 
+  const { i18n } = useTranslation();
+  useChangeLanguage(locale);
+
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
 
   return (
-    <html lang={lang} className={clsx(bodyStyle, themeClass)}>
+    <html
+      lang={locale}
+      className={clsx(bodyStyle, themeClass)}
+      dir={i18n.dir()}
+    >
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -179,10 +188,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     }
   }, [error]);
 
-  const lang = 'ja';
+  const locale = 'ja';
 
   return (
-    <html lang={lang} className={clsx(bodyStyle, themeClass)}>
+    <html lang={locale} className={clsx(bodyStyle, themeClass)}>
       <head>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <meta charSet="utf-8" />
