@@ -21,6 +21,7 @@ import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
+import { isSPA } from '~/utils/request';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -60,9 +61,14 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
     return {
       post,
-      owner: fetchOwner(),
-      latestPosts: fetchLatestPosts(),
-      relatedPosts: fetchRelatedPosts(),
+      // SPA遷移時はPromiseをそのまま返し、SSR時はawaitする
+      owner: isSPA(request) ? fetchOwner() : await fetchOwner(),
+      latestPosts: isSPA(request)
+        ? fetchLatestPosts()
+        : await fetchLatestPosts(),
+      relatedPosts: isSPA(request)
+        ? fetchRelatedPosts()
+        : await fetchRelatedPosts(),
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
