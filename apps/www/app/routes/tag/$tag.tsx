@@ -7,8 +7,8 @@ import { Await, useAsyncError, useLoaderData } from 'react-router';
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { Skelton } from '~/components/Skelton';
 import { TagDescription } from '~/components/TagDescription';
-import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
@@ -143,7 +143,7 @@ export default function Index() {
         <IconTag /> {tag}
       </Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Skelton width="100%" height={360} />}>
           <Await resolve={description} errorElement={<ReviewsError />}>
             {(description) =>
               description && <TagDescription description={description} />

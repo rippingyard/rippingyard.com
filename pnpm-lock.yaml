@@ -309,6 +309,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-content-loader:
+        specifier: ^7.1.1
+        version: 7.1.1(react@18.3.1)
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
@@ -12857,6 +12860,15 @@ packages:
       - supports-color
     dev: true
     optional: true
+
+  /react-content-loader@7.1.1(react@18.3.1):
+    resolution: {integrity: sha512-yNkqtd+15wXRLfDKZb5nTqDV2fPTG2kpUgeGRb+WBz43bU0j4DSGXETF0bnFr44fAoTPpm0Dya0WGdhpHSvtYA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.3.1
+    dev: false
 
   /react-docgen-typescript@2.2.2(typescript@5.5.4):
     resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
