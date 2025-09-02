@@ -20,6 +20,7 @@ import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
+import { isSPA } from '~/utils/request';
 
 import type { Post } from '@rippingyard/schemas';
 
@@ -62,10 +63,16 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   return {
     items,
     tag,
-    description: fetchTagDescription(
-      tag,
-      items.map((i) => i.content)
-    ),
+    // SPA遷移時はPromiseをそのまま返し、SSR時はawaitする
+    description: isSPA(request)
+      ? fetchTagDescription(
+          tag,
+          items.map((i) => i.content)
+        )
+      : await fetchTagDescription(
+          tag,
+          items.map((i) => i.content)
+        ),
     canonicalUrl,
   };
 };
