@@ -7,8 +7,8 @@ import { Await, useAsyncError, useLoaderData } from 'react-router';
 import { IconTag } from '~/assets/icons/Tag';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
+import { Skelton } from '~/components/Skelton';
 import { TagDescription } from '~/components/TagDescription';
-import { Loading } from '~/features/loading';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
@@ -27,6 +27,7 @@ import type { Post } from '@rippingyard/schemas';
 import type { Route } from '../tag/+types/$tag';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  console.log('🚀');
   const { tag } = params;
   if (!tag) throw new Error();
 
@@ -60,19 +61,18 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const { fetchTagDescription } = useTagDescription();
 
+  console.log('isSPA?', isSPA(request));
+
   return {
     items,
     tag,
-    // SPA遷移時はPromiseをそのまま返し、SSR時はawaitする
-    description: isSPA(request)
-      ? fetchTagDescription(
-          tag,
-          items.map((i) => i.content)
-        )
-      : await fetchTagDescription(
-          tag,
-          items.map((i) => i.content)
-        ),
+    description:
+      items.length > 0
+        ? fetchTagDescription(
+            tag,
+            items.map((i) => i.content)
+          )
+        : undefined,
     canonicalUrl,
   };
 };
@@ -143,15 +143,15 @@ export default function Index() {
         <IconTag /> {tag}
       </Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={description} errorElement={<ReviewsError />}>
-            {(description) =>
-              description && <TagDescription description={description} />
-            }
-          </Await>
-        </Suspense>
         {(sortedPosts.length > 0 && (
           <>
+            <Suspense fallback={<Skelton width="100%" height={360} />}>
+              <Await resolve={description} errorElement={<ReviewsError />}>
+                {(description) =>
+                  description && <TagDescription description={description} />
+                }
+              </Await>
+            </Suspense>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button

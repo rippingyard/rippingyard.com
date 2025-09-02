@@ -16,6 +16,8 @@ export const TagDescription: FC<Props> = ({ description }) => {
 
   const { summary, relatedTags } = description;
 
+  const showRelatedTags = false; // 一旦、関連タグの表示は停止
+
   return (
     <>
       <div className={styles.container}>
@@ -28,7 +30,7 @@ export const TagDescription: FC<Props> = ({ description }) => {
             </p>
           </section>
         )}
-        {relatedTags && (
+        {showRelatedTags && relatedTags && (
           <>
             <Heading level="partial">関連タグ</Heading>
             <ul className={styles.list}>

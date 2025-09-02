@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3334,
   },
   ssr: {
-    noExternal: ['remix-i18next'],
+    noExternal: ['remix-i18next', 'react-content-loader'],
   },
   plugins: [
     // remixDevTools(),

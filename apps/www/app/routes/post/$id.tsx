@@ -6,7 +6,7 @@ import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { PostTags } from '~/components/PostTags';
-import { Loading } from '~/features/loading';
+import { Skelton } from '~/components/Skelton';
 import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
@@ -126,7 +126,7 @@ export default function Main() {
           <article>
             <Article text={post.content} />
           </article>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={owner}
               errorElement={<div>エラーが発生しました</div>}
@@ -159,7 +159,7 @@ export default function Main() {
         </section>
         <aside className={articleSectionStyle}>
           <Heading level="partial">関連記事</Heading>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={relatedPosts}
               errorElement={<div>エラーが発生しました</div>}
@@ -170,7 +170,7 @@ export default function Main() {
         </aside>
         <aside className={articleSectionStyle}>
           <Heading level="partial">もっと読む</Heading>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={latestPosts}
               errorElement={<div>エラーが発生しました</div>}
