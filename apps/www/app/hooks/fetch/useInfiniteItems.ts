@@ -10,7 +10,6 @@ type Props<T> = {
 
 export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
   const cachedItems = key ? getCachedItems<T>(key) : [];
-  console.log('cached!', cachedItems.length);
 
   const [items, setItems] = useState(
     cachedItems.length > 0 ? cachedItems : initialItems
@@ -41,6 +40,12 @@ export const useInifiniteItems = <T>({ key, initialItems }: Props<T>) => {
     if (!key) return;
     cacheItems(key, items);
   }, [items, key]);
+
+  useEffect(() => {
+    setItems(initialItems);
+    setIsCompleted(false);
+    setQueries([]);
+  }, [initialItems]);
 
   return {
     items,
