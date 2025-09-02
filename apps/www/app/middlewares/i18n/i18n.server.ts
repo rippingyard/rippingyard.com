@@ -1,6 +1,10 @@
-import Backend from 'i18next-fs-backend';
-import { resolve } from 'node:path';
 import { RemixI18Next } from 'remix-i18next/server';
+
+// 翻訳ファイルを直接インポート
+import enCommon from '@rippingyard/resources/i18n/locales/en/common.json';
+import enPost from '@rippingyard/resources/i18n/locales/en/post.json';
+import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
+import jaPost from '@rippingyard/resources/i18n/locales/ja/post.json';
 
 import i18nextOptions from './options';
 
@@ -11,13 +15,17 @@ export const i18n = new RemixI18Next({
   },
   i18next: {
     ...i18nextOptions,
-    backend: {
-      loadPath: resolve(
-        '../../packages/resources/i18n/locales/{{lng}}/{{ns}}.json'
-      ),
+    resources: {
+      ja: {
+        common: jaCommon,
+        post: jaPost,
+      },
+      en: {
+        common: enCommon,
+        post: enPost,
+      },
     },
   },
-  plugins: [Backend],
 });
 
 export default i18n;

@@ -46,9 +46,6 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     route('/privacy', 'routes/privacy.tsx');
     route('/terms', 'routes/terms.tsx');
 
-    // i18n
-    route('/locales/:lng/:ns.json', 'routes/locales/$lng.$ns.json.tsx');
-
     route('/logout', 'routes/logout.tsx');
     route('/robots.txt', 'routes/robots[.]txt.tsx');
   });
