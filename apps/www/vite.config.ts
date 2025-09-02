@@ -10,9 +10,6 @@ export default defineConfig({
   ssr: {
     noExternal: ['remix-i18next'],
   },
-  optimizeDeps: {
-    exclude: ['i18next-fs-backend'],
-  },
   plugins: [
     // remixDevTools(),
     vanillaExtractPlugin(),

@@ -17,6 +17,11 @@ import {
 } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
+import enCommon from '@rippingyard/resources/i18n/locales/en/common.json';
+import enPost from '@rippingyard/resources/i18n/locales/en/post.json';
+import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
+import jaPost from '@rippingyard/resources/i18n/locales/ja/post.json';
+
 import { Route } from './+types/root';
 import { Env } from './components/Env';
 import { Heading } from './components/Heading';
@@ -32,6 +37,19 @@ import { themeClass } from './styles/theme.css';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const locale = await i18n.getLocale(request);
+
+  // 翻訳リソースを直接取得（awaitを避ける）
+  const translations =
+    locale === 'en'
+      ? {
+          common: enCommon,
+          post: enPost,
+        }
+      : {
+          common: jaCommon,
+          post: jaPost,
+        };
+
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
 
   const env: Env = {
@@ -52,8 +70,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const isAuthenticated = !!uid;
 
   const currentUrl = request.url;
-  const uriObject = URL.parse(currentUrl);
-  const pathname = uriObject?.pathname || '';
+  const uriObject = new URL(currentUrl);
+  const pathname = uriObject.pathname || '';
 
   const isWriting = /^\/post\/create|^\/post\/(.*)\/edit|^\/home\/profile/.test(
     pathname
@@ -74,6 +92,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       adsenseId,
       env,
       locale,
+      translations,
       infoMessage,
       alertMessage,
     },
@@ -108,6 +127,7 @@ function App() {
     gtagId,
     adsenseId,
     locale = 'ja',
+    translations,
     infoMessage = '',
     alertMessage = '',
     env,
@@ -115,6 +135,18 @@ function App() {
 
   const { i18n } = useTranslation();
   useChangeLanguage(locale);
+
+  // SSRで取得した翻訳をi18nに追加
+  if (
+    translations &&
+    typeof window !== 'undefined' &&
+    !window.__i18nInitialized
+  ) {
+    Object.entries(translations).forEach(([ns, resources]) => {
+      i18n.addResourceBundle(locale, ns, resources, true, true);
+    });
+    window.__i18nInitialized = true;
+  }
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
