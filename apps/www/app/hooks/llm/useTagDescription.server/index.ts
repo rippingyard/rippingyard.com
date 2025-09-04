@@ -58,7 +58,7 @@ const fetchTagDescription = async (tag: string, contents?: string[]) => {
     // Anthropic ClaudeのChat APIを使ったLLMを生成
     const llm = new ChatAnthropic({
       model:
-        import.meta.env.VITE_ANTHROPIC_MODEL || 'claude-3-7-sonnet-20250219',
+        import.meta.env.VITE_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022',
       temperature: 0.5,
       apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
     });
