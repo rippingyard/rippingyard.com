@@ -1,4 +1,20 @@
 {
+  "readMore": "続きを読む",
+  "quickmenu": {
+    "top": "トップ",
+    "createPost": "記事投稿",
+    "editProfile": "プロフィール編集",
+    "lab": "ラボ",
+    "login": "ログイン",
+    "logout": "ログアウト"
+  },
+  "article": {
+    "notFound": "記事が見つかりません"
+  },
+  "alert": {
+    "noPermission": "利用権限がありません。ログインしてください"
+  },
+
   "welcome": "ようこそ",
   "login": "ログイン",
   "logout": "ログアウト",

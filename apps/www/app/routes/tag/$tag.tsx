@@ -27,7 +27,6 @@ import type { Post } from '@rippingyard/schemas';
 import type { Route } from '../tag/+types/$tag';
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  console.log('🚀');
   const { tag } = params;
   if (!tag) throw new Error();
 
@@ -106,7 +105,7 @@ export default function Index() {
     tag,
     description,
   } = useLoaderData<typeof loader>();
-  const { t } = useTranslation('post');
+  const { t } = useTranslation();
   const key = `${CACHE_KEYS.PUBLIC_POSTS}_${tag}`;
   const [canAutoload] = useState(true);
 
@@ -165,7 +164,7 @@ export default function Index() {
               </Button>
             )}
           </>
-        )) || <p>記事が見つかりませんでした。</p>}
+        )) || <p>{t('article.notFound')}</p>}
       </main>
     </>
   );

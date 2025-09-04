@@ -18,9 +18,7 @@ import {
 import { useChangeLanguage } from 'remix-i18next/react';
 
 import enCommon from '@rippingyard/resources/i18n/locales/en/common.json';
-import enPost from '@rippingyard/resources/i18n/locales/en/post.json';
 import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
-import jaPost from '@rippingyard/resources/i18n/locales/ja/post.json';
 
 import { Route } from './+types/root';
 import { Env } from './components/Env';
@@ -43,11 +41,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     locale === 'en'
       ? {
           common: enCommon,
-          post: enPost,
         }
       : {
           common: jaCommon,
-          post: jaPost,
         };
 
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
