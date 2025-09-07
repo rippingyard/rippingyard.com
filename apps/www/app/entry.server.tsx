@@ -10,9 +10,7 @@ import type { EntryContext } from 'react-router';
 
 // 翻訳ファイルを直接インポート
 import enCommon from '@rippingyard/resources/i18n/locales/en/common.json';
-import enPost from '@rippingyard/resources/i18n/locales/en/post.json';
 import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
-import jaPost from '@rippingyard/resources/i18n/locales/ja/post.json';
 
 import i18n from './middlewares/i18n/i18n.server';
 import i18nextOptions from './middlewares/i18n/options';
@@ -39,11 +37,9 @@ export default async function handleRequest(
     resources: {
       ja: {
         common: jaCommon,
-        post: jaPost,
       },
       en: {
         common: enCommon,
-        post: enPost,
       },
     },
   });

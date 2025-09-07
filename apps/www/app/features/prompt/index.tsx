@@ -1,6 +1,7 @@
 ﻿import clsx from 'clsx';
 import OpenAI from 'openai';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '~/components/Button';
 import { FormInput } from '~/components/FormInput';
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export const Prompt: FC<Props> = ({ messages = [] }) => {
+  const { t } = useTranslation();
   return (
     <>
       <ul>
@@ -39,7 +41,7 @@ export const Prompt: FC<Props> = ({ messages = [] }) => {
       </ul>
 
       <FormInput name="prompt" defaultValue="おはよう！" />
-      <Button>送信</Button>
+      <Button>{t('send')}</Button>
     </>
   );
 };

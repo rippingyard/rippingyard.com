@@ -1,19 +1,9 @@
 ﻿import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSubmit } from 'react-router';
 
 import { MenuItem, QuickMenu } from '~/components/QuickMenu';
 import { clearCachedItems } from '~/hooks/cache/useCache';
-
-const links: MenuItem[] = [
-  { to: '/', label: 'Top', caption: 'トップ' },
-  { to: '/post/create', label: 'Create A Post', caption: '新規投稿' },
-  {
-    to: '/home/profile',
-    label: 'Edit My Profile',
-    caption: 'プロフィール編集',
-  },
-  { to: '/home/lab', label: 'A Lab', caption: 'ラボ' },
-];
 
 export const loader = async () => {
   return {};
@@ -21,6 +11,22 @@ export const loader = async () => {
 
 export default function Index() {
   const submit = useSubmit();
+  const { t } = useTranslation();
+
+  const links: MenuItem[] = [
+    { to: '/', label: 'Top', caption: t('quickmenu.top') },
+    {
+      to: '/post/create',
+      label: 'Create A Post',
+      caption: t('quickmenu.createPost'),
+    },
+    {
+      to: '/home/profile',
+      label: 'Edit My Profile',
+      caption: t('quickmenu.editProfile'),
+    },
+    { to: '/home/lab', label: 'A Lab', caption: t('quickmenu.lab') },
+  ];
 
   const onLogout = useCallback(async () => {
     await submit(
@@ -37,7 +43,7 @@ export default function Index() {
   return (
     <>
       <QuickMenu links={links} prefix="homemenu" />
-      <span onClick={onLogout}>ログアウト</span>
+      <span onClick={onLogout}>{t('quickmenu.logout')}</span>
     </>
   );
 }

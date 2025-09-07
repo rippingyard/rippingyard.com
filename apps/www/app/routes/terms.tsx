@@ -2,6 +2,7 @@
 
 import { Heading } from '~/components/Heading';
 import { LastUpdates } from '~/components/LastUpdates';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { articleStyle } from '~/styles/article.css';
 import { containerStyle } from '~/styles/container.css';
 
@@ -9,7 +10,8 @@ import type { Route } from './+types/terms';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = '利用規約';
+    const { t } = await translation(request);
+    const title = t('termsOfService');
     const canonicalUrl = new URL('terms', request.url).toString();
 
     return {
@@ -59,7 +61,11 @@ export default function Main() {
           <blockquote>
             <p>
               本利用規約は、WEBサービス「
-              <a href="https://www.rippingyard.com/" target="_blank">
+              <a
+                href="https://www.rippingyard.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 ripping yard
               </a>
               」のユーザーに適用される、サービス利用にあたっての契約です。本サービスをご利用いただく際に、あなたにお願いしたいことについて書かれています。

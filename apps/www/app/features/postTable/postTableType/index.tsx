@@ -1,4 +1,5 @@
 ﻿import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PostTypeLabel } from '~/utils/post';
 
@@ -7,5 +8,6 @@ type Props = {
 };
 
 export const PostTableType: FC<Props> = ({ type }) => {
-  return <div>{PostTypeLabel[type] || '不明'}</div>;
+  const { t } = useTranslation();
+  return <div>{t(PostTypeLabel[type] || 'unknown')}</div>;
 };

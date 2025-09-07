@@ -1,4 +1,5 @@
 ﻿import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -115,6 +116,8 @@ export default function Main() {
   const { post, owner, latestPosts, canEditPost, relatedPosts } =
     useLoaderData<typeof loader>();
 
+  const { t } = useTranslation();
+
   const editLink = usePostEditLink(post.id);
 
   return (
@@ -129,7 +132,7 @@ export default function Main() {
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={owner}
-              errorElement={<div>エラーが発生しました</div>}
+              errorElement={<div>{t('error.general')}</div>}
             >
               {(owner) =>
                 owner && (
@@ -152,28 +155,28 @@ export default function Main() {
           {canEditPost && (
             <div className={articleFooterStyle}>
               <Link to={editLink} size="x-small" isButton isBold>
-                編集
+                {t('edit')}
               </Link>
             </div>
           )}
         </section>
         <aside className={articleSectionStyle}>
-          <Heading level="partial">関連記事</Heading>
+          <Heading level="partial">{t('relatedArticles')}</Heading>
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={relatedPosts}
-              errorElement={<div>エラーが発生しました</div>}
+              errorElement={<div>{t('error.general')}</div>}
             >
               {(posts) => <PostList posts={posts} />}
             </Await>
           </Suspense>
         </aside>
         <aside className={articleSectionStyle}>
-          <Heading level="partial">もっと読む</Heading>
+          <Heading level="partial">{t('readMore')}</Heading>
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
               resolve={latestPosts}
-              errorElement={<div>エラーが発生しました</div>}
+              errorElement={<div>{t('error.general')}</div>}
             >
               {(posts) => <PostList posts={posts} />}
             </Await>

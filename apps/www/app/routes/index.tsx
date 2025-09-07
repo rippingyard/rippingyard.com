@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Await, useLoaderData, useNavigate } from 'react-router';
 
 import { Button } from '~/components/Button';
@@ -69,6 +70,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function Index() {
   const navigate = useNavigate();
   const { logs, articles: initialArticles } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   const { items: articles } = useInifiniteItems<Post>({
     key: CACHE_KEYS.PUBLIC_ARTICLES,
@@ -96,7 +98,7 @@ export default function Index() {
           <Await resolve={sortedPosts}>
             <DailyPostList posts={sortedPosts} mode="detail" />
             <Button isWide onClick={() => navigate('posts')}>
-              もっと読む
+              {t('readMore')}
             </Button>
           </Await>
         </main>

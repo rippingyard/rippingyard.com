@@ -1,4 +1,5 @@
 ﻿import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Await, data, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -80,6 +81,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 
 export default function Main() {
   const { post, nextPost, prevPost } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
   return (
     <>
       <Heading>Seed</Heading>
@@ -91,7 +93,7 @@ export default function Main() {
               <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
 
               {(nextPost || prevPost) && (
-                <Heading level="partial">もっと読む</Heading>
+                <Heading level="partial">{t('readMore')}</Heading>
               )}
               {prevPost && (
                 <PostItem

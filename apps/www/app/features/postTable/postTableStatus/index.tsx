@@ -1,4 +1,5 @@
 ﻿import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PostStatusLabel } from '~/utils/post';
 
@@ -7,5 +8,6 @@ type Props = {
 };
 
 export const PostTableStatus: FC<Props> = ({ status }) => {
-  return <div>{PostStatusLabel[status] || '不明'}</div>;
+  const { t } = useTranslation();
+  return <div>{t(PostStatusLabel[status] || 'unknown')}</div>;
 };

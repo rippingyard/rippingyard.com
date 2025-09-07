@@ -1,5 +1,6 @@
 import { redirect } from 'react-router';
 
+import { translation } from '~/middlewares/i18n/translation.server';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
 export const config = {
@@ -8,9 +9,10 @@ export const config = {
 
 export const loader = async ({ request }: { request: Request }) => {
   const { uid } = await getMe(request);
+  const { t } = await translation(request);
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));
-    session.flash('alertMessage', '利用権限がありません。ログインしてください');
+    session.flash('alertMessage', t('error.noPermission'));
     return redirect('/login', {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -27,12 +29,10 @@ export const action = async ({ request }: { request: Request }) => {
   try {
     // 認証チェック
     const { uid } = await getMe(request);
+    const { t } = await translation(request);
     if (!uid) {
       const session = await getSession(request.headers.get('Cookie'));
-      session.flash(
-        'alertMessage',
-        '利用権限がありません。ログインしてください'
-      );
+      session.flash('alertMessage', t('error.noPermission'));
       return redirect('/login', {
         headers: {
           'Set-Cookie': await commitSession(session),
