@@ -1,5 +1,40 @@
 {
+  "detail": "Detail",
   "readMore": "Read more",
+  "content": "Content",
+  "send": "Send",
+  "edit": "Edit",
+  "update": "Update",
+  "unknown": "Unknown",
+  "publishDate": "Publish Date",
+  "image": "Image",
+  "noResult": "No results found",
+
+  "relatedArticles": "Related Articles",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+
+  "post": {
+    "create": "Create Post",
+    "edit": "Edit Post",
+    "type": "Post Type",
+    "typeLabel": {
+      "article": "Article",
+      "note": "Note",
+      "log": "Log"
+    },
+    "status": "Publishing Status",
+    "statusLabel": {
+      "published": "Published",
+      "drafted": "Draft"
+    }
+  },
+  "profile": {
+    "edit": "Edit Profile",
+    "userName": "Username",
+    "displayName": "Display Name",
+    "profile": "Profile"
+  },
 
   "welcome": "Welcome",
   "login": "Login",
@@ -7,15 +42,12 @@
   "search": "Search",
   "menu": "Menu",
   "home": "Home",
-  "profile": "Profile",
   "settings": "Settings",
   "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
-  "edit": "Edit",
   "create": "Create",
   "loading": "Loading...",
-  "error": "An error occurred",
   "notFound": "Page not found",
   "back": "Back",
   "next": "Next",
@@ -23,5 +55,32 @@
   "submit": "Submit",
   "confirm": "Confirm",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+
+  "quickmenu": {
+    "top": "Top",
+    "createPost": "Create Post",
+    "editProfile": "Edit Profile",
+    "lab": "Lab",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "article": {
+    "notFound": "Article not found"
+  },
+  "info": {
+    "posted": "Post has been published"
+  },
+  "caption": {
+    "whatIsYourCuriosity": "What are you curious about today?",
+    "searchResult": "Search results for \"{{query}}\""
+  },
+  "error": {
+    "general": "An error occurred. Please try again later.",
+    "noPermission": "You don't have permission. Please login",
+    "invalidHttpMethod": "This endpoint only accepts {{method}} requests",
+    "requiredField": "{{field}} is required",
+    "duplicatedUsers": "Account already exists",
+    "invalidFile": "Invalid file"
+  }
 }
