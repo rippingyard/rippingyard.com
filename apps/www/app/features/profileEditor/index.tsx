@@ -58,7 +58,7 @@ export const ProfileEditor: FC<Props> = ({
       <header className={headerStyle}>
         <div className={headerNameStyle}>
           <FormField
-            label={t('displayName')}
+            label={t('profile.displayName')}
             id="displayName"
             errors={errors?.fieldErrors?.displayName}
           >
@@ -83,7 +83,7 @@ export const ProfileEditor: FC<Props> = ({
 
       <section className={bodyStyle}>
         <FormField
-          label={t('userName')}
+          label={t('profile.userName')}
           id="userName"
           errors={errors?.fieldErrors?.userName}
         >
