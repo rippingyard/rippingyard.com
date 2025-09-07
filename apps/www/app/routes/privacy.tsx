@@ -2,6 +2,7 @@
 
 import { Heading } from '~/components/Heading';
 import { LastUpdates } from '~/components/LastUpdates';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { articleStyle } from '~/styles/article.css';
 import { containerStyle } from '~/styles/container.css';
 
@@ -9,7 +10,8 @@ import type { Route } from './+types/privacy';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = 'プライバシーポリシー';
+    const { t } = await translation(request);
+    const title = t('privacyPolicy');
     const canonicalUrl = new URL('terms', request.url).toString();
 
     return {

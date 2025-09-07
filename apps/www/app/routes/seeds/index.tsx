@@ -1,4 +1,5 @@
 ﻿import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import { Await, useLoaderData } from 'react-router';
 
@@ -32,6 +33,7 @@ export const meta = () => {
 export default function Index() {
   const PER_PAGE = 12;
   const { seeds: allSeeds } = useLoaderData<{ seeds: Seed[] }>();
+  const { t } = useTranslation();
 
   const [index, setIndex] = useState(1);
   const [seeds, setSeeds] = useState(allSeeds.slice(0, PER_PAGE));
@@ -63,7 +65,7 @@ export default function Index() {
             <SeedList seeds={seeds} />
             {!isCompleted && (
               <Button ref={ref} onClick={loadMore} isLoading={true}>
-                もっと読む
+                {t('readMore')}
               </Button>
             )}
           </Await>

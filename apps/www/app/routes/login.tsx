@@ -4,6 +4,7 @@ import { redirect, data, useLoaderData } from 'react-router';
 import { Heading } from '~/components/Heading';
 import { Login } from '~/features/login';
 import { useUser } from '~/hooks/fetch/useUser.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import {
   commitSession,
   getSession,
@@ -15,7 +16,8 @@ import type { Route } from './+types/login';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = 'ログイン';
+    const { t } = await translation(request);
+    const title = t('login');
     const canonicalUrl = new URL('login', request.url).toString();
     const { uid } = await getMe(request);
 

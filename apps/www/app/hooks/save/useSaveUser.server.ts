@@ -1,6 +1,8 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
+import { translation } from '~/middlewares/i18n/translation.server';
+
 import { UserSchema, User } from '@rippingyard/schemas';
 
 import { useDocReference } from '../firestore/useDocReference.server';
@@ -18,6 +20,7 @@ const saveUser = async (
 ) => {
   try {
     const db = useFirestore();
+    const { t } = await translation(new Request(''));
 
     const { uid, role, userName, displayName, profile, avatar } =
       payload as Partial<User>;
@@ -61,7 +64,7 @@ const saveUser = async (
           {
             code: 'custom',
             path: ['userName'],
-            message: 'アカウントが重複しています',
+            message: t('error.duplicatedUsers'),
           },
         ]);
 

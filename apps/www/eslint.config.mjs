@@ -30,6 +30,8 @@ export default [
         fetch: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
       },
     },
     plugins: {

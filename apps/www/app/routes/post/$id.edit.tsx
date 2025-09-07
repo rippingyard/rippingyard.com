@@ -13,6 +13,7 @@ import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
@@ -25,8 +26,9 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
 
   try {
     if (!postId) throw new Error();
+    const { t } = await translation(request);
 
-    const title = '記事編集';
+    const title = t('post.edit');
     const action = usePostEditLink(postId);
     const canonicalUrl = new URL(action, request.url).toString();
 

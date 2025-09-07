@@ -12,26 +12,26 @@ import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
 import type { Route } from './+types/create';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const canCreatePost = useCanCreatePost();
-
   try {
-    const title = '新規投稿';
+    const { t } = await translation(request);
+
+    const title = t('post.create');
     const canonicalUrl = new URL('post/create', request.url).toString();
 
     // 権限確認
     const { uid, role } = await getMe(request);
+    const canCreatePost = useCanCreatePost();
+
     if (!uid || !canCreatePost(role)) {
       const session = await getSession(request.headers.get('Cookie'));
-      session.flash(
-        'alertMessage',
-        '利用権限がありません。ログインしてください'
-      );
+      session.flash('alertMessage', t('error.noPermission'));
       return redirect('/login', {
         headers: {
           'Set-Cookie': await commitSession(session),
@@ -59,6 +59,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   try {
     const { uid } = await getMe(request);
+    const { t } = await translation(request);
 
     if (!uid) throw new Error('Unauthenticated');
 
@@ -78,7 +79,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
     session.flash(
       'infoMessage',
-      `<a href="${permalink}">記事を投稿しました</a>`
+      `<a href="${permalink}">${t('info.posted')}</a>`
     );
 
     return data(

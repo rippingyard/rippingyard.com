@@ -7,6 +7,7 @@ import { ProfileEditor } from '~/features/profileEditor';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { useUserFormData } from '~/hooks/form/useUserFormData';
 import { useSaveUser } from '~/hooks/save/useSaveUser.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
@@ -16,7 +17,8 @@ import { Route } from './+types/profile';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = 'プロフィール編集';
+    const { t } = await translation(request);
+    const title = t('profile.edit');
     const canonicalUrl = new URL('home/profile', request.url).toString();
 
     const { uid } = await getMe(request);

@@ -2,7 +2,7 @@
 import { redirect } from 'react-router';
 
 import { Heading } from '~/components/Heading';
-import i18n from '~/middlewares/i18n/i18n.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 import { wideContainerStyle } from '~/styles/container.css';
 
@@ -11,8 +11,7 @@ import type { Route } from './+types/layout';
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { uid } = await getMe(request);
 
-  const locale = await i18n.getLocale(request);
-  console.log('locale', locale);
+  const { t } = await translation(request, 'common');
 
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));

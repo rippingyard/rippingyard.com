@@ -1,5 +1,6 @@
 ﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form } from 'react-router';
 
 import { Button } from '~/components/Button';
@@ -48,7 +49,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function Index({ actionData: data }: Route.ComponentProps) {
-  // const data = useActionData<typeof action>();
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<
     OpenAI.Chat.Completions.ChatCompletionMessageParam[]
   >([]);
@@ -77,9 +78,9 @@ export default function Index({ actionData: data }: Route.ComponentProps) {
 
   return (
     <Form method="POST">
-      <Heading level="partial">今、あなたの興味あることはなんですか？</Heading>
+      <Heading level="partial">{t('caption.whatIsYourCuriosity')}</Heading>
       <FormInput name="interest" />
-      <Button>送信</Button>
+      <Button>{t('send')}</Button>
       <hr />
       <ul>
         {messages.map((message, index) => (

@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router';
 
 import { SearchForm } from '~/components/SearchForm';
 import { SearchResult } from '~/features/searchResult';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { containerStyle } from '~/styles/container.css';
 
 import type { PostAsSearchResult } from '@rippingyard/schemas';
@@ -13,6 +14,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const query = url.searchParams.get('query');
   console.log('query', query);
+  const { t } = await translation(request, 'common');
 
   if (!query)
     return {
@@ -32,7 +34,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const { hits } = result;
 
-  const title = `「${query}」の検索結果`;
+  const title = t('caption.searchResult', { query });
   const canonicalUrl = new URL(`search?=${query}`, request.url).toString();
 
   return {
