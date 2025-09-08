@@ -144,7 +144,7 @@ export default function Main() {
             </Await>
           </Suspense>
           <div className={articleSectionStyle}>
-            <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+            <Adsense slot={ADSENSE_IDS.POST_MIDDLE} />
           </div>
           {post?.tags && (
             <div className={articleSectionStyle}>
@@ -182,6 +182,9 @@ export default function Main() {
             </Await>
           </Suspense>
         </aside>
+        <div className={articleSectionStyle}>
+          <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+        </div>
       </main>
     </>
   );

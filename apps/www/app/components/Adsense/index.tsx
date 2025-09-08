@@ -7,6 +7,7 @@ import { type EnvType } from '../Env';
 
 export enum ADSENSE_IDS {
   HOME_MIDDLE = '5708290274',
+  POST_MIDDLE = '7219802748',
   POST_BOTTOM = '2832620517',
   TOP_BOTTOM = '5833329650',
   TOP_MIDDLE = '3474759621',
