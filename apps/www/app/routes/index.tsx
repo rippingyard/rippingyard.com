@@ -69,6 +69,15 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   };
 };
 
+export function headers(_: Route.HeadersArgs) {
+  return {
+    'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
+    Vary: 'Cookie',
+    'X-Frame-Options': 'DENY',
+    'X-Content-Type-Options': 'nosniff',
+  };
+}
+
 export default function Index() {
   const navigate = useNavigate();
   const { logs, articles: initialArticles } = useLoaderData<typeof loader>();
@@ -97,16 +106,18 @@ export default function Index() {
           </div>
         </Await>
         <main className={containerStyle}>
-          <Await resolve={sortedPosts}>
-            <DailyPostList posts={sortedPosts} mode="detail" />
-            <Button isWide onClick={() => navigate('posts')}>
-              {t('readMore')}
-            </Button>
-          </Await>
+          <div className={articleSectionStyle}>
+            <Await resolve={sortedPosts}>
+              <DailyPostList posts={sortedPosts} mode="detail" />
+              <Button isWide onClick={() => navigate('posts')}>
+                {t('readMore')}
+              </Button>
+            </Await>
+          </div>
+          <div className={articleSectionStyle}>
+            <Adsense slot={ADSENSE_IDS.TOP_BOTTOM} />
+          </div>
         </main>
-        <div className={articleSectionStyle}>
-          <Adsense slot={ADSENSE_IDS.TOP_BOTTOM} />
-        </div>
       </Suspense>
     </>
   );
