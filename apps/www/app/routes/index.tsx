@@ -4,6 +4,7 @@ import { Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Await, useLoaderData, useNavigate } from 'react-router';
 
+import { Adsense, ADSENSE_IDS } from '~/components/Adsense';
 import { Button } from '~/components/Button';
 import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
@@ -18,6 +19,7 @@ import {
   edgeStyle,
   wideContainerStyle,
 } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { sortPosts } from '~/utils/post';
 
 import type { Post } from '@rippingyard/schemas';
@@ -102,6 +104,9 @@ export default function Index() {
             </Button>
           </Await>
         </main>
+        <div className={articleSectionStyle}>
+          <Adsense slot={ADSENSE_IDS.TOP_BOTTOM} />
+        </div>
       </Suspense>
     </>
   );

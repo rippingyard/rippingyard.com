@@ -2,7 +2,7 @@
 import { getAuth } from 'firebase/auth';
 
 import { WindowWithEnv } from '~/components/Adsense';
-import { EnvType } from '~/components/Env';
+import { type EnvType } from '~/components/Env';
 
 export const useFirebase = () => {
   const { fb } = getFirebase();

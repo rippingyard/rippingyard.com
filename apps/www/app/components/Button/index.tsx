@@ -10,18 +10,6 @@ import { IconLoader } from '~/assets/icons/Loader';
 
 import * as styles from './style.css';
 
-// import {
-//   blurButtonStyle,
-//   buttonStyle,
-//   disabledStyle,
-//   ghostButtonStyle,
-//   loadingIconStyle,
-//   loadingStyle,
-//   squareButtonStyle,
-//   successButtonStyle,
-//   wideButtonStyle,
-// } from './style.css';
-
 type Props = ComponentPropsWithRef<'button'> & {
   isLoading?: boolean;
   color?: 'default' | 'success';
