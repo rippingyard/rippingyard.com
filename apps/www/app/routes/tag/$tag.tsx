@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { Await, useAsyncError, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
+import { Adsense, ADSENSE_IDS } from '~/components/Adsense';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
 import { Skelton } from '~/components/Skelton';
@@ -18,6 +19,7 @@ import { useTagDescription } from '~/hooks/llm/useTagDescription.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
 import { isSPA } from '~/utils/request';
@@ -151,6 +153,9 @@ export default function Index() {
                 }
               </Await>
             </Suspense>
+            <div className={articleSectionStyle}>
+              <Adsense slot={ADSENSE_IDS.POST_BOTTOM} type="horizontal" />
+            </div>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
