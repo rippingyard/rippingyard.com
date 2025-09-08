@@ -154,7 +154,7 @@ export default function Index() {
               </Await>
             </Suspense>
             <div className={articleSectionStyle}>
-              <Adsense slot={ADSENSE_IDS.POST_BOTTOM} type="horizontal" />
+              <Adsense slot={ADSENSE_IDS.TAG_HEAD} type="horizontal" />
             </div>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
@@ -170,6 +170,9 @@ export default function Index() {
             )}
           </>
         )) || <p>{t('article.notFound')}</p>}
+        <div className={articleSectionStyle}>
+          <Adsense slot={ADSENSE_IDS.TAG_BOTTOM} type="horizontal" />
+        </div>
       </main>
     </>
   );

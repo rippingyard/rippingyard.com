@@ -12,6 +12,7 @@ export enum ADSENSE_IDS {
   TOP_BOTTOM = '5833329650',
   TOP_MIDDLE = '3474759621',
   TAG_HEAD = '3021499442',
+  TAG_BOTTOM = '5428170935',
 }
 
 export type WindowWithEnv = Window &

@@ -2,17 +2,14 @@
 import { Link } from 'react-router';
 
 import { Article } from '~/components/Article';
+import { PostTags } from '~/components/PostTags';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
+
 import type { Post } from '@rippingyard/schemas';
 
-import {
-  containerStyle,
-  contentWithNoTitleStyle,
-  footerStyle,
-  headingStyle,
-} from './style.css';
+import * as styles from './style.css';
 
 type Props = {
   post: Post;
@@ -30,10 +27,10 @@ export const PostItemDetail: FC<Props> = ({
   const publishdate = useDate(post.publishedAt as unknown as TimestampType);
 
   return (
-    <div className={containerStyle}>
+    <div className={styles.container}>
       {(hasTitleBlock && (
         <>
-          <h1 className={headingStyle}>
+          <h1 className={styles.heading}>
             <Link to={permalink} prefetch="viewport">
               {title}
             </Link>
@@ -41,11 +38,16 @@ export const PostItemDetail: FC<Props> = ({
           <Article text={content} />
         </>
       )) || (
-        <div className={contentWithNoTitleStyle}>
+        <div className={styles.contentWithNoTitle}>
           <Article text={post.content} />
         </div>
       )}
-      <div className={footerStyle}>
+      <div className={styles.footer}>
+        {post?.tags && (
+          <div className={styles.tags}>
+            <PostTags tags={post?.tags || []} />
+          </div>
+        )}
         <Link to={permalink} prefetch="viewport">
           {publishdate}
         </Link>
