@@ -11,6 +11,10 @@ export const useFirebase = () => {
       databaseURL: process.env.VITE_FIREBASE_DATABASE_URL,
       storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
     });
+    admin.firestore().settings({
+      ignoreUndefinedProperties: true,
+      databaseId: process.env.VITE_FIRESTORE_DATABASE_ID || '(default)',
+    });
   }
   return admin;
 };
