@@ -3,6 +3,6 @@
 import { useFirebase } from '../firebase/useFirebase';
 
 export const useFirestore = () => {
-  const { fb } = useFirebase();
-  return { db: getFirestore(fb) };
+  const { fb, databaseId } = useFirebase();
+  return { db: getFirestore(fb, databaseId) };
 };
