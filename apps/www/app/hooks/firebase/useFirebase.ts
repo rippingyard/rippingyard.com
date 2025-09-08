@@ -8,6 +8,7 @@ export const useFirebase = () => {
   const { fb } = getFirebase();
   const env = getEnv();
   const databaseId = env?.VITE_FIRESTORE_DATABASE_ID || '(default)';
+  console.log('databaseId', databaseId);
   return { fb, auth: getAuth(fb), databaseId };
 };
 
