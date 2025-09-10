@@ -5,7 +5,7 @@
   },
   "functions": {
     "codebase": "",
-    "runtime": "nodejs20",
+    "runtime": "nodejs18",
     "source": "apps/functions"
   },
   "storage": {
