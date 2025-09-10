@@ -2,8 +2,9 @@
   DocumentData,
   FieldValue,
   Query,
-  QueryDocumentSnapshot,
 } from 'firebase-admin/firestore';
+
+import { sanitizeFirestoreData } from '~/utils/sanitizeFirestoreData';
 
 import { useFirestore } from './useFirestore.server';
 import { QueryParams, defaultOp } from '../condition/usePostConditions';
@@ -12,7 +13,7 @@ export const useQuery = async <T>(
   args: QueryParams<T>
 ): Promise<{
   data: T[];
-  lastVisible?: QueryDocumentSnapshot<DocumentData, DocumentData>;
+  lastVisible?: any; // クライアントに送信しない内部使用のみ
 }> => {
   const data: T[] = [];
   // const ids: string[] = [];
@@ -42,9 +43,10 @@ export const useQuery = async <T>(
   if (args?.orderBy) {
     const order = args.orderBy.order || 'desc';
     q = q.orderBy(args.orderBy.key, order);
-    if (args?.lastVisible) {
-      q = q.startAfter(args?.lastVisible);
-    }
+    // lastVisibleは使用しない
+    // if (args?.lastVisible) {
+    //   q = q.startAfter(args?.lastVisible);
+    // }
     if (args?.startAfter) {
       q = q.startAfter(args?.startAfter);
     }
@@ -58,12 +60,18 @@ export const useQuery = async <T>(
   }
 
   const snapshots = await q.get();
-  const lastVisible = snapshots.docs[snapshots.docs.length - 1] || undefined;
+  // lastVisibleはサーバーサイドのページネーション用で使用されていないため削除
+  // const lastVisible = snapshots.docs[snapshots.docs.length - 1] || undefined;
 
   snapshots.forEach((snapshot) => {
     data.push(snapshot.data() as T);
     // ids.push(doc.id);
   });
 
-  return { data, lastVisible };
+  // Firebaseの参照が含まれないようにデータをクリーンアップ
+  // DocumentReferenceのidを保持しつつ、安全にシリアライズ
+  const cleanData = sanitizeFirestoreData(data);
+
+  // lastVisibleはクライアントに送信しない
+  return { data: cleanData, lastVisible: undefined };
 };

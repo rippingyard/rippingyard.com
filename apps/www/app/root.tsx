@@ -21,7 +21,7 @@ import enCommon from '@rippingyard/resources/i18n/locales/en/common.json';
 import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
 
 import { Route } from './+types/root';
-import { Env } from './components/Env';
+import { Env, type EnvType } from './components/Env';
 import { Heading } from './components/Heading';
 import { Layout } from './components/Layout';
 import { Snackbar } from './features/snackbar';
@@ -48,7 +48,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const adsenseId = process.env.VITE_GA_ADSENSE_ID || 'ca-pub-9920890661034086';
 
-  const env: Env = {
+  // クライアントに公開しても安全な環境変数のみを含める
+  // Firebase クライアントSDKの設定は公開可能（APIキーは使用制限で保護）
+  const env: EnvType = {
     VITE_GA_ADSENSE_ID: adsenseId,
     NODE_ENV: process.env.NODE_ENV!,
     VITE_FIREBASE_API_KEY: process.env.VITE_FIREBASE_API_KEY!,
@@ -60,6 +62,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       process.env.VITE_FIREBASE_MESSAGING_SENDER_ID!,
     VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID!,
     VITE_FIREBASE_MEASUREMENT_ID: process.env.VITE_FIREBASE_MEASUREMENT_ID!,
+    // 以下の環境変数は絶対にクライアントに公開してはいけない
+    // GOOGLE_APPLICATION_CREDENTIALS - Firebase Admin SDK秘密鍵
+    // OPENAI_APIKEY - OpenAI APIキー
+    // ANTHROPIC_API_KEY - Anthropic APIキー
+    // ALGOLIA_APIKEY_ADMIN - Algolia管理者キー
+    // SESSION_SECRET - セッションシークレット
   };
 
   const { uid } = await getMe(request);
@@ -177,7 +185,7 @@ function App() {
         <Meta />
         <Links />
       </head>
-      <body className={clsx(bodyStyle, themeClass)}>
+      <body className={clsx(bodyStyle, themeClass)} suppressHydrationWarning>
         <Layout isAuthenticated={isAuthenticated} isWriting={isWriting}>
           <Outlet />
         </Layout>
@@ -233,7 +241,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <Meta />
         <Links />
       </head>
-      <body className={clsx(bodyStyle, themeClass)}>
+      <body className={clsx(bodyStyle, themeClass)} suppressHydrationWarning>
         <Layout isAuthenticated={false}>{message}</Layout>
         <Scripts />
       </body>

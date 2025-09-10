@@ -27,6 +27,7 @@ import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
+import { getDocumentReferenceId } from '~/utils/sanitizeFirestoreData';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -70,7 +71,8 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
-    const { user: owner } = await useUser(post?.owner?.id || '');
+    const ownerId = getDocumentReferenceId(post?.owner);
+    const { user: owner } = ownerId ? await useUser(ownerId) : { user: null };
 
     const { data: nearestPosts } = await useNearestPosts(post.content, {
       limit: 16,
@@ -81,7 +83,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const llm = new ChatOpenAI({
       model: 'gpt-4o',
       temperature: 0.5,
-      apiKey: import.meta.env.VITE_OPENAI_APIKEY,
+      apiKey: import.meta.env.OPENAI_APIKEY,
     });
 
     // 結果をLangChainが扱いやすい形式(Document)に変換
@@ -185,8 +187,8 @@ export default function Main() {
               <div>
                 関連項目：
                 <ul>
-                  {answer?.items.map((item) => (
-                    <li>
+                  {answer?.items.map((item, i) => (
+                    <li key={`answer-item-${i}`}>
                       <h3>
                         {item.name} - {item.genre}
                       </h3>
@@ -197,7 +199,11 @@ export default function Main() {
               </div>
               <div>
                 タグ：
-                <ul>{answer?.tags.map((tag) => <li>{tag}</li>)}</ul>
+                <ul>
+                  {answer?.tags.map((tag, i) => (
+                    <li key={`answer-tag-${i}`}>{tag}</li>
+                  ))}
+                </ul>
               </div>
 
               <PostHeader post={post} />

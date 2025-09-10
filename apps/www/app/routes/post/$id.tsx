@@ -23,6 +23,7 @@ import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
 import { isSPA } from '~/utils/request';
+import { getDocumentReferenceId } from '~/utils/sanitizeFirestoreData';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -39,7 +40,10 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     if (!post) throw new Error();
 
     const fetchOwner = async () => {
-      const { user: owner } = await useUser(post?.owner?.id || '');
+      // ownerが存在しない場合はnullを返す
+      const ownerId = getDocumentReferenceId(post?.owner);
+      if (!ownerId) return null;
+      const { user: owner } = await useUser(ownerId);
       return owner;
     };
 

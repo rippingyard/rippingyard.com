@@ -11,10 +11,28 @@ export const useFirebase = () => {
   return { fb, auth: getAuth(fb), databaseId };
 };
 
-const getEnv = (): EnvType =>
-  (typeof process !== 'undefined'
-    ? process.env
-    : (window as WindowWithEnv).env) as unknown as EnvType;
+const getEnv = (): EnvType => {
+  // クライアントサイドではwindow.envを使用
+  // サーバーサイドではimport.meta.envを使用（Vite）
+  if (typeof window !== 'undefined' && (window as WindowWithEnv).env) {
+    return (window as WindowWithEnv).env;
+  }
+  
+  // Viteのimport.meta.envを使用
+  return {
+    NODE_ENV: import.meta.env.MODE || 'development',
+    VITE_GA_ADSENSE_ID: import.meta.env.VITE_GA_ADSENSE_ID || '',
+    VITE_FIREBASE_API_KEY: import.meta.env.VITE_FIREBASE_API_KEY || '',
+    VITE_FIREBASE_AUTH_DOMAIN: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+    VITE_FIREBASE_DATABASE_URL: import.meta.env.VITE_FIREBASE_DATABASE_URL || '',
+    VITE_FIREBASE_PROJECT_ID: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
+    VITE_FIREBASE_STORAGE_BUCKET: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+    VITE_FIREBASE_MESSAGING_SENDER_ID: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+    VITE_FIREBASE_APP_ID: import.meta.env.VITE_FIREBASE_APP_ID || '',
+    VITE_FIREBASE_MEASUREMENT_ID: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || '',
+    VITE_FIRESTORE_DATABASE_ID: import.meta.env.VITE_FIRESTORE_DATABASE_ID,
+  } as EnvType;
+};
 
 const getFirebase = () => {
   const env = getEnv();

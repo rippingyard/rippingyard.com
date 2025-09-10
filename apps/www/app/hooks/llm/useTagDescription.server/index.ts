@@ -60,7 +60,7 @@ const fetchTagDescription = async (tag: string, contents?: string[]) => {
       model:
         import.meta.env.VITE_ANTHROPIC_MODEL || 'claude-3-5-haiku-20241022',
       temperature: 0.5,
-      apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
+      apiKey: import.meta.env.ANTHROPIC_API_KEY,
     });
     // const outputParser = new StringOutputParser();
     const outputParser = new JsonOutputParser<Description>();
