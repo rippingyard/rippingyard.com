@@ -1,5 +1,4 @@
 ﻿import {
-  DocumentData,
   DocumentReference,
   OrderByDirection,
   Timestamp,
@@ -13,7 +12,7 @@ type WhereValue =
   | number
   | boolean
   | string[]
-  | DocumentReference<DocumentData>;
+  | DocumentReference<any>; // Firebaseのドキュメント参照
 
 type WhereParam = {
   key: string;
@@ -40,7 +39,7 @@ export type QueryParams<T> = {
   limit?: number;
   startAfter?: string | number | Timestamp;
   orderBy?: OrderBy;
-  lastVisible?: DocumentData;
+  // lastVisible?: DocumentData; // サーバーサイドで未使用のため削除
   removeWhereKeys?: string[];
   initialData?: T[];
 };
