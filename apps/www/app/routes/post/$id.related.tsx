@@ -187,8 +187,8 @@ export default function Main() {
               <div>
                 関連項目：
                 <ul>
-                  {answer?.items.map((item) => (
-                    <li>
+                  {answer?.items.map((item, i) => (
+                    <li key={`answer-item-${i}`}>
                       <h3>
                         {item.name} - {item.genre}
                       </h3>
@@ -199,7 +199,11 @@ export default function Main() {
               </div>
               <div>
                 タグ：
-                <ul>{answer?.tags.map((tag) => <li>{tag}</li>)}</ul>
+                <ul>
+                  {answer?.tags.map((tag, i) => (
+                    <li key={`answer-tag-${i}`}>{tag}</li>
+                  ))}
+                </ul>
               </div>
 
               <PostHeader post={post} />
