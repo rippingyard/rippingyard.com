@@ -1,14 +1,15 @@
-name: "[functions:node] Deploy to Production"
+name: '[functions:node] Deploy to Production'
 
 on:
   push:
     branches:
       - main
     paths:
-      - "apps/functions/**"
-      - "packages/schemas/**"
-      - "packages/utils/**"
-      - "package.json"
+      - 'apps/functions/**'
+      - 'packages/schemas/**'
+      - 'packages/utils/**'
+      - 'firebase.json'
+      - 'package.json'
 jobs:
   build:
     runs-on: ubuntu-latest

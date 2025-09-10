@@ -1,14 +1,15 @@
-name: "[functions:node] Deploy to Staging"
+name: '[functions:node] Deploy to Staging'
 
 on:
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [main]
     paths:
-      - "apps/functions/**"
-      - "packages/schemas/**"
-      - "packages/utils/**"
-      - "package.json"
+      - 'apps/functions/**'
+      - 'packages/schemas/**'
+      - 'packages/utils/**'
+      - 'firebase.json'
+      - 'package.json'
 jobs:
   build:
     runs-on: ubuntu-latest
