@@ -15,7 +15,8 @@ import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
 import i18n from './middlewares/i18n/i18n.server';
 import i18nextOptions from './middlewares/i18n/options';
 
-export const streamTimeout = 15000;
+export const streamTimeout = 8000;
+export const streamTimeoutForBot = 5000;
 
 export default async function handleRequest(
   request: Request,
@@ -93,6 +94,9 @@ export default async function handleRequest(
 
     // Abort the rendering stream after the `streamTimeout` so it has time to
     // flush down the rejected boundaries
-    setTimeout(abort, streamTimeout + 1000);
+    setTimeout(
+      abort,
+      (isbot(userAgent) ? streamTimeoutForBot : streamTimeout) + 1000
+    );
   });
 }
