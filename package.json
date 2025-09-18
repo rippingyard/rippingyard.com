@@ -6,8 +6,8 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "turbo run dev --filter=./apps/www",
-    "dev:emulator": "turbo run dev:emulator",
+    "dev": "dotenv -e env/emulator -- turbo run dev",
+    "dev:www": "turbo run dev:www --filter=./apps/www",
     "build:sb": "turbo run build:sb --filter=./apps/www",
     "build-storybook": "npm run build:sb",
     "sb": "turbo run sb",
@@ -25,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
     "chromatic": "^11.10.4",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",

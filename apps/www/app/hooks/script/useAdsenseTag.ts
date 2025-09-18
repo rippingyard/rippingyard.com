@@ -15,10 +15,11 @@ export const useAdsenseTag = (adsenseId: string) => {
     if (process.env.NODE_ENV !== 'production')
       script['data-adbreak-test'] = 'on';
 
-    document.head.appendChild(script);
+    document?.head?.appendChild(script);
 
     return () => {
-      document.head.removeChild(script);
+      if (!document?.head?.contains(script)) return;
+      document?.head?.removeChild(script);
     };
   }, [adsenseId]);
 };

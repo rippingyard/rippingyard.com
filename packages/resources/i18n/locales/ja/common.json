@@ -77,6 +77,7 @@
   },
   "error": {
     "general": "エラーが発生しました。時間をおいて再度お試しください。",
+    "notFound": "お探しのページは見つかりません",
     "noPermission": "利用権限がありません。ログインしてください",
     "invalidHttpMethod": "このエンドポイントは{{method}}リクエストでのみ使用できます",
     "requiredField": "{{field}}は必須です",

@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import destyle from 'destyle.css?url';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Links,
@@ -13,7 +12,6 @@ import {
   data,
   LoaderFunctionArgs,
   type LinksFunction,
-  isRouteErrorResponse,
 } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
@@ -22,14 +20,13 @@ import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
 
 import { Route } from './+types/root';
 import { Env, type EnvType } from './components/Env';
-import { Heading } from './components/Heading';
 import { Layout } from './components/Layout';
+import { ErrorComponent } from './features/error';
 import { Snackbar } from './features/snackbar';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
 import i18n from './middlewares/i18n/i18n.server';
 import { commitSession, getMe, getSession } from './middlewares/session.server';
-import { containerStyle } from './styles/container.css';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
 
@@ -198,32 +195,6 @@ function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  const message = useMemo(() => {
-    if (isRouteErrorResponse(error)) {
-      return (
-        <>
-          <Heading>
-            {error.status} {error.statusText}
-          </Heading>
-          <main className={containerStyle}>{error.data}</main>
-        </>
-      );
-    } else if (error instanceof Error) {
-      return (
-        <div>
-          <Heading>Error</Heading>
-          <main className={containerStyle}>
-            <p>{error.message}</p>
-            <p>The stack trace is:</p>
-            <pre>{error.stack}</pre>
-          </main>
-        </div>
-      );
-    } else {
-      return <Heading>Unknown Error</Heading>;
-    }
-  }, [error]);
-
   const locale = 'ja';
 
   return (
@@ -241,8 +212,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <Meta />
         <Links />
       </head>
-      <body className={clsx(bodyStyle, themeClass)} suppressHydrationWarning>
-        <Layout isAuthenticated={false}>{message}</Layout>
+      <body className={clsx(bodyStyle, themeClass)}>
+        <Layout isAuthenticated={false}>
+          <ErrorComponent error={error as Error} />
+        </Layout>
         <Scripts />
       </body>
     </html>

@@ -1,8 +1,4 @@
-﻿import {
-  DocumentData,
-  FieldValue,
-  Query,
-} from 'firebase-admin/firestore';
+﻿import { DocumentData, FieldValue, Query } from 'firebase-admin/firestore';
 
 import { sanitizeFirestoreData } from '~/utils/sanitizeFirestoreData';
 
@@ -40,7 +36,15 @@ export const useQuery = async <T>(
 
   if (args?.limit && args?.limit > 0) q = q.limit(args.limit);
 
-  if (args?.orderBy) {
+  if (args?.findNearest) {
+    q = q.findNearest('vector', FieldValue.vector(args?.findNearest.vector), {
+      limit: args?.findNearest?.limit || 5,
+      distanceMeasure: args?.findNearest?.distanceMeasure || 'COSINE',
+    }) as unknown as Query<DocumentData, DocumentData>; // Firestoreのアップデート待ち
+  } else if (args?.orderBy) {
+    // OrderByとfindNearestは同時に使用できない
+    // Firestoreの仕様上、orderByを使用する場合は必ずindexが必要
+    // https://firebase.google.com/docs/firestore/query-data/order-limit-data?hl=ja#order_and_limit_data
     const order = args.orderBy.order || 'desc';
     q = q.orderBy(args.orderBy.key, order);
     // lastVisibleは使用しない
@@ -50,13 +54,6 @@ export const useQuery = async <T>(
     if (args?.startAfter) {
       q = q.startAfter(args?.startAfter);
     }
-  }
-
-  if (args?.findNearest) {
-    q = q.findNearest('vector', FieldValue.vector(args?.findNearest.vector), {
-      limit: args?.findNearest?.limit || 5,
-      distanceMeasure: args?.findNearest?.distanceMeasure || 'COSINE',
-    });
   }
 
   const snapshots = await q.get();
