@@ -39,7 +39,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.12",
     "dompurify": "^3.2.3",
-    "firebase": "^10.12.5",
+    "firebase": "^12.2.1",
     "firebase-admin": "^12.3.1",
     "firebase-functions": "^5.0.1",
     "hono": "^4.9.4",
