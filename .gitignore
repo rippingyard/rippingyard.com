@@ -17,3 +17,6 @@ node_modules
 
 # build outputs
 packages/*/dist
+
+# firebase functions runtime config
+apps/functions/.runtimeconfig.json
