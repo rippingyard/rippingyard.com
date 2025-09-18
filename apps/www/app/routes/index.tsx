@@ -101,9 +101,11 @@ export default function Index() {
     <>
       <Suspense fallback={<Loading />}>
         <Await resolve={sortedArticles}>
-          <div className={clsx(wideContainerStyle, edgeStyle)}>
-            <TopBillboard posts={sortedArticles} />
-          </div>
+          {sortedArticles.length > 0 && (
+            <div className={clsx(wideContainerStyle, edgeStyle)}>
+              <TopBillboard posts={sortedArticles} />
+            </div>
+          )}
         </Await>
         <main className={containerStyle}>
           <div className={articleSectionStyle}>

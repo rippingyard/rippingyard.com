@@ -19,6 +19,7 @@ import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
@@ -31,13 +32,14 @@ import type { Route } from './+types/$id';
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
     const { id } = params;
+    const { t } = await translation(request);
     const canEditPost = useCanEditPost();
     const postLink = usePostLink();
 
-    if (!id) throw new Error();
+    if (!id) throw new Error(t('error.notFound'), { cause: 404 });
 
     const { post } = await usePost(id, request);
-    if (!post) throw new Error();
+    if (!post) throw new Error(t('error.notFound'), { cause: 404 });
 
     const fetchOwner = async () => {
       // ownerが存在しない場合はnullを返す
@@ -80,7 +82,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     };
   } catch (e) {
     console.error(e);
-    throw new Response('Not Found', { status: 404 });
+    throw e;
   }
 };
 

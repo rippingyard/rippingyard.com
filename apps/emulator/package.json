@@ -5,14 +5,14 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit",
-    "dev:emulator": "pnpm dev",
+    "dev": "dotenv -e ../../env/emulator -- firebase emulators:start --inspect-functions 9229 --import=./.emulator --export-on-exit --project rydev",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "index:pull": "firebase use default && firebase firestore:indexes > config/firestore.indexes.json",
     "index:push": "firebase deploy --only firestore:indexes --project production",
     "deploy": "firebase deploy --only functions,firestore:rules --project default"
   },
   "devDependencies": {
+    "dotenv-cli": "^10.0.0",
     "firebase-tools": "^13.14.2"
   }
 }
