@@ -1,9 +1,9 @@
 ﻿import type { Secret } from '@rippingyard/schemas';
-import * as functions from 'firebase-functions';
+import { FirestoreEvent } from 'firebase-functions/v2/firestore';
 
 export const scanSecret = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
-  context: functions.EventContext,
+  context: FirestoreEvent<any, any>,
   firestore: any,
 ) => {
   console.log('ScanSecret', snapshot, context, firestore);

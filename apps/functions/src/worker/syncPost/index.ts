@@ -1,4 +1,5 @@
-import * as functions from 'firebase-functions';
+import { config } from 'firebase-functions';
+import { FirestoreEvent } from 'firebase-functions/v2/firestore';
 import dayjs from 'dayjs';
 import { pick } from 'lodash';
 import { savePostIndex } from '../../helper/saveIndex';
@@ -8,14 +9,14 @@ import type { Post } from '@rippingyard/schemas';
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
-  context: functions.EventContext,
+  context: FirestoreEvent<any, any>,
   firestore: any,
 ) => {
   console.log('SyncPost', snapshot, context, firestore);
   const postId = snapshot.id;
   const post = snapshot.data() as Post;
 
-  console.log('functions.config()', functions.config());
+  console.log('config()', config());
   console.log('Start!', postId);
 
   // 共通タイムライン
