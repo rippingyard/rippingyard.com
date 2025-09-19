@@ -1,4 +1,9 @@
-import * as functions from 'firebase-functions';
+import { onRequest } from 'firebase-functions/v2/https';
+import {
+  onDocumentCreated,
+  onDocumentUpdated,
+} from 'firebase-functions/v2/firestore';
+import { config } from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
@@ -17,7 +22,7 @@ if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
   });
 } else {
   // 本番環境の場合
-  admin.initializeApp(functions.config().firebase);
+  admin.initializeApp(config().firebase);
 }
 const firestore = admin.firestore();
 
@@ -44,7 +49,7 @@ app.get('/api/v1/status', (c) => {
   return c.json({
     service: 'rippingyard-functions',
     version: '1.0.0',
-    environment: functions.config().runtime?.env || 'production',
+    environment: config().runtime?.env || 'production',
   });
 });
 
@@ -62,7 +67,7 @@ app.onError((err, c) => {
 /**
  * HTTP Function - Hono app
  */
-export const api = functions.https.onRequest(async (req, res) => {
+export const api = onRequest(async (req, res) => {
   // Create headers object
   const headers = new Headers();
   Object.entries(req.headers).forEach(([key, value]) => {
@@ -99,29 +104,49 @@ export const api = functions.https.onRequest(async (req, res) => {
  * Firestore Triggers - Workers
  */
 // onPostCreate
-export const onPostCreate = functions.firestore
-  .document('/posts/{postId}')
-  .onCreate(async (snapshot, context) => {
-    await syncPost(snapshot, context, firestore);
-  });
+export const onPostCreate = onDocumentCreated('posts/{postId}', async (event) => {
+    console.log('onPostCreate triggered', event.params.postId);
+    const snapshot = event.data;
+    if (!snapshot) {
+      console.log('No snapshot data');
+      return;
+    }
+    await syncPost(snapshot, event, firestore);
+  },
+);
 
 // onPostUpdate
-export const onPostUpdate = functions.firestore
-  .document('/posts/{postId}')
-  .onUpdate(async (change, context) => {
-    await syncPost(change.after, context, firestore);
-  });
+export const onPostUpdate = onDocumentUpdated('posts/{postId}', async (event) => {
+    console.log('onPostUpdate triggered', event.params.postId);
+    const change = event.data;
+    if (!change) {
+      console.log('No change data');
+      return;
+    }
+    await syncPost(change.after, event, firestore);
+  },
+);
 
 // onActivityCreate
-export const onActivityCreate = functions.firestore
-  .document('/activities/{activityId}')
-  .onCreate(async (snapshot, context) => {
-    await notify(snapshot, context, firestore);
-  });
+export const onActivityCreate = onDocumentCreated('activities/{activityId}', async (event) => {
+    console.log('onActivityCreate triggered', event.params.activityId);
+    const snapshot = event.data;
+    if (!snapshot) {
+      console.log('No snapshot data');
+      return;
+    }
+    await notify(snapshot, event, firestore);
+  },
+);
 
 // onSecretCreate
-export const onSecretCreate = functions.firestore
-  .document('/secrets/{secretId}')
-  .onCreate(async (snapshot, context) => {
-    await scanSecret(snapshot, context, firestore);
-  });
+export const onSecretCreate = onDocumentCreated('secrets/{secretId}', async (event) => {
+    console.log('onSecretCreate triggered', event.params.secretId);
+    const snapshot = event.data;
+    if (!snapshot) {
+      console.log('No snapshot data');
+      return;
+    }
+    await scanSecret(snapshot, event, firestore);
+  },
+);
