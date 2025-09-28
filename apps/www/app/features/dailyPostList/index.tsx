@@ -4,8 +4,9 @@ import { FC, memo, useMemo } from 'react';
 import { DateLabel } from '~/components/DateLabel';
 import { type ItemMode, PostItem } from '~/components/PostItem';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import { Post } from '~/schemas/post';
 import { toDate } from '~/utils/date';
+
+import type { Post } from '@rippingyard/schemas';
 
 import {
   groupContainerStyle,
@@ -28,56 +29,56 @@ type DailyPosts = Record<
   }
 >;
 
-export const DailyPostList: FC<Props> = memo(
-  ({ posts = [], mode = 'list' }) => {
-    const dailyPosts = useMemo<DailyPosts | undefined>(() => {
-      if (!posts) return undefined;
+const DailyPostListComponent: FC<Props> = ({ posts = [], mode = 'list' }) => {
+  const dailyPosts = useMemo<DailyPosts | undefined>(() => {
+    if (!posts) return undefined;
 
-      const dailyPostObject: DailyPosts = {};
+    const dailyPostObject: DailyPosts = {};
 
-      for (const post of posts) {
-        const date = toDate(
-          post.publishedAt as unknown as TimestampType
-        ).subtract(5, 'hours');
-        const dateKey = date.format('YYYY-MM-DD');
+    for (const post of posts) {
+      const date = toDate(
+        post.publishedAt as unknown as TimestampType
+      ).subtract(5, 'hours');
+      const dateKey = date.format('YYYY-MM-DD');
 
-        if (!dailyPostObject[dateKey])
-          dailyPostObject[dateKey] = {
-            date,
-            posts: [],
-          };
+      if (!dailyPostObject[dateKey])
+        dailyPostObject[dateKey] = {
+          date,
+          posts: [],
+        };
 
-        // 登録済みの場合は排除
-        if (dailyPostObject[dateKey].posts.some((p) => p.id === post.id))
-          continue;
+      // 登録済みの場合は排除
+      if (dailyPostObject[dateKey].posts.some((p) => p.id === post.id))
+        continue;
 
-        dailyPostObject[dateKey].posts.push(post);
-      }
+      dailyPostObject[dateKey].posts.push(post);
+    }
 
-      return dailyPostObject;
-    }, [posts]);
+    return dailyPostObject;
+  }, [posts]);
 
-    if (!dailyPosts) return;
+  if (!dailyPosts) return;
 
-    return (
-      <>
-        {Object.keys(dailyPosts).map((date) => (
-          <div className={groupContainerStyle} key={`date_${date}`}>
-            <div className={labelContainerStyle}>
-              <div className={labelStyle}>
-                <DateLabel date={dailyPosts[date].date} />
-              </div>
+  return (
+    <>
+      {Object.keys(dailyPosts).map((date) => (
+        <div className={groupContainerStyle} key={`date_${date}`}>
+          <div className={labelContainerStyle}>
+            <div className={labelStyle}>
+              <DateLabel date={dailyPosts[date].date} />
             </div>
-            <ul className={listStyle}>
-              {dailyPosts[date].posts.map((post) => (
-                <li key={post.id} className={listItemStyle}>
-                  <PostItem post={post} mode={mode} />
-                </li>
-              ))}
-            </ul>
           </div>
-        ))}
-      </>
-    );
-  }
-);
+          <ul className={listStyle}>
+            {dailyPosts[date].posts.map((post) => (
+              <li key={post.id} className={listItemStyle}>
+                <PostItem post={post} mode={mode} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </>
+  );
+};
+
+export const DailyPostList = memo(DailyPostListComponent);

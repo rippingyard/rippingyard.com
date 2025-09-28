@@ -4,8 +4,8 @@ import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { IconTag } from '~/assets/icons/Tag';
 import { ComboBox } from '~/components/ComboBox';
 
-import { checkedEntityStyle, entityItemStyle, tagListStyle } from './style.css';
 import { SuggestedEntity } from '..';
+import { checkedEntityStyle, entityItemStyle, tagListStyle } from './style.css';
 
 type Props = {
   tags: string[];

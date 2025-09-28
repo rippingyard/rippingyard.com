@@ -9,9 +9,9 @@ const config: StorybookConfig = {
   },
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
+    // '@storybook/addon-essentials',
     // '@chromatic-com/storybook',
-    '@storybook/addon-interactions',
+    // '@storybook/addon-interactions',
     'storybook-addon-remix-react-router',
   ],
   framework: {
@@ -22,9 +22,9 @@ const config: StorybookConfig = {
       },
     },
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  // docs: {
+  //   autodocs: 'tag',
+  // },
   previewHead: (head) => `
     ${head}
     <link rel="stylesheet" href="https://unpkg.com/destyle.css@4.0.1/destyle.min.css">

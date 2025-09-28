@@ -1,5 +1,7 @@
-﻿import { style } from '@vanilla-extract/css';
+﻿import { styleVariants } from '@vanilla-extract/css';
 
-export const adStyle = style({
-  minHeight: 240,
+export const container = styleVariants({
+  square: { minHeight: 240 },
+  horizontal: { minHeight: 90 },
+  vertical: { minHeight: 240 },
 });

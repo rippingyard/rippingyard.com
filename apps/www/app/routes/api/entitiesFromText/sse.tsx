@@ -5,6 +5,7 @@ import {
   SuggestedCategory,
   SuggestedEntity,
 } from '~/features/postEditor/settingModal';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { commitSession, getMe, getSession } from '~/middlewares/session.server';
 
 export const config = {
@@ -46,9 +47,11 @@ const formatData = (dataObject: ServerMessage) =>
 export const loader = async ({ request }: { request: Request }) => {
   // 認証チェック
   const { uid } = await getMe(request);
+  const { t } = await translation(request);
+
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));
-    session.flash('alertMessage', '利用権限がありません。ログインしてください');
+    session.flash('alertMessage', t('error.noPermission'));
     return redirect('/login', {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -59,7 +62,7 @@ export const loader = async ({ request }: { request: Request }) => {
   // POSTリクエストからのリダイレクトではない場合
   return new Response(
     JSON.stringify({
-      error: 'このエンドポイントはPOSTリクエストでのみ使用できます',
+      error: t('error.invalidHttpMethod', { method: 'POST' }),
     }),
     {
       status: 400,
@@ -73,9 +76,11 @@ export const loader = async ({ request }: { request: Request }) => {
 export const action = async ({ request }: { request: Request }) => {
   // 認証チェック
   const { uid } = await getMe(request);
+  const { t } = await translation(request);
+
   if (!uid) {
     const session = await getSession(request.headers.get('Cookie'));
-    session.flash('alertMessage', '利用権限がありません。ログインしてください');
+    session.flash('alertMessage', t('error.noPermission'));
     return redirect('/login', {
       headers: {
         'Set-Cookie': await commitSession(session),
@@ -87,7 +92,11 @@ export const action = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
   const content = formData.get('content') as string;
 
-  if (!content) return data({ error: 'Content is required' }, { status: 400 });
+  if (!content)
+    return data(
+      { error: t('error.requiredField', { field: t('content') }) },
+      { status: 400 }
+    );
 
   // ストリーミング用のTransformStream
   const stream = new TransformStream();
@@ -111,9 +120,9 @@ export const action = async ({ request }: { request: Request }) => {
   (async () => {
     try {
       const openai = new OpenAI({
-        apiKey: process.env.VITE_OPENAI_APIKEY,
-        organization: process.env.VITE_OPENAI_ORGANIZATION_ID,
-        project: process.env.VITE_OPENAI_PROJECT_ID,
+        apiKey: process.env.OPENAI_APIKEY,
+        organization: process.env.OPENAI_ORGANIZATION_ID,
+        project: process.env.OPENAI_PROJECT_ID,
       });
 
       // スレッドとメッセージの作成
@@ -125,7 +134,7 @@ export const action = async ({ request }: { request: Request }) => {
 
       // Runの作成
       const run = await openai.beta.threads.runs.create(thread.id, {
-        assistant_id: process.env.VITE_OPENAI_ENTITY_ASSISTANT as string,
+        assistant_id: process.env.OPENAI_ENTITY_ASSISTANT as string,
       });
 
       // ステータスをポーリングして進捗を送信

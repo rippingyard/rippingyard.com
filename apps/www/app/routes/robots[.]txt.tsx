@@ -1,12 +1,9 @@
 ﻿export const loader = () => {
   const robotText = `
-      User-agent: Googlebot
-      Disallow: /nogooglebot/
-  
       User-agent: *
       Allow: /
   
-      Sitemap: http://www.rippingyard.com/sitemap.xml
+      Sitemap: https://www.rippingyard.com/sitemap.xml
       `;
   return new Response(robotText, {
     status: 200,

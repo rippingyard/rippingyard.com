@@ -2,18 +2,18 @@
 
 import { rootVars } from '~/styles/vars.css';
 
-export const containerStyle = style({
+export const container = style({
   marginBottom: 32,
 });
 
-export const contentWithNoTitleStyle = style({
+export const contentWithNoTitle = style({
   padding: 0,
   // paddingBottom: 0,
   // background: vars.color.highlight,
   // borderRadius: rootVars.border.radius.normal,
 });
 
-export const headingStyle = style({
+export const heading = style({
   outline: 'none',
   // lineHeight: 1.8,
   overflow: 'hidden',
@@ -24,16 +24,20 @@ export const headingStyle = style({
   paddingTop: rootVars.font.size['xxx-large'],
 });
 
-globalStyle(`${headingStyle} a`, {
+globalStyle(`${heading} a`, {
   textDecoration: 'none',
   color: 'inherit',
 });
 
-globalStyle(`${headingStyle} a:hover`, {
+globalStyle(`${heading} a:hover`, {
   textDecoration: 'underline',
   cursor: 'pointer',
 });
 
-export const footerStyle = style({
+export const tags = style({
+  marginBottom: 8,
+});
+
+export const footer = style({
   fontSize: rootVars.font.size.small,
 });

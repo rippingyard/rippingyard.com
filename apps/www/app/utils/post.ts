@@ -1,4 +1,4 @@
-﻿import { Post } from '~/schemas/post';
+﻿import type { Post } from '@rippingyard/schemas';
 
 export const sortPosts = (items: Post[]) => {
   items.sort((a, b) => (a.publishedAt > b.publishedAt ? -1 : 1));
@@ -6,12 +6,12 @@ export const sortPosts = (items: Post[]) => {
 };
 
 export const PostStatusLabel: Record<string, string> = {
-  published: '公開済',
-  drafted: '非公開',
+  published: 'post.statusLabel.published',
+  drafted: 'post.statusLabel.drafted',
 };
 
 export const PostTypeLabel: Record<string, string> = {
-  article: '記事',
-  note: 'ノート',
-  log: '記録',
+  article: 'post.typeLabel.article',
+  note: 'post.typeLabel.note',
+  log: 'post.typeLabel.log',
 };

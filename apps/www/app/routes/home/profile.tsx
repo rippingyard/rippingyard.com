@@ -7,23 +7,24 @@ import { ProfileEditor } from '~/features/profileEditor';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { useUserFormData } from '~/hooks/form/useUserFormData';
 import { useSaveUser } from '~/hooks/save/useSaveUser.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
-import { User } from '~/schemas/user';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
+
+import type { User } from '@rippingyard/schemas';
 
 import { Route } from './+types/profile';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = 'プロフィール編集';
+    const { t } = await translation(request);
+    const title = t('profile.edit');
     const canonicalUrl = new URL('home/profile', request.url).toString();
 
     const { uid } = await getMe(request);
-    console.log('uid', uid);
     if (!uid) throw new Error('You have to login');
 
     const { user: me } = await useUser(uid);
-    console.log('uid', uid);
     if (!me) throw new Error('User Not Found');
 
     return {
@@ -42,7 +43,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
   try {
     const { uid } = await getMe(request);
-    console.log('uid on action', uid);
     if (!uid) throw new Error('Unauthenticated');
 
     const { user } = await useUser(uid);
@@ -80,7 +80,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';

@@ -1,8 +1,9 @@
-﻿import { Timestamp } from 'firebase-admin/firestore';
+﻿import { FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
-import { Post, PostSchema } from '~/schemas/post';
+import { type Post, PostSchema } from '@rippingyard/schemas';
 
+import { useEmbedding } from '../embedding/useEmbedding.server';
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';
 
@@ -61,6 +62,10 @@ const savePost = async (
 
     const oldPost = (await postDoc.get()).data() as Partial<Post>;
 
+    // Embedding
+    const { embedding } = useEmbedding();
+    const vector = await embedding(contentBody);
+
     const post: Partial<Post> = {
       slug: '',
       status: 'drafted',
@@ -76,6 +81,7 @@ const savePost = async (
       content,
       tags,
       suggestedTags,
+      vector: FieldValue.vector(vector),
       updatedAt: Timestamp.now(),
     };
 
@@ -111,10 +117,11 @@ const savePost = async (
     // })
 
     return { post };
-  } catch (e) {
-    if (e instanceof ZodError) {
+  } catch (e: any) {
+    console.log('Error constructor name:', e?.constructor?.name);
+    console.log('Error name:', e?.name);
+    if (e instanceof ZodError || e?.name === 'ZodError') {
       const flattened = e.flatten();
-      console.log('flattened', flattened);
       throw flattened;
     }
 

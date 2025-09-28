@@ -6,13 +6,14 @@ import { useActionData, useLoaderData, useNavigate } from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
-import { useMyTags } from '~/hooks/fetch/useMyTags.server.ts';
+import { useMyTags } from '~/hooks/fetch/useMyTags.server';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { useSavePost } from '~/hooks/save/useSavePost.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle, edgeStyle } from '~/styles/container.css';
 
@@ -25,8 +26,9 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
 
   try {
     if (!postId) throw new Error();
+    const { t } = await translation(request);
 
-    const title = '記事編集';
+    const title = t('post.edit');
     const action = usePostEditLink(postId);
     const canonicalUrl = new URL(action, request.url).toString();
 
@@ -98,7 +100,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';

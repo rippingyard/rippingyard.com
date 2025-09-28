@@ -6,8 +6,10 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { Post, PostStatus, PostType } from '~/schemas/post';
-import { getMainTitle, removeMainTitle } from '~/utils/typography';
+import { getMainTitle } from '~/utils/typography';
+
+import type { Post, PostStatus, PostType } from '@rippingyard/schemas';
+import { removeMainTitle } from '@rippingyard/utils';
 
 import { SettingModal } from './settingModal';
 import { StatusHeader } from './statusHeader';
@@ -60,7 +62,7 @@ export const PostEditor: FC<Props> = ({
 
   const [hasTitle, setHasTitle] = useState(!!title);
 
-  const [type] = useState<PostType>('article');
+  const [type] = useState<PostType>(post?.type ?? 'article');
   const [isPublic, setIsPublic] = useState<boolean>(post?.isPublic ?? true);
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'published');
 

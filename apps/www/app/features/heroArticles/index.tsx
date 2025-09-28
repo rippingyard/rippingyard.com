@@ -2,7 +2,8 @@
 import { FC, memo, useState } from 'react';
 
 import { PostItem } from '~/components/PostItem';
-import { Post } from '~/schemas/post';
+
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,
@@ -21,7 +22,7 @@ type Props = {
   label?: string;
 };
 
-export const HeroArticles: FC<Props> = memo(({ posts = [], label }) => {
+const HeroArticlesComponent: FC<Props> = ({ posts = [], label }) => {
   const [index, setIndex] = useState<number>(0);
 
   return (
@@ -53,4 +54,6 @@ export const HeroArticles: FC<Props> = memo(({ posts = [], label }) => {
       </ul>
     </div>
   );
-});
+};
+
+export const HeroArticles = memo(HeroArticlesComponent);

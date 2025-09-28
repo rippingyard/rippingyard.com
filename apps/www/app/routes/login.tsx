@@ -2,8 +2,10 @@
 import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
+import { ErrorComponent } from '~/features/error';
 import { Login } from '~/features/login';
 import { useUser } from '~/hooks/fetch/useUser.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import {
   commitSession,
   getSession,
@@ -15,7 +17,8 @@ import type { Route } from './+types/login';
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   try {
-    const title = 'ログイン';
+    const { t } = await translation(request);
+    const title = t('login');
     const canonicalUrl = new URL('login', request.url).toString();
     const { uid } = await getMe(request);
 
@@ -58,14 +61,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
         },
       }
     );
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    throw new Response('Error', { status: 401 });
+    throw new Response(e, { status: 401 });
   }
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
-  const { title, canonicalUrl } = data;
+  const { title, canonicalUrl } = data as any;
 
   const htmlTitle = `${title} - rippingyard`;
   const image = '/images/ogimage.png';
@@ -94,3 +97,7 @@ export default function Main() {
     </>
   );
 }
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+  <ErrorComponent error={error as Error} />
+);

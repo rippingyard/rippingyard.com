@@ -1,7 +1,8 @@
 ﻿import { FC, memo } from 'react';
 
 import { type ItemMode, PostItem } from '~/components/PostItem';
-import { Post } from '~/schemas/post';
+
+import type { Post } from '@rippingyard/schemas';
 
 import { containerStyle, itemStyle } from './style.css';
 
@@ -10,7 +11,7 @@ type Props = {
   mode?: ItemMode;
 };
 
-export const PostList: FC<Props> = memo(({ posts = [], mode = 'list' }) => {
+const PostListComponent: FC<Props> = ({ posts = [], mode = 'list' }) => {
   return (
     <ul className={containerStyle}>
       {posts.map((post) => (
@@ -20,4 +21,6 @@ export const PostList: FC<Props> = memo(({ posts = [], mode = 'list' }) => {
       ))}
     </ul>
   );
-});
+};
+
+export const PostList = memo(PostListComponent);

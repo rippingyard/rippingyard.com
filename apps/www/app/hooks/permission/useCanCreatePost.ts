@@ -1,5 +1,6 @@
-﻿import { Role } from '~/schemas/user';
-import { isSuperUser, isAnonymous } from '~/utils/permission';
+﻿import { isSuperUser, isAnonymous } from '~/utils/permission';
+
+import type { Role } from '@rippingyard/schemas';
 
 const canCreatePost = (role: Role) => {
   if (isSuperUser(role)) return true;

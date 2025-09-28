@@ -5,8 +5,9 @@ import {
   getSummary,
   getThumbnailFromText,
   getTitle,
-  removeTitle,
 } from '~/utils/typography';
+
+import { removeTitle } from '@rippingyard/utils';
 
 import { useContentBlocks } from './useContentBlocks';
 

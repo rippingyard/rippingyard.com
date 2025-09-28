@@ -1,9 +1,11 @@
 ﻿import { FC, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Table, TableItem } from '~/components/Table';
 import { TimestampType } from '~/hooks/normalize/useDate';
-import { Post } from '~/schemas/post';
 import { getTitle } from '~/utils/typography';
+
+import type { Post } from '@rippingyard/schemas';
 
 import { PostTableDate } from './postTableDate';
 import { PostTableItem } from './postTableItem';
@@ -11,34 +13,35 @@ import { PostTableStatus } from './postTableStatus';
 import { PostTableThumbnail } from './postTableThumbnail';
 import { PostTableType } from './postTableType';
 
-const columns = [
-  {
-    key: 'publishDate',
-    label: '公開日',
-    width: 80,
-  },
-  {
-    key: 'content',
-    label: 'コンテンツ',
-  },
-  {
-    key: 'thumbnail',
-    label: '画像',
-  },
-  {
-    key: 'type',
-    label: '投稿タイプ',
-    width: 100,
-  },
-  {
-    key: 'status',
-    label: '公開設定',
-    width: 100,
-  },
-];
-
 export const PostTable: FC<{ posts: Post[] }> = ({ posts }) => {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const { t } = useTranslation();
+
+  const columns = [
+    {
+      key: 'publishDate',
+      label: t('publishDate'), //公開日
+      width: 80,
+    },
+    {
+      key: 'content',
+      label: t('content'), //コンテンツ
+    },
+    {
+      key: 'thumbnail',
+      label: t('image'), //画像
+    },
+    {
+      key: 'type',
+      label: t('post.type'), //投稿タイプ
+      width: 100,
+    },
+    {
+      key: 'status',
+      label: t('post.status'), //'公開設定'
+      width: 100,
+    },
+  ];
 
   const isCheckedAll = useMemo(
     () => posts.length === checkedItems.length,

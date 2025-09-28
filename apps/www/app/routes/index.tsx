@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Await, useLoaderData, useNavigate } from 'react-router';
 
+import { Adsense, ADSENSE_IDS } from '~/components/Adsense';
 import { Button } from '~/components/Button';
 import { DailyPostList } from '~/features/dailyPostList';
 import { Loading } from '~/features/loading';
@@ -12,13 +14,15 @@ import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '~/schemas/post';
 import {
   containerStyle,
   edgeStyle,
   wideContainerStyle,
 } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { sortPosts } from '~/utils/post';
+
+import type { Post } from '@rippingyard/schemas';
 
 import type { Route } from './+types/index';
 
@@ -65,9 +69,19 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   };
 };
 
+export function headers(_: Route.HeadersArgs) {
+  return {
+    'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
+    Vary: 'Cookie',
+    'X-Frame-Options': 'DENY',
+    'X-Content-Type-Options': 'nosniff',
+  };
+}
+
 export default function Index() {
   const navigate = useNavigate();
   const { logs, articles: initialArticles } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
 
   const { items: articles } = useInifiniteItems<Post>({
     key: CACHE_KEYS.PUBLIC_ARTICLES,
@@ -87,17 +101,24 @@ export default function Index() {
     <>
       <Suspense fallback={<Loading />}>
         <Await resolve={sortedArticles}>
-          <div className={clsx(wideContainerStyle, edgeStyle)}>
-            <TopBillboard posts={sortedArticles} />
-          </div>
+          {sortedArticles.length > 0 && (
+            <div className={clsx(wideContainerStyle, edgeStyle)}>
+              <TopBillboard posts={sortedArticles} />
+            </div>
+          )}
         </Await>
         <main className={containerStyle}>
-          <Await resolve={sortedPosts}>
-            <DailyPostList posts={sortedPosts} mode="detail" />
-            <Button isWide onClick={() => navigate('posts')}>
-              もっと読む
-            </Button>
-          </Await>
+          <div className={articleSectionStyle}>
+            <Await resolve={sortedPosts}>
+              <DailyPostList posts={sortedPosts} mode="detail" />
+              <Button isWide onClick={() => navigate('posts')}>
+                {t('readMore')}
+              </Button>
+            </Await>
+          </div>
+          <div className={articleSectionStyle}>
+            <Adsense slot={ADSENSE_IDS.TOP_BOTTOM} />
+          </div>
         </main>
       </Suspense>
     </>

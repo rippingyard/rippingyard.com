@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,

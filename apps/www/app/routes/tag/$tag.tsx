@@ -1,23 +1,30 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { Await, useLoaderData } from 'react-router';
+import { Await, useAsyncError, useLoaderData } from 'react-router';
 
 import { IconTag } from '~/assets/icons/Tag';
+import { Adsense, ADSENSE_IDS } from '~/components/Adsense';
 import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
-import { Loading } from '~/features/loading';
+import { Skelton } from '~/components/Skelton';
+import { TagDescription } from '~/components/TagDescription';
 import { PostList } from '~/features/postList';
 import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useTagDescription } from '~/hooks/llm/useTagDescription.server';
 import { TimestampType } from '~/hooks/normalize/useDate';
 import { getMe } from '~/middlewares/session.server';
-import { Post } from '~/schemas/post';
 import { containerStyle } from '~/styles/container.css';
+import { articleSectionStyle } from '~/styles/section.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
+import { isSPA } from '~/utils/request';
+
+import type { Post } from '@rippingyard/schemas';
 
 import type { Route } from '../tag/+types/$tag';
 
@@ -53,9 +60,20 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const { data: items } = await usePosts(args);
 
+  const { fetchTagDescription } = useTagDescription();
+
+  console.log('isSPA?', isSPA(request));
+
   return {
     items,
     tag,
+    description:
+      items.length > 0
+        ? fetchTagDescription(
+            tag,
+            items.map((i) => i.content)
+          )
+        : undefined,
     canonicalUrl,
   };
 };
@@ -84,7 +102,12 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Index() {
-  const { items: initialItems, tag } = useLoaderData<typeof loader>();
+  const {
+    items: initialItems,
+    tag,
+    description,
+  } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
   const key = `${CACHE_KEYS.PUBLIC_POSTS}_${tag}`;
   const [canAutoload] = useState(true);
 
@@ -121,8 +144,18 @@ export default function Index() {
         <IconTag /> {tag}
       </Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={posts}>
+        {(sortedPosts.length > 0 && (
+          <>
+            <Suspense fallback={<Skelton width="100%" height={360} />}>
+              <Await resolve={description} errorElement={<ReviewsError />}>
+                {(description) =>
+                  description && <TagDescription description={description} />
+                }
+              </Await>
+            </Suspense>
+            <div className={articleSectionStyle}>
+              <Adsense slot={ADSENSE_IDS.TAG_HEAD} type="horizontal" />
+            </div>
             <PostList posts={sortedPosts} mode="detail" />
             {!isCompleted && query && (
               <Button
@@ -132,12 +165,20 @@ export default function Index() {
                 isGhost
                 onClick={() => loadMore(query)}
               >
-                もっと読む
+                {t('readMore')}
               </Button>
             )}
-          </Await>
-        </Suspense>
+          </>
+        )) || <p>{t('article.notFound')}</p>}
+        <div className={articleSectionStyle}>
+          <Adsense slot={ADSENSE_IDS.TAG_BOTTOM} type="horizontal" />
+        </div>
       </main>
     </>
   );
+}
+
+function ReviewsError() {
+  const error = useAsyncError() as Error;
+  return <div>Error loading reviews: {error?.message}</div>;
 }

@@ -1,4 +1,5 @@
 ﻿import { FC, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, useNavigation } from 'react-router';
 import { typeToFlattenedError } from 'zod';
 
@@ -6,7 +7,8 @@ import { Button } from '~/components/Button';
 import { FormField } from '~/components/FormField';
 import { FormInput } from '~/components/FormInput';
 import { Wysiwyg } from '~/components/Wysiwyg';
-import { User } from '~/schemas/user';
+
+import type { User } from '@rippingyard/schemas';
 
 import { AvatarEditor } from './avatarEditor';
 import {
@@ -32,6 +34,8 @@ export const ProfileEditor: FC<Props> = ({
 }) => {
   const navigation = useNavigation();
 
+  const { t } = useTranslation();
+
   const isLoading = useMemo(
     () => navigation.formAction === action && navigation.state === 'submitting',
     [action, navigation.formAction, navigation.state]
@@ -54,7 +58,7 @@ export const ProfileEditor: FC<Props> = ({
       <header className={headerStyle}>
         <div className={headerNameStyle}>
           <FormField
-            label="表示名"
+            label={t('profile.displayName')}
             id="displayName"
             errors={errors?.fieldErrors?.displayName}
           >
@@ -79,7 +83,7 @@ export const ProfileEditor: FC<Props> = ({
 
       <section className={bodyStyle}>
         <FormField
-          label="アカウント名"
+          label={t('profile.userName')}
           id="userName"
           errors={errors?.fieldErrors?.userName}
         >
@@ -92,7 +96,7 @@ export const ProfileEditor: FC<Props> = ({
         </FormField>
 
         <FormField
-          label="プロフィール"
+          label={t('profile.profile')}
           id="profile"
           errors={errors?.fieldErrors?.profile}
         >
@@ -109,7 +113,7 @@ export const ProfileEditor: FC<Props> = ({
           isWide
           color="success"
         >
-          更新
+          {t('update')}
         </Button>
       </footer>
     </Form>

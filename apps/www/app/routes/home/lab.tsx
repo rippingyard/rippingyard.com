@@ -1,8 +1,11 @@
 ﻿import OpenAI from 'openai';
 import { useEffect, useState } from 'react';
-import { Form, useActionData } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { Form } from 'react-router';
 
-import { Prompt } from '~/features/prompt';
+import { Button } from '~/components/Button';
+import { FormInput } from '~/components/FormInput';
+import { Heading } from '~/components/Heading';
 
 import { Route } from './+types/lab';
 
@@ -14,31 +17,30 @@ export const action = async ({ request }: Route.ActionArgs) => {
   try {
     const formData = await request.formData();
 
-    const prompt = formData.get('prompt') as string;
-    const rawMessages = formData.getAll('messages') as string[];
+    const interest = formData.get('interest') as string;
 
-    const messages = rawMessages.map(
-      (str) =>
-        JSON.parse(str) as OpenAI.Chat.Completions.ChatCompletionMessageParam
-    );
-
-    console.log('messages', messages);
+    console.log('interest', interest);
 
     const openai = new OpenAI({
-      apiKey: process.env.VITE_OPENAI_APIKEY,
-      organization: process.env.VITE_OPENAI_ORGANIZATION_ID,
-      project: process.env.VITE_OPENAI_PROJECT_ID,
+      apiKey: process.env.OPENAI_APIKEY,
+      organization: process.env.OPENAI_ORGANIZATION_ID,
+      project: process.env.OPENAI_PROJECT_ID,
     });
 
     const chat = await openai.chat.completions.create({
-      messages: [...messages, { role: 'user', content: prompt }],
-      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          content: `ユーザーが今興味のあることは以下です。${interest}`,
+          role: 'user',
+        },
+      ],
+      model: 'gpt-4o',
       // stream: true,
     });
 
     return {
       chat,
-      prompt,
+      // prompt,
     };
   } catch (e) {
     console.error(e);
@@ -46,8 +48,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
   }
 };
 
-export default function Index() {
-  const data = useActionData<typeof action>();
+export default function Index({ actionData: data }: Route.ComponentProps) {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<
     OpenAI.Chat.Completions.ChatCompletionMessageParam[]
   >([]);
@@ -76,7 +78,28 @@ export default function Index() {
 
   return (
     <Form method="POST">
-      <Prompt messages={messages} />
+      <Heading level="partial">{t('caption.whatIsYourCuriosity')}</Heading>
+      <FormInput name="interest" />
+      <Button>{t('send')}</Button>
+      <hr />
+      <ul>
+        {messages.map((message, index) => (
+          <li
+            key={`chat-item-${index}`}
+            // className={clsx([
+            //   itemStyle,
+            //   message.role === 'user' ? userStyle : assistantStyle,
+            // ])}
+          >
+            {`${message.content}`}
+            <input
+              type="hidden"
+              name="messages"
+              value={JSON.stringify(message)}
+            />
+          </li>
+        ))}
+      </ul>
     </Form>
   );
 }

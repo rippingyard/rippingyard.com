@@ -1,11 +1,10 @@
 ﻿import {
-  DocumentData,
   DocumentReference,
   OrderByDirection,
   Timestamp,
 } from 'firebase-admin/firestore';
 
-import { Post } from '~/schemas/post';
+import type { Post } from '@rippingyard/schemas';
 
 type WhereOp = '==' | 'in' | '!=' | 'array-contains-any';
 type WhereValue =
@@ -13,7 +12,7 @@ type WhereValue =
   | number
   | boolean
   | string[]
-  | DocumentReference<DocumentData>;
+  | DocumentReference<any>; // Firebaseのドキュメント参照
 
 type WhereParam = {
   key: string;
@@ -32,10 +31,15 @@ export type QueryParams<T> = {
   collection: string;
   myId?: string;
   where?: WhereParams;
+  findNearest?: {
+    vector: number[];
+    limit?: number;
+    distanceMeasure?: 'COSINE' | 'EUCLIDEAN' | 'DOT_PRODUCT';
+  };
   limit?: number;
   startAfter?: string | number | Timestamp;
   orderBy?: OrderBy;
-  lastVisible?: DocumentData;
+  // lastVisible?: DocumentData; // サーバーサイドで未使用のため削除
   removeWhereKeys?: string[];
   initialData?: T[];
 };

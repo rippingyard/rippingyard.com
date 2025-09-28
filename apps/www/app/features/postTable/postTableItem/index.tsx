@@ -1,5 +1,6 @@
 ﻿import clsx from 'clsx';
 import { FC, ReactNode, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Buttons } from '~/components/Buttons';
 import { Link } from '~/components/Link';
@@ -8,8 +9,9 @@ import { PostTags } from '~/components/PostTags';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import { Post } from '~/schemas/post';
 import { getSummary } from '~/utils/typography';
+
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,
@@ -26,6 +28,8 @@ type Props = {
 export const PostTableItem: FC<Props> = ({ post }) => {
   if (!post) return;
 
+  const { t } = useTranslation();
+
   const { title, content, hasTitleBlock } = usePostContents(post.content);
 
   const postLink = usePostLink();
@@ -37,11 +41,11 @@ export const PostTableItem: FC<Props> = ({ post }) => {
 
   const buttonItems: ReactNode[] = useMemo(
     () => [
-      <Link to={permalink} target="_blank" size="x-small">
-        詳細
+      <Link to={permalink} target="_blank" size="x-small" key="buttons-detail">
+        {t('detail')}
       </Link>,
-      <Link to={editLink} size="x-small">
-        編集
+      <Link to={editLink} size="x-small" key="buttons-edit">
+        {t('edit')}
       </Link>,
     ],
     [editLink, permalink]
@@ -70,7 +74,7 @@ export const PostTableItem: FC<Props> = ({ post }) => {
         </div>
       )}
       <div className={footerStyle}>
-        <Buttons items={buttonItems} />
+        <Buttons items={buttonItems} name={`edit-post-${post?.id}`} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 ﻿import { Timestamp } from 'firebase-admin/firestore';
 import { ZodError } from 'zod';
 
-import { Cache, CacheSchema } from '~/schemas/cache';
+import { type Cache, CacheSchema } from '@rippingyard/schemas';
 
 import { useFirestore } from '../firestore/useFirestore.server';
 
@@ -28,8 +28,6 @@ const saveCache = async (payload: Partial<CachePayload>) => {
     };
 
     if (expiredAt !== undefined) cache.expiredAt = expiredAt;
-
-    console.log('newCache', cache);
 
     // Validation
     CacheSchema.parse(cache);

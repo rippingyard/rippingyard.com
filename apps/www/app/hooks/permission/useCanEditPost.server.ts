@@ -1,6 +1,7 @@
-﻿import { Post } from '~/schemas/post';
-import { Role } from '~/schemas/user';
-import { isAnonymous, isSuperUser } from '~/utils/permission';
+﻿import { isAnonymous, isSuperUser } from '~/utils/permission';
+import { getDocumentReferenceId } from '~/utils/sanitizeFirestoreData';
+
+import type { Post, Role } from '@rippingyard/schemas';
 
 import { useDocReference } from '../firestore/useDocReference.server';
 
@@ -11,7 +12,8 @@ const canEditPost = (uid: string | null, role: Role, post: Post) => {
 
   const userDoc = useDocReference(uid, 'users');
 
-  return userDoc && post.owner?.id === userDoc.id;
+  const ownerId = getDocumentReferenceId(post.owner);
+  return userDoc && ownerId === userDoc.id;
 };
 
 export const useCanEditPost = () => canEditPost;

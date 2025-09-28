@@ -1,8 +1,10 @@
 ﻿import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { PostItem } from '~/components/PostItem';
-import { PostAsSearchResult } from '~/schemas/post';
 import { hitToPost } from '~/utils/search';
+
+import type { PostAsSearchResult } from '@rippingyard/schemas';
 
 import { noResultStyle } from './style.css';
 
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export const SearchResult: FC<Props> = ({ posts = [], query = '' }) => {
+  const { t } = useTranslation();
   const items = useMemo(
     () =>
       posts.filter((item) => {
@@ -27,7 +30,7 @@ export const SearchResult: FC<Props> = ({ posts = [], query = '' }) => {
 
   return (
     <>
-      {(isEmpty && <p className={noResultStyle}>結果なし</p>) || (
+      {(isEmpty && <p className={noResultStyle}>{t('noResult')}</p>) || (
         <ul>
           {items.map((item) => (
             <li key={item.objectID}>

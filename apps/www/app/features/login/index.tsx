@@ -7,8 +7,9 @@ import { Errors } from '~/components/Errors';
 import { FormField } from '~/components/FormField';
 import { FormInput } from '~/components/FormInput';
 import { useLogin } from '~/hooks/firebase/useLogin';
-import { Auth } from '~/schemas/auth';
 import { containerStyle } from '~/styles/container.css';
+
+import type { Auth } from '@rippingyard/schemas';
 
 export const Login: FC = () => {
   const [pending, setPending] = useState(false);
@@ -21,39 +22,43 @@ export const Login: FC = () => {
   const passwordId = 'password';
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setPending(true);
+    try {
+      event.preventDefault();
+      setPending(true);
+      setErrors(new ZodError<Auth>([]).flatten());
 
-    setErrors(new ZodError<Auth>([]).flatten());
-    const formData = new FormData(event.currentTarget);
+      const formData = new FormData(event.currentTarget);
+      const email = (formData.get('email') || '') as string;
+      const password = (formData.get('password') || '') as string;
+      const { user, token, errors } = await useLogin({
+        email,
+        password,
+      });
 
-    const email = (formData.get('email') || '') as string;
-    const password = (formData.get('password') || '') as string;
+      // console.log('authedUser', user);
 
-    const { user, token, errors } = await useLogin({
-      email,
-      password,
-    });
-    // console.log('authedUser', user);
+      setErrors(errors);
 
-    setErrors(errors);
-
-    if (!user) {
-      setPending(false);
-      return;
-    }
-
-    submit(
-      { token, uid: user?.uid || '' },
-      {
-        method: 'POST',
-        action: '/login',
-        navigate: false,
-        replace: false,
+      if (!user) {
+        setPending(false);
+        return;
       }
-    );
 
-    setPending(false);
+      submit(
+        { token, uid: user?.uid || '' },
+        {
+          method: 'POST',
+          action: '/login',
+          navigate: false,
+          replace: false,
+        }
+      );
+
+      setPending(false);
+    } catch (e) {
+      console.error(e);
+      setPending(false);
+    }
   };
 
   return (

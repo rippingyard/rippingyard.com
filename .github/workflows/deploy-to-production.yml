@@ -1,18 +1,21 @@
-name: "[functions:node] Deploy to Production"
+name: '[functions:node] Deploy to Production'
 
 on:
   push:
     branches:
       - main
     paths:
-      - "apps/functions"
-      - "package.json"
+      - 'apps/functions/**'
+      - 'packages/schemas/**'
+      - 'packages/utils/**'
+      - 'firebase.json'
+      - 'package.json'
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -29,8 +32,28 @@ jobs:
           args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" --project production
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install
+      - name: Schemas - Build for production
+        working-directory: packages/schemas
+        run: |
+          pnpm build
+          echo "Schemas build output:"
+          ls -la dist/ | head -10
+      - name: Utils - Build for production
+        working-directory: packages/utils
+        run: |
+          pnpm build
+          echo "Utils build output:"
+          ls -la dist/ | head -10
       - name: Functions - Build for production
-        run: pnpm install && cd apps/functions && pnpm build
+        working-directory: apps/functions
+        run: |
+          rm -rf dist
+          pnpm build
+          node scripts/inline-local-packages.js
+      - name: Verify build output
+        run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to production
         uses: w9jds/firebase-action@master
         with:

@@ -1,4 +1,4 @@
-﻿import { PostStatus, PostType, SuggestedTag } from '~/schemas/post';
+﻿import type { PostStatus, PostType, SuggestedTag } from '@rippingyard/schemas';
 
 export const usePostFormData = async (request: Request) => {
   const formData = await request.formData();

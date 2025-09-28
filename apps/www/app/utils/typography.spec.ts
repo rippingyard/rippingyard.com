@@ -1,14 +1,12 @@
-﻿import { describe, it, expect } from 'vitest';
-
-import {
+﻿import {
   nl2br,
   removeHtmlTags,
-  removeTitle,
-  hasTitle,
   removeMainTitle,
-  getTitle,
-  getMainTitle,
-} from './typography';
+  removeTitle,
+} from '@rippingyard/utils';
+import { describe, it, expect } from 'vitest';
+
+import { hasTitle, getTitle, getMainTitle } from './typography';
 
 const html =
   '<h1>タイトル</h1><h2>h2タイトル</h2><h3>h3タイトル</h3><p>本文<a href="https://www.rippingyard.com" target="_blank">リンク</a></p>';

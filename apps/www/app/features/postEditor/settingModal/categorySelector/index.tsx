@@ -1,10 +1,10 @@
 ﻿import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 
-import { Category } from '~/schemas/entity';
+import type { Category } from '@rippingyard/schemas';
 
-import { itemStyle, listStyle, selectedItemStyle } from './style.css';
 import { SuggestedCategory } from '..';
+import { itemStyle, listStyle, selectedItemStyle } from './style.css';
 
 type Props = {
   selectedCategories: SuggestedCategory[];

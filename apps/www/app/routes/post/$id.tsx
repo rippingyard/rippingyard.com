@@ -1,4 +1,5 @@
-﻿import { Suspense, useMemo } from 'react';
+﻿import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Await, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
@@ -6,20 +7,24 @@ import { Article } from '~/components/Article';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { PostTags } from '~/components/PostTags';
-import { Loading } from '~/features/loading';
+import { Skelton } from '~/components/Skelton';
 import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
 import { UserCard } from '~/features/userCard';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
+import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
+import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { articleFooterStyle, articleSectionStyle } from '~/styles/section.css';
+import { isSPA } from '~/utils/request';
+import { getDocumentReferenceId } from '~/utils/sanitizeFirestoreData';
 import { getSummary, getThumbnailFromText, getTitle } from '~/utils/typography';
 
 import type { Route } from './+types/$id';
@@ -27,36 +32,57 @@ import type { Route } from './+types/$id';
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   try {
     const { id } = params;
+    const { t } = await translation(request);
     const canEditPost = useCanEditPost();
     const postLink = usePostLink();
 
-    if (!id) throw new Error();
+    if (!id) throw new Error(t('error.notFound'), { cause: 404 });
 
     const { post } = await usePost(id, request);
-    if (!post) throw new Error();
+    if (!post) throw new Error(t('error.notFound'), { cause: 404 });
 
-    const { data: nextPosts } = await usePosts({
-      limit: 5,
-      startAfter: post.publishedAt,
-    });
+    const fetchOwner = async () => {
+      // ownerが存在しない場合はnullを返す
+      const ownerId = getDocumentReferenceId(post?.owner);
+      if (!ownerId) return null;
+      const { user: owner } = await useUser(ownerId);
+      return owner;
+    };
+
+    const fetchLatestPosts = async () => {
+      const { data } = await usePosts({
+        limit: 9,
+        startAfter: post.publishedAt,
+      });
+      return data;
+    };
+
+    const fetchRelatedPosts = async () =>
+      await useRelatedPosts(post, {
+        limit: 12,
+      });
 
     const path = postLink(post.id);
     const canonicalUrl = new URL(path, request.url).toString();
     const { uid, role } = await getMe(request);
 
-    const { user: owner } = await useUser(post?.owner?.id || '');
-
     return {
       post,
-      owner,
-      nextPosts,
+      // SPA遷移時はPromiseをそのまま返し、SSR時はawaitする
+      owner: isSPA(request) ? fetchOwner() : await fetchOwner(),
+      latestPosts: isSPA(request)
+        ? fetchLatestPosts()
+        : await fetchLatestPosts(),
+      relatedPosts: isSPA(request)
+        ? fetchRelatedPosts()
+        : await fetchRelatedPosts(),
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     };
   } catch (e) {
     console.error(e);
-    throw new Response('Not Found', { status: 404 });
+    throw e;
   }
 };
 
@@ -93,51 +119,78 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main() {
-  const { post, owner, nextPosts, canEditPost } =
+  const { post, owner, latestPosts, canEditPost, relatedPosts } =
     useLoaderData<typeof loader>();
 
-  const hasNext = useMemo(() => nextPosts.length > 0, [nextPosts.length]);
+  const { t } = useTranslation();
+
   const editLink = usePostEditLink(post.id);
 
   return (
     <>
       <Heading>Post</Heading>
       <main className={containerStyle}>
-        <Suspense fallback={<Loading />}>
-          <Await resolve={post}>
-            <section className={articleSectionStyle}>
-              <PostHeader post={post} />
-              <Article text={post.content} />
-              {owner && (
-                <div className={articleSectionStyle}>
-                  <UserCard user={owner} />
-                </div>
-              )}
-              <div className={articleSectionStyle}>
-                <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
-              </div>
-              {post?.tags && (
-                <div className={articleSectionStyle}>
-                  <PostTags tags={post?.tags || []} />
-                </div>
-              )}
+        <section className={articleSectionStyle}>
+          <PostHeader post={post} />
+          <article>
+            <Article text={post.content} />
+          </article>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
+            <Await
+              resolve={owner}
+              errorElement={<div>{t('error.general')}</div>}
+            >
+              {(owner) =>
+                owner && (
+                  <div className={articleSectionStyle}>
+                    <UserCard user={owner} />
+                  </div>
+                )
+              }
+            </Await>
+          </Suspense>
+          <div className={articleSectionStyle}>
+            <Adsense slot={ADSENSE_IDS.POST_MIDDLE} />
+          </div>
+          {post?.tags && (
+            <div className={articleSectionStyle}>
+              <PostTags tags={post?.tags || []} />
+            </div>
+          )}
 
-              {canEditPost && (
-                <div className={articleFooterStyle}>
-                  <Link to={editLink} size="x-small" isButton isBold>
-                    編集
-                  </Link>
-                </div>
-              )}
-            </section>
-            {hasNext && (
-              <>
-                <Heading level="partial">もっと読む</Heading>
-                <PostList posts={nextPosts} />
-              </>
-            )}
-          </Await>
-        </Suspense>
+          {canEditPost && (
+            <div className={articleFooterStyle}>
+              <Link to={editLink} size="x-small" isButton isBold>
+                {t('edit')}
+              </Link>
+            </div>
+          )}
+        </section>
+        <aside className={articleSectionStyle}>
+          <Heading level="partial">{t('relatedArticles')}</Heading>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
+            <Await
+              resolve={relatedPosts}
+              errorElement={<div>{t('error.general')}</div>}
+            >
+              {(posts) => <PostList posts={posts} />}
+            </Await>
+          </Suspense>
+        </aside>
+        <aside className={articleSectionStyle}>
+          <Heading level="partial">{t('readMore')}</Heading>
+          <Suspense fallback={<Skelton width="100%" height={360} />}>
+            <Await
+              resolve={latestPosts}
+              errorElement={<div>{t('error.general')}</div>}
+            >
+              {(posts) => <PostList posts={posts} />}
+            </Await>
+          </Suspense>
+        </aside>
+        <div className={articleSectionStyle}>
+          <Adsense slot={ADSENSE_IDS.POST_BOTTOM} />
+        </div>
       </main>
     </>
   );

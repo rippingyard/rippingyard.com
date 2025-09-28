@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 
 import { useStorage } from '~/hooks/firebase/useStorage';
-import { Seed } from '~/schemas/seed';
 import { Routes, buildSitemap } from '~/utils/sitemap';
+
+import type { Seed } from '@rippingyard/schemas';
 
 export const loader = async () => {
   const routes: Routes = [];

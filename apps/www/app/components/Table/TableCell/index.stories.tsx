@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-
-import { articleStyle } from '~/styles/article.css';
+// import { fn } from '@storybook/test';
 
 import { TableCell } from '.';
 
