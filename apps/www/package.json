@@ -41,7 +41,7 @@
     "@tiptap/react": "^2.11.9",
     "@tiptap/starter-kit": "^2.11.9",
     "@vercel/analytics": "^1.2.2",
-    "algoliasearch": "^4.23.3",
+    "algoliasearch": "^5.40.0",
     "axios": "^1.7.4",
     "clsx": "^2.1.1",
     "compressorjs": "^1.2.1",
