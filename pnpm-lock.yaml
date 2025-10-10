@@ -395,9 +395,12 @@ importers:
       '@chromatic-com/storybook':
         specifier: ^4.0.1
         version: 4.0.1(storybook@9.0.18)
+      '@cloudflare/vite-plugin':
+        specifier: ^1.3.0
+        version: 1.13.7(vite@5.4.6)(wrangler@4.40.2)
       '@react-router/dev':
         specifier: ^7.8.2
-        version: 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)
+        version: 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)(wrangler@4.40.2)
       '@react-router/remix-routes-option-adapter':
         specifier: ^7.8.2
         version: 7.8.2(@react-router/dev@7.8.2)(typescript@5.5.4)
@@ -1321,6 +1324,28 @@ packages:
     dependencies:
       unenv: 2.0.0-rc.21
       workerd: 1.20250924.0
+    dev: true
+
+  /@cloudflare/vite-plugin@1.13.7(vite@5.4.6)(wrangler@4.40.2):
+    resolution: {integrity: sha512-yQz5G0Bw3wqHBcWTPJKOQrWv7PPtl/S3kKNhqsHoQaS99Eal8AS/EYljyR7uv+nrf//zgDY1rSsVESmXm7ZoAg==}
+    peerDependencies:
+      vite: ^6.1.0 || ^7.0.0
+      wrangler: ^4.40.2
+    dependencies:
+      '@cloudflare/unenv-preset': 2.7.4(unenv@2.0.0-rc.21)(workerd@1.20250924.0)
+      '@remix-run/node-fetch-server': 0.8.1
+      get-port: 7.1.0
+      miniflare: 4.20250924.0
+      picocolors: 1.1.1
+      tinyglobby: 0.2.14
+      unenv: 2.0.0-rc.21
+      vite: 5.4.6
+      wrangler: 4.40.2
+      ws: 8.18.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - workerd
     dev: true
 
   /@cloudflare/vite-plugin@1.13.7(vite@6.3.6)(wrangler@4.40.2):
@@ -3675,7 +3700,7 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     requiresBuild: true
 
-  /@react-router/dev@7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6):
+  /@react-router/dev@7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)(wrangler@4.40.2):
     resolution: {integrity: sha512-9ilgQoNhvgvUyQKDapALt9qVO3GpSw9ng5X2BwIhLIwqh8CTyRM/jz5cK53p5yzGiVeyx9njXXfeuxUlvQgJuA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
@@ -3725,6 +3750,7 @@ packages:
       valibot: 0.41.0(typescript@5.5.4)
       vite: 5.4.6
       vite-node: 3.2.4
+      wrangler: 4.40.2
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -3865,7 +3891,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@react-router/dev': 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)
+      '@react-router/dev': 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)(wrangler@4.40.2)
       typescript: 5.5.4
     dev: true
 
@@ -5577,7 +5603,7 @@ packages:
       react: '>=18'
       react-dom: '>=18'
     dependencies:
-      '@react-router/dev': 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)
+      '@react-router/dev': 7.8.2(@react-router/serve@7.8.2)(react-dom@18.3.1)(react-router@7.8.2)(react@18.3.1)(typescript@5.5.4)(vite@5.4.6)(wrangler@4.40.2)
       '@react-router/node': 7.8.2(react-router@7.8.2)(typescript@5.5.4)
       '@vercel/static-config': 3.1.2
       isbot: 5.1.21
@@ -5881,7 +5907,7 @@ packages:
     resolution: {integrity: sha512-MxXdReSRhGO7VlFe1bRG/oI7/mdLV9B9JJT0N8vZOhF7gFRR5l3M8W9G8JxmKV+JC5mGqJ0QvqfSOLsCPa4nUw==}
     engines: {node: '>=0.4.0'}
     dependencies:
-      acorn: 8.12.1
+      acorn: 8.15.0
     dev: true
 
   /acorn@8.12.1:
@@ -10456,7 +10482,7 @@ packages:
       ansi-escapes: 4.3.2
       figures: 3.2.0
       inquirer: 8.2.6
-      picocolors: 1.1.0
+      picocolors: 1.1.1
       run-async: 2.4.1
       rxjs: 7.8.1
     dev: true
@@ -12489,7 +12515,7 @@ packages:
   /magic-string@0.30.11:
     resolution: {integrity: sha512-+Wri9p0QHMy+545hKww7YAu5NyzF8iomPL/RQazugQ9+Ez4Ic3mERMd8ZTX5rfK944j+560ZJi8iAwgak1Ac7A==}
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/sourcemap-codec': 1.5.5
     dev: true
 
   /magic-string@0.30.18:
@@ -12884,7 +12910,7 @@ packages:
       acorn: 8.15.0
       pathe: 1.1.2
       pkg-types: 1.1.3
-      ufo: 1.5.4
+      ufo: 1.6.1
     dev: true
 
   /modern-ahocorasick@1.0.1:
@@ -13736,10 +13762,6 @@ packages:
 
   /picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
-    dev: true
-
-  /picocolors@1.1.0:
-    resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
     dev: true
 
   /picocolors@1.1.1:
@@ -16676,10 +16698,6 @@ packages:
   /uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
     dev: false
-
-  /ufo@1.5.4:
-    resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
-    dev: true
 
   /ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
