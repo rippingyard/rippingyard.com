@@ -1,5 +1,5 @@
 {
-  "include": ["env.d.ts", ".react-router/types/**/*", "**/*.ts", "**/*.tsx"],
+  "include": ["env.d.ts", ".react-router/types/**/*", "**/*.ts", "**/*.tsx", "vite.config.ts", "cloudflare/**/*", "workers/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -20,8 +20,14 @@
       "@rippingyard/resources/*": ["../../packages/resources/*"]
     },
 
-    "types": ["@react-router/node", "vite/client"],
+    "types": [
+      "@react-router/node",
+      "vite/client",
+      "node"
+    ],
     "rootDirs": [".", "./.react-router/types"],
+
+    "checkJs": true,
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
