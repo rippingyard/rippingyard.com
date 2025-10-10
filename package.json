@@ -8,9 +8,7 @@
   "scripts": {
     "dev": "pnpm functions:setup && dotenv -e env/emulator -- turbo run dev",
     "dev:www": "turbo run dev:www --filter=./apps/www",
-    "dev:cf": "turbo run dev --filter=./apps/cloudflare",
     "build:sb": "turbo run build:sb --filter=./apps/www",
-    "build:cf": "turbo run build:sb --filter=./apps/cloudflare",
     "build-storybook": "npm run build:sb",
     "sb": "turbo run sb",
     "test": "turbo run test --filter=./apps/www",
