@@ -8,5 +8,8 @@
   "eslint.workingDirectories": [
     { "directory": "apps/www", "changeProcessCWD": true },
     { "directory": "apps/functions", "changeProcessCWD": true }
-  ]
+  ],
+  "files.associations": {
+    "wrangler.json": "jsonc"
+  }
 }
