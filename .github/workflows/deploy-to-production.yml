@@ -1,21 +1,21 @@
-name: '[functions:node] Deploy to Production'
+name: "[functions:node] Deploy to Production"
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'apps/functions/**'
-      - 'packages/schemas/**'
-      - 'packages/utils/**'
-      - 'firebase.json'
-      - 'package.json'
+      - "apps/functions/**"
+      - "packages/schemas/**"
+      - "packages/utils/**"
+      - "firebase.json"
+      - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}

@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "dotenv-cli": "^10.0.0",
-    "firebase-tools": "^13.14.2"
+    "firebase-tools": "^14.19.1"
   }
 }
