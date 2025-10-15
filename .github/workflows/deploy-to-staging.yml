@@ -66,7 +66,21 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         continue-on-error: true
-      - name: Functions - Deploy v2 functions to develop
+      - name: Functions - Deploy v2 functions to develop (attempt 1)
+        id: deploy_attempt_1
+        uses: w9jds/firebase-action@v13.15.2
+        with:
+          args: deploy --only functions,firestore:rules --project default
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        continue-on-error: true
+      - name: Wait for Eventarc Service Agent setup (5 minutes)
+        if: steps.deploy_attempt_1.outcome == 'failure'
+        run: |
+          echo "First deployment failed, likely due to Eventarc Service Agent setup. Waiting 5 minutes..."
+          sleep 300
+      - name: Functions - Deploy v2 functions to develop (attempt 2)
+        if: steps.deploy_attempt_1.outcome == 'failure'
         uses: w9jds/firebase-action@v13.15.2
         with:
           args: deploy --only functions,firestore:rules --project default
