@@ -39,7 +39,6 @@
       "port": 9199
     },
     "hosting": {
-      "enabled": false,
       "port": 5555
     },
     "pubsub": {
