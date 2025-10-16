@@ -1,10 +1,7 @@
-﻿// import axios from 'axios';
-import axios from 'axios';
+﻿import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export const useUrlContent = (url: string) => {
-  console.log('url', url);
-
   const [isLoading, setIsLoading] = useState(false);
   const [ogp, setOgp] = useState<{
     title: string;

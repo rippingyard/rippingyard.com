@@ -23,7 +23,7 @@ export const EmbedLink: FC<{ url: string; isTest?: boolean }> = ({
       </p>
     );
 
-  const { title, description, sitename } = ogp;
+  const { title, description, sitename, image } = ogp;
 
   return (
     <Link to={url} className={styles.container} target="_blank">
@@ -33,10 +33,10 @@ export const EmbedLink: FC<{ url: string; isTest?: boolean }> = ({
           <p className={styles.summary}>{getSummary(description, 120)}</p>
           <div className={styles.footer}>{sitename}</div>
         </div>
-        {ogp.image && (
+        {image && (
           <div
             className={styles.image}
-            style={{ backgroundImage: `url(${ogp.image.url})` }}
+            style={{ backgroundImage: `url(${image.url})` }}
           />
         )}
       </div>
