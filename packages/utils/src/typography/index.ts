@@ -1,3 +1,4 @@
+export * from './extractUrls';
 export * from './findTitleTag';
 export * from './n2br';
 export * from './removeHtmlTags';

@@ -1,9 +1,9 @@
 ﻿import {
+  extractUrls,
   findTitleTag,
   removeHtmlTags,
   removeTitle,
   sanitizeDOM,
-  stripTags,
 } from '@rippingyard/utils';
 
 export const hasTitle = (str: string): boolean => {
@@ -124,24 +124,6 @@ export function extractImages(content: string) {
   return images;
 }
 
-export function extractUrls(content: string): string[] {
-  if (!content) return [];
-
-  const urls = stripTags(content).match(
-    /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=;#+]*)?/g
-  );
-
-  if (!urls) return [];
-
-  const filteredUrls: string[] = [];
-
-  for (const url of urls) {
-    if (!filteredUrls.includes(url)) filteredUrls.push(url);
-  }
-
-  return filteredUrls.sort();
-}
-
 export const autolink = (content: string) => {
   if (!content) return '';
 
@@ -228,7 +210,7 @@ export const decodeEntities = (str: string) => {
 
   const entities = [
     ['amp', '&'],
-    // eslint-disable-next-line quotes
+
     ['apos', "'"],
     ['lt', '<'],
     ['gt', '>'],

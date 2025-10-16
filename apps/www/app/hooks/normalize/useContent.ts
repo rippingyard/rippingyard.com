@@ -1,7 +1,6 @@
 ﻿import { useMemo } from 'react';
 
 import {
-  extractUrls,
   getSummary,
   getYouTubeId,
   getYouTubeSymbol,
@@ -9,6 +8,8 @@ import {
   isYouTubeUrl,
   sanitize,
 } from '~/utils/typography';
+
+import { extractUrls } from '@rippingyard/utils';
 
 const renderWidgets = (content: string) => {
   if (!content) return '';
@@ -74,10 +75,8 @@ export const convertYouTubeWidgets = (text: string, urls: string[] = []) => {
   return content;
 };
 
-export const useContent = (text: string) => {
-  // const urls = useMemo(() => extractUrls(text), [text]);
-
-  const content = useMemo(() => {
+export const useContent = (text: string) =>
+  useMemo(() => {
     let c = text;
 
     c = sanitize(c);
@@ -85,6 +84,3 @@ export const useContent = (text: string) => {
 
     return c;
   }, [text]);
-
-  return content;
-};
