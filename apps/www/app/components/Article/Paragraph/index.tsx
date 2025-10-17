@@ -1,9 +1,10 @@
-﻿import { stripTags } from '@rippingyard/utils';
-import { FC, memo } from 'react';
+﻿import { FC, memo } from 'react';
 
 import { ContentBlock } from '~/hooks/normalize/useContentBlocks';
 import { useContentHTML } from '~/hooks/normalize/useContentHTML';
-import { autolink, extractUrls } from '~/utils/typography';
+import { autolink } from '~/utils/typography';
+
+import { stripTags, extractUrls } from '@rippingyard/utils';
 
 import { Link } from '../Link';
 

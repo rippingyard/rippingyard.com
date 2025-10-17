@@ -9,15 +9,6 @@ export const useFirebase = () => {
       process.env.FIREBASE_AUTH_EMULATOR_HOST ||
       process.env.FIRESTORE_EMULATOR_HOST;
 
-    console.log('Firebase Admin initialization:', {
-      isEmulator,
-      VITE_USE_FIREBASE_EMULATOR: process.env.VITE_USE_FIREBASE_EMULATOR,
-      FIREBASE_AUTH_EMULATOR_HOST: process.env.FIREBASE_AUTH_EMULATOR_HOST,
-      FIRESTORE_EMULATOR_HOST: process.env.FIRESTORE_EMULATOR_HOST,
-      PROJECT_ID:
-        process.env.GCLOUD_PROJECT || process.env.VITE_FIREBASE_PROJECT_ID,
-    });
-
     if (isEmulator) {
       // Emulator環境の場合
       initializeApp({

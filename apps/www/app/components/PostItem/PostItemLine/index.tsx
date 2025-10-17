@@ -4,8 +4,9 @@ import { Link } from 'react-router';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { TimestampType, useDate } from '~/hooks/normalize/useDate';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
-import type { Post } from '@rippingyard/schemas';
 import { getSummary } from '~/utils/typography';
+
+import type { Post } from '@rippingyard/schemas';
 
 import {
   containerStyle,
