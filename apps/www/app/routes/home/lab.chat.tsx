@@ -25,9 +25,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
     console.log('messages', messages);
 
     const openai = new OpenAI({
-      apiKey: process.env.VITE_OPENAI_APIKEY,
-      organization: process.env.VITE_OPENAI_ORGANIZATION_ID,
-      project: process.env.VITE_OPENAI_PROJECT_ID,
+      apiKey: process.env.OPENAI_APIKEY,
+      organization: process.env.OPENAI_ORGANIZATION_ID,
+      project: process.env.OPENAI_PROJECT_ID,
     });
 
     const chat = await openai.chat.completions.create({

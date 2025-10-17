@@ -2,6 +2,7 @@
 import { redirect, data, useLoaderData } from 'react-router';
 
 import { Heading } from '~/components/Heading';
+import { ErrorComponent } from '~/features/error';
 import { Login } from '~/features/login';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { translation } from '~/middlewares/i18n/translation.server';
@@ -60,9 +61,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
         },
       }
     );
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    throw new Response('Error', { status: 401 });
+    throw new Response(e, { status: 401 });
   }
 };
 
@@ -96,3 +97,7 @@ export default function Main() {
     </>
   );
 }
+
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => (
+  <ErrorComponent error={error as Error} />
+);

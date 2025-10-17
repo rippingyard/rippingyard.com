@@ -12,6 +12,7 @@ export type EnvType = {
   VITE_FIREBASE_APP_ID: string;
   VITE_FIREBASE_MEASUREMENT_ID: string;
   VITE_FIRESTORE_DATABASE_ID?: string;
+  VITE_USE_FIREBASE_EMULATOR?: string;
 };
 
 const EnvComponent: FC<{

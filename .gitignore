@@ -10,9 +10,13 @@ node_modules
 # env
 .env
 /env/*
+!/env/sample
 
 # vercel
 .vercel
 
 # build outputs
 packages/*/dist
+
+# firebase functions runtime config
+apps/functions/.runtimeconfig.json

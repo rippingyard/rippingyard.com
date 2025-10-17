@@ -15,7 +15,8 @@ import jaCommon from '@rippingyard/resources/i18n/locales/ja/common.json';
 import i18n from './middlewares/i18n/i18n.server';
 import i18nextOptions from './middlewares/i18n/options';
 
-export const streamTimeout = 15000;
+export const streamTimeout = 8000;
+export const streamTimeoutForBot = 15000; // botのタイムアウトを延長
 
 export default async function handleRequest(
   request: Request,
@@ -44,16 +45,15 @@ export default async function handleRequest(
     },
   });
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let shellRendered = false;
     const userAgent = request.headers.get('user-agent');
+    const isBot = userAgent && isbot(userAgent);
 
     // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
     // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
     const readyOption: keyof RenderToPipeableStreamOptions =
-      (userAgent && isbot(userAgent)) || routerContext.isSpaMode
-        ? 'onAllReady'
-        : 'onShellReady';
+      isBot || routerContext.isSpaMode ? 'onAllReady' : 'onShellReady';
 
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
@@ -77,7 +77,32 @@ export default async function handleRequest(
           pipe(body);
         },
         onShellError(error: unknown) {
-          reject(error);
+          // botアクセス時のエラーハンドリングを改善
+          console.error('Shell rendering error:', error);
+
+          // エラー時でも静的なHTMLレスポンスを返す
+          const fallbackHtml = `
+            <!DOCTYPE html>
+            <html lang="${lng}">
+              <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Error</title>
+              </head>
+              <body>
+                <div id="root">Loading...</div>
+              </body>
+            </html>
+          `;
+
+          resolve(
+            new Response(fallbackHtml, {
+              headers: {
+                'Content-Type': 'text/html',
+              },
+              status: 500,
+            })
+          );
         },
         onError(error: unknown) {
           responseStatusCode = 500;
@@ -85,7 +110,7 @@ export default async function handleRequest(
           // errors encountered during initial shell rendering since they'll
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
-            console.error(error);
+            console.error('Streaming error:', error);
           }
         },
       }
@@ -93,6 +118,14 @@ export default async function handleRequest(
 
     // Abort the rendering stream after the `streamTimeout` so it has time to
     // flush down the rejected boundaries
-    setTimeout(abort, streamTimeout + 1000);
+    // botの場合は長めのタイムアウトを設定
+    const timeout = isBot ? streamTimeoutForBot : streamTimeout;
+    setTimeout(() => {
+      if (!shellRendered && isBot) {
+        // botアクセスでタイムアウトした場合、エラーを避けて早めに終了
+        console.warn('Bot request timed out, aborting render');
+      }
+      abort();
+    }, timeout);
   });
 }

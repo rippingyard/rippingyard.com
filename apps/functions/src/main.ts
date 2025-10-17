@@ -10,7 +10,15 @@ import { notify } from './worker/notify';
 import { scanSecret } from './worker/scanSecret';
 
 // Initialize Firebase Admin
-admin.initializeApp(functions.config().firebase);
+if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
+  // Emulator環境の場合
+  admin.initializeApp({
+    projectId: process.env.GCLOUD_PROJECT || 'rydev',
+  });
+} else {
+  // 本番環境の場合
+  admin.initializeApp(functions.config().firebase);
+}
 const firestore = admin.firestore();
 
 // Initialize Hono app

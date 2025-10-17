@@ -120,9 +120,9 @@ export const action = async ({ request }: { request: Request }) => {
   (async () => {
     try {
       const openai = new OpenAI({
-        apiKey: process.env.VITE_OPENAI_APIKEY,
-        organization: process.env.VITE_OPENAI_ORGANIZATION_ID,
-        project: process.env.VITE_OPENAI_PROJECT_ID,
+        apiKey: process.env.OPENAI_APIKEY,
+        organization: process.env.OPENAI_ORGANIZATION_ID,
+        project: process.env.OPENAI_PROJECT_ID,
       });
 
       // スレッドとメッセージの作成
@@ -134,7 +134,7 @@ export const action = async ({ request }: { request: Request }) => {
 
       // Runの作成
       const run = await openai.beta.threads.runs.create(thread.id, {
-        assistant_id: process.env.VITE_OPENAI_ENTITY_ASSISTANT as string,
+        assistant_id: process.env.OPENAI_ENTITY_ASSISTANT as string,
       });
 
       // ステータスをポーリングして進捗を送信

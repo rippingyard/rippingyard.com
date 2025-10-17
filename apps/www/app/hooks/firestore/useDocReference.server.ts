@@ -7,13 +7,20 @@ export const useDocReference = (
   collection?: string
 ) => {
   try {
-    if (!arg) throw new Error('Unset an arg');
+    if (!arg) {
+      console.error('useDocReference called with:', { arg, collection });
+      throw new Error('useDocReference: arg is required');
+    }
     if (typeof arg !== 'string') return arg;
-    if (!collection) throw new Error('Unset a collection');
+    if (!collection) {
+      console.error('useDocReference called with string arg but no collection:', { arg, collection });
+      throw new Error('useDocReference: collection is required when arg is a string');
+    }
 
     return useFirestore().doc(`${collection}/${arg}`);
   } catch (e) {
-    console.error(e);
+    console.error('useDocReference error:', e);
+    console.error('Called with args:', { arg, collection });
     throw e;
   }
 };
