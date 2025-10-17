@@ -2,9 +2,7 @@
 import { initializeApp } from 'firebase-admin/app';
 
 export const useFirebase = () => {
-  const cert = JSON.parse(
-    process.env.VITE_GOOGLE_APPLICATION_CREDENTIALS || ''
-  );
+  const cert = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS || '');
   if (!admin.apps.length) {
     initializeApp({
       credential: admin.credential.cert(cert),
