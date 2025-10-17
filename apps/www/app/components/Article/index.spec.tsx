@@ -53,23 +53,23 @@ describe('<Article />', () => {
     ).toBe(5);
   });
   // TODO: 修正する
-  // it.skip('URLとリンク先が異なる場合、リンク先が変化しないこと', () => {
-  //   render(
-  //     <Article
-  //       text={
-  //         '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www2.rippingyard.com">https://www.rippingyard.com</a></p>'
-  //       }
-  //     />
-  //   );
-  //   expect(
-  //     screen.queryByText(
-  //       (content, element) =>
-  //         !!element &&
-  //         element.tagName.toLowerCase() === 'a' &&
-  //         element.getAttribute('href') === 'https://www2.rippingyard.com'
-  //     )
-  //   ).toBeTruthy();
-  // });
+  it.skip('URLとリンク先が異なる場合、リンク先が変化しないこと', () => {
+    render(
+      <Article
+        text={
+          '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www2.rippingyard.com">https://www.rippingyard.com</a></p>'
+        }
+      />
+    );
+    expect(
+      screen.queryByText(
+        (content, element) =>
+          !!element &&
+          element.tagName.toLowerCase() === 'a' &&
+          element.getAttribute('href') === 'https://www2.rippingyard.com'
+      )
+    ).toBeTruthy();
+  });
   it('YouTubeのURLが入力されている場合、YouTubeのウィジェットが埋め込まれる', () => {
     render(
       <Article text={'<p>https://www.youtube.com/watch?v=RRPd93mCp8s</p>'} />
