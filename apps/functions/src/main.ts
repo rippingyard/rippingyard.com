@@ -103,7 +103,7 @@ app.use(
  * Firestore Triggers - Workers
  */
 // onPostCreate
-export const onPostCreate = onDocumentCreated(
+export const onPostCreateV2 = onDocumentCreated(
   '/posts/{postId}',
   async (event) => {
     const snapshot = event.data;
@@ -116,7 +116,7 @@ export const onPostCreate = onDocumentCreated(
 );
 
 // onPostUpdate
-export const onPostUpdate = onDocumentUpdated(
+export const onPostUpdateV2 = onDocumentUpdated(
   '/posts/{postId}',
   async (event) => {
     const change = event.data;
