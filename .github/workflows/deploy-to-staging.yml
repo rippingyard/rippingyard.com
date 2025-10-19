@@ -57,6 +57,13 @@ jobs:
           node scripts/inline-local-packages.js
       - name: Verify build output
         run: ls -la apps/functions/dist/ | head -20
+      - name: Functions - Delete existing v1 functions (required for v1→v2 migration)
+        uses: w9jds/firebase-action@v13.15.2
+        with:
+          args: functions:delete api onPostCreateV2 onPostUpdateV2 onPostCreate onPostUpdate onActivityCreate onSecretCreate --project default --force
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        continue-on-error: true
       - name: Functions - Deploy to develop
         uses: w9jds/firebase-action@v13.15.2
         with:
