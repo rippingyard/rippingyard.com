@@ -2,7 +2,6 @@ import {
   onDocumentCreated,
   onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
-import { defineSecret } from 'firebase-functions/params';
 import { config } from 'firebase-functions/v2';
 
 import * as admin from 'firebase-admin';
@@ -13,8 +12,6 @@ import { logger } from 'hono/logger';
 import { syncPost } from './worker/syncPost';
 // import { notify } from './worker/notify';
 // import { scanSecret } from './worker/scanSecret';
-
-defineSecret('GCLOUD_PROJECT');
 
 // Initialize Firebase Admin
 if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
