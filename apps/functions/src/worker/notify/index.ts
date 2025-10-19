@@ -1,10 +1,10 @@
-﻿import * as functions from 'firebase-functions';
-import dayjs from 'dayjs';
+﻿import dayjs from 'dayjs';
 import type { Activity, Notification, User } from '@rippingyard/schemas';
+import { FirestoreEvent } from 'firebase-functions/v2/firestore';
 
 export async function notify(
   snapshot: FirebaseFirestore.DocumentSnapshot,
-  context: functions.EventContext,
+  _: FirestoreEvent<any, any>,
   firestore: any,
 ) {
   const activityId = snapshot.id;
