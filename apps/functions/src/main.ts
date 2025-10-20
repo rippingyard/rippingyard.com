@@ -118,6 +118,7 @@ app.use(
 // onPostCreate
 export const onPostCreate = onDocumentCreated(
   {
+    database: databaseId,
     document: '/posts/{postId}',
     secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
@@ -142,6 +143,7 @@ export const onPostCreate = onDocumentCreated(
 // onPostUpdate
 export const onPostUpdate = onDocumentUpdated(
   {
+    database: databaseId,
     document: '/posts/{postId}',
     secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
