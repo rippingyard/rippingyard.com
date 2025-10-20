@@ -11,12 +11,18 @@ type SecretParam = ReturnType<typeof defineSecret>;
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
-  context: FirestoreEvent<any, any>,
-  firestore: any,
-  algoliaApiId: SecretParam,
-  algoliaApiKeyAdmin: SecretParam,
+  options: {
+    event?: FirestoreEvent<any, any>;
+    firestore: any;
+    env: {
+      algoliaApiId: SecretParam;
+      algoliaApiKeyAdmin: SecretParam;
+    };
+  },
 ) => {
-  console.log('SyncPost', snapshot, context, firestore);
+  const { firestore, env } = options;
+  const { algoliaApiId, algoliaApiKeyAdmin } = env;
+
   const postId = snapshot.id;
   const post = snapshot.data() as Post;
 
@@ -46,19 +52,23 @@ export const syncPost = async (
 
       // 全文検索登録
       console.log('start saving to index');
-      await savePostIndex({
-        objectID: postId,
-        title: getTitle(post.content),
-        body: stripTags(removeTitle(post.content || '')),
-        image: '',
-        type: post.type,
-        createdAt: dayjs(post.createdAt.toDate()).unix(),
-        publishedAt: dayjs(post.publishedAt.toDate()).unix(),
-        updatedAt: dayjs(post.updatedAt.toDate()).unix(),
-        owner: post.owner?.id,
-        tags: post.tags || [],
-        ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
-      }, algoliaApiId, algoliaApiKeyAdmin);
+      await savePostIndex(
+        {
+          objectID: postId,
+          title: getTitle(post.content),
+          body: stripTags(removeTitle(post.content || '')),
+          image: '',
+          type: post.type,
+          createdAt: dayjs(post.createdAt.toDate()).unix(),
+          publishedAt: dayjs(post.publishedAt.toDate()).unix(),
+          updatedAt: dayjs(post.updatedAt.toDate()).unix(),
+          owner: post.owner?.id,
+          tags: post.tags || [],
+          ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
+        },
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      );
       console.log('Index result', post.owner);
     } catch (e) {
       console.log('Error!', e);

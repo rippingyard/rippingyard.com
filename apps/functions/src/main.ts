@@ -113,13 +113,19 @@ export const onPostCreate = onDocumentCreated(
     secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
   async (event) => {
-    const snapshot = event.data;
-    console.log('snapshot', snapshot);
-    if (!snapshot) {
-      console.log('No snapshot data');
+    const data = event.data;
+    if (!data) {
+      console.log('No data');
       return;
     }
-    await syncPost(snapshot, event, firestore, algoliaApiId, algoliaApiKeyAdmin);
+    await syncPost(data, {
+      event,
+      firestore,
+      env: {
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      },
+    });
   },
 );
 
@@ -130,13 +136,19 @@ export const onPostUpdate = onDocumentUpdated(
     secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
   async (event) => {
-    const change = event.data;
-    console.log('change', change);
-    if (!change) {
-      console.log('No change data');
+    const data = event.data;
+    if (!data) {
+      console.log('No data');
       return;
     }
-    await syncPost(change.after, event, firestore, algoliaApiId, algoliaApiKeyAdmin);
+    await syncPost(data.after, {
+      event,
+      firestore,
+      env: {
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      },
+    });
   },
 );
 
