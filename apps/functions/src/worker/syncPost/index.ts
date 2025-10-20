@@ -5,11 +5,16 @@ import { getTitle, removeTitle } from '../../helper/typography';
 import { stripTags } from '@rippingyard/utils';
 import type { Post } from '@rippingyard/schemas';
 import { FirestoreEvent } from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
+
+type SecretParam = ReturnType<typeof defineSecret>;
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
   context: FirestoreEvent<any, any>,
   firestore: any,
+  algoliaApiId: SecretParam,
+  algoliaApiKeyAdmin: SecretParam,
 ) => {
   console.log('SyncPost', snapshot, context, firestore);
   const postId = snapshot.id;
@@ -53,7 +58,7 @@ export const syncPost = async (
         owner: post.owner?.id,
         tags: post.tags || [],
         ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
-      });
+      }, algoliaApiId, algoliaApiKeyAdmin);
       console.log('Index result', post.owner);
     } catch (e) {
       console.log('Error!', e);

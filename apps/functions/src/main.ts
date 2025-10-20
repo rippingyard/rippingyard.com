@@ -2,6 +2,7 @@ import {
   onDocumentCreated,
   onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
 
 import * as admin from 'firebase-admin';
 import { Hono } from 'hono';
@@ -11,6 +12,10 @@ import { logger } from 'hono/logger';
 import { syncPost } from './worker/syncPost';
 // import { notify } from './worker/notify';
 // import { scanSecret } from './worker/scanSecret';
+
+// Define secrets
+const algoliaApiId = defineSecret('ALGOLIA_APPID');
+const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 
 // Initialize Firebase Admin
 if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
@@ -103,7 +108,10 @@ app.use(
  */
 // onPostCreate
 export const onPostCreate = onDocumentCreated(
-  '/posts/{postId}',
+  {
+    document: '/posts/{postId}',
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
+  },
   async (event) => {
     const snapshot = event.data;
     console.log('snapshot', snapshot);
@@ -111,13 +119,16 @@ export const onPostCreate = onDocumentCreated(
       console.log('No snapshot data');
       return;
     }
-    await syncPost(snapshot, event, firestore);
+    await syncPost(snapshot, event, firestore, algoliaApiId, algoliaApiKeyAdmin);
   },
 );
 
 // onPostUpdate
 export const onPostUpdate = onDocumentUpdated(
-  '/posts/{postId}',
+  {
+    document: '/posts/{postId}',
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
+  },
   async (event) => {
     const change = event.data;
     console.log('change', change);
@@ -125,7 +136,7 @@ export const onPostUpdate = onDocumentUpdated(
       console.log('No change data');
       return;
     }
-    await syncPost(change.after, event, firestore);
+    await syncPost(change.after, event, firestore, algoliaApiId, algoliaApiKeyAdmin);
   },
 );
 
