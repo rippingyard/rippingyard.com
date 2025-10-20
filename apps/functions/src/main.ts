@@ -14,12 +14,12 @@ import { syncPost } from './worker/syncPost';
 // import { scanSecret } from './worker/scanSecret';
 
 // Define parameters
-console.log('process.env', process.env);
-
 const databaseId =
-  process.env.PROJECT_ID === 'rippingyard' ? 'ry-prd-tokyo' : '(default)';
+  process.env.GCLOUD_PROJECT === 'rippingyard' ? 'ry-prd-tokyo' : '(default)';
 const algoliaApiId = defineSecret('ALGOLIA_APPID');
 const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
+
+console.log('databaseId', databaseId);
 
 // Initialize Firebase Admin
 if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
