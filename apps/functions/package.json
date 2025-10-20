@@ -42,7 +42,7 @@
     "firebase": "^10.12.5",
     "firebase-admin": "^12.3.1",
     "firebase-functions": "^6.5.0",
-    "hono": "^4.9.4",
+    "hono": "^4.10.1",
     "html-metadata": "^1.7.1",
     "isomorphic-dompurify": "^2.2.0",
     "joi": "^17.6.0",
