@@ -14,6 +14,7 @@ import { syncPost } from './worker/syncPost';
 // import { scanSecret } from './worker/scanSecret';
 
 // Define secrets
+const databaseId = defineSecret('FIRESTORE_DATABASE_ID');
 const algoliaApiId = defineSecret('ALGOLIA_APPID');
 const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 
@@ -28,6 +29,11 @@ if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
   admin.initializeApp();
 }
 const firestore = admin.firestore();
+
+firestore.settings({
+  ignoreUndefinedProperties: true,
+  databaseId: databaseId.value() || '(default)',
+});
 
 // Initialize Hono app
 const app = new Hono();
