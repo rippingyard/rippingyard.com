@@ -148,6 +148,8 @@ export const onPostUpdate = onDocumentUpdated(
       databaseId: firestoreDatabaseId.value() || '(default)',
     });
 
+    console.log('post updated', firestoreDatabaseId.value(), firestore);
+
     const data = event.data;
     if (!data) {
       console.log('No data');
