@@ -1,12 +1,15 @@
 ﻿import type { PostAsSearchResult } from '@rippingyard/schemas';
 import algoliasearch from 'algoliasearch';
-import * as functions from 'firebase-functions';
+import { defineSecret } from 'firebase-functions/params';
+
+const algoliaApiId = defineSecret('ALGOLIA_APPID');
+const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 
 function init(indexName: string) {
-  console.log('algolia setting', functions.config().algolia);
-  if (!functions.config().algolia.appid) return;
-  const appId: string = functions.config().algolia.appid;
-  const apiKeyAdmin: string = functions.config().algolia.apikeyadmin;
+  console.log('algolia setting', algoliaApiId);
+  if (!algoliaApiId) return;
+  const appId = algoliaApiId as unknown as string;
+  const apiKeyAdmin = algoliaApiKeyAdmin as unknown as string;
   const client = algoliasearch(appId, apiKeyAdmin);
   return client.initIndex(indexName);
 }
