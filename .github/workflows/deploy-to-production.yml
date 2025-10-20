@@ -49,7 +49,7 @@ jobs:
       - name: Verify build output
         run: ls -la apps/functions/dist/ | head -20
       - name: Functions - Deploy to production
-        uses: w9jds/firebase-action@master
+        uses: w9jds/firebase-action@v13.15.2
         with:
           args: deploy --only functions,firestore:rules --project production
         env:
