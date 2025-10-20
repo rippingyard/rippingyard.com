@@ -142,7 +142,6 @@ export const onPostCreate = onDocumentCreated(
 // onPostUpdate
 export const onPostUpdate = onDocumentUpdated(
   {
-    database: '(default)',
     document: '/posts/{postId}',
     secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
