@@ -2,7 +2,6 @@ import {
   onDocumentCreated,
   onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
-import { config } from 'firebase-functions/v2';
 
 import * as admin from 'firebase-admin';
 import { Hono } from 'hono';
@@ -20,8 +19,8 @@ if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
     projectId: process.env.GCLOUD_PROJECT || 'rydev',
   });
 } else {
-  // 本番環境の場合
-  admin.initializeApp(config().firebase);
+  // 本番環境の場合 - デフォルトの設定を使用
+  admin.initializeApp();
 }
 const firestore = admin.firestore();
 
