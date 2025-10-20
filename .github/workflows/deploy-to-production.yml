@@ -52,6 +52,6 @@ jobs:
       - name: Functions - Deploy to production
         uses: w9jds/firebase-action@v13.15.2
         with:
-          args: deploy --only functions,firestore:rules --set-env FIRESTORE_DATABASE_ID="${{ secrets.FIRESTORE_DATABASE_ID }}" --project production
+          args: deploy --only functions,firestore:rules --project production
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
