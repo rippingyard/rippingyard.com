@@ -8,7 +8,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
-// import { syncPost } from './worker/syncPost';
+import { syncPost } from './worker/syncPost';
 // import { notify } from './worker/notify';
 // import { scanSecret } from './worker/scanSecret';
 
@@ -107,11 +107,11 @@ export const onPostCreate = onDocumentCreated(
   async (event) => {
     const snapshot = event.data;
     console.log('snapshot', snapshot);
-    // if (!snapshot) {
-    //   console.log('No snapshot data');
-    //   return;
-    // }
-    // await syncPost(snapshot, event, firestore);
+    if (!snapshot) {
+      console.log('No snapshot data');
+      return;
+    }
+    await syncPost(snapshot, event, firestore);
   },
 );
 
@@ -121,11 +121,11 @@ export const onPostUpdate = onDocumentUpdated(
   async (event) => {
     const change = event.data;
     console.log('change', change);
-    // if (!change) {
-    //   console.log('No change data');
-    //   return;
-    // }
-    // await syncPost(change.after, event, firestore);
+    if (!change) {
+      console.log('No change data');
+      return;
+    }
+    await syncPost(change.after, event, firestore);
   },
 );
 

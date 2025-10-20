@@ -1,4 +1,3 @@
-import { config } from 'firebase-functions/v2';
 import dayjs from 'dayjs';
 import { pick } from 'lodash';
 import { savePostIndex } from '../../helper/saveIndex';
@@ -16,7 +15,6 @@ export const syncPost = async (
   const postId = snapshot.id;
   const post = snapshot.data() as Post;
 
-  console.log('functions.config()', config());
   console.log('Start!', postId);
 
   // 共通タイムライン
