@@ -14,7 +14,10 @@ import { syncPost } from './worker/syncPost';
 // import { scanSecret } from './worker/scanSecret';
 
 // Define parameters
-const firestoreDatabaseId = defineSecret('FIRESTORE_DATABASE_ID');
+console.log('process.env', process.env);
+
+const databaseId =
+  process.env.PROJECT_ID === 'rippingyard' ? 'ry-prd-tokyo' : '(default)';
 const algoliaApiId = defineSecret('ALGOLIA_APPID');
 const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 
@@ -29,6 +32,11 @@ if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
   admin.initializeApp();
 }
 const firestore = admin.firestore();
+
+firestore.settings({
+  ignoreUndefinedProperties: true,
+  databaseId,
+});
 
 // Initialize Hono app
 const app = new Hono();
@@ -111,7 +119,7 @@ app.use(
 export const onPostCreate = onDocumentCreated(
   {
     document: '/posts/{postId}',
-    secrets: [firestoreDatabaseId, algoliaApiId, algoliaApiKeyAdmin],
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
   async (event) => {
     const data = event.data;
@@ -119,11 +127,6 @@ export const onPostCreate = onDocumentCreated(
       console.log('No data');
       return;
     }
-
-    firestore.settings({
-      ignoreUndefinedProperties: true,
-      databaseId: firestoreDatabaseId.value() || '(default)',
-    });
 
     await syncPost(data, {
       event,
@@ -139,17 +142,11 @@ export const onPostCreate = onDocumentCreated(
 // onPostUpdate
 export const onPostUpdate = onDocumentUpdated(
   {
+    database: '(default)',
     document: '/posts/{postId}',
-    secrets: [firestoreDatabaseId, algoliaApiId, algoliaApiKeyAdmin],
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
   },
   async (event) => {
-    firestore.settings({
-      ignoreUndefinedProperties: true,
-      databaseId: firestoreDatabaseId.value() || '(default)',
-    });
-
-    console.log('post updated', firestoreDatabaseId.value(), firestore);
-
     const data = event.data;
     if (!data) {
       console.log('No data');
