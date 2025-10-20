@@ -8,9 +8,10 @@ const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 function init(indexName: string) {
   console.log('algolia setting', algoliaApiId);
   if (!algoliaApiId) return;
-  const appId = algoliaApiId;
-  const apiKeyAdmin = algoliaApiKeyAdmin;
-  const client = algoliasearch(appId.value(), apiKeyAdmin.value());
+  const client = algoliasearch(
+    algoliaApiId.value(),
+    algoliaApiKeyAdmin.value(),
+  );
   return client.initIndex(indexName);
 }
 
