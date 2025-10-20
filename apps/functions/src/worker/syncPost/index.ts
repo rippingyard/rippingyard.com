@@ -1,21 +1,31 @@
-import * as functions from 'firebase-functions';
 import dayjs from 'dayjs';
 import { pick } from 'lodash';
 import { savePostIndex } from '../../helper/saveIndex';
 import { getTitle, removeTitle } from '../../helper/typography';
 import { stripTags } from '@rippingyard/utils';
 import type { Post } from '@rippingyard/schemas';
+import { FirestoreEvent } from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
+
+type SecretParam = ReturnType<typeof defineSecret>;
 
 export const syncPost = async (
   snapshot: FirebaseFirestore.DocumentSnapshot,
-  context: functions.EventContext,
-  firestore: any,
+  options: {
+    event?: FirestoreEvent<any, any>;
+    firestore: any;
+    env: {
+      algoliaApiId: SecretParam;
+      algoliaApiKeyAdmin: SecretParam;
+    };
+  },
 ) => {
-  console.log('SyncPost', snapshot, context, firestore);
+  const { firestore, env } = options;
+  const { algoliaApiId, algoliaApiKeyAdmin } = env;
+
   const postId = snapshot.id;
   const post = snapshot.data() as Post;
 
-  console.log('functions.config()', functions.config());
   console.log('Start!', postId);
 
   // 共通タイムライン
@@ -42,19 +52,23 @@ export const syncPost = async (
 
       // 全文検索登録
       console.log('start saving to index');
-      await savePostIndex({
-        objectID: postId,
-        title: getTitle(post.content),
-        body: stripTags(removeTitle(post.content || '')),
-        image: '',
-        type: post.type,
-        createdAt: dayjs(post.createdAt.toDate()).unix(),
-        publishedAt: dayjs(post.publishedAt.toDate()).unix(),
-        updatedAt: dayjs(post.updatedAt.toDate()).unix(),
-        owner: post.owner?.id,
-        tags: post.tags || [],
-        ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
-      });
+      await savePostIndex(
+        {
+          objectID: postId,
+          title: getTitle(post.content),
+          body: stripTags(removeTitle(post.content || '')),
+          image: '',
+          type: post.type,
+          createdAt: dayjs(post.createdAt.toDate()).unix(),
+          publishedAt: dayjs(post.publishedAt.toDate()).unix(),
+          updatedAt: dayjs(post.updatedAt.toDate()).unix(),
+          owner: post.owner?.id,
+          tags: post.tags || [],
+          ...pick(post, ['content', 'isDeleted', 'isPublic', 'status']),
+        },
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      );
       console.log('Index result', post.owner);
     } catch (e) {
       console.log('Error!', e);

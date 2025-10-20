@@ -1,33 +1,36 @@
 ﻿import type { PostAsSearchResult } from '@rippingyard/schemas';
 import algoliasearch from 'algoliasearch';
-import * as functions from 'firebase-functions';
+import { defineSecret } from 'firebase-functions/params';
 
-function init(indexName: string) {
-  console.log('algolia setting', functions.config().algolia);
-  if (!functions.config().algolia.appid) return;
-  const appId: string = functions.config().algolia.appid;
-  const apiKeyAdmin: string = functions.config().algolia.apikeyadmin;
-  const client = algoliasearch(appId, apiKeyAdmin);
+type SecretParam = ReturnType<typeof defineSecret>;
+
+function init(indexName: string, apiId: SecretParam, apiKey: SecretParam) {
+  console.log('algolia setting', apiId.value());
+  if (!apiId.value()) return;
+  const client = algoliasearch(
+    apiId.value(),
+    apiKey.value(),
+  );
   return client.initIndex(indexName);
 }
 
-async function save<T>(indexName: 'posts', object: T) {
+async function save<T>(indexName: 'posts', object: T, apiId: SecretParam, apiKey: SecretParam) {
   console.log('save a document', object);
 
-  const index = init(indexName);
+  const index = init(indexName, apiId, apiKey);
   if (!index) return;
 
   await index.saveObject(object);
 }
 
-export async function savePostIndex(payload: PostAsSearchResult) {
-  await save<PostAsSearchResult>('posts', payload);
+export async function savePostIndex(payload: PostAsSearchResult, apiId: SecretParam, apiKey: SecretParam) {
+  await save<PostAsSearchResult>('posts', payload, apiId, apiKey);
 }
 
-export async function destroy(indexName: string, id: string) {
+export async function destroy(indexName: string, id: string, apiId: SecretParam, apiKey: SecretParam) {
   console.log('delete a document', id);
 
-  const index = init(indexName);
+  const index = init(indexName, apiId, apiKey);
   if (!index) return;
 
   await index.deleteObject(id);

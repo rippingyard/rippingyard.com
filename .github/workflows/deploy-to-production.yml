@@ -1,21 +1,21 @@
-name: '[functions:node] Deploy to Production'
+name: "[functions:node] Deploy to Production"
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'apps/functions/**'
-      - 'packages/schemas/**'
-      - 'packages/utils/**'
-      - 'firebase.json'
-      - 'package.json'
+      - "apps/functions/**"
+      - "packages/schemas/**"
+      - "packages/utils/**"
+      - "firebase.json"
+      - "package.json"
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -26,12 +26,6 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 8.9.0
-      - name: Functions - Set firebase env to Production
-        uses: w9jds/firebase-action@master
-        with:
-          args: functions:config:set runtime.env="production" algolia.appid="${{ secrets.ALGOLIA_APPID_PRD }}" algolia.apikey="${{ secrets.ALGOLIA_APIKEY_PRD }}" algolia.apikeyadmin="${{ secrets.ALGOLIA_APIKEYADMIN_PRD }}" --project production
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Install dependencies
         run: pnpm install
       - name: Schemas - Build for production

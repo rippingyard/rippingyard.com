@@ -1,13 +1,21 @@
-import * as functions from 'firebase-functions';
+import {
+  onDocumentCreated,
+  onDocumentUpdated,
+} from 'firebase-functions/v2/firestore';
+import { defineSecret } from 'firebase-functions/params';
+
 import * as admin from 'firebase-admin';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 
-// Workers
 import { syncPost } from './worker/syncPost';
-import { notify } from './worker/notify';
-import { scanSecret } from './worker/scanSecret';
+// import { notify } from './worker/notify';
+// import { scanSecret } from './worker/scanSecret';
+
+// Define secrets
+const algoliaApiId = defineSecret('ALGOLIA_APPID');
+const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
 
 // Initialize Firebase Admin
 if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
@@ -16,8 +24,8 @@ if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
     projectId: process.env.GCLOUD_PROJECT || 'rydev',
   });
 } else {
-  // 本番環境の場合
-  admin.initializeApp(functions.config().firebase);
+  // 本番環境の場合 - デフォルトの設定を使用
+  admin.initializeApp();
 }
 const firestore = admin.firestore();
 
@@ -34,94 +42,128 @@ app.use(
   }),
 );
 
-// Health check endpoint
-app.get('/health', (c) => {
-  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// // Health check endpoint
+// app.get('/health', (c) => {
+//   return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+// });
 
-// API Routes (将来的にAPIエンドポイントを追加する場合はここに)
-app.get('/api/v1/status', (c) => {
-  return c.json({
-    service: 'rippingyard-functions',
-    version: '1.0.0',
-    environment: functions.config().runtime?.env || 'production',
-  });
-});
+// // API Routes (将来的にAPIエンドポイントを追加する場合はここに)
+// app.get('/api/v1/status', (c) => {
+//   return c.json({
+//     service: 'rippingyard-functions',
+//     version: '1.0.0',
+//     environment: functions.config().runtime?.env || 'production',
+//   });
+// });
 
-// 404 handler
-app.notFound((c) => {
-  return c.json({ error: 'Not Found' }, 404);
-});
+// // 404 handler
+// app.notFound((c) => {
+//   return c.json({ error: 'Not Found' }, 404);
+// });
 
-// Error handler
-app.onError((err, c) => {
-  console.error(`${err}`);
-  return c.json({ error: 'Internal Server Error' }, 500);
-});
+// // Error handler
+// app.onError((err, c) => {
+//   console.error(`${err}`);
+//   return c.json({ error: 'Internal Server Error' }, 500);
+// });
 
-/**
- * HTTP Function - Hono app
- */
-export const api = functions.https.onRequest(async (req, res) => {
-  // Create headers object
-  const headers = new Headers();
-  Object.entries(req.headers).forEach(([key, value]) => {
-    if (typeof value === 'string') {
-      headers.set(key, value);
-    } else if (Array.isArray(value)) {
-      headers.set(key, value.join(', '));
-    }
-  });
+// /**
+//  * HTTP Function - Hono app
+//  */
+// export const api = onRequest(async (req, res) => {
+//   // Create headers object
+//   const headers = new Headers();
+//   Object.entries(req.headers).forEach(([key, value]) => {
+//     if (typeof value === 'string') {
+//       headers.set(key, value);
+//     } else if (Array.isArray(value)) {
+//       headers.set(key, value.join(', '));
+//     }
+//   });
 
-  // Convert Firebase request to standard Request
-  const honoReq = new Request(`https://${req.headers.host}${req.url}`, {
-    method: req.method,
-    headers,
-    body: req.body ? JSON.stringify(req.body) : undefined,
-  });
+//   // Convert Firebase request to standard Request
+//   const honoReq = new Request(`https://${req.headers.host}${req.url}`, {
+//     method: req.method,
+//     headers,
+//     body: req.body ? JSON.stringify(req.body) : undefined,
+//   });
 
-  const response = await app.fetch(honoReq);
+//   const response = await app.fetch(honoReq);
 
-  // Set response headers
-  response.headers.forEach((value: string, key: string) => {
-    res.setHeader(key, value);
-  });
+//   // Set response headers
+//   response.headers.forEach((value: string, key: string) => {
+//     res.setHeader(key, value);
+//   });
 
-  // Set status code
-  res.status(response.status);
+//   // Set status code
+//   res.status(response.status);
 
-  // Send response body
-  const body = await response.text();
-  res.send(body);
-});
+//   // Send response body
+//   const body = await response.text();
+//   res.send(body);
+// });
 
 /**
  * Firestore Triggers - Workers
  */
 // onPostCreate
-export const onPostCreate = functions.firestore
-  .document('/posts/{postId}')
-  .onCreate(async (snapshot, context) => {
-    await syncPost(snapshot, context, firestore);
-  });
+export const onPostCreate = onDocumentCreated(
+  {
+    document: '/posts/{postId}',
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
+  },
+  async (event) => {
+    const data = event.data;
+    if (!data) {
+      console.log('No data');
+      return;
+    }
+    await syncPost(data, {
+      event,
+      firestore,
+      env: {
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      },
+    });
+  },
+);
 
 // onPostUpdate
-export const onPostUpdate = functions.firestore
-  .document('/posts/{postId}')
-  .onUpdate(async (change, context) => {
-    await syncPost(change.after, context, firestore);
-  });
+export const onPostUpdate = onDocumentUpdated(
+  {
+    document: '/posts/{postId}',
+    secrets: [algoliaApiId, algoliaApiKeyAdmin],
+  },
+  async (event) => {
+    const data = event.data;
+    if (!data) {
+      console.log('No data');
+      return;
+    }
+    await syncPost(data.after, {
+      event,
+      firestore,
+      env: {
+        algoliaApiId,
+        algoliaApiKeyAdmin,
+      },
+    });
+  },
+);
 
 // onActivityCreate
-export const onActivityCreate = functions.firestore
-  .document('/activities/{activityId}')
-  .onCreate(async (snapshot, context) => {
-    await notify(snapshot, context, firestore);
-  });
+// export const onActivityCreate = onDocumentCreated(
+//   '/activities/{activityId}',
+//   async (event) => {
+//     await notify(snapshot, context, firestore);
+//   },
+// );
 
-// onSecretCreate
-export const onSecretCreate = functions.firestore
-  .document('/secrets/{secretId}')
-  .onCreate(async (snapshot, context) => {
-    await scanSecret(snapshot, context, firestore);
-  });
+// // onSecretCreate
+// export const onSecretCreate = onDocumentCreated(
+//   '/secrets/{secretId}',
+//   async (event) => {
+//     await scanSecret(snapshot, context, firestore);
+//   },
+// );
