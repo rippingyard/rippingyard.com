@@ -140,7 +140,7 @@ export const onPostCreate = onDocumentCreated(
 export const onPostUpdate = onDocumentUpdated(
   {
     document: '/posts/{postId}',
-    secrets: [algoliaApiId, algoliaApiKeyAdmin],
+    secrets: [firestoreDatabaseId, algoliaApiId, algoliaApiKeyAdmin],
   },
   async (event) => {
     firestore.settings({
