@@ -2,8 +2,7 @@ import {
   onDocumentCreated,
   onDocumentUpdated,
 } from 'firebase-functions/v2/firestore';
-import { onInit } from 'firebase-functions/v2/core';
-import { defineSecret } from 'firebase-functions/params';
+import { defineSecret, defineString } from 'firebase-functions/params';
 
 import * as admin from 'firebase-admin';
 import { Hono } from 'hono';
@@ -14,15 +13,12 @@ import { syncPost } from './worker/syncPost';
 // import { notify } from './worker/notify';
 // import { scanSecret } from './worker/scanSecret';
 
-// Define secrets
-const firestoreDatabaseId = defineSecret('FIRESTORE_DATABASE_ID');
+// Define parameters
+const firestoreDatabaseId = defineString('FIRESTORE_DATABASE_ID', {
+  default: '(default)',
+});
 const algoliaApiId = defineSecret('ALGOLIA_APPID');
 const algoliaApiKeyAdmin = defineSecret('ALGOLIA_APIKEYADMIN');
-
-let databaseId: string;
-onInit(() => {
-  databaseId = firestoreDatabaseId.value() || '(default)';
-});
 
 // Initialize Firebase Admin
 if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
@@ -38,7 +34,7 @@ const firestore = admin.firestore();
 
 firestore.settings({
   ignoreUndefinedProperties: true,
-  databaseId,
+  databaseId: firestoreDatabaseId.value(),
 });
 
 // Initialize Hono app
