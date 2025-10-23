@@ -1,4 +1,7 @@
-﻿import type { PostStatus, PostType, SuggestedTag } from '@rippingyard/schemas';
+﻿import dayjs from 'dayjs';
+import { Timestamp } from 'firebase-admin/firestore';
+
+import type { PostStatus, PostType, SuggestedTag } from '@rippingyard/schemas';
 
 export const usePostFormData = async (request: Request) => {
   const formData = await request.formData();
@@ -9,6 +12,11 @@ export const usePostFormData = async (request: Request) => {
   const status = formData.get('status') as PostStatus;
   const isPublic = (formData.get('isPublic') as string) === '1';
   const tags = (formData.getAll('tag') as string[]) || [];
+
+  const publishedAtString = formData.get('publishedAt') as string;
+  const publishedAt = publishedAtString
+    ? Timestamp.fromDate(dayjs(publishedAtString).toDate())
+    : undefined;
 
   const suggestedTagStrings =
     (formData.getAll('suggestedTag') as string[]) || [];
@@ -27,6 +35,7 @@ export const usePostFormData = async (request: Request) => {
     status,
     tags,
     isPublic,
+    publishedAt,
     suggestedTags,
   };
 };

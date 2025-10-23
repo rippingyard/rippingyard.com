@@ -1,4 +1,5 @@
 ﻿import dayjs from 'dayjs';
+import { Timestamp } from 'firebase/firestore';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Form, useLocation, useNavigation } from 'react-router';
 
@@ -6,6 +7,7 @@ import { Button } from '~/components/Button';
 import { FormTextarea } from '~/components/FormTextarea';
 import { Wysiwyg } from '~/components/Wysiwyg';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
+import { TimestampType, useDateObject } from '~/hooks/normalize/useDateObject';
 import { getMainTitle } from '~/utils/typography';
 
 import type { Post, PostStatus, PostType } from '@rippingyard/schemas';
@@ -66,8 +68,15 @@ export const PostEditor: FC<Props> = ({
   const [isPublic, setIsPublic] = useState<boolean>(post?.isPublic ?? true);
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'published');
 
-  const now = dayjs();
-  const uploadpath = `posts/${now.format('YYYY/MM')}/`;
+  const { seconds, nanoseconds } = Timestamp.now();
+  const now: TimestampType = { _seconds: seconds, _nanoseconds: nanoseconds };
+  const [publishedAt, setPublishedAt] = useState<TimestampType>(
+    post?.publishedAt || now
+  );
+  const publishdate = useDateObject(publishedAt);
+  const publishdateString = dayjs(publishdate).format('YYYY/MM/DD HH:mm');
+
+  const uploadpath = `posts/${dayjs(publishdate).format('YYYY/MM')}/`;
 
   const onUpdate = useCallback(
     (content: string) => {
@@ -92,6 +101,7 @@ export const PostEditor: FC<Props> = ({
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="isPublic" value={isPublic ? 1 : 0} />
       <input type="hidden" name="status" value={status} />
+      <input type="hidden" name="publishedAt" value={publishdateString} />
       <section className={bodyStyle}>
         <header className={headerStyle}>
           {hasTitle && (
@@ -105,9 +115,17 @@ export const PostEditor: FC<Props> = ({
             </div>
           )}
           <StatusHeader
-            post={post}
             hasTitle={hasTitle}
             setHasTitle={setHasTitle}
+            publishedAt={publishdate}
+            onChangeDate={(date) => {
+              if (!date) return;
+              const { seconds, nanoseconds } = Timestamp.fromDate(date);
+              setPublishedAt({
+                _seconds: seconds,
+                _nanoseconds: nanoseconds,
+              });
+            }}
           />
         </header>
         <Wysiwyg

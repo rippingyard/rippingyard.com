@@ -1,5 +1,4 @@
 ﻿import clsx from 'clsx';
-import { Timestamp } from 'firebase-admin/firestore';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
 import { useLoaderData, useLocation, useNavigate } from 'react-router';
@@ -68,7 +67,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
     const formData = await usePostFormData(request);
 
     const { post } = await savePost({
-      publishedAt: Timestamp.now(),
       uid,
       ...formData,
     });
