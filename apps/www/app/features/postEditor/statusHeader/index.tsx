@@ -9,8 +9,6 @@ import {
 } from './style.css';
 import { DatePicker, DatePickerInputProps } from '../../datePicker';
 
-import 'react-datepicker/dist/react-datepicker.css';
-
 type Props = {
   hasTitle: boolean;
   setHasTitle: Dispatch<SetStateAction<boolean>>;

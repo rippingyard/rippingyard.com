@@ -1,6 +1,10 @@
 import { FC, forwardRef, ReactElement } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
+import * as styles from './style.css';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 type Props = {
   selectedDate: Date;
   onChange: (date: Date | null) => void;
@@ -31,7 +35,7 @@ export const DatePicker: FC<Props> = ({
     <ReactDatePicker
       selected={selectedDate}
       onChange={onChange}
-      calendarClassName="rasta-stripes"
+      calendarClassName={styles.calendar}
       showTimeSelect
       dateFormat="yyyy-MM-dd HH:mm"
       customInput={customInput}
