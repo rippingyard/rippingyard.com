@@ -17,7 +17,7 @@ export default function Index() {
     { to: '/', label: 'Top', caption: t('quickmenu.top') },
     {
       to: '/post/create',
-      label: 'Create A Post',
+      label: 'Create An Article',
       caption: t('quickmenu.createPost'),
     },
     {

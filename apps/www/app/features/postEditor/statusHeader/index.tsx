@@ -1,10 +1,5 @@
 ﻿import clsx from 'clsx';
-import { Timestamp } from 'firebase/firestore';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
-
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
-
-import type { Post } from '@rippingyard/schemas';
+import { Dispatch, FC, forwardRef, SetStateAction } from 'react';
 
 import {
   containerStyle,
@@ -12,19 +7,30 @@ import {
   itemStyle,
   dateStyle,
 } from './style.css';
+import { DatePicker, DatePickerInputProps } from '../../datePicker';
 
 type Props = {
-  post?: Post;
   hasTitle: boolean;
   setHasTitle: Dispatch<SetStateAction<boolean>>;
+  publishedAt: Date;
+  onChangeDate?: (date: Date | null) => void;
 };
 
-export const StatusHeader: FC<Props> = ({ post, hasTitle, setHasTitle }) => {
-  const { seconds, nanoseconds } = Timestamp.now();
-  const now: TimestampType = { _seconds: seconds, _nanoseconds: nanoseconds };
-  const [publishedAt] = useState(post?.publishedAt || now);
-  const publishdate = useDate(publishedAt as unknown as TimestampType);
+const CustomInput = forwardRef<HTMLDivElement, DatePickerInputProps>(
+  ({ value, onClick }, ref) => (
+    <div className={clsx(dateStyle)} onClick={onClick} ref={ref}>
+      {value}
+    </div>
+  )
+);
+CustomInput.displayName = 'CustomInput';
 
+export const StatusHeader: FC<Props> = ({
+  publishedAt = new Date(),
+  hasTitle,
+  setHasTitle,
+  onChangeDate = () => undefined,
+}) => {
   return (
     <ul className={containerStyle}>
       <li className={itemStyle}>
@@ -38,7 +44,13 @@ export const StatusHeader: FC<Props> = ({ post, hasTitle, setHasTitle }) => {
           </span>
         )}
       </li>
-      <li className={clsx(itemStyle, dateStyle)}>{publishdate}</li>
+      <li className={clsx(itemStyle)}>
+        <DatePicker
+          selectedDate={publishedAt}
+          onChange={onChangeDate}
+          customInput={<CustomInput />}
+        />
+      </li>
     </ul>
   );
 };

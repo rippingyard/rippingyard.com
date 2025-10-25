@@ -25,4 +25,5 @@ export const addTitleStyle = style({
 
 export const dateStyle = style({
   fontWeight: rootVars.font.weight.bold,
+  cursor: 'pointer',
 });

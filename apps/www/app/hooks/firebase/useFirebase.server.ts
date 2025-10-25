@@ -22,6 +22,7 @@ export const useFirebase = () => {
       // 本番環境の場合
       // GOOGLE_APPLICATION_CREDENTIALSが設定されていて、それがJSONの場合
       const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+      console.log('credentialsEnv', credentialsEnv);
       // JSON文字列として扱う
       const cert =
         typeof credentialsEnv === 'string' && credentialsEnv.startsWith('{')

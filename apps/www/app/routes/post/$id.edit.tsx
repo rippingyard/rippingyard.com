@@ -68,11 +68,18 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
     const { uid } = await getMe(request);
     if (!uid) throw new Error('Unauthenticated');
 
-    const { title, contentBody, type, status, tags, isPublic, suggestedTags } =
-      await usePostFormData(request);
+    const {
+      title,
+      contentBody,
+      type,
+      status,
+      tags,
+      isPublic,
+      suggestedTags,
+      publishedAt,
+    } = await usePostFormData(request);
 
     const createdAt = Timestamp.fromDate(post.createdAt.toDate());
-    const publishedAt = Timestamp.fromDate(post.publishedAt.toDate());
 
     const { post: newPost } = await savePost({
       id: post.id,
