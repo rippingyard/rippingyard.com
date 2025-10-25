@@ -37,6 +37,7 @@ export const DatePicker: FC<Props> = ({
       onChange={onChange}
       calendarClassName={styles.calendar}
       showTimeSelect
+      timeIntervals={15}
       dateFormat="yyyy-MM-dd HH:mm"
       customInput={customInput}
     />

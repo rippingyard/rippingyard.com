@@ -6,7 +6,7 @@
   "author": "mcatm <tkcs@pelepop.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "pnpm functions:setup && dotenv -e env/emulator -- turbo run dev",
+    "dev": "dotenv -e env/emulator -- turbo run dev",
     "dev:www": "turbo run dev:www --filter=./apps/www",
     "build:sb": "turbo run build:sb --filter=./apps/www",
     "build-storybook": "npm run build:sb",
