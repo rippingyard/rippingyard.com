@@ -5,6 +5,7 @@ import { useUrlContent } from '~/hooks/fetch/useUrlContent';
 import { getSummary } from '~/utils/typography';
 
 import * as styles from './styles.css';
+import { NormalLink } from '../NormalLink';
 
 export const EmbedLink: FC<{ url: string; isTest?: boolean }> = ({
   url,
@@ -14,14 +15,7 @@ export const EmbedLink: FC<{ url: string; isTest?: boolean }> = ({
 
   if (!url) return;
 
-  if (isLoading || !ogp || isTest)
-    return (
-      <p>
-        <a href={url} target="_blank" rel="noreferrer">
-          {url}
-        </a>
-      </p>
-    );
+  if (isLoading || !ogp || isTest) return <NormalLink url={url} />;
 
   const { title, description, sitename, image } = ogp;
 

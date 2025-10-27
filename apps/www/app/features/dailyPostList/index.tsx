@@ -3,7 +3,7 @@ import { FC, memo, useMemo } from 'react';
 
 import { DateLabel } from '~/components/DateLabel';
 import { type ItemMode, PostItem } from '~/components/PostItem';
-import { TimestampType } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { toDate } from '~/utils/date';
 
 import type { Post } from '@rippingyard/schemas';

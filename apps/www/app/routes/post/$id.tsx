@@ -17,7 +17,8 @@ import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
+import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
@@ -133,7 +134,7 @@ export default function Main() {
         <section className={articleSectionStyle}>
           <PostHeader post={post} />
           <article>
-            <Article text={post.content} />
+            <Article text={post.content} showExternalEmbed={true} />
           </article>
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await

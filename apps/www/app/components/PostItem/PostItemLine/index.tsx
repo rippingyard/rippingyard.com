@@ -2,7 +2,8 @@
 import { Link } from 'react-router';
 
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
+import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 import { getSummary } from '~/utils/typography';
 
