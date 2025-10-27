@@ -155,6 +155,16 @@ export const isYouTubeUrl = (url: string) => {
   );
 };
 
+export const isInstagramUrl = (url: string) => {
+  const urlInfo = new URL(url);
+  return ['www.instagram.com'].includes(urlInfo.hostname);
+};
+
+export const isTwitterUrl = (url: string) => {
+  const urlInfo = new URL(url);
+  return ['x.com', 'twitter.com'].includes(urlInfo.hostname);
+};
+
 export const getYouTubeId = (url: string) => {
   if (!isYouTubeUrl(url)) return;
   const urlInfo = new URL(url);
