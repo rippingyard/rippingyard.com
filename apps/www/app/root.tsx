@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import destyle from 'destyle.css?url';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Links,
@@ -151,6 +152,15 @@ function App() {
 
   useGTM(gtagId);
   useAdsenseTag(adsenseId);
+
+  useEffect(() => {
+    // Twitter公式ウィジェットJSを動的に追加
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    script.charset = 'utf-8';
+    document.querySelector('body')?.appendChild(script);
+  }, []);
 
   return (
     <html

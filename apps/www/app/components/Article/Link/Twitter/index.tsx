@@ -1,5 +1,4 @@
-import { FC } from 'react';
-import { XEmbed } from 'react-social-media-embed';
+import { FC, useMemo } from 'react';
 
 import * as styles from './style.css';
 import { NormalLink } from '../NormalLink';
@@ -7,15 +6,16 @@ import { NormalLink } from '../NormalLink';
 export const Twitter: FC<{
   url: string;
   showExternalEmbed: boolean;
-  isTesting: boolean;
-}> = ({ url, showExternalEmbed = false, isTesting = true }) => {
-  const tweetId = url.substring(url.lastIndexOf('/') + 1).replace(/[?].*$/, '');
-  console.log('tweetId', tweetId);
+}> = ({ url, showExternalEmbed = false }) => {
+  const tweetUrl = useMemo(() => url.replace('x.com/', 'twitter.com/'), [url]);
 
-  if (!showExternalEmbed || isTesting) return <NormalLink url={url} />;
+  if (!showExternalEmbed) return <NormalLink url={url} />;
+
   return (
     <div className={styles.container}>
-      <XEmbed url={url} width="100%" />
+      <blockquote className="twitter-tweet">
+        <a href={`${tweetUrl}?ref_src=twsrc%5Etfw`}>{url}</a>
+      </blockquote>
     </div>
   );
 };
