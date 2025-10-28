@@ -35,7 +35,7 @@
     "@rippingyard/schemas": "file:../../packages/schemas",
     "@rippingyard/utils": "file:../../packages/utils",
     "algoliasearch": "^4.23.3",
-    "axios": "^1.7.4",
+    "axios": "^1.13.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.12",
     "dompurify": "^3.2.3",
