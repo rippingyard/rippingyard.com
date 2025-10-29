@@ -162,13 +162,6 @@ function App() {
     document.querySelector('body')?.appendChild(script);
   }, []);
 
-  useEffect(() => {
-    // Instagram公式ウィジェットJSを動的に追加
-    const script = document.createElement('script');
-    script.src = 'https://www.instagram.com/embed.js';
-    document.querySelector('body')?.appendChild(script);
-  }, []);
-
   return (
     <html
       lang={locale}
