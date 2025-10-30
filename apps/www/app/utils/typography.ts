@@ -165,6 +165,11 @@ export const isTwitterUrl = (url: string) => {
   return ['x.com', 'twitter.com'].includes(urlInfo.hostname);
 };
 
+export const isAppleMusicUrl = (url: string) => {
+  const urlInfo = new URL(url);
+  return ['music.apple.com'].includes(urlInfo.hostname);
+};
+
 export const getYouTubeId = (url: string) => {
   if (!isYouTubeUrl(url)) return;
   const urlInfo = new URL(url);
