@@ -17,6 +17,9 @@ export const AppleMusic: FC<{
   );
 
   const urlInfo = new URL(url);
+
+  if (urlInfo.pathname.includes('/albums/')) <NormalLink url={url} />;
+
   if (urlInfo.pathname.includes('/album/'))
     return <AppleMusicAlbum url={embedUrl} isTesting={isTesting} />;
   if (urlInfo.pathname.includes('/artist/'))
@@ -32,6 +35,8 @@ const AppleMusicAlbum: FC<{
   isTesting?: boolean;
 }> = ({ url, isTesting = false }) => {
   if (isTesting) return <NormalLink url={url} />;
+
+  // いずれにせよ、APIを叩く必要はありそう
 
   return (
     <div className={styles.container}>
