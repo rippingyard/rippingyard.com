@@ -1,8 +1,14 @@
 ﻿import { FC } from 'react';
 
 import { YouTube } from '~/components/YouTube';
-import { isInstagramUrl, isTwitterUrl, isYouTubeUrl } from '~/utils/typography';
+import {
+  isAppleMusicUrl,
+  isInstagramUrl,
+  isTwitterUrl,
+  isYouTubeUrl,
+} from '~/utils/typography';
 
+import { AppleMusic } from './AppleMusic';
 import { EmbedLink } from './EmbedLink';
 import { Instagram } from './Instagram';
 import { Twitter } from './Twitter';
@@ -18,6 +24,8 @@ export const Link: FC<{ url: string; showExternalEmbed?: boolean }> = ({
     return <Instagram url={url} showExternalEmbed={showExternalEmbed} />;
   if (isTwitterUrl(url))
     return <Twitter url={url} showExternalEmbed={showExternalEmbed} />;
+  if (isAppleMusicUrl(url))
+    return <AppleMusic url={url} showExternalEmbed={showExternalEmbed} />;
 
   return <EmbedLink url={url} />;
 };
