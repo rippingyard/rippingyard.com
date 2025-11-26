@@ -133,6 +133,7 @@ export default function Main() {
   const postLink = usePostLink();
 
   const result = useActionData<typeof action>();
+  console.log('result', result);
 
   useEffect(() => {
     if (!result?.post) return;

@@ -1,0 +1,65 @@
+import {
+  DocumentReference,
+  OrderByDirection,
+  Timestamp,
+} from 'firebase-admin/firestore';
+
+import type { Bookmark } from '@rippingyard/schemas';
+
+type WhereOp = '==' | 'in' | '!=' | 'array-contains-any';
+type WhereValue = string | number | boolean | string[] | DocumentReference<any>; // Firebaseのドキュメント参照
+
+type WhereParam = {
+  key: string;
+  op?: WhereOp;
+  val: WhereValue;
+};
+
+export type WhereParams = WhereParam[];
+
+type OrderBy = {
+  key: string;
+  order?: OrderByDirection;
+};
+
+export type QueryParams<T> = {
+  collection: string;
+  myId?: string;
+  where?: WhereParams;
+  findNearest?: {
+    vector: number[];
+    limit?: number;
+    distanceMeasure?: 'COSINE' | 'EUCLIDEAN' | 'DOT_PRODUCT';
+  };
+  limit?: number;
+  startAfter?: string | number | Timestamp;
+  orderBy?: OrderBy;
+  // lastVisible?: DocumentData; // サーバーサイドで未使用のため削除
+  removeWhereKeys?: string[];
+  initialData?: T[];
+};
+
+export const defaultOp = (val: WhereValue): WhereOp =>
+  Array.isArray(val) ? 'in' : '==';
+
+export const useBookmarkCondition = (
+  args: Omit<QueryParams<Bookmark>, 'collection'> = {}
+) => {
+  const { where = [] } = args;
+
+  const whereKeys = Object.keys(where);
+
+  if (!whereKeys.includes('isDeleted'))
+    where.push({ key: 'isDeleted', val: false });
+  if (!whereKeys.includes('isPublic'))
+    where.push({ key: 'isPublic', val: true });
+
+  if (!args.orderBy) {
+    args.orderBy = {
+      key: 'createdAt',
+      order: 'desc',
+    };
+  }
+
+  return { args, where };
+};

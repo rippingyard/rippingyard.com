@@ -1,14 +1,11 @@
 import { z } from 'zod';
 
+import { SuggestedTagSchema } from './tag';
 import { TimestampSchema } from './timestamp';
 import { DocumentReferenceSchema } from './utils';
 
 const PostStatusSchema = z.enum(['published', 'drafted']);
 const PostTypeSchema = z.enum(['article', 'note', 'log']);
-const SuggestedTagSchema = z.object({
-  value: z.string(),
-  relevance: z.number(),
-});
 
 export const PostSchema = z.object({
   id: z.string(),
@@ -27,7 +24,7 @@ export const PostSchema = z.object({
     })
     .optional(),
   owner: z.any().refine(DocumentReferenceSchema).optional(),
-  collaborators: z.any().refine(DocumentReferenceSchema).optional(),
+  collaborators: z.any().refine(DocumentReferenceSchema).array().optional(),
   parent: z.any().refine(DocumentReferenceSchema).optional(),
   tags: z.string().array(),
   items: z.any().refine(DocumentReferenceSchema).array(),
@@ -40,7 +37,6 @@ export const PostSchema = z.object({
 export type Post = z.infer<typeof PostSchema>;
 export type PostType = z.infer<typeof PostTypeSchema>;
 export type PostStatus = z.infer<typeof PostStatusSchema>;
-export type SuggestedTag = z.infer<typeof SuggestedTagSchema>;
 
 export type PostAsSearchResult = Pick<
   Post,

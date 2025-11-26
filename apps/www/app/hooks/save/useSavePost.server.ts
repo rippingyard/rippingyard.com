@@ -2,7 +2,9 @@
 import { ZodError } from 'zod';
 
 import { type Post, PostSchema } from '@rippingyard/schemas';
+import { extractUrls } from '@rippingyard/utils';
 
+import { useSaveBookmark } from './useSaveBookmark.server';
 import { useEmbedding } from '../embedding/useEmbedding.server';
 import { useDocReference } from '../firestore/useDocReference.server';
 import { useFirestore } from '../firestore/useFirestore.server';
@@ -32,6 +34,7 @@ const savePost = async (
 ) => {
   try {
     const db = useFirestore();
+    const saveBookmark = useSaveBookmark();
 
     const {
       id,
@@ -52,6 +55,7 @@ const savePost = async (
 
     if (!payload.uid) throw new Error('ユーザーを指定してください');
     const owner = useDocReference(payload.uid, 'users');
+    // const collaborators: (typeof owner)[] = [];
 
     const snap = await owner.get();
     if (!snap.exists) throw new Error('ユーザーが存在しません');
@@ -80,6 +84,7 @@ const savePost = async (
       owner,
       content,
       tags,
+      // collaborators,
       suggestedTags,
       vector: FieldValue.vector(vector),
       updatedAt: Timestamp.now(),
@@ -103,6 +108,7 @@ const savePost = async (
 
     // TODO: slug
 
+    // console.log('oldPost', oldPost);
     console.log('newPost', post);
 
     // Validation
@@ -115,6 +121,15 @@ const savePost = async (
     //   status,
     //   payload: params,
     // })
+
+    const urls = extractUrls(contentBody);
+    console.log('urls', urls);
+
+    if (urls.length > 0) {
+      await Promise.allSettled(
+        urls.map(async (url) => await saveBookmark(url, { postId: post.id }))
+      );
+    }
 
     return { post };
   } catch (e: any) {
