@@ -1,23 +1,28 @@
-﻿import { Suspense } from 'react';
+﻿import { Suspense, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Await, useLoaderData } from 'react-router';
+import { Await, useFetcher, useLoaderData } from 'react-router';
 
 import { ADSENSE_IDS, Adsense } from '~/components/Adsense';
 import { Article } from '~/components/Article';
+import { Button } from '~/components/Button';
 import { Heading } from '~/components/Heading';
 import { Link } from '~/components/Link';
 import { PostTags } from '~/components/PostTags';
 import { Skelton } from '~/components/Skelton';
 import { PostHeader } from '~/features/postHeader';
 import { PostList } from '~/features/postList';
+import { Suggestion } from '~/features/suggestion';
 import { UserCard } from '~/features/userCard';
+import { WhereParams } from '~/hooks/condition/usePostConditions';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
 import { useRelatedPosts } from '~/hooks/fetch/useRelatedPosts.server';
 import { useUser } from '~/hooks/fetch/useUser.server';
+import { useDocReference } from '~/hooks/firestore/useDocReference.server';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
+import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { useCanEditPost } from '~/hooks/permission/useCanEditPost.server';
 import { translation } from '~/middlewares/i18n/translation.server';
 import { getMe } from '~/middlewares/session.server';
@@ -41,17 +46,36 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     const { post } = await usePost(id, request);
     if (!post) throw new Error(t('error.notFound'), { cause: 404 });
 
+    // ownerが存在しない場合はnullを返す
+    const ownerId = getDocumentReferenceId(post?.owner);
+
     const fetchOwner = async () => {
-      // ownerが存在しない場合はnullを返す
-      const ownerId = getDocumentReferenceId(post?.owner);
       if (!ownerId) return null;
       const { user: owner } = await useUser(ownerId);
       return owner;
     };
 
+    const where: WhereParams = [];
+
+    if (ownerId) {
+      where.push({
+        key: 'owner',
+        val: useDocReference(ownerId, 'users'),
+      });
+    }
+
+    const fetchOwnersPosts = async () => {
+      const { data } = await usePosts({
+        limit: 3,
+        where,
+      });
+      return data;
+    };
+
     const fetchLatestPosts = async () => {
       const { data } = await usePosts({
         limit: 9,
+        // where,
         startAfter: post.publishedAt,
       });
       return data;
@@ -76,6 +100,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       relatedPosts: isSPA(request)
         ? fetchRelatedPosts()
         : await fetchRelatedPosts(),
+      ownersPosts: fetchOwnersPosts,
       canonicalUrl,
       canEditPost: canEditPost(uid, role, post),
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
@@ -125,6 +150,14 @@ export default function Main() {
   const { t } = useTranslation();
 
   const editLink = usePostEditLink(post.id);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const fetcher = useFetcher();
+
+  const isChangedTags = useMemo(
+    () => selectedTags.toString() !== (post?.tags || []).toString(),
+    [selectedTags, post?.tags]
+  );
 
   return (
     <>
@@ -133,7 +166,7 @@ export default function Main() {
         <section className={articleSectionStyle}>
           <PostHeader post={post} />
           <article>
-            <Article text={post.content} />
+            <Article text={post.content} key={`post-article-${post.id}`} />
           </article>
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await
@@ -159,11 +192,29 @@ export default function Main() {
           )}
 
           {canEditPost && (
-            <div className={articleFooterStyle}>
-              <Link to={editLink} size="x-small" isButton isBold>
-                {t('edit')}
-              </Link>
-            </div>
+            <>
+              <div className={articleSectionStyle}>
+                <fetcher.Form method="post" action={`/post/${post.id}/edit`}>
+                  <Heading level="partial">{t('tag')}</Heading>
+                  <Suggestion
+                    key={`post-tags-${post.id}`}
+                    post={post}
+                    handleUpdateTags={setSelectedTags}
+                  />
+                  {isChangedTags && (
+                    <Button size="x-small" isLoading={fetcher.state !== 'idle'}>
+                      {t('save')}
+                    </Button>
+                  )}
+                </fetcher.Form>
+              </div>
+
+              <div className={articleFooterStyle}>
+                <Link to={editLink} size="x-small" isButton isBold>
+                  {t('edit')}
+                </Link>
+              </div>
+            </>
           )}
         </section>
         <aside className={articleSectionStyle}>

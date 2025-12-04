@@ -9,3 +9,5 @@ export const useDate = (
   const date = useDateObject(timestamp);
   return dayjs(date).format(format);
 };
+
+export type { TimestampType };

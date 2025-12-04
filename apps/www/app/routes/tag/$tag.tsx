@@ -22,7 +22,6 @@ import { containerStyle } from '~/styles/container.css';
 import { articleSectionStyle } from '~/styles/section.css';
 import { toMicroseconds } from '~/utils/date';
 import { sortPosts } from '~/utils/post';
-import { isSPA } from '~/utils/request';
 
 import type { Post } from '@rippingyard/schemas';
 
@@ -61,8 +60,6 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { data: items } = await usePosts(args);
 
   const { fetchTagDescription } = useTagDescription();
-
-  console.log('isSPA?', isSPA(request));
 
   return {
     items,

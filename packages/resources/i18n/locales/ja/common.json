@@ -13,6 +13,9 @@
   "relatedArticles": "関連記事",
   "privacyPolicy": "プライバシーポリシー",
   "termsOfService": "利用規約",
+  "tag": "タグ",
+  "suggestedTags": "提案されたタグ",
+  "save": "保存",
 
   "post": {
     "create": "記事作成",
@@ -43,7 +46,6 @@
   "menu": "メニュー",
   "home": "ホーム",
   "settings": "設定",
-  "save": "保存",
   "cancel": "キャンセル",
   "delete": "削除",
   "create": "作成",

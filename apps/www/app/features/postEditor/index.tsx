@@ -26,14 +26,9 @@ import {
 type Props = {
   post?: Post;
   action?: string;
-  myTags: string[];
 };
 
-export const PostEditor: FC<Props> = ({
-  post,
-  action = '/post/create',
-  myTags = [],
-}) => {
+export const PostEditor: FC<Props> = ({ post, action = '/post/create' }) => {
   const navigation = useNavigation();
   const { pathname } = useLocation();
   const { setCachedContent, getCachedContent } = useCachedContent();
@@ -159,7 +154,6 @@ export const PostEditor: FC<Props> = ({
       <SettingModal
         content={content}
         tags={post?.tags || []}
-        myTags={myTags}
         suggestedTags={post?.suggestedTags || []}
         isOpened={isSettingOpened}
         isLoading={isLoading}

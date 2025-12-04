@@ -46,10 +46,6 @@ const savePost = async (
       publishedAt,
     } = payload;
 
-    const content = title
-      ? `<h1>${title}</h1>${contentBody || ''}`
-      : contentBody || '';
-
     if (!payload.uid) throw new Error('ユーザーを指定してください');
     const owner = useDocReference(payload.uid, 'users');
 
@@ -60,11 +56,19 @@ const savePost = async (
 
     const postDoc = id ? postCollection.doc(id) : postCollection.doc();
 
-    const oldPost = (await postDoc.get()).data() as Partial<Post>;
+    const {
+      collaborators: _collaborators,
+      parent: _parent,
+      ...oldPost
+    } = (await postDoc.get()).data() as Partial<Post>;
+
+    const content = title
+      ? `<h1>${title}</h1>${contentBody || ''}`
+      : contentBody || oldPost.content || '';
 
     // Embedding
     const { embedding } = useEmbedding();
-    const vector = await embedding(contentBody);
+    const vector = await embedding(content);
 
     const post: Partial<Post> = {
       slug: '',
@@ -79,7 +83,7 @@ const savePost = async (
       id: postDoc.id,
       owner,
       content,
-      tags,
+      tags: tags || oldPost?.tags,
       suggestedTags,
       vector: FieldValue.vector(vector),
       updatedAt: Timestamp.now(),

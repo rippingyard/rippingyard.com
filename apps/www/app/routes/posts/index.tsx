@@ -12,7 +12,7 @@ import { CACHE_KEYS } from '~/hooks/cache/useCache';
 import { QueryParams } from '~/hooks/condition/usePostConditions';
 import { useInifiniteItems } from '~/hooks/fetch/useInfiniteItems';
 import { usePosts } from '~/hooks/fetch/usePosts.server';
-import { TimestampType } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { getMe } from '~/middlewares/session.server';
 import { containerStyle } from '~/styles/container.css';
 import { toMicroseconds } from '~/utils/date';

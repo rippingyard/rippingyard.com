@@ -15,7 +15,9 @@ import { Button } from '~/components/Button';
 import { FormRadioButton } from '~/components/FormRadioButton';
 import { Heading } from '~/components/Heading';
 import { Modal } from '~/components/Modal';
+import { useRootContext } from '~/root';
 import { ServerMessage, ServerStatus } from '~/routes/api/entitiesFromText/sse';
+import { mockedEntities } from '~/routes/api/suggestion';
 import { animationRotateStyle } from '~/styles/animation.css';
 
 import type {
@@ -45,7 +47,6 @@ import { TagSelector } from './tagSelector';
 type Props = {
   content: string;
   tags: string[];
-  myTags: string[];
   suggestedTags: SuggestedTag[];
   isOpened: boolean;
   isLoading: boolean;
@@ -64,13 +65,10 @@ export type SuggestedEntity = SuggestedTag & {
   isChecked: boolean;
 };
 
-const mockedEntities = ['Music', 'Film', 'Book', 'Art', 'Game', 'Technology'];
-
 export const SettingModal: FC<Props> = ({
   content,
   tags = [],
   suggestedTags = [],
-  myTags = [],
   isOpened = false,
   isLoading = false,
   isPublic,
@@ -91,6 +89,8 @@ export const SettingModal: FC<Props> = ({
   const [tagRetrivalError, setTagRetrivalError] = useState('');
   const [tagRetrivalStatus, setTagRetrivalStatus] = useState('');
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  const { myTags } = useRootContext();
 
   const label = useMemo(() => (isUpdate ? '更新する' : '公開する'), [isUpdate]);
 

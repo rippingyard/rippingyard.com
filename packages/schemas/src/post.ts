@@ -27,7 +27,7 @@ export const PostSchema = z.object({
     })
     .optional(),
   owner: z.any().refine(DocumentReferenceSchema).optional(),
-  collaborators: z.any().refine(DocumentReferenceSchema).optional(),
+  collaborators: z.any().refine(DocumentReferenceSchema).array().optional(),
   parent: z.any().refine(DocumentReferenceSchema).optional(),
   tags: z.string().array(),
   items: z.any().refine(DocumentReferenceSchema).array(),

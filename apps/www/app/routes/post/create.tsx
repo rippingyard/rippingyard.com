@@ -1,12 +1,11 @@
 ﻿import clsx from 'clsx';
 import { useEffect } from 'react';
 import { data, redirect } from 'react-router';
-import { useLoaderData, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
 import { useCachedContent } from '~/hooks/cache/useCachedContent';
-import { useMyTags } from '~/hooks/fetch/useMyTags.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostLink } from '~/hooks/link/usePostLink';
 import { useCanCreatePost } from '~/hooks/permission/useCanCreatePost';
@@ -38,12 +37,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       });
     }
 
-    const myTags = await useMyTags({ uid });
-
     return {
       title,
       canonicalUrl,
-      myTags,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     };
   } catch (e) {
@@ -123,7 +119,6 @@ export default function Main({ actionData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const postLink = usePostLink();
   const { pathname } = useLocation();
-  const { myTags } = useLoaderData<typeof loader>();
   const { clearCachedContent } = useCachedContent();
 
   useEffect(() => {
@@ -139,7 +134,7 @@ export default function Main({ actionData }: Route.ComponentProps) {
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
-      <PostEditor myTags={myTags} />
+      <PostEditor />
     </main>
   );
 }

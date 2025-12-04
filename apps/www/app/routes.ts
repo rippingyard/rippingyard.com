@@ -35,6 +35,7 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     // API
     route('/upload', 'routes/api/upload.tsx');
     route('/api/url', 'routes/api/url.tsx');
+    route('/api/suggestion/:id', 'routes/api/suggestion.tsx');
     route('/api/entitiesFromText/sse', 'routes/api/entitiesFromText/sse.tsx');
 
     // Sitemap
