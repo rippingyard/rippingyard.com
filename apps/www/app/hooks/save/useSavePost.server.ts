@@ -60,7 +60,7 @@ const savePost = async (
       collaborators: _collaborators,
       parent: _parent,
       ...oldPost
-    } = (await postDoc.get()).data() as Partial<Post>;
+    } = ((await postDoc.get()).data() || {}) as Partial<Post>;
 
     const content = title
       ? `<h1>${title}</h1>${contentBody || ''}`

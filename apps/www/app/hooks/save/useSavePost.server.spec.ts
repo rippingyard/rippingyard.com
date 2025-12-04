@@ -1,6 +1,16 @@
-﻿import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it, vi } from 'vitest';
 
 import { useSavePost } from './useSavePost.server';
+
+// useEmbeddingをモック
+vi.mock('../embedding/useEmbedding.server', () => ({
+  useEmbedding: () => ({
+    embedding: vi.fn().mockResolvedValue(
+      // ダミーのembeddingベクトル（通常は1536次元だが、テスト用に簡略化）
+      Array(1536).fill(0.1)
+    ),
+  }),
+}));
 
 const savePost = useSavePost();
 
@@ -71,8 +81,8 @@ describe('useSavePost', () => {
         })
       ).rejects.toMatchObject({
         fieldErrors: {
-          content: ['String must contain at least 1 character(s)']
-        }
+          content: ['String must contain at least 1 character(s)'],
+        },
       });
     });
     it('uidが空の場合、エラーが返る', async () => {
