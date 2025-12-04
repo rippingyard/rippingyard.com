@@ -6,7 +6,7 @@ import { zIndex } from '~/utils/style';
 
 export const containerStyle = style({
   position: 'relative',
-  zIndex: zIndex('WYSIWYG_MODAL'),
+  zIndex: zIndex('MODAL'),
 });
 
 export const entitiesContainerStyle = style({

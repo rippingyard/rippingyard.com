@@ -13,6 +13,9 @@
   "relatedArticles": "Related Articles",
   "privacyPolicy": "Privacy Policy",
   "termsOfService": "Terms of Service",
+  "tag": "Tag",
+  "suggestedTags": "Suggested Tags",
+  "save": "Save",
 
   "post": {
     "create": "Create Post",
@@ -43,7 +46,6 @@
   "menu": "Menu",
   "home": "Home",
   "settings": "Settings",
-  "save": "Save",
   "cancel": "Cancel",
   "delete": "Delete",
   "create": "Create",

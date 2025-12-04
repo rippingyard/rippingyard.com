@@ -6,7 +6,6 @@ import { useActionData, useLoaderData, useNavigate } from 'react-router';
 
 import { PostEditor } from '~/features/postEditor';
 import { clearCachedItems } from '~/hooks/cache/useCache';
-import { useMyTags } from '~/hooks/fetch/useMyTags.server';
 import { usePost } from '~/hooks/fetch/usePost.server';
 import { usePostFormData } from '~/hooks/form/usePostFormData';
 import { usePostEditLink } from '~/hooks/link/usePostEditLink';
@@ -39,14 +38,11 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
     if (!uid) return redirect('/');
     if (!canEditPost(uid, role, post)) return redirect('/');
 
-    const myTags = await useMyTags({ uid });
-
     return {
       post,
       action,
       title,
       canonicalUrl,
-      myTags,
       meta: [{ tagName: 'link', rel: 'canonical', href: canonicalUrl }],
     };
   } catch (e) {
@@ -128,7 +124,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export default function Main() {
-  const { post, action, myTags } = useLoaderData<typeof loader>();
+  const { post, action } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const postLink = usePostLink();
 
@@ -143,7 +139,7 @@ export default function Main() {
 
   return (
     <main className={clsx(containerStyle, edgeStyle)}>
-      <PostEditor post={post} action={action} myTags={myTags} />
+      <PostEditor post={post} action={action} />
     </main>
   );
 }

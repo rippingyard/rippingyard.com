@@ -3,6 +3,7 @@ import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 
 import { IconTag } from '~/assets/icons/Tag';
 import { ComboBox } from '~/components/ComboBox';
+import { Loading } from '~/features/loading';
 
 import { SuggestedEntity } from '..';
 import { checkedEntityStyle, entityItemStyle, tagListStyle } from './style.css';
@@ -11,6 +12,7 @@ type Props = {
   tags: string[];
   selectedTags: string[];
   suggestedTags: SuggestedEntity[];
+  isLoading?: boolean;
   setSelectedTags: Dispatch<SetStateAction<string[]>>;
 };
 
@@ -18,6 +20,7 @@ export const TagSelector: FC<Props> = ({
   tags = [],
   selectedTags = [],
   suggestedTags = [],
+  isLoading = false,
   setSelectedTags,
 }) => {
   const uniqueTags = useMemo(() => [...new Set(tags)], [tags]);
@@ -33,6 +36,8 @@ export const TagSelector: FC<Props> = ({
     },
     [selectedTags, setSelectedTags]
   );
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

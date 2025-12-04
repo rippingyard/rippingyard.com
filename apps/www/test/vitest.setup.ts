@@ -9,6 +9,17 @@ vi.mock('~/hooks/firestore/useFirestore.server', () => {
   };
 });
 
+// useEmbeddingフックをモック
+vi.mock('~/hooks/embedding/useEmbedding.server', () => ({
+  useEmbedding: vi.fn(() => ({
+    embedding: vi.fn(async () => {
+      // OpenAI embeddingsの次元数（text-embedding-ada-002の場合は1536次元）
+      // モックとして固定のダミー配列を返す
+      return new Array(1536).fill(0.1);
+    }),
+  })),
+}));
+
 // useUrlContentフックをモック
 vi.mock('~/hooks/fetch/useUrlContent', () => ({
   useUrlContent: vi.fn(() => ({

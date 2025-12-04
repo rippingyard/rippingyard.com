@@ -13,7 +13,12 @@ export const FormCheckbox: FC<Props> = ({ onClick, ...props }) => {
   return (
     <div className={className} onClick={onClick}>
       <IconCheck />
-      <input autoComplete="true" type="checkbox" {...props} />
+      <input
+        autoComplete="true"
+        type="checkbox"
+        onChange={() => undefined}
+        {...props}
+      />
     </div>
   );
 };

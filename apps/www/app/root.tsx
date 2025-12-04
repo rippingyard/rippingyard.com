@@ -13,6 +13,7 @@ import {
   data,
   LoaderFunctionArgs,
   type LinksFunction,
+  useOutletContext,
 } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
@@ -24,12 +25,15 @@ import { Env, type EnvType } from './components/Env';
 import { Layout } from './components/Layout';
 import { ErrorComponent } from './features/error';
 import { Snackbar } from './features/snackbar';
+import { useMyTags } from './hooks/fetch/useMyTags.server';
 import { useAdsenseTag } from './hooks/script/useAdsenseTag';
 import { useGTM } from './hooks/script/useGTM';
 import i18n from './middlewares/i18n/i18n.server';
 import { commitSession, getMe, getSession } from './middlewares/session.server';
 import { bodyStyle } from './styles/root.css';
 import { themeClass } from './styles/theme.css';
+
+type ContextType = { myTags: string[] };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const locale = await i18n.getLocale(request);
@@ -86,8 +90,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Authが切れてしまった場合、tokenをクリアする
   if (!isAuthenticated) session.unset('token');
 
+  const myTags = await useMyTags({ uid });
+
   return data(
     {
+      myTags,
       isAuthenticated,
       isWriting,
       gtagId: process.env.VITE_GTM_ID || 'GTM-5B3N3TX',
@@ -124,6 +131,7 @@ export const meta: MetaFunction = () => [
 
 function App() {
   const {
+    myTags = [],
     isAuthenticated,
     isWriting,
     gtagId,
@@ -194,7 +202,7 @@ function App() {
       </head>
       <body className={clsx(bodyStyle, themeClass)} suppressHydrationWarning>
         <Layout isAuthenticated={isAuthenticated} isWriting={isWriting}>
-          <Outlet />
+          <Outlet context={{ myTags } satisfies ContextType} />
         </Layout>
         <Snackbar info={infoMessage} alert={alertMessage} />
         <ScrollRestoration />
@@ -231,5 +239,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     </html>
   );
 }
+
+export const useRootContext = () => useOutletContext<ContextType>();
 
 export default App;
