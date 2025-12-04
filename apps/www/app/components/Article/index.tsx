@@ -18,30 +18,45 @@ import { Paragraph } from './Paragraph';
 
 type Props = {
   text: string;
+  showExternalEmbed?: boolean;
 };
 
-const ArticleComponent: FC<Props> = ({ text = '' }) => {
+const ArticleComponent: FC<Props> = ({
+  text = '',
+  showExternalEmbed = false,
+}) => {
   const { blocks } = useContentBlocks(text);
   return (
     <div className={articleStyle}>
-      <ArticleNodeComponents blocks={blocks} />
+      <ArticleNodeComponents
+        blocks={blocks}
+        showExternalEmbed={showExternalEmbed}
+      />
     </div>
   );
 };
 
 export const ArticleNodeComponents: FC<{
   blocks?: ContentBlock[];
-}> = ({ blocks = [] }) => {
+  showExternalEmbed?: boolean;
+}> = ({ blocks = [], showExternalEmbed = false }) => {
   return (
     <>
       {blocks.map((block, i) => (
-        <NodeComponent block={block} key={i} />
+        <NodeComponent
+          block={block}
+          key={i}
+          showExternalEmbed={showExternalEmbed}
+        />
       ))}
     </>
   );
 };
 
-const NodeComponent: FC<{ block: ContentBlock }> = ({ block }) => {
+const NodeComponent: FC<{
+  block: ContentBlock;
+  showExternalEmbed?: boolean;
+}> = ({ block, showExternalEmbed = false }) => {
   switch (block.type) {
     case 'heading':
       return <Heading block={block} />;
@@ -52,7 +67,7 @@ const NodeComponent: FC<{ block: ContentBlock }> = ({ block }) => {
     case 'horizontalRule':
       return <HorizontalRule />;
     case 'paragraph':
-      return <Paragraph block={block} />;
+      return <Paragraph block={block} showExternalEmbed={showExternalEmbed} />;
     case 'bulletList':
       return <BulletList block={block} />;
     case 'orderedList':

@@ -166,7 +166,11 @@ export default function Main() {
         <section className={articleSectionStyle}>
           <PostHeader post={post} />
           <article>
-            <Article text={post.content} key={`post-article-${post.id}`} />
+            <Article
+              text={post.content}
+              showExternalEmbed={true}
+              key={`post-article-${post.id}`}
+            />
           </article>
           <Suspense fallback={<Skelton width="100%" height={360} />}>
             <Await

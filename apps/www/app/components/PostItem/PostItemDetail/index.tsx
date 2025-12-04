@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import { Article } from '~/components/Article';
 import { PostTags } from '~/components/PostTags';
 import { usePostLink } from '~/hooks/link/usePostLink';
-import { TimestampType, useDate } from '~/hooks/normalize/useDate';
+import { useDate } from '~/hooks/normalize/useDate';
+import { TimestampType } from '~/hooks/normalize/useDateObject';
 import { usePostContents } from '~/hooks/normalize/usePostContents';
 
 import type { Post } from '@rippingyard/schemas';
@@ -35,7 +36,7 @@ export const PostItemDetail: FC<Props> = ({
               {title}
             </Link>
           </h1>
-          <Article text={content} />
+          <Article text={content} showExternalEmbed={false} />
         </>
       )) || (
         <div className={styles.contentWithNoTitle}>
